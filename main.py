@@ -11,13 +11,15 @@ from metodos import Metodos, NoBP
 ARQ_SAIDA = "resultados_experimentos.txt"
 
 with open(ARQ_SAIDA, "w", encoding="utf-8") as f:
-    f.write("tamanho;capacidade;tabu;tempo_exato;fo_exato;tempo_bp;fo_bp;nos_bp;colunas_bp\n")
+    f.write("tamanho;capacidade;tabu;tempo_exato;\ntempo_bp;fo_exato;\nfo_bp;nos_bp;colunas_bp\n")
 
 
-
-tamanhos=[4,7,10,13]#,20,25]
-capacidades=[36,70,80,110]#,200,200]
-N_TABUS=[1,2,3,4,5]
+tamanhos=[4,7,13]#,20,25]
+capacidades=[36,70,110]#,200,200]
+#tamanhos=[13]#,20,25]
+#capacidades=[110]#,200,200]
+#N_TABUS=[3,4,5]
+N_TABUS=[0]
 
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
@@ -28,12 +30,13 @@ for i in range(len(tamanhos)):
         print("==============================")
 
         inst = Instancia()
+        inst.nbcd = tam
+        inst.nbn = tam + 2
+
         inst.leitura("instancias/R102.txt")
         #inst.leitura("instancias/r207.txt")
         #inst.leitura("instancias/c101.txt")
 
-        inst.nbcd = tam
-        inst.nbn = tam + 2
         for v in inst.veiculos:
             v.capacidade = cap
         # Métodos
@@ -92,9 +95,9 @@ for i in range(len(tamanhos)):
         with open(ARQ_SAIDA, "a", encoding="utf-8") as f:
             linha = (
                 f"{tam};{cap};{tabu};"
-                f"{tempo_exato:.4f};{fo_exato:.4f};"
-                f"{tempo_bp:.4f};{fo_bp:.4f};"
                 f"{nos_bp};{colunas_bp}\n"
+                f"{tempo_exato:.4f};{tempo_bp:.4f};\n"
+                f"{fo_exato:.4f};{fo_bp:.4f};\n"
             )
             f.write(linha)
             f.write(f"SEQ_EXATO: {seq_exato}\n")

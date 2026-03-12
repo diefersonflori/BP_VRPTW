@@ -61,7 +61,7 @@ class NoBP:
         self.last_arc = None  # última iteração que apareceu
         self.tabu_until = None  # até qual iteração o arco está tabu
 
-        self.tabu_tenure = 1  # quantas iterações fica tabu- to pensando em colocar max(5, alfa*nbn)
+        self.tabu_tenure = 9991  # quantas iterações fica tabu- to pensando em colocar max(5, alfa*nbn)
 
     def criaMatriRC(self,inst):
         self.matriz_rc = {
@@ -594,7 +594,7 @@ class Metodos:
             # -------------------------------------------------
             no_atual, prof, pai = ativos.pop()
             print(f"\n=========== PROCESSANDO NÓ {no_atual.id_no} (prof={prof}, pai={pai}) ===========")
-
+            no_atual.tabu_tenure=self.TABU_TENURE
             # -------------------------------------------------
             # resolve nó
             # -------------------------------------------------
@@ -813,7 +813,7 @@ class Metodos:
 
         #print matriz custo reduzido
 
-        """
+
         print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
 
         for i in range(nbn):
@@ -851,7 +851,7 @@ class Metodos:
         print("==========================================\n")
         
         
-        """
+
 
 
         # ------------------ FIXOS (FORÇAR) ------------------
@@ -1090,6 +1090,189 @@ class Metodos:
 
         return None, None
 
+    def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                      top_k=5, n_starts=30, eps=1e-6):
+        import math
+        import random
+
+        if mu_arc is None:
+            mu_arc = {}
+
+        print(f"Subprob VNS RANDOM veículo {k}")
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        janelas = []
+        d = []
+
+        for i in range(nbn):
+            noh = inst.noh[i]
+
+            if hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE") and noh.READY_TIME and noh.DUE_DATE:
+                servs = noh.SERVICE_TIME if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else [0.0] * len(
+                    noh.READY_TIME)
+
+                lista_janelas = []
+                for r in range(len(noh.READY_TIME)):
+                    ai = float(noh.READY_TIME[r])
+                    bi = float(noh.DUE_DATE[r])
+                    si = float(servs[r]) if r < len(servs) else float(servs[0])
+                    lista_janelas.append((ai, bi, si))
+            else:
+                lista_janelas = [(0.0, float("inf"), 0.0)]
+
+            janelas.append(lista_janelas)
+            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+
+        def travel_time(i, j):
+            return inst.matriz_distancia[i][j] / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def rota_para_binaria(rota):
+            bin_xij = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_xij[v - 1] = 1
+            return bin_xij
+
+        # melhor solução encontrada
+        melhor_rota = None
+        melhor_custo_real = None
+        melhor_custo_red = math.inf
+
+        # =========================================================
+        # PRE-CÁLCULO: custo reduzido e vizinhos já ordenados
+        # =========================================================
+        rc = [[math.inf] * nbn for _ in range(nbn)]
+        vizinhos_ordenados = [[] for _ in range(nbn)]
+
+        for i in range(nbn):
+            linha = []
+
+            for j in range(nbn):
+                if i == j:
+                    continue
+
+                val = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    val -= float(pi[j - 1])
+
+                if j == depf:
+                    val -= float(sigma_k)
+
+                rc[i][j] = val
+                linha.append((j, val))
+
+            linha.sort(key=lambda x: x[1])
+            vizinhos_ordenados[i] = linha
+
+        # =========================================================
+        # MULTI-START RANDOMIZADO- caso eu nao consiga gerar uma rota de inicio,
+        #faço denovo
+        # =========================================================
+        for ii in range(n_starts):
+
+            rota = [dep0]
+            visitados = set()
+            visitados.add(dep0)
+            no_atual = dep0
+            tempo_atual = max(a[dep0], 0.0)
+            carga_atual = 0.0
+            custo_red_total = 0.0
+
+            while True:
+                viaveis = []
+
+                # percorre vizinhos já ordenados do melhor para o pior
+                for (j, delta_rc) in vizinhos_ordenados[no_atual]:
+
+                    # cliente já visitado
+                    if  j in visitados:
+                        continue
+
+                    # tabu
+                    """
+                    if NO_BP is not None and hasattr(NO_BP, "tabu_until"):
+                        if NO_BP.tabu_until[k][no_atual][j] > 0:
+                            continue
+                    """
+
+                    # capacidade
+                    nova_carga = carga_atual + (d[j] if 1 <= j <= nbcd else 0.0)
+                    if nova_carga > cap_k + 1e-9:
+                        continue
+
+                    # janela de tempo
+                    tempo_chegada = tempo_atual + s[no_atual] + travel_time(no_atual, j)
+                    if tempo_chegada < a[j]:
+                        tempo_chegada = a[j]
+                    if tempo_chegada > b[j] + 1e-9:
+                        continue
+
+                    viaveis.append((j, tempo_chegada, nova_carga, delta_rc))
+
+                    # já pegou os top_k melhores viáveis
+                    if len(viaveis) >= top_k:
+                        break
+
+                # não há mais extensão viável
+                if not viaveis:
+                    break
+
+                # escolhe aleatoriamente entre os top_k melhores viáveis
+                j, tempo_chegada, nova_carga, delta_rc = random.choice(viaveis)
+                #j, tempo_chegada, nova_carga, delta_rc = viaveis[0]
+                rota.append(j)
+                custo_red_total += delta_rc
+                tempo_atual = tempo_chegada
+                carga_atual = nova_carga
+                no_atual = j
+
+                visitados.add(j)
+
+                # rota fechou
+                if j == depf:
+                    break
+
+            # aceita apenas rota fechada com pelo menos 1 cliente
+            if len(rota) >= 3:
+
+                custo_real = 0.0
+                for t in range(len(rota) - 1):
+                    custo_real += travel_time(rota[t], rota[t + 1])
+
+                if custo_red_total < melhor_custo_red:
+                    melhor_custo_red = custo_red_total
+                    melhor_custo_real = custo_real
+                    melhor_rota = rota[:]
+
+
+            if melhor_rota is not None and melhor_custo_red < -eps:
+
+                return {
+                    "clientes": melhor_rota,
+                    "custo": melhor_custo_real,
+                    "bin_xij": rota_para_binaria(melhor_rota)
+                }, melhor_custo_red
+            else:
+                if(ii>= n_starts-1):
+                    print("")
+                print("NAO RETORNOU COLUNA-GERA NOVA")
+                print(ii)
+
+
+        return None, None
 
 
     def coluna_respeita_no(self, no_bp, seq, k):
@@ -1794,7 +1977,11 @@ class Metodos:
 
                 # pricing normal
                 t0=time.time()
-                if tipo_geracao == "PD":
+                nova_rota,custo_red= self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
+                                                        mu_arc=mu_arc)
+                #if tipo_geracao == "PD":
+                if nova_rota == None:
+                    print("ABRIU ROTA PD")
                     #nova_rota, custo_red = self.SUB_PROG_DINCPP(
                     #nova_rota, custo_red = self.SUB_PROG_DIN(
                     nova_rota, custo_red = self.SUB_PROG_DIN_PW(
@@ -1803,8 +1990,13 @@ class Metodos:
                         arcos_fixados=fixados_k,
                         mu_arc=mu_arc
                     )
+                    print("")
+                """
                 else:
                     nova_rota, custo_red = self.subproblema(inst, pi, sigma[k], k, duais_arcos=None)
+                """
+
+
 
                 #cpp
                 t1=time.time()
@@ -1872,10 +2064,10 @@ class Metodos:
                     ## agora subo quem vai pra tabu
                     for t in range(len(seq) - 1):
                         i, j = seq[t], seq[t + 1]
-                        if(no_bp.matriz_rc[k][i][j]>=0):
-                            no_bp.freq_arc[k][i][j] += 1
-                            no_bp.last_arc[k][i][j] = iter_cg
-                            no_bp.tabu_until[k][i][j] =no_bp.tabu_tenure
+                        #if(no_bp.matriz_rc[k][i][j]>=0):
+                        no_bp.freq_arc[k][i][j] += 1
+                        no_bp.last_arc[k][i][j] = iter_cg
+                        no_bp.tabu_until[k][i][j] =no_bp.tabu_tenure
                         """
                             print(f'subiu tabu MAIOR ', k, '-', i, '-', j)
                             print("valor RC")

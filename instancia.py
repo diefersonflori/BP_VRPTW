@@ -49,8 +49,8 @@ class Instancia:
             exit(1)
 
         #"""
-        self.nbcd = 13
-        Q = 110
+        #self.nbcd = 13
+        #Q = 110
         #self.nbcd = 7
         #Q = 70
         self.nbv = 2
@@ -81,7 +81,7 @@ class Instancia:
         #self.nbcd = 4
         #Q = 36
 
-        self.nbn = self.nbcd + 2
+        #self.nbn = self.nbcd + 2
         Vel = 1
         #Vel = 1
         self.fileName = argv
@@ -107,11 +107,15 @@ class Instancia:
                     )
                     a1 = int(parts[4])
                     a2 = int(parts[5])
+                    a3 = int(parts[6])
+                    a4 = int(parts[7])
                     a5 = int(parts[6])
                     #a5 = int(parts[8])
                     #a6 = int(parts[9])
                     no_aux.READY_TIME.append(a1)
                     no_aux.DUE_DATE.append(a2)
+                    no_aux.READY_TIME.append(a3)
+                    no_aux.DUE_DATE.append(a4)
                     # READY_TIME 2, DUE_DATE 2 existem mas não usa aqui
                     ##no_aux.SERVICE_TIME.append(a5)
                     no_aux.SERVICE_TIME.append(0)
@@ -136,7 +140,8 @@ class Instancia:
             veic_aux = Veiculo(
                 #capacidade=int(Q / (jk + 1)),
                 #velocidade=int(Vel * (jk + 1))
-                capacidade = Q,
+                #capacidade = Q,
+                capacidade = 0,
                 velocidade = Vel
             )
             self.veiculos.append(veic_aux)
