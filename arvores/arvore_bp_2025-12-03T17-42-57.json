@@ -1,0 +1,117 @@
+{
+  "run_id": "2025-12-03T17-42-57",
+  "instancia": {
+    "nbcd": 16,
+    "nbn": 18,
+    "nbv": 2
+  },
+  "niveis": [
+    {
+      "nivel": 0,
+      "nos": [
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 22.936681810875978,
+          "solucao_inteira": true,
+          "status": "resolvido",
+          "motivo_poda": "no_inteiro_folha",
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {
+            "0": {
+              "sequencias": [
+                [
+                  0,
+                  4,
+                  2,
+                  14,
+                  15,
+                  16,
+                  5,
+                  6,
+                  13,
+                  17
+                ]
+              ],
+              "custos": [
+                14.665650440427905
+              ]
+            },
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  9,
+                  3,
+                  12,
+                  11,
+                  10,
+                  7,
+                  8,
+                  17
+                ]
+              ],
+              "custos": [
+                8.271031370448073
+              ]
+            }
+          }
+        },
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 22.936681810875978,
+          "solucao_inteira": true,
+          "status": "resolvido",
+          "motivo_poda": "no_inteiro_folha",
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {
+            "0": {
+              "sequencias": [
+                [
+                  0,
+                  4,
+                  2,
+                  14,
+                  15,
+                  16,
+                  5,
+                  6,
+                  13,
+                  17
+                ]
+              ],
+              "custos": [
+                14.665650440427905
+              ]
+            },
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  9,
+                  3,
+                  12,
+                  11,
+                  10,
+                  7,
+                  8,
+                  17
+                ]
+              ],
+              "custos": [
+                8.271031370448073
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

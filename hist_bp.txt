@@ -1,0 +1,128 @@
+[2026-01-29 22:18:32] Início do Branch-and-Price global.
+[2026-01-29 22:18:32] Criado nó raiz 0.
+[2026-01-29 22:18:32] Processando nó 0 (prof=0, pai=None) com 0 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:37] Nó 0 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:37] Nó 0 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:37] Do nó 0 gerados filhos 1 (proíbe arco 0->5, k=0) e 2 (obriga arco 0->5, k=0).
+[2026-01-29 22:18:37] Processando nó 2 (prof=1, pai=0) com 1 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:37] Nó 2 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:37] Nó 2 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:37] Do nó 2 gerados filhos 3 (proíbe arco 5->3, k=0) e 4 (obriga arco 5->3, k=0).
+[2026-01-29 22:18:37] Processando nó 4 (prof=2, pai=2) com 2 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:37] Nó 4 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:37] Nó 4 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:37] Do nó 4 gerados filhos 5 (proíbe arco 3->7, k=0) e 6 (obriga arco 3->7, k=0).
+[2026-01-29 22:18:37] Processando nó 6 (prof=3, pai=4) com 3 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:37] Nó 6 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:37] Nó 6 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:37] Do nó 6 gerados filhos 7 (proíbe arco 7->8, k=0) e 8 (obriga arco 7->8, k=0).
+[2026-01-29 22:18:37] Processando nó 8 (prof=4, pai=6) com 4 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:38] Nó 8 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:38] Nó 8 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:38] Do nó 8 gerados filhos 9 (proíbe arco 8->10, k=0) e 10 (obriga arco 8->10, k=0).
+[2026-01-29 22:18:38] Processando nó 10 (prof=5, pai=8) com 5 arcos fixados e 0 arcos proibidos.
+[2026-01-29 22:18:39] Nó 10 resolvido: custo LP = 94.3629, inteira=True.
+[2026-01-29 22:18:39] Nó 10 é inteiro com custo 94.3629.
+[2026-01-29 22:18:39] Novo incumbente: nó 10 com custo 94.3629.
+[2026-01-29 22:18:39] Processando nó 9 (prof=5, pai=8) com 4 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:39] Nó 9 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:39] Processando nó 7 (prof=4, pai=6) com 3 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:39] Nó 7 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:39] Processando nó 5 (prof=3, pai=4) com 2 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:39] Nó 5 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:39] Processando nó 3 (prof=2, pai=2) com 1 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:39] Nó 3 resolvido: custo LP = 94.3540, inteira=True.
+[2026-01-29 22:18:39] Nó 3 é inteiro com custo 94.3540.
+[2026-01-29 22:18:39] Novo incumbente: nó 3 com custo 94.3540.
+[2026-01-29 22:18:39] Processando nó 1 (prof=1, pai=0) com 0 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:40] Nó 1 resolvido: custo LP = 76.4489, inteira=False.
+[2026-01-29 22:18:40] Nó 1 fracionário (custo 76.4489), gerando filhos por branching em arco.
+[2026-01-29 22:18:40] Do nó 1 gerados filhos 11 (proíbe arco 0->10, k=0) e 12 (obriga arco 0->10, k=0).
+[2026-01-29 22:18:40] Processando nó 12 (prof=2, pai=1) com 1 arcos fixados e 1 arcos proibidos.
+[2026-01-29 22:18:40] Nó 12 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:40] Processando nó 11 (prof=2, pai=1) com 0 arcos fixados e 2 arcos proibidos.
+[2026-01-29 22:18:40] Nó 11 resolvido: custo LP = 77.0286, inteira=False.
+[2026-01-29 22:18:40] Nó 11 fracionário (custo 77.0286), gerando filhos por branching em arco.
+[2026-01-29 22:18:40] Do nó 11 gerados filhos 13 (proíbe arco 0->3, k=0) e 14 (obriga arco 0->3, k=0).
+[2026-01-29 22:18:40] Processando nó 14 (prof=3, pai=11) com 1 arcos fixados e 2 arcos proibidos.
+[2026-01-29 22:18:41] Nó 14 resolvido: custo LP = 79.6043, inteira=False.
+[2026-01-29 22:18:41] Nó 14 fracionário (custo 79.6043), gerando filhos por branching em arco.
+[2026-01-29 22:18:41] Do nó 14 gerados filhos 15 (proíbe arco 3->8, k=0) e 16 (obriga arco 3->8, k=0).
+[2026-01-29 22:18:41] Processando nó 16 (prof=4, pai=14) com 2 arcos fixados e 2 arcos proibidos.
+[2026-01-29 22:18:41] Nó 16 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:41] Processando nó 15 (prof=4, pai=14) com 1 arcos fixados e 3 arcos proibidos.
+[2026-01-29 22:18:41] Nó 15 resolvido: custo LP = 79.5250, inteira=False.
+[2026-01-29 22:18:41] Nó 15 fracionário (custo 79.5250), gerando filhos por branching em arco.
+[2026-01-29 22:18:41] Do nó 15 gerados filhos 17 (proíbe arco 3->7, k=0) e 18 (obriga arco 3->7, k=0).
+[2026-01-29 22:18:41] Processando nó 18 (prof=5, pai=15) com 2 arcos fixados e 3 arcos proibidos.
+[2026-01-29 22:18:41] Nó 18 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:41] Processando nó 17 (prof=5, pai=15) com 1 arcos fixados e 4 arcos proibidos.
+[2026-01-29 22:18:42] Nó 17 resolvido: custo LP = 79.8616, inteira=False.
+[2026-01-29 22:18:42] Nó 17 fracionário (custo 79.8616), gerando filhos por branching em arco.
+[2026-01-29 22:18:42] Do nó 17 gerados filhos 19 (proíbe arco 3->10, k=0) e 20 (obriga arco 3->10, k=0).
+[2026-01-29 22:18:42] Processando nó 20 (prof=6, pai=17) com 2 arcos fixados e 4 arcos proibidos.
+[2026-01-29 22:18:42] Nó 20 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:42] Processando nó 19 (prof=6, pai=17) com 1 arcos fixados e 5 arcos proibidos.
+[2026-01-29 22:18:42] Nó 19 resolvido: custo LP = 81.0591, inteira=False.
+[2026-01-29 22:18:42] Nó 19 fracionário (custo 81.0591), gerando filhos por branching em arco.
+[2026-01-29 22:18:42] Do nó 19 gerados filhos 21 (proíbe arco 3->5, k=0) e 22 (obriga arco 3->5, k=0).
+[2026-01-29 22:18:42] Processando nó 22 (prof=7, pai=19) com 2 arcos fixados e 5 arcos proibidos.
+[2026-01-29 22:18:42] Nó 22 resolvido: custo LP = 81.0591, inteira=False.
+[2026-01-29 22:18:42] Nó 22 fracionário (custo 81.0591), gerando filhos por branching em arco.
+[2026-01-29 22:18:42] Do nó 22 gerados filhos 23 (proíbe arco 5->8, k=0) e 24 (obriga arco 5->8, k=0).
+[2026-01-29 22:18:42] Processando nó 24 (prof=8, pai=22) com 3 arcos fixados e 5 arcos proibidos.
+[2026-01-29 22:18:42] Nó 24 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:42] Processando nó 23 (prof=8, pai=22) com 2 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:43] Nó 23 resolvido: custo LP = 84.8050, inteira=False.
+[2026-01-29 22:18:43] Nó 23 fracionário (custo 84.8050), gerando filhos por branching em arco.
+[2026-01-29 22:18:43] Do nó 23 gerados filhos 25 (proíbe arco 5->7, k=0) e 26 (obriga arco 5->7, k=0).
+[2026-01-29 22:18:43] Processando nó 26 (prof=9, pai=23) com 3 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:43] Nó 26 resolvido: custo LP = 77.6768, inteira=False.
+[2026-01-29 22:18:43] Nó 26 fracionário (custo 77.6768), gerando filhos por branching em arco.
+[2026-01-29 22:18:43] Do nó 26 gerados filhos 27 (proíbe arco 7->8, k=0) e 28 (obriga arco 7->8, k=0).
+[2026-01-29 22:18:43] Processando nó 28 (prof=10, pai=26) com 4 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:43] Nó 28 resolvido: custo LP = 77.6768, inteira=False.
+[2026-01-29 22:18:43] Nó 28 fracionário (custo 77.6768), gerando filhos por branching em arco.
+[2026-01-29 22:18:43] Do nó 28 gerados filhos 29 (proíbe arco 8->10, k=0) e 30 (obriga arco 8->10, k=0).
+[2026-01-29 22:18:43] Processando nó 30 (prof=11, pai=28) com 5 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:44] Nó 30 resolvido: custo LP = 95.5908, inteira=True.
+[2026-01-29 22:18:44] Nó 30 podado por bound: LP 95.5908 >= z_inc 94.3540.
+[2026-01-29 22:18:44] Processando nó 29 (prof=11, pai=28) com 4 arcos fixados e 7 arcos proibidos.
+[2026-01-29 22:18:44] Nó 29 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 27 (prof=10, pai=26) com 3 arcos fixados e 7 arcos proibidos.
+[2026-01-29 22:18:44] Nó 27 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 25 (prof=9, pai=23) com 2 arcos fixados e 7 arcos proibidos.
+[2026-01-29 22:18:44] Nó 25 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 21 (prof=7, pai=19) com 1 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:44] Nó 21 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 13 (prof=3, pai=11) com 0 arcos fixados e 3 arcos proibidos.
+[2026-01-29 22:18:44] Nó 13 resolvido: custo LP = 77.5273, inteira=False.
+[2026-01-29 22:18:44] Nó 13 fracionário (custo 77.5273), gerando filhos por branching em arco.
+[2026-01-29 22:18:44] Do nó 13 gerados filhos 31 (proíbe arco 0->7, k=0) e 32 (obriga arco 0->7, k=0).
+[2026-01-29 22:18:44] Processando nó 32 (prof=4, pai=13) com 1 arcos fixados e 3 arcos proibidos.
+[2026-01-29 22:18:44] Nó 32 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 31 (prof=4, pai=13) com 0 arcos fixados e 4 arcos proibidos.
+[2026-01-29 22:18:44] Nó 31 resolvido: custo LP = 77.5393, inteira=False.
+[2026-01-29 22:18:44] Nó 31 fracionário (custo 77.5393), gerando filhos por branching em arco.
+[2026-01-29 22:18:44] Do nó 31 gerados filhos 33 (proíbe arco 0->8, k=0) e 34 (obriga arco 0->8, k=0).
+[2026-01-29 22:18:44] Processando nó 34 (prof=5, pai=31) com 1 arcos fixados e 4 arcos proibidos.
+[2026-01-29 22:18:44] Nó 34 podado: LP inviável ou sem solução.
+[2026-01-29 22:18:44] Processando nó 33 (prof=5, pai=31) com 0 arcos fixados e 5 arcos proibidos.
+[2026-01-29 22:18:44] Nó 33 resolvido: custo LP = 83.0935, inteira=False.
+[2026-01-29 22:18:44] Nó 33 fracionário (custo 83.0935), gerando filhos por branching em arco.
+[2026-01-29 22:18:44] Do nó 33 gerados filhos 35 (proíbe arco 0->11, k=0) e 36 (obriga arco 0->11, k=0).
+[2026-01-29 22:18:44] Processando nó 36 (prof=6, pai=33) com 1 arcos fixados e 5 arcos proibidos.
+[2026-01-29 22:18:45] Nó 36 resolvido: custo LP = 92.8982, inteira=True.
+[2026-01-29 22:18:45] Nó 36 é inteiro com custo 92.8982.
+[2026-01-29 22:18:45] Novo incumbente: nó 36 com custo 92.8982.
+[2026-01-29 22:18:45] Processando nó 35 (prof=6, pai=33) com 0 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:45] Nó 35 resolvido: custo LP = 86.7478, inteira=False.
+[2026-01-29 22:18:45] Nó 35 fracionário (custo 86.7478), gerando filhos por branching em arco.
+[2026-01-29 22:18:45] Do nó 35 gerados filhos 37 (proíbe arco 0->9, k=0) e 38 (obriga arco 0->9, k=0).
+[2026-01-29 22:18:45] Processando nó 38 (prof=7, pai=35) com 1 arcos fixados e 6 arcos proibidos.
+[2026-01-29 22:18:45] Nó 38 resolvido: custo LP = 96.0726, inteira=True.
+[2026-01-29 22:18:45] Nó 38 podado por bound: LP 96.0726 >= z_inc 92.8982.
+[2026-01-29 22:18:45] Processando nó 37 (prof=7, pai=35) com 0 arcos fixados e 7 arcos proibidos.
+[2026-01-29 22:18:46] Nó 37 resolvido: custo LP = 94.3629, inteira=True.
+[2026-01-29 22:18:46] Nó 37 podado por bound: LP 94.3629 >= z_inc 92.8982.
+[2026-01-29 22:18:46] Fim do Branch-and-Price.

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualização de Rotas - VRPTW</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet PolylineDecorator (versão garantida) -->
+  <script src="https://cdn.jsdelivr.net/gh/bbecquet/Leaflet.PolylineDecorator@master/dist/leaflet.polylineDecorator.min.js"></script>
+
+  <style>
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Visualização de Rotas - VRPTW</h2>
+  <div id="map"></div>
+
+  <script>
+    const map = L.map('map').setView([0, 0], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    fetch('solucao_ex.json')
+      .then(response => response.json())
+      .then(data => {
+        const nos = {};
+        const bounds = [];
+
+        data.nos.forEach(no => {
+          const coord = [no.y, no.x];
+          nos[no.id] = coord;
+          bounds.push(coord);
+
+          L.circleMarker(coord, {
+            radius: 5,
+            color: 'black',
+            fillColor: 'white',
+            fillOpacity: 1
+          }).addTo(map).bindTooltip(`Nó ${no.id}`, {
+            permanent: true,
+            direction: 'top'
+          });
+        });
+
+        const cores = ['red', 'blue', 'green', 'orange', 'purple', 'brown'];
+
+        data.veiculos.forEach((veic, idx) => {
+          const cor = cores[idx % cores.length];
+          const rotaCoords = veic.rota.map(id => nos[id]).filter(c => c);
+
+          if (rotaCoords.length < 2) {
+            console.warn(`❌ Rota do veículo ${veic.id} ignorada: coordenadas insuficientes.`);
+            return;
+          }
+
+const linha = L.polyline(rotaCoords, {
+  color: cor,
+  weight: 4,
+  opacity: 0.7
+}).addTo(map);
+
+// ✅ FUNCIONA: usa rotaCoords diretamente
+L.polylineDecorator(L.polyline(rotaCoords), {
+  patterns: [
+    {
+      offset: '5%',
+      repeat: '220px',
+      symbol: L.Symbol.arrowHead({
+        pixelSize: 10,
+        polygon: false,
+        pathOptions: { stroke: true, color: cor }
+      })
+    }
+  ]
+}).addTo(map);
+
+
+          linha.bindPopup(`🚚 Veículo ${veic.id}<br>🧾 Custo: ${veic.custo.toFixed(2)}`);
+
+          veic.rota.forEach((id, i) => {
+            const chegada = veic.chegadas?.[i] ?? 'N/A';
+            const coord = nos[id];
+            if (coord) {
+              L.circleMarker(coord, {
+                radius: 6,
+                color: cor,
+                fillColor: cor,
+                fillOpacity: 0.5
+              }).addTo(map)
+                .bindTooltip(`Nó ${id}<br>🕒 Chegada: ${chegada.toFixed(2)}`, {
+                  permanent: false,
+                  direction: 'right'
+                })
+                .bindPopup(`🕒 Atendimento no nó ${id}: ${chegada.toFixed(2)}`);
+            }
+          });
+        });
+
+        if (bounds.length > 0) {
+          map.fitBounds(bounds, { padding: [30, 30] });
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao carregar JSON:", err);
+      });
+  </script>
+</body>
+</html>

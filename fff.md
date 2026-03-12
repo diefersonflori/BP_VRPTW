@@ -1,0 +1,5211 @@
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+C:\Users\Investigador\anaconda3\python.exe "C:/Program Files/JetBrains/PyCharm 2025.2.4/plugins/python-ce/helpers/pydev/pydevd.py" --multiprocess --qt-support=auto --client 127.0.0.1 --port 65105 --file C:\Users\Investigador\Documents\VRPTW\main.py 
+Connected to: <socket.socket fd=664, family=2, type=1, proto=0, laddr=('127.0.0.1', 59114), raddr=('127.0.0.1', 65105)>.
+Connected to pydev debugger (build 252.27397.106)
+==================== Iniciando a resolução do modelo exato
+Set parameter Username
+Set parameter LicenseID to value 2727320
+Academic license - for non-commercial use only - expires 2026-10-24
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 510 rows, 286 columns and 2030 nonzeros
+Model fingerprint: 0xe49b0c2e
+Variable types: 44 continuous, 242 integer (242 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 110 rows and 48 columns
+Presolve time: 0.01s
+Presolved: 400 rows, 238 columns, 3575 nonzeros
+Variable types: 38 continuous, 200 integer (200 binary)
+Root relaxation: objective 7.111745e+00, 64 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0    7.11175    0   21          -    7.11175      -     -    0s
+H    0     0                      24.3824042    7.11175  70.8%     -    0s
+     0     0    7.75008    0   18   24.38240    7.75008  68.2%     -    0s
+     0     0    7.95280    0   22   24.38240    7.95280  67.4%     -    0s
+H    0     0                      23.6051169    7.95280  66.3%     -    0s
+     0     0    8.01477    0   24   23.60512    8.01477  66.0%     -    0s
+     0     0    8.01477    0   23   23.60512    8.01477  66.0%     -    0s
+H    0     0                      23.5760162    8.01477  66.0%     -    0s
+     0     0    8.12714    0   24   23.57602    8.12714  65.5%     -    0s
+     0     0    8.12714    0   24   23.57602    8.12714  65.5%     -    0s
+     0     2    8.14054    0   24   23.57602    8.14054  65.5%     -    0s
+H   26    76                      21.4085248    8.14054  62.0%  16.5    0s
+H   41    76                      20.4794221    8.15472  60.2%  14.5    0s
+H  155   164                      20.2941227    8.15472  59.8%   9.5    0s
+H  171   164                      19.9437011    8.15472  59.1%   9.6    0s
+H  232   209                      18.3330533    8.15472  55.5%   9.5    0s
+H  247   209                      17.2315108    8.15472  52.7%   9.3    0s
+*  345   294              31      16.1323836    8.30125  48.5%   9.2    0s
+H 1255   818                      15.4823186    8.96690  42.1%   8.6    0s
+H 2582  1330                      14.3910723    9.32043  35.2%   8.3    0s
+Cutting planes:
+  Learned: 3
+  Gomory: 1
+  Cover: 2
+  MIR: 2
+  RLT: 10
+  Relax-and-lift: 1
+Explored 20847 nodes (237980 simplex iterations) in 1.81 seconds (1.50 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: 14.3911 15.4823 16.1324 ... 23.576
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.439107234242e+01, best bound 1.439107234242e+01, gap 0.0000%
+== Veículo 0 ==
+Rota: 0 -> 4 -> 3 -> 9 -> 1 -> 10
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      19.0
+   4 |     7.00 |    17.00 |     19.00 |      32.0
+   3 |    19.50 |    29.50 |     32.00 |      48.0
+   9 |    31.00 |    41.00 |     48.00 |      58.0
+   1 |    42.78 |    52.78 |     58.00 |       0.0
+  10 |  9886.08 |  9886.08 |      0.00 |         -
+== Veículo 1 ==
+Rota: 0 -> 7 -> 8 -> 5 -> 6 -> 2 -> 10
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |       5.0
+   7 |     1.06 |    11.06 |      5.00 |      14.0
+   8 |    11.67 |    21.67 |     14.00 |      40.0
+   5 |    22.37 |    32.37 |     40.00 |      43.0
+   6 |    32.87 |    42.87 |     43.00 |      50.0
+   2 |    43.69 |    53.69 |     50.00 |       0.0
+  10 |  9999.00 |  9999.00 |      0.00 |         -
+Solução encontrada com sucesso!
+x[0][0][4] = 1
+x[0][1][10] = 1
+x[0][3][9] = 1
+x[0][4][3] = 1
+x[0][9][1] = 1
+x[1][0][7] = 1
+x[1][2][10] = 1
+x[1][5][6] = 1
+x[1][6][2] = 1
+x[1][7][8] = 1
+x[1][8][5] = 1
+✅ Solução exportada com sucesso para 'solucao_ex.json'
+=========INICIO PRINT SOLUCAO EXATA=========
+sol exata veic 0
+sequencia_rota =
+[[0, 4, 3, 9, 1, 10]]
+custo =
+[9.803604002649267]
+sol exata veic 1
+sequencia_rota =
+[[0, 7, 8, 5, 6, 2, 10]]
+custo =
+[4.587468339768549]
+CUSTO TOTAL EXATA = 14.3911
+=========FIM PRINT SOLUCAO EXATA=========
+========Geracao de Colunas==========
+============================================================================= ITERACAO GLOBAL 0
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 4 columns and 22 nonzeros
+Model fingerprint: 0xa6593597
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+07, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 11 rows and 4 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao -1
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração -1) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.000000
+  Cliente 02: 0.000000
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 10000000.000000
+σ_k (dual veículo 0): 0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xad46e55c
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.2360680
+Found heuristic solution: objective -9999993.597
+Root relaxation: objective -7.899994e+07, 42 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.900e+07    0   16 -9999993.6 -7.900e+07   690%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   27 -9999993.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   27 -9999993.6 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   27 -9999993.6 -5.000e+07   400%     -    0s
+ 36605 12600 -2.813e+07   36   27 -9999993.6 -4.000e+07   300%  15.0    5s
+ 88032 19213 infeasible   54      -9999993.6 -4.000e+07   300%  15.8   10s
+ 116420 26396 infeasible   42      -9999993.6 -4.000e+07   300%  16.2   15s
+ 144934 32933 -2.750e+07   51   13 -9999993.6 -3.952e+07   295%  16.6   20s
+ 166983 38558 -3.000e+07   45   11 -9999993.6 -3.895e+07   290%  16.8   25s
+ 190499 44048 infeasible   46      -9999993.6 -3.811e+07   281%  16.9   30s
+Cutting planes:
+  Learned: 34
+  Gomory: 8
+  Cover: 87
+  Implied bound: 45
+  MIR: 65
+  Mixing: 233
+  Flow cover: 1423
+  Inf proof: 207
+  Zero half: 16
+  RLT: 13
+  Relax-and-lift: 15
+Explored 191287 nodes (3232579 simplex iterations) in 30.03 seconds (20.51 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -9.99999e+06 2.23607 
+Time limit reached
+Best objective -9.999993596876e+06, best bound -3.808334858850e+07, gap 280.8337%
+««««««« custo subido para o mestre 6.4031242374328485
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999993.596875764
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 9, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.000000
+  Cliente 02: 0.000000
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 10000000.000000
+σ_k (dual veículo 1): 0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xd30c0a6f
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1180340
+Found heuristic solution: objective -9999996.798
+Root relaxation: objective -6.799998e+07, 39 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -6.800e+07    0   16 -9999996.8 -6.800e+07   580%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999996.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999996.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   27 -9999996.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999996.8 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   26 -9999996.8 -5.000e+07   400%     -    0s
+Cutting planes:
+  Learned: 46
+  Gomory: 9
+  Cover: 55
+  Implied bound: 76
+  MIR: 31
+  Flow cover: 57
+  Inf proof: 56
+  Zero half: 4
+  RLT: 16
+Explored 16898 nodes (324485 simplex iterations) in 1.95 seconds (1.24 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -1e+07 1.11803 
+No other solutions better than -1e+07
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999996798438e+06, best bound -9.999996798438e+06, gap 0.0000%
+««««««« custo subido para o mestre 3.2015621187164243
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999996.798437882
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 9, 10]
+============================================================================= ITERACAO GLOBAL 1
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 6 columns and 26 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999990e+37   2.000000e+31   1.999999e+07      0s
+       2    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 2 iterations and 0.01 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 0
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 0) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SOL itera k 1
+  Veículo 1, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 2, 5, 7, 6, 9, 8, 4, 1, 3, 10]
+    - Custo:     10000000.00
+SEM MELHORA ITERACAO 1
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 9999996.798438
+  Cliente 02: 0.000000
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xfadf12bd
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.2360680
+Found heuristic solution: objective -9999993.752
+Root relaxation: objective -8.109994e+07, 52 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.110e+07    0   18 -9999993.8 -8.110e+07   711%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   24 -9999993.8 -5.000e+07   400%     -    0s
+ 36227 12759 -3.000e+07   29   32 -9999993.8 -4.000e+07   300%  15.0    5s
+ 77247 15114 -3.000e+07   45   10 -9999993.8 -4.000e+07   300%  15.5   10s
+ 112709 25342 infeasible   34      -9999993.8 -4.000e+07   300%  15.8   15s
+ 142488 32923 infeasible   51      -9999993.8 -3.949e+07   295%  16.1   20s
+ 163940 38559 infeasible   52      -9999993.8 -3.888e+07   289%  16.2   25s
+ 183768 43577 -2.000e+07   50   10 -9999993.8 -3.826e+07   283%  16.2   30s
+Cutting planes:
+  Learned: 33
+  Gomory: 9
+  Cover: 142
+  Implied bound: 50
+  MIR: 34
+  Mixing: 278
+  StrongCG: 1
+  Flow cover: 1401
+  Inf proof: 260
+  Zero half: 15
+  RLT: 9
+  Relax-and-lift: 7
+Explored 184732 nodes (3000782 simplex iterations) in 30.04 seconds (19.54 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -9.99999e+06 2.23607 
+Time limit reached
+Best objective -9.999993752129e+06, best bound -3.823447233433e+07, gap 282.3450%
+««««««« custo subido para o mestre 3.0463092423455636
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999993.752128638
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 1, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 9999996.798438
+  Cliente 02: 0.000000
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x53e8dc1f
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1180340
+Found heuristic solution: objective -9999995.275
+Found heuristic solution: objective -9999996.747
+Root relaxation: objective -7.219996e+07, 41 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.220e+07    0   18 -9999996.7 -7.220e+07   622%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   24 -9999996.7 -5.000e+07   400%     -    0s
+Cutting planes:
+  Learned: 59
+  Gomory: 15
+  Cover: 70
+  Implied bound: 82
+  MIR: 32
+  Flow cover: 65
+  Inf proof: 93
+  RLT: 18
+Explored 29508 nodes (611572 simplex iterations) in 3.30 seconds (2.22 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 3: -1e+07 -1e+07 1.11803 
+No other solutions better than -1e+07
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999996747417e+06, best bound -9.999996747417e+06, gap 0.0000%
+««««««« custo subido para o mestre 3.252583060682846
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999996.74741694
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 9, 1, 10]
+============================================================================= ITERACAO GLOBAL 2
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 8 columns and 31 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999990e+37   1.700000e+31   1.999999e+07      0s
+       2    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 2 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 1
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 1) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 2
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 9999996.747417
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x61666244
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.2360680
+Found heuristic solution: objective -9999990.220
+Root relaxation: objective -8.214993e+07, 54 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.215e+07    0   18 -9999990.2 -8.215e+07   722%     -    0s
+H    0     0                    -9999993.147 -8.215e+07   721%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   26 -9999993.1 -5.000e+07   400%     -    0s
+ 36597 12727 -2.800e+07   37   38 -9999993.1 -4.000e+07   300%  14.5    5s
+ 83510 18670 -3.000e+07   40   10 -9999993.1 -4.000e+07   300%  15.1   10s
+ 120716 29542 -2.000e+07   52    8 -9999993.1 -4.000e+07   300%  15.5   15s
+ 150292 37299 -3.000e+07   49   12 -9999993.1 -3.956e+07   296%  15.9   20s
+ 175329 43729 -3.000e+07   38   13 -9999993.1 -3.895e+07   290%  16.0   25s
+ 195184 48227 -2.000e+07   50    7 -9999993.1 -3.846e+07   285%  16.0   30s
+Cutting planes:
+  Learned: 37
+  Gomory: 12
+  Cover: 143
+  Implied bound: 37
+  MIR: 34
+  Mixing: 266
+  Flow cover: 1401
+  Inf proof: 232
+  Zero half: 19
+  RLT: 14
+  Relax-and-lift: 6
+Explored 195945 nodes (3145029 simplex iterations) in 30.02 seconds (19.78 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 3: -9.99999e+06 -9.99999e+06 2.23607 
+Time limit reached
+Best objective -9.999993147417e+06, best bound -3.842686762199e+07, gap 284.2689%
+««««««« custo subido para o mestre 3.6
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999993.147416938
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 2, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 9999996.747417
+  Cliente 03: 0.000000
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x575f4403
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1180340
+Found heuristic solution: objective -9999993.509
+Found heuristic solution: objective -9999995.077
+Root relaxation: objective -7.429996e+07, 62 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.430e+07    0   20 -9999995.1 -7.430e+07   643%     -    0s
+     0     0 -5.000e+07    0   26 -9999995.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999995.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999995.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999995.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999995.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999995.1 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   28 -9999995.1 -5.000e+07   400%     -    0s
+Cutting planes:
+  Learned: 73
+  Gomory: 6
+  Cover: 50
+  Implied bound: 63
+  MIR: 42
+  Flow cover: 79
+  Inf proof: 155
+  Zero half: 1
+  RLT: 21
+  Relax-and-lift: 2
+Explored 39425 nodes (883354 simplex iterations) in 4.34 seconds (3.21 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 4: -1e+07 -1e+07 -9.99999e+06 1.11803 
+No other solutions better than -1e+07
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999995077017e+06, best bound -9.999995077017e+06, gap 0.0000%
+««««««« custo subido para o mestre 4.871962199634088
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999995.077016858
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 9, 2, 10]
+============================================================================= ITERACAO GLOBAL 3
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 10 columns and 36 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999988e+37   1.800000e+31   1.999999e+07      0s
+       8    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 8 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 2
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 2) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 3
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 1.670400
+  Cliente 03: 9999995.077017
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x71d3e480
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [3e-02, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.9952883
+Root relaxation: objective -8.004992e+07, 45 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.005e+07    0   16    2.99529 -8.005e+07      -     -    0s
+H    0     0                    -9999990.605 -8.005e+07   700%     -    0s
+     0     0 -5.000e+07    0   24 -9999990.6 -5.000e+07   400%     -    0s
+H    0     0                    -9999991.341 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999991.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999991.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999991.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999991.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   27 -9999991.3 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   27 -9999991.3 -5.000e+07   400%     -    0s
+ 37111 13371 -4.000e+07   38   16 -9999991.3 -4.000e+07   300%  14.7    5s
+ 82883 16517 -3.000e+07   43    8 -9999991.3 -4.000e+07   300%  15.5   10s
+ 116970 25306 -3.500e+07   39   12 -9999991.3 -4.000e+07   300%  15.9   15s
+ 146377 33492 -3.000e+07   42   11 -9999991.3 -3.923e+07   292%  16.1   20s
+ 174984 41134 -1.932e+07   45   10 -9999991.3 -3.848e+07   285%  16.1   25s
+ 201390 46846 -3.500e+07   42   13 -9999991.3 -3.750e+07   275%  16.1   30s
+Cutting planes:
+  Learned: 28
+  Gomory: 12
+  Cover: 113
+  Implied bound: 38
+  MIR: 41
+  Mixing: 289
+  StrongCG: 1
+  Flow cover: 1436
+  Inf proof: 264
+  Zero half: 13
+  RLT: 13
+  Relax-and-lift: 9
+Explored 201469 nodes (3252790 simplex iterations) in 30.01 seconds (20.51 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 3: -9.99999e+06 -9.99999e+06 2.99529 
+Time limit reached
+Best objective -9.999991340949e+06, best bound -3.749993859712e+07, gap 274.9997%
+««««««« custo subido para o mestre 6.937630096216214
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999991.340948882
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 3, 9, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 1.670400
+  Cliente 03: 9999995.077017
+  Cliente 04: 0.000000
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x28ccd4a2
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-02, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.4721337
+Found heuristic solution: objective 0.0000000
+Root relaxation: objective -7.009995e+07, 59 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.010e+07    0   22    0.00000 -7.010e+07      -     -    0s
+H    0     0                    -9999992.841 -7.010e+07   601%     -    0s
+     0     0 -5.110e+07    0   29 -9999992.8 -5.110e+07   411%     -    0s
+H    0     0                    -9999993.009 -5.110e+07   411%     -    0s
+H    0     0                    -9999993.730 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999993.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999993.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999993.7 -5.000e+07   400%     -    0s
+H    0     0                    -9999994.489 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999994.5 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999994.5 -5.000e+07   400%     -    0s
+H    0     0                    -9999994.810 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999994.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999994.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999994.8 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   26 -9999994.8 -5.000e+07   400%     -    0s
+H  344   217                    -9999994.978 -5.000e+07   400%  15.2    0s
+Cutting planes:
+  Learned: 77
+  Gomory: 8
+  Cover: 64
+  Implied bound: 65
+  MIR: 43
+  Flow cover: 58
+  Inf proof: 110
+  Zero half: 3
+  RLT: 15
+Explored 26556 nodes (594157 simplex iterations) in 3.82 seconds (2.25 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... 1.47213
+No other solutions better than -9.99999e+06
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999994977733e+06, best bound -9.999994977733e+06, gap 0.0000%
+««««««« custo subido para o mestre 4.971246112766737
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999994.977732947
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 2, 3, 9, 10]
+============================================================================= ITERACAO GLOBAL 4
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 12 columns and 43 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999986e+37   1.700000e+31   1.999999e+07      0s
+       7    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 7 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 3
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 3) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 4
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 1.670400
+  Cliente 03: 0.099284
+  Cliente 04: 9999994.977733
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x9d76c699
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [3e-02, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.9952883
+Root relaxation: objective -7.794991e+07, 53 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.795e+07    0   18    2.99529 -7.795e+07      -     -    0s
+H    0     0                    -9999989.978 -7.795e+07   679%     -    0s
+     0     0 -5.000e+07    0   26 -9999990.0 -5.000e+07   400%     -    0s
+H    0     0                    -9999990.326 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999990.3 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   26 -9999990.3 -5.000e+07   400%     -    0s
+ 35698 11439 -4.000e+07   36   26 -9999990.3 -4.000e+07   300%  16.0    5s
+ 54996 12596 -3.738e+07   41   17 -9999990.3 -4.000e+07   300%  16.4   10s
+ 87073 17425 -3.914e+07   38   20 -9999990.3 -4.000e+07   300%  16.6   15s
+ 113787 24335 infeasible   47      -9999990.3 -4.000e+07   300%  16.9   20s
+ 139848 31208 -2.601e+07   47   15 -9999990.3 -3.924e+07   292%  17.1   25s
+Cutting planes:
+  Learned: 35
+  Gomory: 8
+  Cover: 78
+  Implied bound: 38
+  MIR: 60
+  Mixing: 214
+  Flow cover: 1335
+  Inf proof: 202
+  Zero half: 10
+  RLT: 8
+  Relax-and-lift: 15
+Explored 165767 nodes (2845727 simplex iterations) in 30.02 seconds (17.90 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 3: -9.99999e+06 -9.99999e+06 2.99529 
+Time limit reached
+Best objective -9.999990325758e+06, best bound -3.846750403833e+07, gap 284.6754%
+««««««« custo subido para o mestre 6.322374841615669
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999990.325758183
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 4, 2, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.051021
+  Cliente 02: 1.670400
+  Cliente 03: 0.099284
+  Cliente 04: 9999994.977733
+  Cliente 05: 0.000000
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 3.201562
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x9c106882
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-02, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.4721337
+Found heuristic solution: objective 0.0000000
+Root relaxation: objective -6.589995e+07, 63 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -6.590e+07    0   24    0.00000 -6.590e+07      -     -    0s
+H    0     0                    -9999992.478 -6.590e+07   559%     -    0s
+     0     0 -5.000e+07    0   30 -9999992.5 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   30 -9999992.5 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999992.5 -5.000e+07   400%     -    0s
+H    0     0                    -9999993.329 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999993.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999993.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999993.3 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   28 -9999993.3 -5.000e+07   400%     -    0s
+H   26    73                    -9999993.487 -4.890e+07   389%  33.5    0s
+H  136   144                    -9999994.338 -4.890e+07   389%  17.9    0s
+Cutting planes:
+  Learned: 70
+  Gomory: 14
+  Cover: 74
+  Implied bound: 57
+  MIR: 32
+  Flow cover: 69
+  Inf proof: 62
+  Zero half: 1
+  RLT: 20
+  Relax-and-lift: 1
+Explored 18527 nodes (414071 simplex iterations) in 2.51 seconds (1.47 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... 1.47213
+No other solutions better than -9.99999e+06
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999994337727e+06, best bound -9.999994337727e+06, gap 0.0000%
+««««««« custo subido para o mestre 5.511968480166046
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999994.337726664
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 9, 4, 2, 10]
+============================================================================= ITERACAO GLOBAL 5
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 14 columns and 50 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999985e+37   1.600000e+31   1.999998e+07      0s
+      10    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 10 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 4
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 4) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SOL itera k 1
+  Veículo 1, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 2, 5, 7, 6, 9, 8, 4, 1, 3, 10]
+    - Custo:     10000000.00
+SEM MELHORA ITERACAO 5
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.966384
+  Cliente 03: 6.731356
+  Cliente 04: 7.272079
+  Cliente 05: 9999984.710366
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xe9690303
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999980.531
+Found heuristic solution: objective -9999980.952
+Root relaxation: objective -7.549988e+07, 79 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.550e+07    0   30 -9999981.0 -7.550e+07   655%     -    0s
+H    0     0                    -9999988.250 -7.550e+07   655%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   32 -9999988.3 -5.000e+07   400%     -    0s
+H  780   563                    -9999988.663 -5.000e+07   400%  10.0    0s
+H 1446  1308                    -9999990.022 -5.000e+07   400%   9.2    0s
+H 2419  1767                    -9999990.096 -5.000e+07   400%   8.8    0s
+ 35668 11967 -4.000e+07   22   16 -9999990.1 -4.000e+07   300%  18.7    5s
+ 61125 12767 -3.000e+07   42   14 -9999990.1 -4.000e+07   300%  19.2   10s
+ 83659 15383 infeasible   42      -9999990.1 -4.000e+07   300%  19.8   15s
+ 108089 20409 -3.000e+07   42   16 -9999990.1 -4.000e+07   300%  20.4   20s
+ 132699 27122 -3.000e+07   40   16 -9999990.1 -3.915e+07   291%  20.8   25s
+ 153684 31819 -2.695e+07   49   12 -9999990.1 -3.834e+07   283%  21.0   30s
+Cutting planes:
+  Learned: 35
+  Gomory: 13
+  Cover: 90
+  Implied bound: 22
+  MIR: 59
+  Mixing: 278
+  Flow cover: 1464
+  Inf proof: 103
+  Zero half: 8
+  RLT: 14
+  Relax-and-lift: 11
+Explored 154271 nodes (3245545 simplex iterations) in 30.03 seconds (19.96 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... -9.99998e+06
+Time limit reached
+Best objective -9.999990096275e+06, best bound -3.832682026573e+07, gap 283.2686%
+««««««« custo subido para o mestre 11.663835037455376
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999990.096275127
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 5, 4, 3, 1, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.966384
+  Cliente 03: 6.731356
+  Cliente 04: 7.272079
+  Cliente 05: 9999984.710366
+  Cliente 06: 0.000000
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 1): 0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xa883363e
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999982.621
+Found heuristic solution: objective -9999984.354
+Root relaxation: objective -6.099994e+07, 129 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -6.100e+07    0   48 -9999984.4 -6.100e+07   510%     -    0s
+H    0     0                    -9999987.640 -6.100e+07   510%     -    0s
+     0     0 -5.380e+07    0   50 -9999987.6 -5.380e+07   438%     -    0s
+H    0     0                    -9999989.832 -5.380e+07   438%     -    0s
+     0     0 -5.000e+07    0   40 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   41 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   38 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   38 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   39 -9999989.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   39 -9999989.8 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   39 -9999989.8 -5.000e+07   400%     -    0s
+H  135   125                    -9999990.001 -4.991e+07   399%  24.0    0s
+Cutting planes:
+  Learned: 54
+  Gomory: 8
+  Cover: 76
+  Implied bound: 50
+  MIR: 52
+  Flow cover: 101
+  Inf proof: 59
+  Zero half: 6
+  RLT: 28
+  Relax-and-lift: 2
+Explored 19515 nodes (399563 simplex iterations) in 2.83 seconds (1.76 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... -9.99998e+06
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999990001086e+06, best bound -1.000007274649e+07, gap 0.0008%
+««««««« custo subido para o mestre 4.486945602892823
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999990.001085918
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 3, 1, 5, 10]
+============================================================================= ITERACAO GLOBAL 6
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 16 columns and 59 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999980e+37   1.500000e+31   1.999998e+07      0s
+      11    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 11 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 5
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 5) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 6
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.871195
+  Cliente 03: 6.636167
+  Cliente 04: 7.176889
+  Cliente 05: -5.195531
+  Cliente 06: 9999990.001086
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x405f1814
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999987.765
+Found heuristic solution: objective -9999987.922
+Root relaxation: objective -8.354991e+07, 74 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.355e+07    0   26 -9999987.9 -8.355e+07   736%     -    0s
+H    0     0                    -9999992.389 -8.000e+07   700%     -    0s
+     0     0 -5.000e+07    0   24 -9999992.4 -5.000e+07   400%     -    0s
+H    0     0                    -9999995.668 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999995.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   29 -9999995.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   29 -9999995.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   33 -9999995.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   33 -9999995.7 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   27 -9999995.7 -5.000e+07   400%     -    0s
+H  828   633                    -9999997.101 -5.000e+07   400%  10.5    0s
+ 36860 13222 -4.000e+07   27   33 -9999997.1 -4.000e+07   300%  17.8    5s
+ 62629 15012 -2.000e+07   51   12 -9999997.1 -4.000e+07   300%  17.9   10s
+ 93061 20721 -4.000e+07   44   20 -9999997.1 -4.000e+07   300%  18.0   15s
+ 111002 28320 -3.000e+07   50   20 -9999997.1 -4.000e+07   300%  18.2   20s
+ 143424 33889 -3.552e+07   47   15 -9999997.1 -3.988e+07   299%  18.4   25s
+Cutting planes:
+  Learned: 36
+  Gomory: 14
+  Cover: 49
+  Implied bound: 31
+  MIR: 37
+  Mixing: 291
+  StrongCG: 1
+  Flow cover: 1428
+  Inf proof: 231
+  Zero half: 6
+  RLT: 19
+  Relax-and-lift: 2
+Explored 170614 nodes (3168110 simplex iterations) in 30.03 seconds (19.60 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: -1e+07 -1e+07 -9.99999e+06 ... -9.99999e+06
+Time limit reached
+Best objective -9.999997100963e+06, best bound -3.900027556253e+07, gap 290.0029%
+««««««« custo subido para o mestre 9.759488247947159
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999997.100963414
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 1, 3, 4, 6, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.871195
+  Cliente 03: 6.636167
+  Cliente 04: 7.176889
+  Cliente 05: -5.195531
+  Cliente 06: 9999990.001086
+  Cliente 07: 0.000000
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x73f063f9
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999988.883
+Found heuristic solution: objective -9999990.485
+Root relaxation: objective -7.709995e+07, 134 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.710e+07    0   42 -9999990.5 -7.710e+07   671%     -    0s
+H    0     0                    -9999991.537 -7.710e+07   671%     -    0s
+H    0     0                    -9999993.283 -7.710e+07   671%     -    0s
+H    0     0                    -9999999.741 -7.500e+07   650%     -    0s
+     0     0 -5.000e+07    0   44 -9999999.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   44 -9999999.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   44 -9999999.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   44 -9999999.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999999.7 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999999.7 -5.000e+07   400%     -    0s
+H    0     2                    -1.00000e+07 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   42 -1.000e+07 -5.000e+07   400%     -    0s
+H  756   600                    -1.00000e+07 -5.000e+07   400%  14.4    0s
+H  990   773                    -1.00000e+07 -5.000e+07   400%  14.3    0s
+H 2929  1527                    -1.00000e+07 -5.000e+07   400%  12.8    0s
+H 3394  1607                    -1.00000e+07 -5.000e+07   400%  14.8    0s
+ 27596  5830 -2.888e+07   32   25 -1.000e+07 -3.000e+07   200%  26.7    5s
+ 44858  5841 infeasible   42      -1.000e+07 -3.000e+07   200%  28.9   10s
+ 63980  4737 infeasible   50      -1.000e+07 -2.000e+07   100%  29.2   15s
+Cutting planes:
+  Learned: 45
+  Gomory: 1
+  Cover: 36
+  Implied bound: 36
+  MIR: 58
+  Mixing: 284
+  Flow cover: 1230
+  Inf proof: 119
+  Zero half: 4
+  RLT: 25
+  Relax-and-lift: 3
+Explored 75684 nodes (2254693 simplex iterations) in 18.20 seconds (14.91 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -1e+07 -1e+07 -1e+07 ... -9.99999e+06
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000198071e+07, best bound -1.000001558583e+07, gap 0.0001%
+««««««« custo subido para o mestre 4.8797441239735795
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -10000001.980707536
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 1, 3, 4, 6, 10]
+============================================================================= ITERACAO GLOBAL 7
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 18 columns and 69 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999999e+37   3.000000e+31   2.000000e+07      0s
+       6    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 6 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 6
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 6) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 7
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.980621
+  Cliente 02: 3.600000
+  Cliente 03: 0.099284
+  Cliente 04: 0.640006
+  Cliente 05: 2.407041
+  Cliente 06: 2.159833
+  Cliente 07: 9999987.841253
+  Cliente 08: 0.000000
+  Cliente 09: 1.271962
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xdfeb64de
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [7e-03, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.01s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.0762349
+Found heuristic solution: objective 0.0000000
+Found heuristic solution: objective -9999980.150
+Root relaxation: objective -8.284987e+07, 103 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.285e+07    0   24 -9999980.2 -8.285e+07   729%     -    0s
+H    0     0                    -9999983.599 -8.285e+07   729%     -    0s
+     0     0 -5.000e+07    0   26 -9999983.6 -5.000e+07   400%     -    0s
+H    0     0                    -9999984.075 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999984.1 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   22 -9999984.1 -5.000e+07   400%     -    0s
+H    0     0                    -9999985.808 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999985.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   24 -9999985.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   28 -9999985.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999985.8 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   26 -9999985.8 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   26 -9999985.8 -5.000e+07   400%     -    0s
+H  749   593                    -9999986.682 -5.000e+07   400%  10.0    0s
+H 2472  1379                    -9999987.385 -5.000e+07   400%   8.5    0s
+H 2717  1671                    -9999987.862 -5.000e+07   400%   9.1    0s
+ 36032 12685 -3.500e+07   38   26 -9999987.9 -4.000e+07   300%  17.0    5s
+ 75464 15202 -3.000e+07   37   10 -9999987.9 -4.000e+07   300%  17.4   10s
+ 107111 23777 infeasible   39      -9999987.9 -4.000e+07   300%  17.9   15s
+ 135906 30759 -3.000e+07   43    9 -9999987.9 -3.973e+07   297%  18.4   20s
+ 168509 38834 -3.000e+07   47   13 -9999987.9 -3.889e+07   289%  18.6   25s
+ 201713 45560 -3.000e+07   45   17 -9999987.9 -3.759e+07   276%  18.7   30s
+Cutting planes:
+  Learned: 31
+  Gomory: 10
+  Cover: 74
+  Implied bound: 28
+  MIR: 48
+  Mixing: 254
+  Flow cover: 1278
+  Inf proof: 241
+  Zero half: 8
+  RLT: 10
+  Relax-and-lift: 5
+Explored 201896 nodes (3778295 simplex iterations) in 30.02 seconds (22.62 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 9: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... 0.0762349
+Time limit reached
+Best objective -9.999987861539e+06, best bound -3.758116331783e+07, gap 275.8121%
+««««««« custo subido para o mestre 10.127208984830148
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999987.86153862
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 2, 6, 5, 7, 1, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.980621
+  Cliente 02: 3.600000
+  Cliente 03: 0.099284
+  Cliente 04: 0.640006
+  Cliente 05: 2.407041
+  Cliente 06: 2.159833
+  Cliente 07: 9999987.841253
+  Cliente 08: 0.000000
+  Cliente 09: 1.271962
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x858732a6
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-02, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -1.0417991
+Found heuristic solution: objective -2.2911615
+Found heuristic solution: objective -9999984.632
+Root relaxation: objective -7.569991e+07, 112 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.570e+07    0   42 -9999984.6 -7.570e+07   657%     -    0s
+H    0     0                    -9999985.720 -7.570e+07   657%     -    0s
+H    0     0                    -9999987.351 -7.570e+07   657%     -    0s
+     0     0 -5.000e+07    0   38 -9999987.4 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   38 -9999987.4 -5.000e+07   400%     -    0s
+H    0     0                    -9999988.069 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   38 -9999988.1 -5.000e+07   400%     -    0s
+H    0     0                    -9999990.281 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   38 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999990.3 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   42 -9999990.3 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   42 -9999990.3 -5.000e+07   400%     -    0s
+H 1228   899                    -9999991.324 -5.000e+07   400%  14.3    0s
+H 2618  1421                    -9999991.697 -5.000e+07   400%  12.9    0s
+ 23821  4381 infeasible   38      -9999991.7 -3.000e+07   200%  28.1    5s
+ 41934  5110 -9999994.8   40   21 -9999991.7 -2.000e+07   100%  30.1   10s
+Cutting planes:
+  Learned: 37
+  Gomory: 5
+  Cover: 27
+  Implied bound: 37
+  MIR: 44
+  Mixing: 236
+  StrongCG: 2
+  Flow cover: 1048
+  Inf proof: 115
+  Zero half: 5
+  RLT: 32
+  Relax-and-lift: 2
+Explored 59468 nodes (1894639 simplex iterations) in 14.76 seconds (11.69 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... -1.0418
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.999991696629e+06, best bound -9.999997855623e+06, gap 0.0001%
+««««««« custo subido para o mestre 4.311497551527073
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -9999991.696629193
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 7, 5, 6, 2, 10]
+============================================================================= ITERACAO GLOBAL 8
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 20 columns and 80 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999980e+37   1.300000e+31   1.999998e+07      0s
+       5    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 5 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 7
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 7) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SOL itera k 1
+  Veículo 1, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 2, 5, 7, 6, 9, 8, 4, 1, 3, 10]
+    - Custo:     10000000.00
+SEM MELHORA ITERACAO 8
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -9999980.398868
+  Cliente 03: 6.731356
+  Cliente 04: 9999985.704563
+  Cliente 05: -9999983.818394
+  Cliente 06: -9999990.602485
+  Cliente 07: 29999959.131244
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x87cc78a7
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-01, 3e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.0000000
+Found heuristic solution: objective -3.00000e+07
+Root relaxation: objective -2.636996e+08, 83 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -2.637e+08    0   30 -3.000e+07 -2.637e+08   779%     -    0s
+H    0     0                    -3.00000e+07 -2.637e+08   779%     -    0s
+     0     0 -1.600e+08    0   28 -3.000e+07 -1.600e+08   433%     -    0s
+H    0     0                    -3.00000e+07 -1.600e+08   433%     -    0s
+     0     0 -1.600e+08    0   28 -3.000e+07 -1.600e+08   433%     -    0s
+     0     0 -1.600e+08    0   34 -3.000e+07 -1.600e+08   433%     -    0s
+H    0     0                    -3.99999e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   32 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   30 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   28 -4.000e+07 -1.600e+08   300%     -    0s
+H    0     0                    -3.99999e+07 -1.600e+08   300%     -    0s
+     0     2 -1.600e+08    0   28 -4.000e+07 -1.600e+08   300%     -    0s
+H  240   218                    -3.99999e+07 -1.600e+08   300%  13.3    0s
+H 2733  1607                    -3.99999e+07 -1.507e+08   277%  10.6    0s
+ 36178 13884 -1.178e+08   37   18 -4.000e+07 -1.181e+08   195%  15.0    5s
+ 90910 20666 infeasible   48      -4.000e+07 -1.077e+08   169%  15.6   10s
+ 146791 33985 -8.856e+07   54   12 -4.000e+07 -9.758e+07   144%  15.7   15s
+ 197898 45213 -4.939e+07   45   19 -4.000e+07 -9.211e+07   130%  15.6   20s
+ 245810 54362 -6.000e+07   47   12 -4.000e+07 -8.970e+07   124%  15.5   25s
+ 298267 63261 -7.667e+07   46   16 -4.000e+07 -8.732e+07   118%  15.5   30s
+Cutting planes:
+  Learned: 82
+  Gomory: 29
+  Cover: 68
+  Implied bound: 69
+  MIR: 86
+  Mixing: 82
+  Flow cover: 475
+  Inf proof: 299
+  Zero half: 26
+  RLT: 20
+  Relax-and-lift: 14
+Explored 298837 nodes (4622091 simplex iterations) in 30.01 seconds (23.27 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -3.99999e+07 -3.99999e+07 -3.99999e+07 ... 0
+Time limit reached
+Best objective -3.999994393375e+07, best bound -8.729456307514e+07, gap 118.2367%
+««««««« custo subido para o mestre 10.67972192557861
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -39999943.93375079
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 7, 1, 3, 4, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -9999980.398868
+  Cliente 03: 6.731356
+  Cliente 04: 9999985.704563
+  Cliente 05: -9999983.818394
+  Cliente 06: -9999990.602485
+  Cliente 07: 29999959.131244
+  Cliente 08: 0.000000
+  Cliente 09: 0.206274
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xcd33b4bd
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 3e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -1.5231546
+Found heuristic solution: objective -3.00000e+07
+Root relaxation: objective -2.373997e+08, 92 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -2.374e+08    0   34 -3.000e+07 -2.374e+08   691%     -    0s
+H    0     0                    -3.00000e+07 -2.374e+08   691%     -    0s
+     0     0 -1.624e+08    0   37 -3.000e+07 -1.624e+08   441%     -    0s
+H    0     0                    -3.99999e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   36 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   36 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+H    0     0                    -3.99999e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+     0     0 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+     0     2 -1.600e+08    0   38 -4.000e+07 -1.600e+08   300%     -    0s
+H  361   324                    -3.99999e+07 -1.594e+08   299%  14.9    0s
+H 2731  1499                    -3.99999e+07 -1.453e+08   263%  13.7    0s
+Cutting planes:
+  Learned: 50
+  Gomory: 12
+  Cover: 20
+  Implied bound: 33
+  MIR: 60
+  Flow cover: 129
+  Inf proof: 102
+  Zero half: 5
+  RLT: 27
+Explored 38558 nodes (731324 simplex iterations) in 3.98 seconds (2.67 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -3.99999e+07 -3.99999e+07 -3.99999e+07 ... -1.52315
+No other solutions better than -3.99999e+07
+Optimal solution found (tolerance 1.00e-04)
+Best objective -3.999994927361e+07, best bound -3.999994927361e+07, gap 0.0000%
+««««««« custo subido para o mestre 5.339860962789305
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -39999949.27361177
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 4, 3, 1, 7, 10]
+============================================================================= ITERACAO GLOBAL 9
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 22 columns and 90 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -7.9999893e+37   3.800000e+31   7.999989e+07      0s
+       9    1.0000000e+07   0.000000e+00   0.000000e+00      0s
+Solved in 9 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+07
+%%%%%%%%%%%%%%%%% iteracao 8
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 10000000.0000
+--- Colunas Escolhidas na Solução do Mestre (Iteração 8) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+SOL itera k 1
+  Veículo 1, Rota 1:
+    - Valor (lambda): 1.0000
+    - Sequência: [0, 10]
+    - Custo:     0.00
+SEM MELHORA ITERACAO 9
+Custo Total do Mestre  nesta iteração: 10000000.0000
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.871195
+  Cliente 03: -4.989616
+  Cliente 04: 7.176889
+  Cliente 05: 6.430252
+  Cliente 06: -0.353838
+  Cliente 07: 0.106278
+  Cliente 08: 9999990.248646
+  Cliente 09: 0.206274
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xc9158c35
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999990.189
+Root relaxation: objective -8.144989e+07, 103 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -8.145e+07    0   30 -9999990.2 -8.145e+07   714%     -    0s
+     0     0 -5.000e+07    0   30 -9999990.2 -5.000e+07   400%     -    0s
+H    0     0                    -9999990.600 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   30 -9999990.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   32 -9999990.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   30 -9999990.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   30 -9999990.6 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   30 -9999990.6 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   30 -9999990.6 -5.000e+07   400%     -    0s
+H  116   125                    -9999992.848 -5.000e+07   400%  12.6    0s
+H  876   638                    -9999993.215 -5.000e+07   400%   9.9    0s
+H  879   638                    -9999994.205 -5.000e+07   400%   9.9    0s
+H  879   638                    -9999994.570 -5.000e+07   400%   9.9    0s
+ 36518 12754 -3.908e+07   28   30 -9999994.6 -4.000e+07   300%  18.1    5s
+ 68216 13959 -3.881e+07   36   18 -9999994.6 -4.000e+07   300%  18.8   10s
+ 98661 20701 -3.000e+07   40   13 -9999994.6 -4.000e+07   300%  19.1   15s
+ 125003 27102 -3.951e+07   41   19 -9999994.6 -4.000e+07   300%  19.3   20s
+ 154523 34097 infeasible   43      -9999994.6 -3.950e+07   295%  19.6   25s
+ 182715 40944 -3.653e+07   36   16 -9999994.6 -3.851e+07   285%  19.6   30s
+Cutting planes:
+  Learned: 41
+  Gomory: 7
+  Cover: 63
+  Implied bound: 27
+  MIR: 44
+  Mixing: 249
+  Flow cover: 1379
+  Inf proof: 186
+  Zero half: 10
+  RLT: 15
+  Relax-and-lift: 1
+Explored 183493 nodes (3598837 simplex iterations) in 30.02 seconds (21.81 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -9.99999e+06 -9.99999e+06 -9.99999e+06 ... -9.99999e+06
+Time limit reached
+Best objective -9.999994569926e+06, best bound -3.848018490419e+07, gap 284.8021%
+««««««« custo subido para o mestre 12.332170758917554
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999994.569926385
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 5, 8, 1, 4, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.046309
+  Cliente 02: -1.871195
+  Cliente 03: -4.989616
+  Cliente 04: 7.176889
+  Cliente 05: 6.430252
+  Cliente 06: -0.353838
+  Cliente 07: 0.106278
+  Cliente 08: 9999990.248646
+  Cliente 09: 0.206274
+σ_k (dual veículo 1): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x8113958a
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-01, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -9999993.257
+Root relaxation: objective -7.289995e+07, 141 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -7.290e+07    0   44 -9999993.3 -7.290e+07   629%     -    0s
+H    0     0                    -9999994.859 -7.290e+07   629%     -    0s
+     0     0 -5.000e+07    0   46 -9999994.9 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   46 -9999994.9 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   46 -9999994.9 -5.000e+07   400%     -    0s
+     0     0 -5.000e+07    0   46 -9999994.9 -5.000e+07   400%     -    0s
+     0     2 -5.000e+07    0   46 -9999994.9 -5.000e+07   400%     -    0s
+H   27    75                    -9999995.345 -5.000e+07   400%  40.7    0s
+H  404   295                    -9999995.658 -5.000e+07   400%  15.7    0s
+H  868   512                    -9999995.681 -5.000e+07   400%  13.7    0s
+H 4055  1423                    -1.00000e+07 -4.500e+07   350%  18.6    1s
+ 22281  3076 infeasible   28      -1.000e+07 -2.975e+07   197%  29.6    5s
+Cutting planes:
+  Learned: 39
+  Gomory: 3
+  Cover: 42
+  Implied bound: 36
+  MIR: 62
+  Mixing: 186
+  Flow cover: 974
+  Inf proof: 68
+  Zero half: 5
+  RLT: 14
+Explored 36633 nodes (1204288 simplex iterations) in 8.41 seconds (6.32 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -1e+07 -1e+07 -1e+07 ... -9.99999e+06
+No other solutions better than -1e+07
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000418518e+07, best bound -1.000000418518e+07, gap 0.0000%
+««««««« custo subido para o mestre 6.210997757936177
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -10000004.18517504
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 1, 4, 8, 10]
+============================================================================= ITERACAO GLOBAL 10
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 24 columns and 99 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9999989e+37   2.400000e+31   1.999999e+07      0s
+      16    5.0000087e+06   0.000000e+00   0.000000e+00      0s
+Solved in 16 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  5.000008730e+06
+%%%%%%%%%%%%%%%%% iteracao 9
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 5000008.7301
+--- Colunas Escolhidas na Solução do Mestre (Iteração 9) ---
+SOL itera k 0
+  Veículo 0, Rota 0:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 6, 1, 8, 4, 2, 9, 3, 5, 7, 10]
+    - Custo:     10000000.00
+  Veículo 0, Rota 5:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 3, 9, 10]
+    - Custo:     6.94
+SOL itera k 1
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 11:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 1, 4, 8, 10]
+    - Custo:     6.21
+Custo Total do Mestre  nesta iteração: 5000008.7301
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 5.815711
+  Cliente 02: -1.966384
+  Cliente 03: 1249997.154992
+  Cliente 04: 1249997.695714
+  Cliente 05: 6.121173
+  Cliente 06: 2499995.483264
+  Cliente 07: 2499995.943381
+  Cliente 08: 3749993.969510
+  Cliente 09: 3750001.052576
+σ_k (dual veículo 0): -4999991.269937
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x42a9233d
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 4e+06]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2499998.0227
+Found heuristic solution: objective 1249996.6205
+Root relaxation: objective -1.052685e+08, 171 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -1.053e+08    0   68 1249996.62 -1.053e+08  8522%     -    0s
+H    0     0                    -1249991.402 -1.053e+08  8322%     -    0s
+H    0     0                    -1249996.704 -6.352e+07  4982%     -    0s
+     0     0 -5.875e+07    0   64 -1249996.7 -5.875e+07  4600%     -    0s
+     0     0 -5.875e+07    0   66 -1249996.7 -5.875e+07  4600%     -    0s
+     0     0 -5.875e+07    0   66 -1249996.7 -5.875e+07  4600%     -    0s
+     0     0 -5.875e+07    0   66 -1249996.7 -5.875e+07  4600%     -    0s
+H    0     0                    -3749991.188 -5.875e+07  1467%     -    0s
+     0     0 -5.875e+07    0   66 -3749991.2 -5.875e+07  1467%     -    0s
+     0     0 -5.875e+07    0   64 -3749991.2 -5.875e+07  1467%     -    0s
+H    0     0                    -4999978.922 -5.875e+07  1075%     -    0s
+     0     0 -5.875e+07    0   64 -4999978.9 -5.875e+07  1075%     -    0s
+     0     0 -5.875e+07    0   60 -4999978.9 -5.875e+07  1075%     -    0s
+     0     0 -5.875e+07    0   56 -4999978.9 -5.875e+07  1075%     -    0s
+H    0     0                    -8749977.509 -5.875e+07   571%     -    0s
+H    0     0                    -9999974.123 -5.875e+07   488%     -    0s
+H    0     0                    -9999976.665 -5.875e+07   487%     -    0s
+     0     2 -5.875e+07    0   52 -9999976.7 -5.875e+07   487%     -    0s
+H   93   117                    -9999978.650 -5.875e+07   487%  49.5    0s
+H  598   475                    -9999979.837 -5.875e+07   487%  23.3    0s
+ 23632 12836 -4.813e+07   27   50 -9999979.8 -5.119e+07   412%  20.6    5s
+ 40024 20517 -4.958e+07   35   48 -9999979.8 -4.958e+07   396%  20.6   10s
+ 77889 29296     cutoff   58      -9999979.8 -4.798e+07   380%  20.3   15s
+ 104980 37427 -4.066e+07   41   34 -9999979.8 -4.625e+07   362%  20.1   20s
+ 136982 52383 -3.329e+07   39   29 -9999979.8 -4.478e+07   348%  20.1   25s
+ 172394 67720 -3.750e+07   41   38 -9999979.8 -4.365e+07   337%  19.9   30s
+Cutting planes:
+  Learned: 55
+  Gomory: 4
+  Cover: 1
+  Implied bound: 4
+  MIR: 99
+  Mixing: 278
+  Flow cover: 1250
+  Inf proof: 166
+  Zero half: 14
+  RLT: 18
+Explored 172715 nodes (3445153 simplex iterations) in 30.01 seconds (25.96 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -9.99998e+06 -9.99998e+06 -9.99998e+06 ... 1.25e+06
+Time limit reached
+Best objective -9.999979836534e+06, best bound -4.364946323838e+07, gap 336.4955%
+««««««« custo subido para o mestre 16.00867714581233
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9999979.836533837
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 6, 4, 3, 9, 1, 7, 8, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 5.815711
+  Cliente 02: -1.966384
+  Cliente 03: 1249997.154992
+  Cliente 04: 1249997.695714
+  Cliente 05: 6.121173
+  Cliente 06: 2499995.483264
+  Cliente 07: 2499995.943381
+  Cliente 08: 3749993.969510
+  Cliente 09: 3750001.052576
+σ_k (dual veículo 1): -4999991.269937
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x90535ffc
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-01, 4e+06]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2499996.9047
+Found heuristic solution: objective 1249993.4189
+Root relaxation: objective -9.178736e+07, 155 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0 -9.179e+07    0   72 1249993.42 -9.179e+07  7443%     -    0s
+H    0     0                      -7.9429339 -9.179e+07      -     -    0s
+H    0     0                    -2499999.403 -9.179e+07  3571%     -    0s
+H    0     0                    -3749995.396 -8.926e+07  2280%     -    0s
+     0     0 -5.868e+07    0   66 -3749995.4 -5.868e+07  1465%     -    0s
+     0     0 -5.868e+07    0   66 -3749995.4 -5.868e+07  1465%     -    0s
+H    0     0                    -4999990.236 -5.868e+07  1074%     -    0s
+     0     0 -5.868e+07    0   70 -4999990.2 -5.868e+07  1074%     -    0s
+     0     0 -5.868e+07    0   70 -4999990.2 -5.868e+07  1074%     -    0s
+H    0     0                    -4999993.996 -5.868e+07  1074%     -    0s
+     0     0 -5.859e+07    0   68 -4999994.0 -5.859e+07  1072%     -    0s
+     0     0 -5.859e+07    0   68 -4999994.0 -5.859e+07  1072%     -    0s
+     0     2 -5.859e+07    0   68 -4999994.0 -5.859e+07  1072%     -    0s
+H   31    72                    -4999994.019 -5.835e+07  1067%  69.7    0s
+H   46    72                    -4999997.815 -5.835e+07  1067%  56.3    0s
+H   61    72                    -7499992.642 -5.835e+07   678%  50.0    0s
+H  130   170                    -7499992.976 -5.835e+07   678%  36.0    0s
+H  419   365                    -7499993.392 -5.820e+07   676%  22.3    0s
+H  549   416                    -7499993.584 -5.806e+07   674%  20.5    0s
+* 1977  1270              53    -8749984.515 -5.530e+07   532%  14.5    0s
+H 2069  1508                    -8749984.799 -5.530e+07   532%  14.3    0s
+H 2619  1532                    -8749985.642 -5.503e+07   529%  16.2    0s
+H 4586  1771                    -8749985.681 -5.208e+07   495%  20.6    1s
+H 6494  1911                    -8749985.860 -4.802e+07   449%  22.5    1s
+*14960  5320              30    -8749986.484 -4.238e+07   384%  24.9    2s
+ 28858  8375     cutoff   52      -8749986.5 -3.566e+07   308%  27.5    5s
+ 50310  9682 infeasible   46      -8749986.5 -2.826e+07   223%  29.7   10s
+ 79739  2933 infeasible   43      -8749986.5 -1.786e+07   104%  30.9   15s
+Cutting planes:
+  Learned: 55
+  Gomory: 9
+  Cover: 27
+  Implied bound: 11
+  MIR: 59
+  Mixing: 19
+  Flow cover: 502
+  Inf proof: 189
+  Zero half: 7
+  RLT: 44
+  Relax-and-lift: 1
+Explored 86044 nodes (2634140 simplex iterations) in 15.96 seconds (14.06 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -8.74999e+06 -8.74999e+06 -8.74999e+06 ... -7.49999e+06
+No other solutions better than -8.74999e+06
+Optimal solution found (tolerance 1.00e-04)
+Best objective -8.749986483908e+06, best bound -8.749986483908e+06, gap 0.0000%
+««««««« custo subido para o mestre 5.849877898295618
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -8749986.483907722
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 6, 8, 7, 9, 3, 10]
+============================================================================= ITERACAO GLOBAL 11
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 26 columns and 113 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.8749966e+37   7.500000e+30   1.874997e+07      0s
+       3    1.8811796e+01   0.000000e+00   0.000000e+00      0s
+Solved in 3 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.881179578e+01
+%%%%%%%%%%%%%%%%% iteracao 10
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 18.8118
+--- Colunas Escolhidas na Solução do Mestre (Iteração 10) ---
+SOL itera k 0
+  Veículo 0, Rota 11:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 5, 8, 1, 4, 10]
+    - Custo:     12.33
+  Veículo 0, Rota 12:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 6, 4, 3, 9, 1, 7, 8, 10]
+    - Custo:     16.01
+SOL itera k 1
+  Veículo 1, Rota 5:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 2, 3, 9, 10]
+    - Custo:     4.97
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+Custo Total do Mestre  nesta iteração: 18.8118
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.167041
+  Cliente 02: 6.287497
+  Cliente 03: 3.802365
+  Cliente 04: 4.343088
+  Cliente 05: 3.472502
+  Cliente 06: 0.524131
+  Cliente 07: 0.984248
+  Cliente 08: 5.657750
+  Cliente 09: 1.838264
+σ_k (dual veículo 0): -4.308210
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xcd9f82c6
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-02, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.7895805
+Root relaxation: objective -4.829054e+01, 100 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -48.29054    0   40    0.78958  -48.29054  6216%     -    0s
+H    0     0                      -0.0000000  -47.40178      -     -    0s
+     0     0  -31.15299    0   38   -0.00000  -31.15299      -     -    0s
+     0     0  -26.68719    0   34   -0.00000  -26.68719      -     -    0s
+     0     0  -26.68719    0   34   -0.00000  -26.68719      -     -    0s
+H    0     0                      -2.2482101  -26.68719  1087%     -    0s
+H    0     0                      -8.0455512  -26.68719   232%     -    0s
+     0     0  -26.68719    0   34   -8.04555  -26.68719   232%     -    0s
+     0     0  -26.68719    0   36   -8.04555  -26.68719   232%     -    0s
+     0     0  -26.68719    0   36   -8.04555  -26.68719   232%     -    0s
+     0     0  -26.68719    0   36   -8.04555  -26.68719   232%     -    0s
+     0     0  -26.68719    0   36   -8.04555  -26.68719   232%     -    0s
+     0     0  -26.68719    0   36   -8.04555  -26.68719   232%     -    0s
+     0     2  -26.66045    0   34   -8.04555  -26.66045   231%     -    0s
+H 2552  1537                      -8.8504577  -25.09385   184%  13.0    0s
+H 2646  1564                      -9.3181076  -25.09385   169%  13.3    1s
+ 36126 11344  -15.02555   30   36   -9.31811  -18.34975  96.9%  16.2    5s
+ 73731 12609  -14.53360   37   24   -9.31811  -17.59978  88.9%  17.0   10s
+ 114780 19590 infeasible   45        -9.31811  -15.86069  70.2%  17.1   15s
+ 150167 22902  -11.67207   41   18   -9.31811  -14.89469  59.8%  17.2   20s
+ 183429 23764  -12.73837   40   18   -9.31811  -14.17587  52.1%  17.2   25s
+ 214619 22774 infeasible   43        -9.31811  -13.54078  45.3%  17.2   30s
+Cutting planes:
+  Learned: 28
+  Gomory: 7
+  Cover: 36
+  Implied bound: 6
+  MIR: 76
+  Mixing: 273
+  Flow cover: 988
+  GUB cover: 1
+  Inf proof: 136
+  Zero half: 39
+  RLT: 15
+  Relax-and-lift: 3
+Explored 214920 nodes (3704664 simplex iterations) in 30.02 seconds (23.23 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -9.31811 -8.85046 -8.04555 ... 0.789581
+Time limit reached
+Best objective -9.318107561965e+00, best bound -1.353534066837e+01, gap 45.2585%
+««««««« custo subido para o mestre 14.612304801676313
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9.318107561964649
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 3.167041
+  Cliente 02: 6.287497
+  Cliente 03: 3.802365
+  Cliente 04: 4.343088
+  Cliente 05: 3.472502
+  Cliente 06: 0.524131
+  Cliente 07: 0.984248
+  Cliente 08: 5.657750
+  Cliente 09: 1.838264
+σ_k (dual veículo 1): -6.956881
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xc8e429a9
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 5.3129948
+Found heuristic solution: objective 0.7918023
+Root relaxation: objective -9.859122e+01, 128 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -98.59122    0   66    0.79180  -98.59122      -     -    0s
+H    0     0                      -1.5057718  -98.59122  6448%     -    0s
+H    0     0                      -4.0302041  -93.63757  2223%     -    0s
+H    0     0                      -4.5260945  -93.63757  1969%     -    0s
+     0     0  -63.78549    0   64   -4.52609  -63.78549  1309%     -    0s
+     0     0  -63.78549    0   62   -4.52609  -63.78549  1309%     -    0s
+     0     0  -63.55620    0   64   -4.52609  -63.55620  1304%     -    0s
+     0     0  -63.53132    0   64   -4.52609  -63.53132  1304%     -    0s
+     0     0  -63.53132    0   64   -4.52609  -63.53132  1304%     -    0s
+     0     0  -63.53132    0   62   -4.52609  -63.53132  1304%     -    0s
+     0     0  -63.53132    0   62   -4.52609  -63.53132  1304%     -    0s
+     0     0  -63.53132    0   64   -4.52609  -63.53132  1304%     -    0s
+     0     0  -63.53132    0   62   -4.52609  -63.53132  1304%     -    0s
+H    0     2                      -4.8910266  -63.53132  1199%     -    0s
+     0     2  -63.53132    0   60   -4.89103  -63.53132  1199%     -    0s
+H  382   310                      -5.3621435  -62.34136  1063%  18.4    0s
+H 2486  1489                      -5.8774264  -58.25119   891%  12.7    0s
+H 2645  1518                      -6.0275616  -58.25119   866%  15.1    0s
+H 2763  1445                      -6.6195864  -58.25119   780%  15.7    0s
+H 3220  1431                      -6.9874732  -57.83294   728%  17.4    1s
+*19723  6609              57      -7.2460564  -41.78883   477%  23.2    4s
+ 26430  8222  -24.00511   36   25   -7.24606  -39.01396   438%  24.0    5s
+ 37749 10367  -27.43984   47   28   -7.24606  -35.47385   390%  25.2   10s
+ 66615 10197 infeasible   53        -7.24606  -31.76154   338%  26.1   15s
+ 91309 10943  -10.68971   56   17   -7.24606  -25.11931   247%  27.5   20s
+ 119035  3739  -13.07804   70   16   -7.24606  -16.77070   131%  28.2   25s
+Cutting planes:
+  Learned: 44
+  Gomory: 9
+  Cover: 16
+  Implied bound: 25
+  MIR: 77
+  Mixing: 87
+  StrongCG: 1
+  Flow cover: 623
+  Inf proof: 208
+  Zero half: 31
+  RLT: 20
+  Relax-and-lift: 2
+Explored 126771 nodes (3547584 simplex iterations) in 26.01 seconds (23.15 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -7.24606 -7.24606 -6.98747 ... -4.0302
+No other solutions better than -7.24606
+Optimal solution found (tolerance 1.00e-04)
+Best objective -7.246056352493e+00, best bound -7.246056352493e+00, gap 0.0000%
+««««««« custo subido para o mestre 6.220095195952861
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -7.2460563524930794
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 3, 1, 7, 8, 6, 2, 10]
+============================================================================= ITERACAO GLOBAL 12
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 28 columns and 129 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.6564164e+31   1.750000e+31   1.656416e+01      0s
+      10    1.6855084e+01   0.000000e+00   0.000000e+00      0s
+Solved in 10 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.685508436e+01
+%%%%%%%%%%%%%%%%% iteracao 11
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 16.8551
+--- Colunas Escolhidas na Solução do Mestre (Iteração 11) ---
+SOL itera k 0
+  Veículo 0, Rota 5:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 3, 9, 10]
+    - Custo:     6.94
+  Veículo 0, Rota 11:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 5, 8, 1, 4, 10]
+    - Custo:     12.33
+  Veículo 0, Rota 13:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+    - Custo:     14.61
+SOL itera k 1
+  Veículo 1, Rota 3:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 9, 1, 10]
+    - Custo:     3.25
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+Custo Total do Mestre  nesta iteração: 16.8551
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.009804
+  Cliente 02: -0.124123
+  Cliente 03: 0.534506
+  Cliente 04: 3.393312
+  Cliente 05: 6.726214
+  Cliente 06: -2.692834
+  Cliente 07: 4.562585
+  Cliente 08: 1.202842
+  Cliente 09: 6.403124
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x72a1681f
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 7e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.1462065
+Found heuristic solution: objective 0.0000000
+Root relaxation: objective -3.701054e+01, 59 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -37.01054    0   26    0.00000  -37.01054      -     -    0s
+H    0     0                      -2.6031084  -37.01054  1322%     -    0s
+     0     0  -20.88025    0   26   -2.60311  -20.88025   702%     -    0s
+     0     0  -20.88025    0   26   -2.60311  -20.88025   702%     -    0s
+H    0     0                      -5.9062303  -20.88025   254%     -    0s
+     0     0  -20.88025    0   26   -5.90623  -20.88025   254%     -    0s
+H    0     0                      -6.0319721  -20.88025   246%     -    0s
+H    0     0                      -8.1451297  -20.88025   156%     -    0s
+     0     0  -20.88025    0   26   -8.14513  -20.88025   156%     -    0s
+     0     0  -20.88025    0   26   -8.14513  -20.88025   156%     -    0s
+     0     2  -20.77470    0   26   -8.14513  -20.77470   155%     -    0s
+H  230   242                      -8.7745093  -20.37447   132%   9.8    0s
+H 2254  1222                      -8.7745115  -18.52788   111%   9.3    0s
+H 8742  1651                      -8.7745122  -15.27148  74.0%  11.2    1s
+H22626  1706                      -8.7745122  -12.00678  36.8%  11.6    2s
+H22629  1706                      -8.7745145  -11.99747  36.7%  11.6    2s
+H22648  1704                      -8.7745145  -11.99642  36.7%  11.6    2s
+Cutting planes:
+  Learned: 31
+  Gomory: 15
+  Cover: 10
+  Implied bound: 22
+  MIR: 22
+  Flow cover: 102
+  Inf proof: 57
+  Zero half: 8
+  RLT: 17
+  Relax-and-lift: 1
+Explored 27600 nodes (322348 simplex iterations) in 2.48 seconds (1.37 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 7: -8.77451 -8.14513 -6.03197 ... 0.146207
+No other solutions better than -8.77451
+Optimal solution found (tolerance 1.00e-04)
+Best objective -8.774514482621e+00, best bound -8.774514483109e+00, gap 0.0000%
+««««««« custo subido para o mestre 15.057876187739963
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -8.774514482620575
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 5, 8, 7, 1, 9, 3, 4, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.009804
+  Cliente 02: -0.124123
+  Cliente 03: 0.534506
+  Cliente 04: 3.393312
+  Cliente 05: 6.726214
+  Cliente 06: -2.692834
+  Cliente 07: 4.562585
+  Cliente 08: 1.202842
+  Cliente 09: 6.403124
+σ_k (dual veículo 1): -4.160345
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x3baf7ce2
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [4e-02, 6e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.2167578
+Found heuristic solution: objective 0.9587826
+Root relaxation: objective -6.388724e+01, 107 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -63.88724    0   46    0.95878  -63.88724  6763%     -    0s
+H    0     0                      -0.5043166  -63.88724      -     -    0s
+     0     0  -45.61494    0   51   -0.50432  -45.61494  8945%     -    0s
+H    0     0                      -3.8374361  -45.52065  1086%     -    0s
+H    0     0                      -4.0062410  -45.52065  1036%     -    0s
+     0     0  -45.52065    0   51   -4.00624  -45.52065  1036%     -    0s
+     0     0  -45.52065    0   51   -4.00624  -45.52065  1036%     -    0s
+     0     0  -45.47887    0   51   -4.00624  -45.47887  1035%     -    0s
+H    0     0                      -4.9331118  -45.47887   822%     -    0s
+     0     0  -45.47887    0   52   -4.93311  -45.47887   822%     -    0s
+     0     0  -45.41058    0   50   -4.93311  -45.41058   821%     -    0s
+H    0     0                      -7.1201142  -45.41058   538%     -    0s
+     0     0  -45.34952    0   51   -7.12011  -45.34952   537%     -    0s
+     0     0  -45.34952    0   51   -7.12011  -45.34952   537%     -    0s
+     0     0  -45.34952    0   49   -7.12011  -45.34952   537%     -    0s
+     0     0  -45.04776    0   51   -7.12011  -45.04776   533%     -    0s
+     0     0  -45.04776    0   51   -7.12011  -45.04776   533%     -    0s
+     0     0  -45.04776    0   51   -7.12011  -45.04776   533%     -    0s
+     0     2  -45.04776    0   49   -7.12011  -45.04776   533%     -    0s
+H  225   235                      -7.3393606  -42.96201   485%  18.9    0s
+H  256   235                      -8.0492169  -42.92483   433%  18.2    0s
+Cutting planes:
+  Learned: 45
+  Gomory: 3
+  Cover: 31
+  Implied bound: 15
+  MIR: 61
+  Flow cover: 132
+  Inf proof: 70
+  Zero half: 7
+  RLT: 22
+  Relax-and-lift: 1
+Explored 35155 nodes (625537 simplex iterations) in 3.65 seconds (2.65 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -8.04922 -8.04922 -7.33936 ... 2.21676
+No other solutions better than -8.04922
+Optimal solution found (tolerance 1.00e-04)
+Best objective -8.049216907022e+00, best bound -8.049216907022e+00, gap 0.0000%
+««««««« custo subido para o mestre 5.482361344487172
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -8.0492169070223
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 5, 7, 9, 10]
+============================================================================= ITERACAO GLOBAL 13
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 30 columns and 141 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.6823726e+31   1.600000e+31   1.682373e+01      0s
+       8    1.6855084e+01   0.000000e+00   0.000000e+00      0s
+Solved in 8 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.685508436e+01
+%%%%%%%%%%%%%%%%% iteracao 12
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 16.8551
+--- Colunas Escolhidas na Solução do Mestre (Iteração 12) ---
+SOL itera k 0
+  Veículo 0, Rota 5:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 3, 9, 10]
+    - Custo:     6.94
+  Veículo 0, Rota 11:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 5, 8, 1, 4, 10]
+    - Custo:     12.33
+  Veículo 0, Rota 13:
+    - Valor (lambda): 0.5000
+    - Sequência: [0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+    - Custo:     14.61
+SOL itera k 1
+  Veículo 1, Rota 3:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 9, 1, 10]
+    - Custo:     3.25
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+SEM MELHORA ITERACAO 1
+Custo Total do Mestre  nesta iteração: 16.8551
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.009804
+  Cliente 02: 2.005577
+  Cliente 03: 0.722889
+  Cliente 04: 1.263612
+  Cliente 05: 6.726214
+  Cliente 06: 3.763592
+  Cliente 07: -4.211925
+  Cliente 08: 3.332542
+  Cliente 09: 6.214741
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x399f499a
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -6.3102194
+Root relaxation: objective -3.576375e+01, 82 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -35.76375    0   20   -6.31022  -35.76375   467%     -    0s
+     0     0  -23.57044    0   21   -6.31022  -23.57044   274%     -    0s
+     0     0  -21.39061    0   18   -6.31022  -21.39061   239%     -    0s
+     0     0  -21.39061    0   18   -6.31022  -21.39061   239%     -    0s
+H    0     0                      -7.1535508  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+     0     0  -21.39061    0   20   -7.15355  -21.39061   199%     -    0s
+H    0     0                      -7.2649788  -21.39061   194%     -    0s
+H    0     0                      -7.3419342  -21.39061   191%     -    0s
+     0     2  -21.39061    0   18   -7.34193  -21.39061   191%     -    0s
+H   27    75                      -8.3299806  -20.57754   147%  17.0    0s
+H  150   173                      -8.5371994  -20.57754   141%  10.4    0s
+H  351   302                      -8.7026317  -20.45273   135%   8.7    0s
+H 2886  1455                      -8.9693265  -18.96733   111%   9.1    0s
+H 2961  1477                      -9.4220098  -18.96733   101%   9.3    0s
+* 8544  1792              31      -9.5848605  -16.15180  68.5%  10.3    1s
+Cutting planes:
+  Learned: 39
+  Gomory: 12
+  Cover: 19
+  Implied bound: 17
+  MIR: 49
+  Flow cover: 65
+  Inf proof: 53
+  Zero half: 3
+  RLT: 7
+  Relax-and-lift: 1
+Explored 29089 nodes (303545 simplex iterations) in 2.13 seconds (1.20 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 10: -9.58486 -9.42201 -8.96933 ... -6.31022
+No other solutions better than -9.58486
+Optimal solution found (tolerance 1.00e-04)
+Best objective -9.584860492492e+00, best bound -9.584860492492e+00, gap 0.0000%
+««««««« custo subido para o mestre 12.18492085621397
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -9.584860492492073
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 6, 5, 8, 1, 9, 3, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.009804
+  Cliente 02: 2.005577
+  Cliente 03: 0.722889
+  Cliente 04: 1.263612
+  Cliente 05: 6.726214
+  Cliente 06: 3.763592
+  Cliente 07: -4.211925
+  Cliente 08: 3.332542
+  Cliente 09: 6.214741
+σ_k (dual veículo 1): -3.971961
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x86fbac2e
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-03, 7e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -4.4280516
+Root relaxation: objective -6.637646e+01, 112 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -66.37646    0   46   -4.42805  -66.37646  1399%     -    0s
+H    0     0                      -4.7791462  -60.38574  1164%     -    0s
+     0     0  -45.57176    0   49   -4.77915  -45.57176   854%     -    0s
+     0     0  -45.57105    0   51   -4.77915  -45.57105   854%     -    0s
+     0     0  -45.48142    0   50   -4.77915  -45.48142   852%     -    0s
+     0     0  -45.48142    0   50   -4.77915  -45.48142   852%     -    0s
+     0     2  -45.48142    0   49   -4.77915  -45.48142   852%     -    0s
+H  237   241                      -7.5727877  -43.67235   477%  20.0    0s
+*10686  2374              34      -7.6270429  -24.64350   223%  18.0    1s
+Cutting planes:
+  Learned: 47
+  Gomory: 5
+  Cover: 13
+  Implied bound: 16
+  MIR: 44
+  Flow cover: 168
+  Inf proof: 85
+  Zero half: 14
+  RLT: 16
+Explored 39127 nodes (705383 simplex iterations) in 4.20 seconds (2.88 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: -7.62704 -7.62704 -7.57279 ... -4.42805
+No other solutions better than -7.62704
+Optimal solution found (tolerance 1.00e-04)
+Best objective -7.627042906928e+00, best bound -7.627042906928e+00, gap 0.0000%
+««««««« custo subido para o mestre 4.2289208620427114
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -7.6270429069279775
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 8, 5, 6, 2, 10]
+============================================================================= ITERACAO GLOBAL 14
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 32 columns and 153 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.7211903e+31   1.250000e+31   1.721190e+01      0s
+       7    1.5446059e+01   0.000000e+00   0.000000e+00      0s
+Solved in 7 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.544605918e+01
+%%%%%%%%%%%%%%%%% iteracao 13
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 15.4461
+--- Colunas Escolhidas na Solução do Mestre (Iteração 13) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.2667
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 13:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+    - Custo:     14.61
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2667
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 15:
+    - Valor (lambda): 0.1333
+    - Sequência: [0, 6, 5, 8, 1, 9, 3, 10]
+    - Custo:     12.18
+SOL itera k 1
+  Veículo 1, Rota 3:
+    - Valor (lambda): 0.1333
+    - Sequência: [0, 9, 1, 10]
+    - Custo:     3.25
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 8:
+    - Valor (lambda): 0.0667
+    - Sequência: [0, 1, 3, 4, 6, 10]
+    - Custo:     4.88
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.2000
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1333
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 13:
+    - Valor (lambda): 0.0667
+    - Sequência: [0, 3, 1, 7, 8, 6, 2, 10]
+    - Custo:     6.22
+  Veículo 1, Rota 15:
+    - Valor (lambda): 0.0667
+    - Sequência: [0, 8, 5, 6, 2, 10]
+    - Custo:     4.23
+Custo Total do Mestre  nesta iteração: 15.4461
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 2.418829
+  Cliente 02: 1.626395
+  Cliente 03: 0.647308
+  Cliente 04: 3.051819
+  Cliente 05: 2.499138
+  Cliente 06: 1.603040
+  Cliente 07: 1.424176
+  Cliente 08: 1.341599
+  Cliente 09: 3.675006
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xa54d371e
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.6330280
+Found heuristic solution: objective 0.6274806
+Root relaxation: objective -6.363778e+00, 46 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -6.36378    0   14    0.62748   -6.36378  1114%     -    0s
+H    0     0                      -0.9297200   -6.36378   584%     -    0s
+     0     0   -3.43477    0   14   -0.92972   -3.43477   269%     -    0s
+     0     0   -3.43477    0   14   -0.92972   -3.43477   269%     -    0s
+H    0     0                      -1.2866016   -3.43477   167%     -    0s
+     0     0   -2.93439    0   18   -1.28660   -2.93439   128%     -    0s
+H    0     0                      -1.6921506   -2.93439  73.4%     -    0s
+     0     0   -2.93439    0   18   -1.69215   -2.93439  73.4%     -    0s
+     0     0   -2.93439    0   18   -1.69215   -2.93439  73.4%     -    0s
+     0     0   -2.93439    0    6   -1.69215   -2.93439  73.4%     -    0s
+     0     0   -2.93439    0    6   -1.69215   -2.93439  73.4%     -    0s
+     0     0   -2.76537    0    6   -1.69215   -2.76537  63.4%     -    0s
+     0     0   -2.76537    0    6   -1.69215   -2.76537  63.4%     -    0s
+     0     0   -2.76537    0    6   -1.69215   -2.76537  63.4%     -    0s
+     0     0   -2.74357    0   14   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     0   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+     0     2   -2.74357    0    6   -1.69215   -2.74357  62.1%     -    0s
+Cutting planes:
+  Learned: 6
+  Gomory: 1
+  Cover: 3
+  Implied bound: 5
+  MIR: 5
+  RLT: 8
+Explored 92 nodes (976 simplex iterations) in 0.11 seconds (0.03 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: -1.69215 -1.2866 -0.92972 ... 0.633028
+No other solutions better than -1.69215
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.692150649808e+00, best bound -1.692150649808e+00, gap 0.0000%
+««««««« custo subido para o mestre 13.829384921390144
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -1.6921506498077552
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 1, 9, 3, 4, 2, 5, 6, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 2.418829
+  Cliente 02: 1.626395
+  Cliente 03: 0.647308
+  Cliente 04: 3.051819
+  Cliente 05: 2.499138
+  Cliente 06: 1.603040
+  Cliente 07: 1.424176
+  Cliente 08: 1.341599
+  Cliente 09: 3.675006
+σ_k (dual veículo 1): -2.841252
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xaa342d16
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [9e-04, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.8288668
+Root relaxation: objective -3.163193e+01, 138 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -31.63193    0   54    0.82887  -31.63193  3916%     -    0s
+H    0     0                       0.4653509  -31.63193  6897%     -    0s
+H    0     0                      -1.2013709  -31.63193  2533%     -    0s
+     0     0  -20.63829    0   55   -1.20137  -20.63829  1618%     -    0s
+     0     0  -20.63829    0   55   -1.20137  -20.63829  1618%     -    0s
+     0     0  -20.62528    0   56   -1.20137  -20.62528  1617%     -    0s
+     0     0  -20.62528    0   56   -1.20137  -20.62528  1617%     -    0s
+     0     0  -20.60850    0   56   -1.20137  -20.60850  1615%     -    0s
+     0     0  -20.60850    0   56   -1.20137  -20.60850  1615%     -    0s
+     0     2  -20.60850    0   56   -1.20137  -20.60850  1615%     -    0s
+H  357   313                      -1.9173865  -20.11633   949%  18.9    0s
+H 2274  1384                      -2.3827374  -18.69759   685%  12.8    0s
+H 2709  1414                      -2.4531035  -17.45693   612%  15.2    0s
+ 32880  7805 infeasible   55        -2.45310   -9.53996   289%  21.6    5s
+ 63619  6450   -5.24046   45   25   -2.45310   -6.44228   163%  22.7   10s
+Cutting planes:
+  Learned: 62
+  Gomory: 4
+  Cover: 27
+  Implied bound: 20
+  MIR: 39
+  Mixing: 12
+  StrongCG: 2
+  Flow cover: 382
+  Inf proof: 117
+  Zero half: 13
+  RLT: 27
+  Relax-and-lift: 7
+Explored 85347 nodes (1904631 simplex iterations) in 13.12 seconds (9.39 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 7: -2.4531 -2.4531 -2.38274 ... 0.828867
+No other solutions better than -2.4531
+Optimal solution found (tolerance 1.00e-04)
+Best objective -2.453103500143e+00, best bound -2.453103500143e+00, gap 0.0000%
+««««««« custo subido para o mestre 6.794689889838246
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -2.4531035001431527
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 2, 6, 8, 7, 9, 1, 10]
+============================================================================= ITERACAO GLOBAL 15
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 34 columns and 168 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -4.1452541e+30   7.000000e+30   4.145254e+00      0s
+       9    1.4801043e+01   0.000000e+00   0.000000e+00      0s
+Solved in 9 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.480104325e+01
+%%%%%%%%%%%%%%%%% iteracao 14
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.8010
+--- Colunas Escolhidas na Solução do Mestre (Iteração 14) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3462
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 13:
+    - Valor (lambda): 0.1154
+    - Sequência: [0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+    - Custo:     14.61
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.3077
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.2308
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.1538
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.0769
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 10:
+    - Valor (lambda): 0.1923
+    - Sequência: [0, 4, 3, 1, 7, 10]
+    - Custo:     5.34
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1538
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 15:
+    - Valor (lambda): 0.2692
+    - Sequência: [0, 8, 5, 6, 2, 10]
+    - Custo:     4.23
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1538
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+Custo Total do Mestre  nesta iteração: 14.8010
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.847603
+  Cliente 02: 0.937047
+  Cliente 03: 0.839838
+  Cliente 04: 4.386183
+  Cliente 05: 2.780332
+  Cliente 06: 1.327881
+  Cliente 07: 1.787998
+  Cliente 08: 1.705422
+  Cliente 09: 2.710500
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x001562fb
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-01, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.0713731
+Root relaxation: objective -5.718619e+00, 38 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -5.71862    0   14    0.07137   -5.71862  8112%     -    0s
+     0     0   -2.91923    0   18    0.07137   -2.91923  4190%     -    0s
+     0     0   -2.27814    0   10    0.07137   -2.27814  3292%     -    0s
+H    0     0                      -0.4056628   -2.00437   394%     -    0s
+     0     0   -2.00437    0    6   -0.40566   -2.00437   394%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94241    0    6   -0.40566   -1.94241   379%     -    0s
+     0     0   -1.94089    0    6   -0.40566   -1.94089   378%     -    0s
+     0     0   -1.94089    0    6   -0.40566   -1.94089   378%     -    0s
+     0     0   -1.94089    0    6   -0.40566   -1.94089   378%     -    0s
+     0     0   -1.94089    0   14   -0.40566   -1.94089   378%     -    0s
+H    0     0                      -0.7487847   -1.94089   159%     -    0s
+     0     0   -1.94089    0   10   -0.74878   -1.94089   159%     -    0s
+H    0     0                      -1.0275520   -1.94089  88.9%     -    0s
+     0     0   -1.94089    0    6   -1.02755   -1.94089  88.9%     -    0s
+     0     0   -1.94089    0    6   -1.02755   -1.94089  88.9%     -    0s
+     0     0   -1.94089    0    6   -1.02755   -1.94089  88.9%     -    0s
+     0     0   -1.94089    0    6   -1.02755   -1.94089  88.9%     -    0s
+     0     2   -1.94089    0    6   -1.02755   -1.94089  88.9%     -    0s
+Cutting planes:
+  Learned: 7
+  Gomory: 4
+  Cover: 1
+  Implied bound: 8
+  MIR: 6
+  RLT: 9
+  Relax-and-lift: 1
+  PSD: 1
+Explored 136 nodes (1083 simplex iterations) in 0.12 seconds (0.03 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 4: -1.02755 -0.748785 -0.405663 0.0713731 
+No other solutions better than -1.02755
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.027551979719e+00, best bound -1.027551979719e+00, gap 0.0000%
+««««««« custo subido para o mestre 11.897311521152766
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -1.02755197971949
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 4, 2, 6, 5, 8, 7, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.847603
+  Cliente 02: 0.937047
+  Cliente 03: 0.839838
+  Cliente 04: 4.386183
+  Cliente 05: 2.780332
+  Cliente 06: 1.327881
+  Cliente 07: 1.787998
+  Cliente 08: 1.705422
+  Cliente 09: 2.710500
+σ_k (dual veículo 1): -2.521761
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x53e52b1a
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.5033412
+Root relaxation: objective -2.857890e+01, 111 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -28.57890    0   46    0.50334  -28.57890  5778%     -    0s
+H    0     0                      -0.4890846  -28.57890  5743%     -    0s
+H    0     0                      -0.7446632  -28.57890  3738%     -    0s
+     0     0  -20.60038    0   44   -0.74466  -20.60038  2666%     -    0s
+     0     0  -19.28745    0   44   -0.74466  -19.28745  2490%     -    0s
+     0     0  -19.28745    0   44   -0.74466  -19.28745  2490%     -    0s
+     0     0  -19.28745    0   44   -0.74466  -19.28745  2490%     -    0s
+     0     0  -19.28712    0   44   -0.74466  -19.28712  2490%     -    0s
+     0     0  -19.28712    0   44   -0.74466  -19.28712  2490%     -    0s
+     0     0  -19.28712    0   44   -0.74466  -19.28712  2490%     -    0s
+     0     0  -19.28706    0   44   -0.74466  -19.28706  2490%     -    0s
+     0     0  -19.24523    0   44   -0.74466  -19.24523  2484%     -    0s
+H    0     2                      -1.8780618  -19.24523   925%     -    0s
+     0     2  -19.24523    0   44   -1.87806  -19.24523   925%     -    0s
+ 38772  3407   -4.41718   45   21   -1.87806   -5.21422   178%  18.3    5s
+Cutting planes:
+  Learned: 57
+  Gomory: 4
+  Cover: 57
+  Implied bound: 26
+  MIR: 84
+  StrongCG: 1
+  Flow cover: 157
+  Inf proof: 95
+  Zero half: 8
+  RLT: 17
+Explored 50342 nodes (923117 simplex iterations) in 6.14 seconds (4.24 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: -1.87806 -1.87806 -0.744663 ... 0.503341
+No other solutions better than -1.87806
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.878061765340e+00, best bound -1.878061765340e+00, gap 0.0000%
+««««««« custo subido para o mestre 5.744708008781138
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -1.8780617653402398
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 4, 2, 6, 8, 7, 10]
+============================================================================= ITERACAO GLOBAL 16
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 36 columns and 181 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -2.9056137e+30   9.000000e+30   2.905614e+00      0s
+       4    1.4757745e+01   0.000000e+00   0.000000e+00      0s
+Solved in 4 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.475774510e+01
+%%%%%%%%%%%%%%%%% iteracao 15
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.7577
+--- Colunas Escolhidas na Solução do Mestre (Iteração 15) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3462
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.3654
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.2885
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 5:
+    - Valor (lambda): 0.0577
+    - Sequência: [0, 2, 3, 9, 10]
+    - Custo:     4.97
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.0385
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 9:
+    - Valor (lambda): 0.0769
+    - Sequência: [0, 7, 5, 6, 2, 10]
+    - Custo:     4.31
+  Veículo 1, Rota 10:
+    - Valor (lambda): 0.1923
+    - Sequência: [0, 4, 3, 1, 7, 10]
+    - Custo:     5.34
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.0962
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 15:
+    - Valor (lambda): 0.2692
+    - Sequência: [0, 8, 5, 6, 2, 10]
+    - Custo:     4.23
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1538
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1154
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+Custo Total do Mestre  nesta iteração: 14.7577
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.977498
+  Cliente 02: 2.208935
+  Cliente 03: 2.241620
+  Cliente 04: 2.782343
+  Cliente 05: 2.939092
+  Cliente 06: -0.174930
+  Cliente 07: 1.672537
+  Cliente 08: 1.589960
+  Cliente 09: 2.854827
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xde18800f
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-03, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.4154244
+Found heuristic solution: objective 1.3910652
+Root relaxation: objective -5.543136e+00, 44 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -5.54314    0   20    1.39107   -5.54314   498%     -    0s
+H    0     0                       1.1840135   -5.54314   568%     -    0s
+     0     0   -2.35389    0   18    1.18401   -2.35389   299%     -    0s
+H    0     0                       0.5947791   -2.35389   496%     -    0s
+H    0     0                      -0.1518365   -2.35389  1450%     -    0s
+H    0     0                      -0.2314109   -2.35389   917%     -    0s
+     0     0   -2.23838    0   14   -0.23141   -2.23838   867%     -    0s
+     0     0   -1.91149    0   10   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   10   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   20   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.91149    0   22   -0.23141   -1.91149   726%     -    0s
+     0     0   -1.86202    0   21   -0.23141   -1.86202   705%     -    0s
+     0     0   -1.86202    0   21   -0.23141   -1.86202   705%     -    0s
+     0     0   -1.76668    0   23   -0.23141   -1.76668   663%     -    0s
+     0     0   -1.61903    0   23   -0.23141   -1.61903   600%     -    0s
+     0     0   -1.61903    0   21   -0.23141   -1.61903   600%     -    0s
+     0     0   -1.56254    0   21   -0.23141   -1.56254   575%     -    0s
+     0     0   -1.56254    0   21   -0.23141   -1.56254   575%     -    0s
+     0     2   -1.51260    0   21   -0.23141   -1.51260   554%     -    0s
+Cutting planes:
+  Learned: 10
+  Gomory: 9
+  Cover: 4
+  Implied bound: 10
+  MIR: 15
+  RLT: 15
+  Relax-and-lift: 2
+Explored 157 nodes (1369 simplex iterations) in 0.19 seconds (0.05 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -0.231411 -0.151837 0.594779 ... 1.41542
+Optimal solution found (tolerance 1.00e-04)
+Best objective -2.314109163515e-01, best bound -2.314109163515e-01, gap 0.0000%
+««««««« custo subido para o mestre 13.772903745449078
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -0.2314109163515332
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 5, 2, 4, 3, 9, 1, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 0.977498
+  Cliente 02: 2.208935
+  Cliente 03: 2.241620
+  Cliente 04: 2.782343
+  Cliente 05: 2.939092
+  Cliente 06: -0.174930
+  Cliente 07: 1.672537
+  Cliente 08: 1.589960
+  Cliente 09: 2.854827
+σ_k (dual veículo 1): -2.334136
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x705e411c
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-02, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.6597672
+Root relaxation: objective -2.360418e+01, 123 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -23.60418    0   48    1.65977  -23.60418  1522%     -    0s
+H    0     0                       1.4565969  -23.60418  1721%     -    0s
+     0     0  -16.02970    0   50    1.45660  -16.02970  1200%     -    0s
+H    0     0                       0.3095717  -16.02899  5278%     -    0s
+     0     0  -16.02899    0   52    0.30957  -16.02899  5278%     -    0s
+H    0     0                      -0.4266200  -16.02899  3657%     -    0s
+     0     0  -16.02899    0   52   -0.42662  -16.02899  3657%     -    0s
+     0     0  -16.02899    0   52   -0.42662  -16.02899  3657%     -    0s
+     0     0  -15.94625    0   52   -0.42662  -15.94625  3638%     -    0s
+     0     0  -15.94625    0   52   -0.42662  -15.94625  3638%     -    0s
+     0     2  -15.94625    0   52   -0.42662  -15.94625  3638%     -    0s
+H  335   286                      -1.2254836  -15.06101  1129%  16.7    0s
+* 9241  2815              28      -1.3139890   -9.66008   635%  17.1    1s
+*12345  3582              53      -1.6162937   -8.74446   441%  18.0    2s
+ 42550  4697   -3.68027   39   14   -1.61629   -4.84469   200%  19.8    5s
+Cutting planes:
+  Learned: 66
+  Gomory: 5
+  Cover: 55
+  Implied bound: 32
+  MIR: 44
+  StrongCG: 1
+  Flow cover: 114
+  Inf proof: 98
+  Zero half: 7
+  RLT: 30
+Explored 61428 nodes (1198071 simplex iterations) in 6.58 seconds (4.56 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -1.61629 -1.61629 -1.31399 ... 1.65977
+No other solutions better than -1.61629
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.616293717783e+00, best bound -1.616293717783e+00, gap 0.0000%
+««««««« custo subido para o mestre 4.460093410613369
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -1.6162937177829777
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 2, 5, 8, 7, 10]
+============================================================================= ITERACAO GLOBAL 17
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 38 columns and 193 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.8477046e+30   3.846154e+30   1.847705e+00      0s
+       5    1.4548977e+01   0.000000e+00   0.000000e+00      0s
+Solved in 5 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.454897698e+01
+%%%%%%%%%%%%%%%%% iteracao 16
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.5490
+--- Colunas Escolhidas na Solução do Mestre (Iteração 16) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3542
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2708
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.3750
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 6:
+    - Valor (lambda): 0.0417
+    - Sequência: [0, 9, 4, 2, 10]
+    - Custo:     5.51
+  Veículo 1, Rota 8:
+    - Valor (lambda): 0.2083
+    - Sequência: [0, 1, 3, 4, 6, 10]
+    - Custo:     4.88
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1458
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 14:
+    - Valor (lambda): 0.0208
+    - Sequência: [0, 5, 7, 9, 10]
+    - Custo:     5.48
+  Veículo 1, Rota 15:
+    - Valor (lambda): 0.0208
+    - Sequência: [0, 8, 5, 6, 2, 10]
+    - Custo:     4.23
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1458
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1042
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.3125
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+Custo Total do Mestre  nesta iteração: 14.5490
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.374858
+  Cliente 02: 0.619639
+  Cliente 03: 1.049684
+  Cliente 04: 3.583740
+  Cliente 05: 3.120862
+  Cliente 06: 0.821737
+  Cliente 07: 1.052909
+  Cliente 08: 1.616958
+  Cliente 09: 3.258864
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x8ff0179b
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.2369874
+Root relaxation: objective -4.714740e+00, 43 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.71474    0   14    0.23699   -4.71474  2089%     -    0s
+     0     0   -2.14870    0   12    0.23699   -2.14870  1007%     -    0s
+     0     0   -2.06938    0   12    0.23699   -2.06938   973%     -    0s
+     0     0   -1.82563    0   12    0.23699   -1.82563   870%     -    0s
+     0     0   -1.82563    0   12    0.23699   -1.82563   870%     -    0s
+     0     0   -1.82563    0   12    0.23699   -1.82563   870%     -    0s
+     0     0   -1.82563    0   12    0.23699   -1.82563   870%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   14    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   18    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   18    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     0   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+     0     2   -1.68580    0   12    0.23699   -1.68580   811%     -    0s
+H   10    12                       0.0000000   -1.41437      -  10.1    0s
+Cutting planes:
+  Learned: 10
+  Gomory: 2
+  Cover: 4
+  Implied bound: 11
+  MIR: 12
+  RLT: 4
+  PSD: 2
+Explored 180 nodes (1637 simplex iterations) in 0.13 seconds (0.04 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: 6.66134e-16 0.236987 
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.661338147751e-16, best bound 6.661338147751e-16, gap 0.0000%
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.374858
+  Cliente 02: 0.619639
+  Cliente 03: 1.049684
+  Cliente 04: 3.583740
+  Cliente 05: 3.120862
+  Cliente 06: 0.821737
+  Cliente 07: 1.052909
+  Cliente 08: 1.616958
+  Cliente 09: 3.258864
+σ_k (dual veículo 1): -1.950275
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x6c9908d3
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-03, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 0.0974690
+Root relaxation: objective -2.339440e+01, 101 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -23.39440    0   44    0.09747  -23.39440      -     -    0s
+H    0     0                      -1.2141493  -23.39440  1827%     -    0s
+     0     0  -16.56955    0   46   -1.21415  -16.56955  1265%     -    0s
+     0     0  -16.56955    0   46   -1.21415  -16.56955  1265%     -    0s
+     0     0  -16.56739    0   43   -1.21415  -16.56739  1265%     -    0s
+     0     0  -16.56739    0   43   -1.21415  -16.56739  1265%     -    0s
+     0     2  -16.56739    0   43   -1.21415  -16.56739  1265%     -    0s
+H  255   250                      -1.3653852  -16.00305  1072%  16.4    0s
+ 35311  3318 infeasible   36        -1.36539   -4.58414   236%  17.6    5s
+Cutting planes:
+  Learned: 61
+  Gomory: 2
+  Cover: 54
+  Implied bound: 24
+  MIR: 47
+  StrongCG: 1
+  Flow cover: 207
+  Inf proof: 83
+  Zero half: 18
+  RLT: 26
+  Relax-and-lift: 2
+Explored 50076 nodes (833295 simplex iterations) in 6.10 seconds (4.00 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 4: -1.36539 -1.36539 -1.21415 0.097469 
+No other solutions better than -1.36539
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.365385170025e+00, best bound -1.365385170025e+00, gap 0.0000%
+««««««« custo subido para o mestre 4.901802001324634
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -1.3653851700248811
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 1, 9, 4, 10]
+============================================================================= ITERACAO GLOBAL 18
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 39 columns and 197 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.3653852e+30   3.062500e+30   1.365385e+00      0s
+       2    1.4468660e+01   0.000000e+00   0.000000e+00      0s
+Solved in 2 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.446866021e+01
+%%%%%%%%%%%%%%%%% iteracao 17
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.4687
+--- Colunas Escolhidas na Solução do Mestre (Iteração 17) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2353
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.4118
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 8:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 1, 3, 4, 6, 10]
+    - Custo:     4.88
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+  Veículo 1, Rota 19:
+    - Valor (lambda): 0.0588
+    - Sequência: [0, 1, 9, 4, 10]
+    - Custo:     4.90
+Custo Total do Mestre  nesta iteração: 14.4687
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.615808
+  Cliente 02: 0.537277
+  Cliente 03: 1.208273
+  Cliente 04: 3.182156
+  Cliente 05: 3.283541
+  Cliente 06: 1.386000
+  Cliente 07: 1.617172
+  Cliente 08: 1.534596
+  Cliente 09: 2.616330
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x824bcc77
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.01s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -0.4899542
+Root relaxation: objective -5.726489e+00, 39 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -5.72649    0   12   -0.48995   -5.72649  1069%     -    0s
+     0     0   -2.99814    0   16   -0.48995   -2.99814   512%     -    0s
+     0     0   -2.99814    0   16   -0.48995   -2.99814   512%     -    0s
+H    0     0                      -1.0800540   -2.99814   178%     -    0s
+     0     0   -2.95416    0   18   -1.08005   -2.95416   174%     -    0s
+     0     0   -2.95416    0   18   -1.08005   -2.95416   174%     -    0s
+     0     0   -2.95416    0   18   -1.08005   -2.95416   174%     -    0s
+     0     0   -2.74640    0   18   -1.08005   -2.74640   154%     -    0s
+     0     0   -2.74220    0   12   -1.08005   -2.74220   154%     -    0s
+     0     0   -2.56892    0   12   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   12   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   12   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   12   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   18   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   18   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   18   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   18   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   19   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   20   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.56892    0   20   -1.08005   -2.56892   138%     -    0s
+     0     0   -2.53391    0   15   -1.08005   -2.53391   135%     -    0s
+     0     0   -2.49418    0   15   -1.08005   -2.49418   131%     -    0s
+     0     0   -2.49418    0   15   -1.08005   -2.49418   131%     -    0s
+     0     0   -2.49418    0   15   -1.08005   -2.49418   131%     -    0s
+     0     0   -2.47106    0    9   -1.08005   -2.47106   129%     -    0s
+     0     0   -2.39975    0    9   -1.08005   -2.39975   122%     -    0s
+     0     0   -2.39975    0    9   -1.08005   -2.39975   122%     -    0s
+     0     0   -2.39975    0    9   -1.08005   -2.39975   122%     -    0s
+     0     2   -2.39975    0    9   -1.08005   -2.39975   122%     -    0s
+Cutting planes:
+  Learned: 5
+  Cover: 3
+  Implied bound: 2
+  MIR: 6
+  RLT: 12
+Explored 87 nodes (795 simplex iterations) in 0.13 seconds (0.04 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -1.08005 -0.489954 
+No other solutions better than -1.08005
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.080054004931e+00, best bound -1.080054004931e+00, gap 0.0000%
+««««««« custo subido para o mestre 8.357062603377322
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -1.0800540049310259
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 1, 7, 8, 5, 6, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.615808
+  Cliente 02: 0.537277
+  Cliente 03: 1.208273
+  Cliente 04: 3.182156
+  Cliente 05: 3.283541
+  Cliente 06: 1.386000
+  Cliente 07: 1.617172
+  Cliente 08: 1.534596
+  Cliente 09: 2.616330
+σ_k (dual veículo 1): -2.512492
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xdc021a84
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-03, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective -0.0672552
+Root relaxation: objective -2.555605e+01, 94 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -25.55605    0   48   -0.06726  -25.55605      -     -    0s
+H    0     0                      -0.1520078  -25.55605      -     -    0s
+     0     0  -17.32634    0   47   -0.15201  -17.32634      -     -    0s
+H    0     0                      -0.1673880  -17.32634      -     -    0s
+     0     0  -17.30384    0   45   -0.16739  -17.30384      -     -    0s
+     0     0  -17.30384    0   45   -0.16739  -17.30384      -     -    0s
+     0     0  -17.30384    0   45   -0.16739  -17.30384      -     -    0s
+     0     0  -17.30384    0   45   -0.16739  -17.30384      -     -    0s
+     0     0  -17.30384    0   47   -0.16739  -17.30384      -     -    0s
+     0     0  -17.30384    0   47   -0.16739  -17.30384      -     -    0s
+H    0     0                      -0.5246328  -17.30384  3198%     -    0s
+     0     2  -17.29735    0   45   -0.52463  -17.29735  3197%     -    0s
+H  240   257                      -0.8244952  -16.37843  1886%  19.9    0s
+H  250   257                      -1.8823919  -16.37843   770%  19.6    0s
+ 36589  5762   -4.35522   38   17   -1.88239   -5.90994   214%  18.3    5s
+Cutting planes:
+  Learned: 47
+  Gomory: 3
+  Cover: 27
+  Implied bound: 10
+  MIR: 44
+  Mixing: 8
+  StrongCG: 3
+  Flow cover: 388
+  Inf proof: 81
+  Zero half: 19
+  RLT: 22
+  Relax-and-lift: 2
+Explored 66291 nodes (1192970 simplex iterations) in 8.29 seconds (5.69 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 7: -1.88239 -1.88239 -0.824495 ... -0.0672552
+No other solutions better than -1.88239
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.882391908506e+00, best bound -1.882391908506e+00, gap 0.0000%
+««««««« custo subido para o mestre 3.42642436080066
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -1.8823919085055736
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 6, 5, 8, 7, 10]
+============================================================================= ITERACAO GLOBAL 19
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 41 columns and 208 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -2.9624459e+30   8.176471e+30   2.962446e+00      0s
+       7    1.4453800e+01   0.000000e+00   0.000000e+00      0s
+Solved in 7 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.445380047e+01
+%%%%%%%%%%%%%%%%% iteracao 18
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.4538
+--- Colunas Escolhidas na Solução do Mestre (Iteração 18) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3448
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2069
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.4483
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 8:
+    - Valor (lambda): 0.0345
+    - Sequência: [0, 1, 3, 4, 6, 10]
+    - Custo:     4.88
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1724
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 13:
+    - Valor (lambda): 0.1379
+    - Sequência: [0, 3, 1, 7, 8, 6, 2, 10]
+    - Custo:     6.22
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1379
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.2759
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+  Veículo 1, Rota 19:
+    - Valor (lambda): 0.1724
+    - Sequência: [0, 1, 9, 4, 10]
+    - Custo:     4.90
+  Veículo 1, Rota 20:
+    - Valor (lambda): 0.0690
+    - Sequência: [0, 6, 5, 8, 7, 10]
+    - Custo:     3.43
+Custo Total do Mestre  nesta iteração: 14.4538
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.534079
+  Cliente 02: 1.459898
+  Cliente 03: 2.175473
+  Cliente 04: 3.234165
+  Cliente 05: 2.375780
+  Cliente 06: 0.426229
+  Cliente 07: 0.886346
+  Cliente 08: 2.228273
+  Cliente 09: 2.623760
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xc784e414
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.3775780
+Root relaxation: objective -4.972300e+00, 39 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.97230    0   16    1.37758   -4.97230   461%     -    0s
+H    0     0                       1.3474261   -4.97230   469%     -    0s
+H    0     0                       1.0354587   -4.97230   580%     -    0s
+     0     0   -2.26093    0   16    1.03546   -2.26093   318%     -    0s
+H    0     0                       0.2361260   -1.83044   875%     -    0s
+H    0     0                       0.0976423   -1.83044  1975%     -    0s
+     0     0   -1.46154    0   18    0.09764   -1.46154  1597%     -    0s
+H    0     0                      -0.0000000   -1.34399      -     -    0s
+     0     0   -1.33327    0   22   -0.00000   -1.33327      -     -    0s
+     0     0   -1.33327    0   22   -0.00000   -1.33327      -     -    0s
+     0     0   -1.21968    0   23   -0.00000   -1.21968      -     -    0s
+     0     0   -1.21411    0   23   -0.00000   -1.21411      -     -    0s
+     0     0   -1.16578    0   23   -0.00000   -1.16578      -     -    0s
+     0     0   -1.16578    0   19   -0.00000   -1.16578      -     -    0s
+     0     0   -1.15857    0   19   -0.00000   -1.15857      -     -    0s
+     0     0   -1.15784    0   19   -0.00000   -1.15784      -     -    0s
+     0     0   -1.15784    0   19   -0.00000   -1.15784      -     -    0s
+     0     0   -1.14498    0   16   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   23   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   23   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     0   -1.14498    0   24   -0.00000   -1.14498      -     -    0s
+     0     2   -0.95265    0   24   -0.00000   -0.95265      -     -    0s
+Cutting planes:
+  Learned: 12
+  Gomory: 6
+  Cover: 4
+  Implied bound: 8
+  MIR: 8
+  RLT: 13
+  Relax-and-lift: 1
+Explored 152 nodes (1407 simplex iterations) in 0.15 seconds (0.04 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -4.44089e-16 0.0976423 0.236126 ... 1.37758
+Optimal solution found (tolerance 1.00e-04)
+Best objective -4.440892098501e-16, best bound -4.440892098501e-16, gap 0.0000%
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.534079
+  Cliente 02: 1.459898
+  Cliente 03: 2.175473
+  Cliente 04: 3.234165
+  Cliente 05: 2.375780
+  Cliente 06: 0.426229
+  Cliente 07: 0.886346
+  Cliente 08: 2.228273
+  Cliente 09: 2.623760
+σ_k (dual veículo 1): -2.490203
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x3c2a5097
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.7779874
+Found heuristic solution: objective 1.3882726
+Root relaxation: objective -2.107700e+01, 110 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -21.07700    0   48    1.38827  -21.07700  1618%     -    0s
+H    0     0                       0.2862204  -21.07700  7464%     -    0s
+H    0     0                      -0.4639268  -21.07700  4443%     -    0s
+     0     0  -14.17104    0   48   -0.46393  -14.17104  2955%     -    0s
+     0     0  -14.17104    0   48   -0.46393  -14.17104  2955%     -    0s
+     0     0  -14.16693    0   50   -0.46393  -14.16693  2954%     -    0s
+     0     0  -14.16323    0   50   -0.46393  -14.16323  2953%     -    0s
+     0     0  -14.16315    0   50   -0.46393  -14.16315  2953%     -    0s
+     0     0  -14.15029    0   49   -0.46393  -14.15029  2950%     -    0s
+H    0     2                      -0.6924148  -14.14591  1943%     -    0s
+     0     2  -14.14591    0   49   -0.69241  -14.14591  1943%     -    0s
+* 5622  1720              26      -1.2626375   -9.64798   664%  17.1    1s
+ 35872  6844   -2.70841   41   13   -1.26264   -5.14434   307%  18.9    5s
+Cutting planes:
+  Learned: 62
+  Gomory: 11
+  Cover: 70
+  Implied bound: 11
+  MIR: 40
+  Mixing: 15
+  Flow cover: 440
+  Inf proof: 98
+  Zero half: 19
+  RLT: 26
+  Relax-and-lift: 2
+Explored 70974 nodes (1428543 simplex iterations) in 9.83 seconds (7.31 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 7: -1.26264 -1.26264 -0.692415 ... 1.77799
+No other solutions better than -1.26264
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.262637453464e+00, best bound -1.262637453464e+00, gap 0.0000%
+««««««« custo subido para o mestre 4.650775720322277
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -1.2626374534640115
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 2, 4, 3, 1, 10]
+============================================================================= ITERACAO GLOBAL 20
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 42 columns and 213 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.2626375e+30   2.000000e+30   1.262637e+00      0s
+       2    1.4245842e+01   0.000000e+00   0.000000e+00      0s
+Solved in 2 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.424584183e+01
+%%%%%%%%%%%%%%%%% iteracao 19
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.2458
+--- Colunas Escolhidas na Solução do Mestre (Iteração 19) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2353
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.4118
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+  Veículo 1, Rota 19:
+    - Valor (lambda): 0.0588
+    - Sequência: [0, 1, 9, 4, 10]
+    - Custo:     4.90
+  Veículo 1, Rota 20:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 6, 5, 8, 7, 10]
+    - Custo:     3.43
+  Veículo 1, Rota 21:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 2, 4, 3, 1, 10]
+    - Custo:     4.65
+Custo Total do Mestre  nesta iteração: 14.2458
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.021626
+  Cliente 02: 1.515609
+  Cliente 03: 1.592423
+  Cliente 04: 3.330702
+  Cliente 05: 2.528027
+  Cliente 06: 0.481940
+  Cliente 07: 2.204694
+  Cliente 08: 1.021346
+  Cliente 09: 3.359058
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x9c28c7d9
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [8e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1696194
+Root relaxation: objective -4.222504e+00, 50 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.22250    0   14    1.16962   -4.22250   461%     -    0s
+H    0     0                       1.0862453   -4.22250   489%     -    0s
+H    0     0                       1.0422997   -4.22250   505%     -    0s
+     0     0   -1.69581    0   12    1.04230   -1.69581   263%     -    0s
+H    0     0                       0.3065614   -1.48827   585%     -    0s
+     0     0   -1.26372    0   22    0.30656   -1.26372   512%     -    0s
+     0     0   -1.26240    0   22    0.30656   -1.26240   512%     -    0s
+H    0     0                       0.1601583   -1.26240   888%     -    0s
+     0     0   -1.26240    0   22    0.16016   -1.26240   888%     -    0s
+H    0     0                      -0.0000000   -1.26240      -     -    0s
+     0     0   -1.26240    0   22   -0.00000   -1.26240      -     -    0s
+     0     0   -1.26240    0   22   -0.00000   -1.26240      -     -    0s
+     0     0   -1.26240    0   14   -0.00000   -1.26240      -     -    0s
+     0     0   -1.26240    0   22   -0.00000   -1.26240      -     -    0s
+     0     0   -1.26240    0   22   -0.00000   -1.26240      -     -    0s
+     0     0   -1.20427    0   23   -0.00000   -1.20427      -     -    0s
+     0     0   -1.20427    0   23   -0.00000   -1.20427      -     -    0s
+     0     0   -1.20427    0   23   -0.00000   -1.20427      -     -    0s
+     0     0   -1.14615    0   23   -0.00000   -1.14615      -     -    0s
+     0     0   -1.11997    0   24   -0.00000   -1.11997      -     -    0s
+     0     0   -1.05409    0   24   -0.00000   -1.05409      -     -    0s
+     0     0   -1.05409    0   24   -0.00000   -1.05409      -     -    0s
+     0     0   -1.05154    0   24   -0.00000   -1.05154      -     -    0s
+     0     0   -1.05154    0   24   -0.00000   -1.05154      -     -    0s
+     0     0   -1.05154    0   24   -0.00000   -1.05154      -     -    0s
+H    0     0                      -0.1492887   -1.05154   604%     -    0s
+     0     0   -0.98284    0   14   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   21   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   19   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   25   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   25   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   17   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.98284    0   22   -0.14929   -0.98284   558%     -    0s
+     0     0   -0.93328    0   21   -0.14929   -0.93328   525%     -    0s
+     0     0   -0.92424    0   21   -0.14929   -0.92424   519%     -    0s
+     0     0   -0.92424    0   21   -0.14929   -0.92424   519%     -    0s
+     0     0   -0.92350    0   22   -0.14929   -0.92350   519%     -    0s
+     0     0   -0.91298    0   22   -0.14929   -0.91298   512%     -    0s
+     0     0   -0.91298    0   22   -0.14929   -0.91298   512%     -    0s
+     0     0   -0.91298    0   22   -0.14929   -0.91298   512%     -    0s
+     0     2   -0.91298    0   22   -0.14929   -0.91298   512%     -    0s
+Cutting planes:
+  Learned: 8
+  Gomory: 7
+  Cover: 3
+  Implied bound: 10
+  Clique: 2
+  MIR: 9
+  RLT: 11
+  Relax-and-lift: 4
+Explored 42 nodes (868 simplex iterations) in 0.18 seconds (0.05 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 7: -0.149289 -1.33227e-15 0.160158 ... 1.16962
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.492886797571e-01, best bound -1.492886797571e-01, gap 0.0000%
+««««««« custo subido para o mestre 15.884790628813743
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -0.1492886797571007
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 6, 5, 7, 1, 9, 3, 4, 2, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.021626
+  Cliente 02: 1.515609
+  Cliente 03: 1.592423
+  Cliente 04: 3.330702
+  Cliente 05: 2.528027
+  Cliente 06: 0.481940
+  Cliente 07: 2.204694
+  Cliente 08: 1.021346
+  Cliente 09: 3.359058
+σ_k (dual veículo 1): -2.809584
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x89895bfe
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.8894095
+Root relaxation: objective -2.374751e+01, 114 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -23.74751    0   48    1.88941  -23.74751  1357%     -    0s
+H    0     0                       0.9706046  -23.74751  2547%     -    0s
+H    0     0                       0.1491494  -22.24956      -     -    0s
+     0     0  -15.81468    0   52    0.14915  -15.81468      -     -    0s
+     0     0  -15.81467    0   52    0.14915  -15.81467      -     -    0s
+     0     0  -15.73638    0   51    0.14915  -15.73638      -     -    0s
+     0     0  -15.73460    0   51    0.14915  -15.73460      -     -    0s
+H    0     0                      -0.6218181  -15.73460  2430%     -    0s
+     0     0  -15.71946    0   51   -0.62182  -15.71946  2428%     -    0s
+     0     0  -15.71454    0   51   -0.62182  -15.71454  2427%     -    0s
+     0     2  -15.71454    0   51   -0.62182  -15.71454  2427%     -    0s
+H  358   330                      -0.8544217  -14.84580  1638%  17.2    0s
+ 45556  6046 infeasible   39        -0.85442   -4.32654   406%  18.1    5s
+Cutting planes:
+  Learned: 64
+  Gomory: 6
+  Cover: 56
+  Implied bound: 24
+  MIR: 38
+  Mixing: 8
+  Flow cover: 271
+  Inf proof: 90
+  Zero half: 16
+  RLT: 30
+  Relax-and-lift: 5
+Explored 72642 nodes (1295994 simplex iterations) in 8.53 seconds (5.97 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -0.854422 -0.854422 -0.621818 ... 1.88941
+Optimal solution found (tolerance 1.00e-04)
+Best objective -8.544217239058e-01, best bound -8.544217239058e-01, gap 0.0000%
+««««««« custo subido para o mestre 6.252074664599496
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -0.854421723905836
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 7, 1, 9, 4, 10]
+============================================================================= ITERACAO GLOBAL 21
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 44 columns and 227 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.0037104e+30   5.823529e+30   1.003710e+00      0s
+       1    1.4245842e+01   0.000000e+00   0.000000e+00      0s
+Solved in 1 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.424584183e+01
+%%%%%%%%%%%%%%%%% iteracao 20
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.2458
+--- Colunas Escolhidas na Solução do Mestre (Iteração 20) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2353
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.4118
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+  Veículo 1, Rota 19:
+    - Valor (lambda): 0.0588
+    - Sequência: [0, 1, 9, 4, 10]
+    - Custo:     4.90
+  Veículo 1, Rota 20:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 6, 5, 8, 7, 10]
+    - Custo:     3.43
+  Veículo 1, Rota 21:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 2, 4, 3, 1, 10]
+    - Custo:     4.65
+SEM MELHORA ITERACAO 1
+Custo Total do Mestre  nesta iteração: 14.2458
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.021626
+  Cliente 02: 1.515609
+  Cliente 03: 1.592423
+  Cliente 04: 3.330702
+  Cliente 05: 2.528027
+  Cliente 06: 0.481940
+  Cliente 07: 1.350273
+  Cliente 08: 1.875768
+  Cliente 09: 3.359058
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x9cf622f0
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [9e-02, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1696194
+Root relaxation: objective -4.412277e+00, 47 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.41228    0   12    1.16962   -4.41228   477%     -    0s
+H    0     0                       1.0422997   -4.41228   523%     -    0s
+     0     0   -1.81822    0   10    1.04230   -1.81822   274%     -    0s
+H    0     0                       0.6168408   -1.61067   361%     -    0s
+H    0     0                       0.3065614   -1.61067   625%     -    0s
+     0     0   -1.26372    0   22    0.30656   -1.26372   512%     -    0s
+     0     0   -1.26240    0   22    0.30656   -1.26240   512%     -    0s
+     0     0   -1.20427    0   22    0.30656   -1.20427   493%     -    0s
+     0     0   -1.20427    0   22    0.30656   -1.20427   493%     -    0s
+H    0     0                       0.1601583   -1.20427   852%     -    0s
+     0     0   -1.20427    0   22    0.16016   -1.20427   852%     -    0s
+     0     0   -1.20427    0   12    0.16016   -1.20427   852%     -    0s
+     0     0   -1.20427    0   22    0.16016   -1.20427   852%     -    0s
+     0     0   -1.20427    0   22    0.16016   -1.20427   852%     -    0s
+     0     0   -1.18799    0   24    0.16016   -1.18799   842%     -    0s
+     0     0   -1.13743    0   23    0.16016   -1.13743   810%     -    0s
+     0     0   -1.13743    0   23    0.16016   -1.13743   810%     -    0s
+H    0     0                      -0.0000000   -1.13743      -     -    0s
+     0     0   -1.12378    0   23   -0.00000   -1.12378      -     -    0s
+     0     0   -1.07902    0   23   -0.00000   -1.07902      -     -    0s
+     0     0   -1.07902    0   23   -0.00000   -1.07902      -     -    0s
+     0     0   -1.07902    0   23   -0.00000   -1.07902      -     -    0s
+     0     0   -1.07902    0   14   -0.00000   -1.07902      -     -    0s
+     0     0   -1.07902    0   14   -0.00000   -1.07902      -     -    0s
+     0     0   -1.07902    0   14   -0.00000   -1.07902      -     -    0s
+     0     2   -1.07902    0   14   -0.00000   -1.07902      -     -    0s
+Cutting planes:
+  Learned: 11
+  Gomory: 5
+  Cover: 2
+  Implied bound: 11
+  MIR: 15
+  RLT: 11
+Explored 94 nodes (1120 simplex iterations) in 0.13 seconds (0.04 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 6: -3.10862e-15 0.160158 0.306561 ... 1.16962
+Optimal solution found (tolerance 1.00e-04)
+Best objective -3.108624468950e-15, best bound -3.108624468950e-15, gap 0.0000%
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.021626
+  Cliente 02: 1.515609
+  Cliente 03: 1.592423
+  Cliente 04: 3.330702
+  Cliente 05: 2.528027
+  Cliente 06: 0.481940
+  Cliente 07: 1.350273
+  Cliente 08: 1.875768
+  Cliente 09: 3.359058
+σ_k (dual veículo 1): -2.809584
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xeae6f83a
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.8894095
+Root relaxation: objective -2.154554e+01, 109 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -21.54554    0   48    1.88941  -21.54554  1240%     -    0s
+H    0     0                       0.8308295  -21.54554  2693%     -    0s
+     0     0  -14.97249    0   49    0.83083  -14.97249  1902%     -    0s
+     0     0  -14.53202    0   48    0.83083  -14.53202  1849%     -    0s
+     0     0  -14.53202    0   48    0.83083  -14.53202  1849%     -    0s
+H    0     0                      -0.6218181  -14.53202  2237%     -    0s
+     0     0  -14.53202    0   48   -0.62182  -14.53202  2237%     -    0s
+     0     0  -14.53202    0   48   -0.62182  -14.53202  2237%     -    0s
+     0     0  -14.53202    0   48   -0.62182  -14.53202  2237%     -    0s
+     0     0  -14.53202    0   48   -0.62182  -14.53202  2237%     -    0s
+     0     2  -14.53202    0   48   -0.62182  -14.53202  2237%     -    0s
+ 35690  7471   -2.62714   33   20   -0.62182   -5.30185   753%  19.4    5s
+ 76365  1654   -1.91267   40   22   -0.62182   -2.13153   243%  20.2   10s
+Cutting planes:
+  Learned: 73
+  Gomory: 1
+  Cover: 61
+  Implied bound: 26
+  MIR: 69
+  Mixing: 16
+  StrongCG: 2
+  Flow cover: 337
+  Inf proof: 128
+  Zero half: 15
+  RLT: 30
+  Relax-and-lift: 6
+Explored 80442 nodes (1618729 simplex iterations) in 10.71 seconds (8.21 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 4: -0.621818 -0.621818 0.83083 1.88941 
+Optimal solution found (tolerance 1.00e-04)
+Best objective -6.218180951375e-01, best bound -6.218180951375e-01, gap 0.0000%
+««««««« custo subido para o mestre 4.850781059358212
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -0.6218180951374639
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 4, 3, 9, 10]
+============================================================================= ITERACAO GLOBAL 22
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 45 columns and 231 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -6.2181810e+29   2.735294e+30   6.218181e-01      0s
+       3    1.4201426e+01   0.000000e+00   0.000000e+00      0s
+Solved in 3 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.420142626e+01
+%%%%%%%%%%%%%%%%% iteracao 21
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.2014
+--- Colunas Escolhidas na Solução do Mestre (Iteração 21) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3571
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2500
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.3929
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+SOL itera k 1
+  Veículo 1, Rota 12:
+    - Valor (lambda): 0.1071
+    - Sequência: [0, 6, 8, 7, 9, 3, 10]
+    - Custo:     5.85
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1786
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1071
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 18:
+    - Valor (lambda): 0.1429
+    - Sequência: [0, 2, 5, 8, 7, 10]
+    - Custo:     4.46
+  Veículo 1, Rota 20:
+    - Valor (lambda): 0.2143
+    - Sequência: [0, 6, 5, 8, 7, 10]
+    - Custo:     3.43
+  Veículo 1, Rota 21:
+    - Valor (lambda): 0.1786
+    - Sequência: [0, 2, 4, 3, 1, 10]
+    - Custo:     4.65
+  Veículo 1, Rota 23:
+    - Valor (lambda): 0.0714
+    - Sequência: [0, 4, 3, 9, 10]
+    - Custo:     4.85
+Custo Total do Mestre  nesta iteração: 14.2014
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.154872
+  Cliente 02: 1.648856
+  Cliente 03: 1.858916
+  Cliente 04: 3.108624
+  Cliente 05: 2.439196
+  Cliente 06: 0.615187
+  Cliente 07: 2.055406
+  Cliente 08: 1.437128
+  Cliente 09: 3.003734
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x6220c31b
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-03, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1252038
+Root relaxation: objective -4.294641e+00, 39 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.29464    0   16    1.12520   -4.29464   482%     -    0s
+H    0     0                       0.3059317   -4.29464  1504%     -    0s
+     0     0   -1.76889    0   14    0.30593   -1.76889   678%     -    0s
+H    0     0                       0.0000000   -1.68269      -     -    0s
+     0     0   -1.50003    0   20    0.00000   -1.50003      -     -    0s
+     0     0   -1.46852    0   20    0.00000   -1.46852      -     -    0s
+     0     0   -1.46852    0   19    0.00000   -1.46852      -     -    0s
+     0     0   -1.44404    0   19    0.00000   -1.44404      -     -    0s
+     0     0   -1.44404    0   19    0.00000   -1.44404      -     -    0s
+     0     0   -1.44404    0   19    0.00000   -1.44404      -     -    0s
+     0     0   -1.44404    0   19    0.00000   -1.44404      -     -    0s
+     0     0   -1.41253    0   16    0.00000   -1.41253      -     -    0s
+     0     0   -1.41253    0   20    0.00000   -1.41253      -     -    0s
+     0     0   -1.41253    0   22    0.00000   -1.41253      -     -    0s
+     0     0   -1.41253    0   18    0.00000   -1.41253      -     -    0s
+     0     0   -1.41253    0   12    0.00000   -1.41253      -     -    0s
+     0     0   -1.37491    0   11    0.00000   -1.37491      -     -    0s
+     0     0   -1.30928    0   11    0.00000   -1.30928      -     -    0s
+     0     0   -1.30347    0   18    0.00000   -1.30347      -     -    0s
+     0     0   -1.30347    0   18    0.00000   -1.30347      -     -    0s
+     0     0   -1.29171    0   17    0.00000   -1.29171      -     -    0s
+     0     0   -1.28073    0   18    0.00000   -1.28073      -     -    0s
+     0     0   -1.28073    0   18    0.00000   -1.28073      -     -    0s
+     0     0   -1.28073    0   18    0.00000   -1.28073      -     -    0s
+     0     0   -1.28073    0   14    0.00000   -1.28073      -     -    0s
+     0     2   -1.22678    0   14    0.00000   -1.22678      -     -    0s
+H   44    31                      -0.2140137   -1.00135   368%   9.7    0s
+Cutting planes:
+  Learned: 12
+  Gomory: 8
+  Cover: 2
+  Implied bound: 8
+  MIR: 17
+  StrongCG: 1
+  RLT: 9
+Explored 139 nodes (1283 simplex iterations) in 0.16 seconds (0.05 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 4: -0.214014 2.22045e-16 0.305932 1.1252 
+Optimal solution found (tolerance 1.00e-04)
+Best objective -2.140137101875e-01, best bound -2.140137101875e-01, gap 0.0000%
+««««««« custo subido para o mestre 12.350425341180816
+22222222222222222 Terminou roda sub probl do veic 0, com CUSTO RED -0.21401371018747328
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 0
+[0, 3, 9, 1, 7, 8, 5, 6, 10]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.154872
+  Cliente 02: 1.648856
+  Cliente 03: 1.858916
+  Cliente 04: 3.108624
+  Cliente 05: 2.439196
+  Cliente 06: 0.615187
+  Cliente 07: 2.055406
+  Cliente 08: 1.437128
+  Cliente 09: 3.003734
+σ_k (dual veículo 1): -3.120493
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xbf9740e8
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [2e-02, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.1559030
+Root relaxation: objective -2.232959e+01, 116 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -22.32959    0   52    2.15590  -22.32959  1136%     -    0s
+H    0     0                       1.8589162  -20.57659  1207%     -    0s
+H    0     0                       0.7550648  -14.57558  2030%     -    0s
+     0     0  -14.57558    0   54    0.75506  -14.57558  2030%     -    0s
+     0     0  -14.57558    0   54    0.75506  -14.57558  2030%     -    0s
+     0     0  -14.53102    0   50    0.75506  -14.53102  2024%     -    0s
+     0     0  -14.53102    0   50    0.75506  -14.53102  2024%     -    0s
+     0     0  -14.53102    0   50    0.75506  -14.53102  2024%     -    0s
+     0     0  -14.52935    0   54    0.75506  -14.52935  2024%     -    0s
+     0     0  -14.52545    0   52    0.75506  -14.52545  2024%     -    0s
+     0     0  -14.52545    0   52    0.75506  -14.52545  2024%     -    0s
+     0     2  -14.52506    0   52    0.75506  -14.52506  2024%     -    0s
+H  155   162                       0.6228066  -14.04332  2355%  23.1    0s
+H  355   291                       0.2215201  -14.04332  6440%  18.1    0s
+H  776   645                      -0.0000000  -13.63592      -  15.2    0s
+* 7054  1827              32      -0.4878119   -9.46788  1841%  18.8    2s
+ 36521  7010   -3.93898   37   26   -0.48781   -5.00137   925%  20.7    5s
+ 70274  2416     cutoff   48        -0.48781   -2.30965   373%  21.6   10s
+Cutting planes:
+  Learned: 64
+  Gomory: 5
+  Cover: 53
+  Implied bound: 21
+  MIR: 63
+  Mixing: 15
+  Flow cover: 448
+  Inf proof: 130
+  Zero half: 19
+  RLT: 31
+  Relax-and-lift: 2
+Explored 77229 nodes (1655204 simplex iterations) in 10.81 seconds (8.12 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -0.487812 -0.487812 -4.44089e-16 ... 2.1559
+Optimal solution found (tolerance 1.00e-04)
+Best objective -4.878119004181e-01, best bound -4.878119004181e-01, gap 0.0000%
+««««««« custo subido para o mestre 4.587468339768549
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -0.48781190041809497
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 7, 8, 5, 6, 2, 10]
+============================================================================= ITERACAO GLOBAL 23
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 47 columns and 245 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -7.0182561e+29   2.964286e+30   7.018256e-01      0s
+       5    1.4035906e+01   0.000000e+00   0.000000e+00      0s
+Solved in 5 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.403590580e+01
+%%%%%%%%%%%%%%%%% iteracao 22
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.0359
+--- Colunas Escolhidas na Solução do Mestre (Iteração 22) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 14:
+    - Valor (lambda): 0.2353
+    - Sequência: [0, 5, 8, 7, 1, 9, 3, 4, 10]
+    - Custo:     15.06
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.2353
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+  Veículo 0, Rota 21:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 3, 9, 1, 7, 8, 5, 6, 10]
+    - Custo:     12.35
+SOL itera k 1
+  Veículo 1, Rota 16:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 2, 6, 8, 7, 9, 1, 10]
+    - Custo:     6.79
+  Veículo 1, Rota 17:
+    - Valor (lambda): 0.1176
+    - Sequência: [0, 4, 2, 6, 8, 7, 10]
+    - Custo:     5.74
+  Veículo 1, Rota 19:
+    - Valor (lambda): 0.0588
+    - Sequência: [0, 1, 9, 4, 10]
+    - Custo:     4.90
+  Veículo 1, Rota 21:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 2, 4, 3, 1, 10]
+    - Custo:     4.65
+  Veículo 1, Rota 23:
+    - Valor (lambda): 0.1765
+    - Sequência: [0, 4, 3, 9, 10]
+    - Custo:     4.85
+  Veículo 1, Rota 24:
+    - Valor (lambda): 0.3529
+    - Sequência: [0, 7, 8, 5, 6, 2, 10]
+    - Custo:     4.59
+Custo Total do Mestre  nesta iteração: 14.0359
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.508158
+  Cliente 02: 1.304320
+  Cliente 03: 1.457137
+  Cliente 04: 3.470659
+  Cliente 05: 2.313420
+  Cliente 06: 0.763208
+  Cliente 07: 1.350273
+  Cliente 08: 1.945747
+  Cliente 09: 3.012483
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x6213f3a3
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-03, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1029589
+Root relaxation: objective -4.232091e+00, 43 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.23209    0   14    1.10296   -4.23209   484%     -    0s
+     0     0   -1.80773    0   18    1.10296   -1.80773   264%     -    0s
+     0     0   -1.07274    0   12    1.10296   -1.07274   197%     -    0s
+H    0     0                      -0.0000000   -1.07274      -     -    0s
+     0     0   -1.07274    0   12   -0.00000   -1.07274      -     -    0s
+     0     0   -1.02453    0   12   -0.00000   -1.02453      -     -    0s
+     0     0   -1.02453    0   14   -0.00000   -1.02453      -     -    0s
+     0     0   -1.02453    0   18   -0.00000   -1.02453      -     -    0s
+     0     0   -1.02453    0   18   -0.00000   -1.02453      -     -    0s
+     0     0   -1.02453    0   10   -0.00000   -1.02453      -     -    0s
+     0     0   -0.98471    0   16   -0.00000   -0.98471      -     -    0s
+     0     0   -0.98471    0   19   -0.00000   -0.98471      -     -    0s
+     0     0   -0.97018    0   19   -0.00000   -0.97018      -     -    0s
+     0     0   -0.97018    0   19   -0.00000   -0.97018      -     -    0s
+     0     0   -0.91889    0   14   -0.00000   -0.91889      -     -    0s
+     0     0   -0.78669    0   17   -0.00000   -0.78669      -     -    0s
+     0     0   -0.76945    0   18   -0.00000   -0.76945      -     -    0s
+     0     0   -0.76945    0   18   -0.00000   -0.76945      -     -    0s
+     0     0   -0.76945    0   18   -0.00000   -0.76945      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   14   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   15   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   15   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     0   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+     0     2   -0.76505    0   18   -0.00000   -0.76505      -     -    0s
+Cutting planes:
+  Learned: 8
+  Gomory: 3
+  Cover: 3
+  Implied bound: 9
+  MIR: 9
+  RLT: 10
+  Relax-and-lift: 2
+Explored 82 nodes (982 simplex iterations) in 0.17 seconds (0.04 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -4.44089e-16 1.10296 
+Optimal solution found (tolerance 1.00e-04)
+Best objective -5.551115123126e-16, best bound -6.661338147751e-16, gap 0.0000%
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.508158
+  Cliente 02: 1.304320
+  Cliente 03: 1.457137
+  Cliente 04: 3.470659
+  Cliente 05: 2.313420
+  Cliente 06: 0.763208
+  Cliente 07: 1.350273
+  Cliente 08: 1.945747
+  Cliente 09: 3.012483
+σ_k (dual veículo 1): -3.089498
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xa09d694f
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [6e-02, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.1026638
+Root relaxation: objective -2.216237e+01, 105 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -22.16237    0   50    2.10266  -22.16237  1154%     -    0s
+H    0     0                       1.7797359  -22.16237  1345%     -    0s
+H    0     0                       0.9041264  -21.03902  2427%     -    0s
+     0     0  -14.55670    0   46    0.90413  -14.55670  1710%     -    0s
+     0     0  -14.55670    0   46    0.90413  -14.55670  1710%     -    0s
+     0     0  -14.55670    0   48    0.90413  -14.55670  1710%     -    0s
+     0     0  -14.55670    0   48    0.90413  -14.55670  1710%     -    0s
+     0     0  -14.52653    0   51    0.90413  -14.52653  1707%     -    0s
+     0     0  -14.52653    0   51    0.90413  -14.52653  1707%     -    0s
+H    0     0                       0.7110104  -14.50228  2140%     -    0s
+     0     2  -14.50228    0   51    0.71101  -14.50228  2140%     -    0s
+H   26    69                       0.1432756  -13.97150  9851%  29.7    0s
+H  374   299                       0.0000000  -13.82174      -  16.1    0s
+H13563  4163                      -0.0019066   -8.13323      -  18.1    2s
+ 35870  7435   -2.56206   42   17   -0.00191   -5.28653      -  19.4    6s
+ 67713  5150   -0.83064   44   13   -0.00191   -2.82890      -  19.8   10s
+Cutting planes:
+  Learned: 58
+  Gomory: 3
+  Cover: 51
+  Implied bound: 26
+  MIR: 36
+  Mixing: 20
+  Flow cover: 389
+  Inf proof: 133
+  Zero half: 14
+  RLT: 29
+  Relax-and-lift: 9
+Explored 86217 nodes (1654493 simplex iterations) in 12.13 seconds (9.17 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 8: -0.00190655 -0.00190655 4.44089e-16 ... 2.10266
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.906550754976e-03, best bound -1.906550754976e-03, gap 0.0000%
+««««««« custo subido para o mestre 6.487751193949485
+22222222222222222 Terminou roda sub probl do veic 1, com CUSTO RED -0.001906550754975811
+___________ INITERRUPT TRUE
+NOVA ROTA ADICIONADA veiculo 1
+[0, 4, 2, 8, 7, 1, 10]
+============================================================================= ITERACAO GLOBAL 24
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 48 columns and 251 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+LP warm-start: use basis
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.9065508e+27   2.235294e+30   1.906551e-03      0s
+       1    1.4035270e+01   0.000000e+00   0.000000e+00      0s
+Solved in 1 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.403527029e+01
+%%%%%%%%%%%%%%%%% iteracao 23
+--- Solução Ótima Encontrada NO GC MESTRE ---
+Valor da Função Objetivo (Custo Total): 14.0353
+--- Colunas Escolhidas na Solução do Mestre (Iteração 23) ---
+SOL itera k 0
+  Veículo 0, Rota 1:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 10]
+    - Custo:     0.00
+  Veículo 0, Rota 16:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 1, 9, 3, 4, 2, 5, 6, 10]
+    - Custo:     13.83
+  Veículo 0, Rota 21:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 3, 9, 1, 7, 8, 5, 6, 10]
+    - Custo:     12.35
+SOL itera k 1
+  Veículo 1, Rota 23:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 4, 3, 9, 10]
+    - Custo:     4.85
+  Veículo 1, Rota 24:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 7, 8, 5, 6, 2, 10]
+    - Custo:     4.59
+  Veículo 1, Rota 25:
+    - Valor (lambda): 0.3333
+    - Sequência: [0, 4, 2, 8, 7, 1, 10]
+    - Custo:     6.49
+Custo Total do Mestre  nesta iteração: 14.0353
+--- Fim da Listagem de Colunas ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 0
+sub _ k0
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.508476
+  Cliente 02: 1.303207
+  Cliente 03: 1.457455
+  Cliente 04: 3.470183
+  Cliente 05: 2.312943
+  Cliente 06: 0.765433
+  Cliente 07: 1.350273
+  Cliente 08: 1.944158
+  Cliente 09: 3.011689
+σ_k (dual veículo 0): -0.000000
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0xda02e5fa
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e-03, 3e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 1.1012112
+Root relaxation: objective -4.230986e+00, 43 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0   -4.23099    0   14    1.10121   -4.23099   484%     -    0s
+     0     0   -1.80670    0   18    1.10121   -1.80670   264%     -    0s
+     0     0   -1.07226    0   12    1.10121   -1.07226   197%     -    0s
+H    0     0                      -0.0000000   -1.07226      -     -    0s
+     0     0   -1.07226    0   12   -0.00000   -1.07226      -     -    0s
+     0     0   -1.02300    0   12   -0.00000   -1.02300      -     -    0s
+     0     0   -1.02300    0   14   -0.00000   -1.02300      -     -    0s
+     0     0   -1.02300    0   18   -0.00000   -1.02300      -     -    0s
+     0     0   -1.02300    0   18   -0.00000   -1.02300      -     -    0s
+     0     0   -1.02300    0   10   -0.00000   -1.02300      -     -    0s
+     0     0   -0.98404    0   16   -0.00000   -0.98404      -     -    0s
+     0     0   -0.98404    0   19   -0.00000   -0.98404      -     -    0s
+     0     0   -0.96996    0   19   -0.00000   -0.96996      -     -    0s
+     0     0   -0.96996    0   19   -0.00000   -0.96996      -     -    0s
+     0     0   -0.91882    0   18   -0.00000   -0.91882      -     -    0s
+     0     0   -0.78693    0   17   -0.00000   -0.78693      -     -    0s
+     0     0   -0.76938    0   18   -0.00000   -0.76938      -     -    0s
+     0     0   -0.76938    0   18   -0.00000   -0.76938      -     -    0s
+     0     0   -0.76938    0   18   -0.00000   -0.76938      -     -    0s
+     0     0   -0.76537    0   18   -0.00000   -0.76537      -     -    0s
+     0     0   -0.76537    0   18   -0.00000   -0.76537      -     -    0s
+     0     0   -0.75141    0   14   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   15   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   13   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     0   -0.75141    0   18   -0.00000   -0.75141      -     -    0s
+     0     2   -0.73319    0   18   -0.00000   -0.73319      -     -    0s
+Cutting planes:
+  Learned: 11
+  Gomory: 6
+  Cover: 3
+  Implied bound: 5
+  MIR: 6
+  RLT: 9
+  Relax-and-lift: 2
+Explored 92 nodes (1022 simplex iterations) in 0.18 seconds (0.05 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 2: -4.44089e-16 1.10121 
+Optimal solution found (tolerance 1.00e-04)
+Best objective -6.661338147751e-16, best bound -6.661338147751e-16, gap 0.0000%
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!inicia   roda sub probl do veic 1
+sub _ k1
+VALORES PASSADOS
+π (visit unique constraints):
+  Cliente 01: 1.508476
+  Cliente 02: 1.303207
+  Cliente 03: 1.457455
+  Cliente 04: 3.470183
+  Cliente 05: 2.312943
+  Cliente 06: 0.765433
+  Cliente 07: 1.350273
+  Cliente 08: 1.944158
+  Cliente 09: 3.011689
+σ_k (dual veículo 1): -3.088545
+Duais de arcos fixados: nenhum
+Set parameter TimeLimit to value 30
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Non-default parameters:
+TimeLimit  30
+Optimize a model with 245 rows, 143 columns and 832 nonzeros
+Model fingerprint: 0x45185bc5
+Variable types: 22 continuous, 121 integer (121 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [5e-02, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+Presolve removed 45 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 200 rows, 118 columns, 801 nonzeros
+Variable types: 19 continuous, 99 integer (99 binary)
+Found heuristic solution: objective 2.0999628
+Root relaxation: objective -2.215614e+01, 119 iterations, 0.00 seconds (0.00 work units)
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+     0     0  -22.15614    0   50    2.09996  -22.15614  1155%     -    0s
+H    0     0                       0.9105567  -22.15614  2533%     -    0s
+     0     0  -14.69826    0   50    0.91056  -14.69826  1714%     -    0s
+     0     0  -14.55985    0   48    0.91056  -14.55985  1699%     -    0s
+     0     0  -14.55215    0   48    0.91056  -14.55215  1698%     -    0s
+     0     0  -14.55215    0   46    0.91056  -14.55215  1698%     -    0s
+     0     0  -14.54790    0   49    0.91056  -14.54790  1698%     -    0s
+H    0     0                       0.6307616  -14.54647  2406%     -    0s
+     0     0  -14.54499    0   49    0.63076  -14.54499  2406%     -    0s
+     0     0  -14.53979    0   49    0.63076  -14.53979  2405%     -    0s
+     0     0  -14.53979    0   49    0.63076  -14.53979  2405%     -    0s
+H    0     0                       0.0000000  -14.53979      -     -    0s
+     0     2  -14.53979    0   49    0.00000  -14.53979      -     -    0s
+ 37063  6324   -3.84246   42   25    0.00000   -4.57058      -  19.4    5s
+ 67937  1263 infeasible   49         0.00000   -1.56747      -  19.5   10s
+Cutting planes:
+  Learned: 71
+  Gomory: 8
+  Cover: 67
+  Implied bound: 27
+  MIR: 73
+  Mixing: 17
+  StrongCG: 1
+  Flow cover: 344
+  Inf proof: 101
+  Zero half: 13
+  RLT: 29
+  Relax-and-lift: 4
+Explored 71853 nodes (1390611 simplex iterations) in 10.34 seconds (7.91 work units)
+Thread count was 12 (of 12 available processors)
+Solution count 5: 0 4.44089e-16 0.630762 ... 2.09996
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+/n/n/n-------- INICIOU MIP------------
+🧹 Removendo restrições de arco fixado antes do MIP final...
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (win64 - Windows 11.0 (22631.2))
+CPU model: 12th Gen Intel(R) Core(TM) i7-1255U, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 12 logical processors, using up to 12 threads
+Optimize a model with 11 rows, 48 columns and 251 nonzeros
+Model fingerprint: 0xf9a65670
+Variable types: 0 continuous, 48 integer (48 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [3e+00, 1e+07]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 17.8138669
+Presolve removed 11 rows and 48 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 12 available processors)
+Solution count 1: 17.8139 
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.781386692039e+01, best bound 1.781386692039e+01, gap 0.0000%
+==== SOLUÇÃO ÓTIMA INTEIRA ENCONTRADA ====
+Custo Total Inteiro (Upper Bound): 17.8139
+--- Detalhes das Rotas Escolhidas (Solução Inteira) ---
+  Veículo 0, Rota 13:
+    - Sequência: [0, 6, 5, 8, 7, 1, 3, 4, 2, 10]
+    - Custo:     14.61
+  Veículo 1, Rota 2:
+    - Sequência: [0, 9, 10]
+    - Custo:     3.20
+==============================================
+[[[0, 0], [10, 10], [0, 23], [5, 2], [0, 14], [13, 1], [14, 15], [0, 9], [0, 4], [0, 9], [14, 7]], [[0, 0], [0, 0], [0, 0], [4, 7], [3, 1], [0, 0], [0, 0], [3, 4], [8, 0], [21, 5], [0, 16]], [[0, 0], [0, 0], [0, 0], [0, 2], [0, 4], [10, 9], [0, 16], [0, 0], [0, 1], [8, 0], [4, 21]], [[0, 0], [0, 8], [0, 0], [0, 0], [24, 4], [8, 0], [0, 0], [0, 0], [0, 0], [6, 5], [1, 14]], [[0, 0], [0, 3], [22, 15], [1, 9], [0, 0], [0, 0], [0, 4], [0, 0], [0, 1], [0, 0], [13, 5]], [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [12, 13], [8, 4], [18, 10], [0, 0], [0, 0]], [[0, 0], [8, 0], [0, 15], [0, 0], [1, 0], [5, 4], [0, 0], [0, 0], [0, 27], [0, 3], [12, 4]], [[0, 0], [14, 1], [0, 0], [0, 0], [0, 0], [0, 7], [0, 3], [0, 0], [3, 4], [0, 20], [8, 20]], [[0, 0], [4, 0], [0, 0], [0, 0], [8, 3], [2, 6], [0, 2], [14, 38], [0, 0], [0, 0], [1, 1]], [[0, 0], [3, 11], [0, 0], [29, 11], [0, 11], [0, 0], [0, 0], [0, 0], [0, 3], [0, 0], [3, 6]], [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]]
+=========INICIO PRINT SOLUCAO EXATA=========
+sol exata veic 0
+sequencia_rota =
+[[0, 4, 3, 9, 1, 10]]
+custo =
+[9.803604002649267]
+sol exata veic 1
+sequencia_rota =
+[[0, 7, 8, 5, 6, 2, 10]]
+custo =
+[4.587468339768549]
+CUSTO TOTAL EXATA = 14.3911
+=========FIM PRINT SOLUCAO EXATA=========
+✅ Solução GC exportada com sucesso para 'solucao_gcm.json'

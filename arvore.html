@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Árvore Branch-and-Price</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 12px;
+      font-family: Arial, sans-serif;
+      background: #f7f7f9;
+      box-sizing: border-box;
+    }
+    h2 { margin: 0 0 8px 0; }
+
+    #topBar {
+      margin-bottom: 10px;
+    }
+
+    #mainLayout {
+      display: flex;
+      gap: 10px;
+      height: calc(100vh - 80px);
+    }
+
+    #treeContainer {
+      flex: 3;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      overflow: hidden; /* pan/zoom pelo mouse */
+    }
+
+    #treeSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #nodeDetails {
+      flex: 1;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
+      overflow: auto;
+      min-width: 260px;
+    }
+
+    .node-circle {
+      r: 40px; /* ~1 polegada de diâmetro ~80px */
+      stroke: #333;
+      stroke-width: 2px;
+      fill: white;
+      transition: transform .15s;
+    }
+    .node-group:hover .node-circle {
+      transform: scale(1.07);
+      cursor: pointer;
+    }
+    .selected-node {
+      stroke: #0077ff !important;
+      stroke-width: 4px !important;
+    }
+
+    .node-label-main {
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      fill: #222;
+    }
+    .node-label-sub {
+      font-size: 11px;
+      text-anchor: middle;
+      fill: #555;
+    }
+
+    .link-path {
+      stroke: #bbb;
+      stroke-width: 2px;
+      fill: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="topBar">
+  <h2>Árvore Branch-and-Price</h2>
+  <input type="file" id="fileInput" accept=".json">
+  <div id="info">Selecione seu arquivo <code>arvore_bp_*.json</code>.</div>
+</div>
+
+<div id="mainLayout">
+  <div id="treeContainer">
+    <svg id="treeSvg"></svg>
+  </div>
+  <div id="nodeDetails">Clique em um nó para ver detalhes.</div>
+</div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const svg = d3.select("#treeSvg");
+const details = document.getElementById("nodeDetails");
+const info = document.getElementById("info");
+const treeContainer = document.getElementById("treeContainer");
+
+fileInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => loadJSON(JSON.parse(ev.target.result));
+  reader.readAsText(file);
+});
+
+function loadJSON(raw) {
+  const flatNodes = [];
+  raw.niveis.forEach(nivel => {
+    nivel.nos.forEach(no => {
+      flatNodes.push({
+        id: no.no_id,
+        parent: no.id_pai,
+        depth: no.profundidade,
+        lp: no.custo_lp,
+        // lê status diretamente se existir; senão, deriva de solucao_inteira
+        status: no.status || (no.solucao_inteira ? "inteiro" : "fracionario"),
+        solucao_inteira: !!no.solucao_inteira,
+        arcos_fixados_em_1: no.arcos_fixados_em_1 || [],
+        arcos_proibidos: no.arcos_proibidos || [],
+        rotas_ativas_lp: no.rotas_ativas_lp || {},
+        motivo_poda: no.motivo_poda || null
+      });
+    });
+  });
+
+  info.textContent = `Nós na árvore: ${flatNodes.length}`;
+  buildTree(flatNodes);
+}
+
+function buildTree(nodes) {
+  svg.selectAll("*").remove();
+  details.textContent = "Clique em um nó para ver detalhes.";
+
+  const containerWidth  = treeContainer.clientWidth  || 800;
+  const containerHeight = treeContainer.clientHeight || 600;
+
+  svg.attr("width", containerWidth).attr("height", containerHeight);
+
+  const g = svg.append("g");
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.3, 2.5])
+    .on("zoom", event => {
+      g.attr("transform", event.transform);
+    });
+
+  svg.call(zoom);
+
+  // Constrói hierarquia
+  const idMap = new Map();
+  nodes.forEach(n => idMap.set(n.id, { ...n, children: [] }));
+
+  let root = null;
+  idMap.forEach(n => {
+    if (n.parent == null) root = n;
+    else {
+      const p = idMap.get(n.parent);
+      if (p) p.children.push(n);
+    }
+  });
+
+  const rootH = d3.hierarchy(root);
+  const tree = d3.tree().nodeSize([140, 150]); // dx, dy (horizontal, vertical)
+  tree(rootH);
+
+  // Calcula bounding box da árvore (em coords de layout)
+  let xMin = Infinity, xMax = -Infinity, yMin = Infinity, yMax = -Infinity;
+  rootH.each(d => {
+    if (d.x < xMin) xMin = d.x;
+    if (d.x > xMax) xMax = d.x;
+    if (d.y < yMin) yMin = d.y;
+    if (d.y > yMax) yMax = d.y;
+  });
+
+  const treeWidth  = xMax - xMin || 1;
+  const treeHeight = yMax - yMin || 1;
+
+  // Escolhe um scale para caber bem no container
+  const scale = 0.9 * Math.min(
+    containerWidth  / treeWidth,
+    containerHeight / treeHeight
+  );
+
+  // Centro da árvore em coords de layout
+  const treeCenterX = (xMin + xMax) / 2;
+  const treeTopY    = yMin; // começo da árvore
+
+  // Translação: centraliza horizontalmente e traz um pouco pra baixo
+  const tx = containerWidth  / 2 - scale * treeCenterX;
+  const ty = 60 - scale * treeTopY; // 60px de margem do topo
+
+  const initialTransform = d3.zoomIdentity
+    .translate(tx, ty)
+    .scale(scale);
+
+  svg.call(zoom.transform, initialTransform);
+
+  // Desenha links
+  g.append("g").selectAll("path")
+    .data(rootH.links())
+    .join("path")
+    .attr("class", "link-path")
+    .attr("d", d3.linkVertical()
+      .x(d => d.x)
+      .y(d => d.y)
+    );
+
+  // Desenha nós
+  const nodeSel = g.append("g").selectAll("g")
+    .data(rootH.descendants())
+    .join("g")
+    .attr("class", "node-group")
+    .attr("transform", d => `translate(${d.x},${d.y})`)
+    .on("click", function(event, d) {
+      selectNode(event, d, nodeSel);
+    });
+
+nodeSel.append("circle")
+  .attr("class", "node-circle")
+  .attr("fill", d => {
+    const n = d.data;
+    if (n.solucao_inteira || n.status === "inteiro") {
+      return "#800080";             // roxo para nó inteiro
+    }
+    if (n.status === "podado") {
+      return "#ffcccc";             // opcional: vermelho claro para podado
+    }
+    return "white";                 // fracionário/ativo
+  });
+
+
+  nodeSel.append("text")
+    .attr("class", "node-label-main")
+    .attr("dy", "-0.5em")
+    .text(d => `N${d.data.id}`);
+
+  nodeSel.append("text")
+    .attr("class", "node-label-sub")
+    .attr("dy", "1.2em")
+    .text(d => d.data.lp != null ? `LP: ${d.data.lp.toFixed(2)}` : "LP: -");
+}
+
+function selectNode(event, d, allNodes) {
+  allNodes.selectAll("circle").classed("selected-node", false);
+  d3.select(event.currentTarget).select("circle").classed("selected-node", true);
+
+  const n = d.data;
+
+  const linhas = [];
+  linhas.push(`Nó ${n.id}`);
+  linhas.push(`Pai: ${n.parent == null ? "(raiz)" : n.parent}`);
+  linhas.push(`Profundidade: ${n.depth}`);
+  linhas.push(`Status: ${n.status}`);
+  linhas.push(`Custo LP: ${n.lp}`);
+  if (n.motivo_poda) linhas.push(`Motivo poda: ${n.motivo_poda}`);
+  linhas.push("");
+
+  linhas.push("Arcos fixados (x=1):");
+  linhas.push(formatArcList(n.arcos_fixados_em_1));
+  linhas.push("");
+
+  linhas.push("Arcos proibidos (x=0):");
+  linhas.push(formatArcList(n.arcos_proibidos));
+  linhas.push("");
+
+  linhas.push("Rotas ativas LP:");
+  linhas.push(formatRotas(n.rotas_ativas_lp));
+  linhas.push(`Status: ${n.status}`);
+linhas.push(`Inteiro: ${n.solucao_inteira ? "sim" : "não"}`);
+
+
+  details.textContent = linhas.join("\n");
+}
+
+function formatArcList(arcos) {
+  if (!arcos || arcos.length === 0) return "  nenhum\n";
+  return arcos.map(a => `  (${a[0]},${a[1]},${a[2]})`).join("\n");
+}
+
+function formatRotas(r) {
+  if (!r || Object.keys(r).length === 0) return "  nenhuma\n";
+  let out = "";
+  for (const k in r) {
+    const seqs = r[k].sequencias || [];
+    seqs.forEach((s, i) => {
+      const cost = r[k].custos?.[i];
+      out += `  Veic ${k}: ${JSON.stringify(s)}, custo=${cost}\n`;
+    });
+  }
+  return out;
+}
+</script>
+
+</body>
+</html>

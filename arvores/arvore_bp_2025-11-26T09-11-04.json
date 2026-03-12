@@ -1,0 +1,890 @@
+{
+  "run_id": "2025-11-26T09-11-04",
+  "instancia": {
+    "nbcd": 11,
+    "nbn": 13,
+    "nbv": 2
+  },
+  "niveis": [
+    {
+      "nivel": 0,
+      "nos": [
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 17.088363225677224,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {}
+        }
+      ]
+    },
+    {
+      "nivel": 1,
+      "nos": [
+        {
+          "no_id": 2,
+          "id_pai": 0,
+          "profundidade": 1,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              2,
+              1
+            ]
+          ],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 1,
+          "id_pai": 0,
+          "profundidade": 1,
+          "custo_lp": 17.088363225677224,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        }
+      ]
+    },
+    {
+      "nivel": 2,
+      "nos": [
+        {
+          "no_id": 4,
+          "id_pai": 1,
+          "profundidade": 2,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 3,
+          "id_pai": 1,
+          "profundidade": 2,
+          "custo_lp": 17.108619579936928,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 3,
+      "nos": [
+        {
+          "no_id": 6,
+          "id_pai": 3,
+          "profundidade": 3,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              6,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 5,
+          "id_pai": 3,
+          "profundidade": 3,
+          "custo_lp": 17.161378321035063,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 4,
+      "nos": [
+        {
+          "no_id": 8,
+          "id_pai": 5,
+          "profundidade": 4,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              4,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 7,
+          "id_pai": 5,
+          "profundidade": 4,
+          "custo_lp": 17.21836484686508,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 5,
+      "nos": [
+        {
+          "no_id": 10,
+          "id_pai": 7,
+          "profundidade": 5,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              8,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 9,
+          "id_pai": 7,
+          "profundidade": 5,
+          "custo_lp": 17.220767860899883,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 6,
+      "nos": [
+        {
+          "no_id": 12,
+          "id_pai": 9,
+          "profundidade": 6,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              7,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 11,
+          "id_pai": 9,
+          "profundidade": 6,
+          "custo_lp": 17.297626768099185,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 7,
+      "nos": [
+        {
+          "no_id": 14,
+          "id_pai": 11,
+          "profundidade": 7,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              5,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 13,
+          "id_pai": 11,
+          "profundidade": 7,
+          "custo_lp": 17.34540850793589,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  1,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.650775720322278
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "nivel": 8,
+      "nos": [
+        {
+          "no_id": 16,
+          "id_pai": 13,
+          "profundidade": 8,
+          "custo_lp": 10000000.0,
+          "solucao_inteira": true,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              10,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "0": {
+              "sequencias": [
+                [
+                  0,
+                  12
+                ]
+              ],
+              "custos": [
+                0.0
+              ]
+            },
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  10,
+                  8,
+                  1,
+                  5,
+                  6,
+                  7,
+                  9,
+                  11,
+                  3,
+                  2,
+                  4,
+                  12
+                ]
+              ],
+              "custos": [
+                10000000.0
+              ]
+            }
+          }
+        },
+        {
+          "no_id": 15,
+          "id_pai": 13,
+          "profundidade": 8,
+          "custo_lp": 17.378472970611366,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ],
+            [
+              0,
+              10,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        }
+      ]
+    },
+    {
+      "nivel": 9,
+      "nos": [
+        {
+          "no_id": 18,
+          "id_pai": 15,
+          "profundidade": 9,
+          "custo_lp": null,
+          "solucao_inteira": false,
+          "arcos_fixados_em_1": [
+            [
+              0,
+              1,
+              1
+            ]
+          ],
+          "arcos_proibidos": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ],
+            [
+              0,
+              10,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 17,
+          "id_pai": 15,
+          "profundidade": 9,
+          "custo_lp": 17.432387778998567,
+          "solucao_inteira": true,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              0,
+              7,
+              1
+            ],
+            [
+              0,
+              8,
+              1
+            ],
+            [
+              0,
+              9,
+              1
+            ],
+            [
+              0,
+              10,
+              1
+            ]
+          ],
+          "rotas_ativas_lp": {
+            "0": {
+              "sequencias": [
+                [
+                  0,
+                  6,
+                  5,
+                  8,
+                  7,
+                  11,
+                  10,
+                  9,
+                  1,
+                  12
+                ]
+              ],
+              "custos": [
+                13.15316636944084
+              ]
+            },
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  3,
+                  4,
+                  2,
+                  12
+                ]
+              ],
+              "custos": [
+                4.27922140955773
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Comparador de Soluções - VRPTW</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/bbecquet/Leaflet.PolylineDecorator@master/dist/leaflet.polylineDecorator.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #1e1e2f;
+      --bg-panel: #2c2c3c;
+      --text-light: #f0f0f0;
+      --accent: #4fc3f7;
+      --border: #444;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow: hidden;
+    }
+
+    header {
+      background-color: var(--bg-panel);
+      padding: 12px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: calc(100vh - 48px);
+      gap: 12px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      max-width: 1920px;
+      margin: 0 auto;
+    }
+
+    .map-box {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map-title {
+      padding: 6px 12px;
+      background-color: #333;
+      font-weight: bold;
+      border-bottom: 1px solid #444;
+      font-size: 14px;
+    }
+
+    .map {
+      flex: 1;
+      width: 100%;
+    }
+
+    .clock {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      z-index: 1000;
+      color: #fff;
+    }
+
+    .animated-vehicle {
+      width: 32px;
+      height: 32px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .legenda {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: rgba(31, 31, 47, 0.9);
+      color: #ddd;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      max-height: 100px;
+      max-width 260px;
+      overflow-y: auto;
+      z-index: 999;
+      box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    }
+
+    .legenda-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .legenda-cor {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+      }
+
+      .map-box {
+        height: 50vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>🧭 Comparador de Soluções - VRPTW (4 versões)</header>
+
+  <div class="grid-container">
+    <div class="map-box">
+      <div class="map-title">🔴 Exato</div>
+      <div id="mapExato" class="map"></div>
+      <div id="clockExato" class="clock">Tempo: 0.00</div>
+      <div class="legenda" id="legendaExato"></div>
+    </div>
+
+    <div class="map-box">
+      <div class="map-title">🔵 GC</div>
+      <div id="mapGC" class="map"></div>
+      <div id="clockGC" class="clock">Tempo: 0.00</div>
+      <div class="legenda" id="legendaGC"></div>
+    </div>
+
+    <div class="map-box">
+      <div class="map-title">🟢 GC Melhorado</div>
+      <div id="mapGCM" class="map"></div>
+      <div id="clockGCM" class="clock">Tempo: 0.00</div>
+      <div class="legenda" id="legendaGCM"></div>
+    </div>
+
+    <div class="map-box">
+      <div class="map-title">🟣 Final</div>
+      <div id="mapFinal" class="map"></div>
+      <div id="clockFinal" class="clock">Tempo: 0.00</div>
+      <div class="legenda" id="legendaFinal"></div>
+    </div>
+  </div>
+
+  <script>
+    function carregarMapa(idMapa, idClock, jsonFile, idLegenda) {
+      const map = L.map(idMapa).setView([0, 0], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      fetch(jsonFile)
+        .then(res => res.json())
+        .then(data => {
+          const nos = {};
+          const bounds = [];
+          const legendaDiv = document.getElementById(idLegenda);
+
+          data.nos.forEach(no => {
+            const coord = [no.y, no.x];
+            nos[no.id] = coord;
+            bounds.push(coord);
+
+            L.circleMarker(coord, {
+              radius: 5,
+              color: 'white',
+              fillColor: 'gray',
+              fillOpacity: 1
+            }).addTo(map).bindTooltip(`Nó ${no.id}`, {
+              permanent: true,
+              direction: 'top'
+            });
+          });
+
+          const cores = ['#f44336', '#2196f3', '#4caf50', '#ff9800', '#9c27b0', '#795548'];
+          let custoTotal = 0;
+
+          data.veiculos.forEach((veic, idx) => {
+            const cor = cores[idx % cores.length];
+            const rotaCoords = veic.rota.map(id => nos[id]).filter(c => c);
+            if (rotaCoords.length < 2) return;
+
+            const linha = L.polyline(rotaCoords, {
+              color: cor,
+              weight: 4,
+              opacity: 0.7
+            }).addTo(map);
+
+            L.polylineDecorator(L.polyline(rotaCoords), {
+              patterns: [
+                {
+                  offset: '5%',
+                  repeat: '20px',
+                  symbol: L.Symbol.arrowHead({
+                    pixelSize: 10,
+                    polygon: false,
+                    pathOptions: { stroke: true, color: cor }
+                  })
+                }
+              ]
+            }).addTo(map);
+
+            linha.bindPopup(`🚚 Veículo ${veic.id}<br>🧾 Custo: ${veic.custo.toFixed(2)}`);
+            custoTotal += veic.custo;
+
+            veic.rota.forEach((id, i) => {
+              const chegada = veic.chegadas?.[i] ?? 'N/A';
+              const coord = nos[id];
+              if (coord) {
+                L.circleMarker(coord, {
+                  radius: 6,
+                  color: cor,
+                  fillColor: cor,
+                  fillOpacity: 0.5
+                }).addTo(map)
+                  .bindTooltip(`Nó ${id}<br>🕒 Chegada: ${chegada.toFixed(2)}`, {
+                    permanent: false,
+                    direction: 'right'
+                  });
+              }
+            });
+
+            const marker = L.marker(rotaCoords[0], {
+              icon: L.divIcon({
+                className: 'animated-vehicle',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+              })
+            }).addTo(map);
+
+            const chegadas = veic.chegadas;
+            let i = 0;
+            let tempoAtual = chegadas[0] ?? 0;
+            const clock = document.getElementById(idClock);
+
+            function mover() {
+              if (i < rotaCoords.length) {
+                marker.setLatLng(rotaCoords[i]);
+                tempoAtual = chegadas[i] ?? tempoAtual;
+                clock.innerText = `Tempo: ${tempoAtual.toFixed(2)}`;
+                i++;
+                setTimeout(mover, 1000);
+              }
+            }
+
+            mover();
+
+            // Legenda
+            const item = document.createElement('div');
+            item.className = 'legenda-item';
+
+            const corBox = document.createElement('div');
+            corBox.className = 'legenda-cor';
+            corBox.style.backgroundColor = cor;
+
+            const texto = document.createElement('div');
+            texto.innerHTML = `Veículo ${veic.id} → ${veic.rota.join(' → ')}<br><small>Custo: ${veic.custo.toFixed(2)}</small>`;
+
+            item.appendChild(corBox);
+            item.appendChild(texto);
+            legendaDiv.appendChild(item);
+          });
+
+          if (bounds.length > 0) {
+            map.fitBounds(bounds, {
+              padding: [50, 50],
+              maxZoom: 15,
+              animate: true
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Erro ao carregar JSON:", err);
+        });
+    }
+
+    carregarMapa('mapExato', 'clockExato', 'solucao_ex.json', 'legendaExato');
+    carregarMapa('mapGC', 'clockGC', 'solucao_gc.json', 'legendaGC');
+    carregarMapa('mapGCM', 'clockGCM', 'solucao_gcm.json', 'legendaGCM');
+    carregarMapa('mapFinal', 'clockFinal', 'solucao_final.json', 'legendaFinal');
+  </script>
+</body>
+</html>
