@@ -3,6 +3,9 @@ from pprint import pprint
 import os
 import csv
 import instancia
+#import matplotlib.pyplot as plt
+import json
+
 
 class Solucao:
     def __init__(self, nbv, nbn):
@@ -41,6 +44,122 @@ class Solucao:
         self.custo = custototal
         print("=========FIM PRINT SOLUCAO EXATA=========")
 
+    def plotar_rota(self, inst, sequencia, k=0, pi=None, mu_arc=None,
+                    titulo=None, mostrar_labels_nos=True,
+                    mostrar_deposito_final_deslocado=True):
+
+
+        if pi is None:
+            pi = []
+        if mu_arc is None:
+            mu_arc = {}
+
+        if sequencia is None or len(sequencia) < 2:
+            print("Sequência inválida para plot.")
+            return
+
+        def coord(no_idx):
+            x = inst.noh[no_idx].XCOORD
+            y = inst.noh[no_idx].YCOORD
+
+            # depósito final coincide com o inicial na sua instância
+            # então desloca visualmente só para aparecer melhor
+            if mostrar_deposito_final_deslocado and no_idx == inst.nbn - 1:
+                x += 1.5
+                y += 1.5
+            return x, y
+
+        def custo_real_arco(i, j):
+            return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
+
+        def dual_cliente(j):
+            if 1 <= j <= inst.nbcd and len(pi) >= j:
+                return pi[j - 1]
+            return 0.0
+
+        def dual_arco(i, j):
+            if (i, j, k) in mu_arc:
+                return mu_arc[(i, j, k)]
+            if (i, j) in mu_arc:
+                return mu_arc[(i, j)]
+            return 0.0
+
+        def custo_reduzido_arco(i, j):
+            return custo_real_arco(i, j) - dual_cliente(j) - dual_arco(i, j)
+
+        plt.figure(figsize=(11, 8))
+
+        # plota todos os nós
+        for idx, no in enumerate(inst.noh):
+            x, y = coord(idx)
+
+            if idx == 0:
+                plt.scatter(x, y, s=180, marker='s', zorder=3, label='Depósito inicial')
+            elif idx == inst.nbn - 1:
+                plt.scatter(x, y, s=180, marker='^', zorder=3, label='Depósito final')
+            else:
+                plt.scatter(x, y, s=70, zorder=3)
+
+            if mostrar_labels_nos:
+                plt.text(x + 0.3, y + 0.3, str(idx), fontsize=9)
+
+        # plota rota e custos nos arcos
+        custo_total_real = 0.0
+        custo_total_red_arcos = 0.0
+
+        for t in range(len(sequencia) - 1):
+            i = sequencia[t]
+            j = sequencia[t + 1]
+
+            xi, yi = coord(i)
+            xj, yj = coord(j)
+
+            # linha do arco
+            plt.plot([xi, xj], [yi, yj], linewidth=2.0, alpha=0.85, zorder=2)
+
+            cr = custo_real_arco(i, j)
+            cred = custo_reduzido_arco(i, j)
+
+            custo_total_real += cr
+            custo_total_red_arcos += cred
+
+            # ponto médio
+            mx = (xi + xj) / 2.0
+            my = (yi + yj) / 2.0
+
+            # deslocamento perpendicular pequeno para separar os textos
+            dx = xj - xi
+            dy = yj - yi
+            norma = (dx ** 2 + dy ** 2) ** 0.5
+            if norma > 1e-9:
+                offx = -dy / norma * 0.8
+                offy = dx / norma * 0.8
+            else:
+                offx = 0.0
+                offy = 0.0
+
+            # azul = custo real
+            plt.text(mx + offx, my + offy,
+                     f"{cr:.2f}",
+                     color='blue', fontsize=9,
+                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="blue", alpha=0.7))
+
+            # vermelho = custo reduzido
+            plt.text(mx - offx, my - offy,
+                     f"{cred:.2f}",
+                     color='red', fontsize=9,
+                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="red", alpha=0.7))
+
+        if titulo is None:
+            titulo = f"Rota veículo {k} | real={custo_total_real:.2f} | red(arcos)={custo_total_red_arcos:.2f}"
+
+        plt.title(titulo)
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.grid(True, alpha=0.3)
+        plt.axis("equal")
+        plt.legend()
+        plt.show()
 
 
     def exportar_json(self, inst, nome_arquivo="solucao.json"):
@@ -207,3 +326,292 @@ class Solucao:
         delta = custo_novo - custo_antigo
 
         return {'factivel': True, 'rota': nova, 's': s, 'u': u, 'delta_custo': delta}
+
+    def exportar_rotas_selecionadas_js(
+            self,
+            inst,
+            indices,
+            veiculos,
+            pi=None,
+            mu_arc=None,
+            sigma=None,
+            nome_arquivo_js="rotas_plot_data.js",
+            title="Comparação de rotas",
+            subtitle="Arquivo gerado automaticamente."
+    ):
+        import json
+
+        if pi is None:
+            pi = []
+        if mu_arc is None:
+            mu_arc = {}
+        if sigma is None:
+            sigma = {}
+
+        cores = [
+            "#2563eb", "#ef4444", "#0f766e", "#7c3aed", "#ea580c",
+            "#0891b2", "#65a30d", "#db2777", "#1d4ed8", "#9333ea"
+        ]
+
+        def coord(i):
+            return float(inst.noh[i].XCOORD), float(inst.noh[i].YCOORD)
+
+        def custo_real_arco(i, j, k):
+            return float(inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade)
+
+        def dual_cliente(j):
+            if 1 <= j <= inst.nbcd and len(pi) >= j:
+                return float(pi[j - 1])
+            return 0.0
+
+        def dual_arco(i, j, k):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            if (i, j) in mu_arc:
+                return float(mu_arc[(i, j)])
+            return 0.0
+
+        def sigma_k(k):
+            if isinstance(sigma, dict):
+                return float(sigma.get(k, 0.0))
+            if isinstance(sigma, (list, tuple)):
+                return float(sigma[k]) if k < len(sigma) else 0.0
+            try:
+                return float(sigma)
+            except:
+                return 0.0
+
+        routes = []
+        route_id = 0
+
+        for k in veiculos:
+            if k not in self.rotas:
+                continue
+
+            seqs = self.rotas[k].get("sequencia_rota", [])
+
+            for p in indices:
+                if p < 0 or p >= len(seqs):
+                    continue
+
+                sequencia = seqs[p]
+
+                nodes = []
+                for no in sequencia:
+                    x, y = coord(no)
+
+                    if no == 0:
+                        kind = "depot_start"
+                    elif no == inst.nbn - 1:
+                        kind = "depot_end"
+                    else:
+                        kind = "customer"
+
+                    nodes.append({
+                        "id": int(no),
+                        "x": x,
+                        "y": y,
+                        "kind": kind
+                    })
+
+                arcs = []
+                total_real = 0.0
+                total_red_sem_sigma = 0.0
+
+                for t in range(len(sequencia) - 1):
+                    i = sequencia[t]
+                    j = sequencia[t + 1]
+
+                    xi, yi = coord(i)
+                    xj, yj = coord(j)
+
+                    cr = custo_real_arco(i, j, k)
+                    cred = cr - dual_cliente(j) - dual_arco(i, j, k)
+
+                    total_real += cr
+                    total_red_sem_sigma += cred
+
+                    arcs.append({
+                        "from": int(i),
+                        "to": int(j),
+                        "from_x": xi,
+                        "from_y": yi,
+                        "to_x": xj,
+                        "to_y": yj,
+                        "real_cost": round(cr, 6),
+                        "reduced_cost": round(cred, 6)
+                    })
+
+                routes.append({
+                    "id": route_id,
+                    "name": f"Rota p={p} veic={k}",
+                    "vehicle": int(k),
+                    "sequence": [int(x) for x in sequencia],
+                    "total_real_cost": round(total_real, 6),
+                    "total_reduced_cost": round(total_red_sem_sigma - sigma_k(k), 6),
+                    "nodes": nodes,
+                    "arcs": arcs,
+                    "color": cores[route_id % len(cores)]
+                })
+
+                route_id += 1
+
+        data = {
+            "title": title,
+            "subtitle": subtitle,
+            "routes": routes
+        }
+
+        with open(nome_arquivo_js, "w", encoding="utf-8") as f:
+            f.write("window.ROUTE_PLOT_DATA = ")
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.write(";\n")
+
+        print(f"JS exportado: {nome_arquivo_js} | rotas={len(routes)}")
+
+    def exportar_rotas_pares_js(
+            self,
+            inst,
+            selecao,
+            pi=None,
+            mu_arc=None,
+            sigma=None,
+            nome_arquivo_js="rotas_plot_data.js",
+            title="Comparação de rotas",
+            subtitle="Arquivo gerado automaticamente."
+    ):
+        import json
+
+        if pi is None:
+            pi = []
+        if mu_arc is None:
+            mu_arc = {}
+        if sigma is None:
+            sigma = {}
+
+        cores = [
+            "#2563eb", "#ef4444", "#0f766e", "#7c3aed", "#ea580c",
+            "#0891b2", "#65a30d", "#db2777", "#1d4ed8", "#9333ea"
+        ]
+
+        def coord(i):
+            return float(inst.noh[i].XCOORD), float(inst.noh[i].YCOORD)
+
+        def custo_real_arco(i, j, k):
+            return float(inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade)
+
+        def dual_cliente(j):
+            if 1 <= j <= inst.nbcd and len(pi) >= j:
+                return float(pi[j - 1])
+            return 0.0
+
+        def dual_arco(i, j, k):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            if (i, j) in mu_arc:
+                return float(mu_arc[(i, j)])
+            return 0.0
+
+        def sigma_k(k):
+            if isinstance(sigma, dict):
+                return float(sigma.get(k, 0.0))
+            if isinstance(sigma, (list, tuple)):
+                return float(sigma[k]) if k < len(sigma) else 0.0
+            try:
+                return float(sigma)
+            except:
+                return 0.0
+
+        routes = []
+
+        for rid, item in enumerate(selecao):
+            k = int(item["k"])
+            p = int(item["p"])
+
+            if k not in self.rotas:
+                continue
+
+            seqs = self.rotas[k].get("sequencia_rota", [])
+            if p < 0 or p >= len(seqs):
+                continue
+
+            sequencia = seqs[p]
+
+            nodes = []
+            for no in sequencia:
+                x, y = coord(no)
+                if no == 0:
+                    kind = "depot_start"
+                elif no == inst.nbn - 1:
+                    kind = "depot_end"
+                else:
+                    kind = "customer"
+
+                noh = inst.noh[no]
+
+                ready = noh.READY_TIME[0] if getattr(noh, "READY_TIME", None) else 0.0
+                due = noh.DUE_DATE[0] if getattr(noh, "DUE_DATE", None) else 1e9
+                service = noh.SERVICE_TIME[0] if getattr(noh, "SERVICE_TIME", None) else 0.0
+
+                nodes.append({
+                    "id": int(no),
+                    "x": x,
+                    "y": y,
+                    "kind": kind,
+                    "ready_time": float(ready),
+                    "due_date": float(due),
+                    "service_time": float(service)
+                })
+
+            arcs = []
+            total_real = 0.0
+            total_red_sem_sigma = 0.0
+
+            for t in range(len(sequencia) - 1):
+                i = sequencia[t]
+                j = sequencia[t + 1]
+
+                xi, yi = coord(i)
+                xj, yj = coord(j)
+
+                cr = custo_real_arco(i, j, k)
+                cred = cr - dual_cliente(j) - dual_arco(i, j, k)
+
+                total_real += cr
+                total_red_sem_sigma += cred
+
+                arcs.append({
+                    "from": int(i),
+                    "to": int(j),
+                    "from_x": xi,
+                    "from_y": yi,
+                    "to_x": xj,
+                    "to_y": yj,
+                    "real_cost": round(cr, 6),
+                    "reduced_cost": round(cred, 6)
+                })
+
+            routes.append({
+                "id": rid,
+                "name": item.get("nome", f"Rota p={p} veic={k}"),
+                "vehicle": int(k),
+                "sequence": [int(x) for x in sequencia],
+                "total_real_cost": round(total_real, 6),
+                "total_reduced_cost": round(total_red_sem_sigma - sigma_k(k), 6),
+                "nodes": nodes,
+                "arcs": arcs,
+                "color": item.get("color", cores[rid % len(cores)])
+            })
+
+        data = {
+            "title": title,
+            "subtitle": subtitle,
+            "routes": routes
+        }
+
+        with open(nome_arquivo_js, "w", encoding="utf-8") as f:
+            f.write("window.ROUTE_PLOT_DATA = ")
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.write(";\n")
+
+        print(f"JS exportado: {nome_arquivo_js} | rotas={len(routes)}")

@@ -5,7 +5,7 @@ import gurobipy as gp
 from aiohttp._websocket import mask
 from asyncssh.asn1 import BOOLEAN
 from gurobipy import GRB, quicksum
-#from holoviews.examples.gallery.demos.bokeh.square_limit import nonet
+# from holoviews.examples.gallery.demos.bokeh.square_limit import nonet
 from sipbuild.generator.parser.annotations import boolean
 import json
 import datetime
@@ -51,11 +51,10 @@ class NoBP:
         self.motivo_poda = None  # string explicando o motivo
         self.branching_from = None  # {'pai': id, 'arco': (i,j,k), 'tipo': 'proibido'/'obrigatorio'}
 
-
         # chave: (i,j,k) ou (i,j) dependendo do  padrão
-        self.score_arcos_lambda = {}   # dict: arco -> float
+        self.score_arcos_lambda = {}  # dict: arco -> float
 
-        #tabu
+        # tabu
         # --- TABU POR ARCO ---
         self.freq_arc = None  # quantas vezes o arco apareceu
         self.last_arc = None  # última iteração que apareceu
@@ -63,16 +62,18 @@ class NoBP:
 
         self.tabu_tenure = 9991  # quantas iterações fica tabu- to pensando em colocar max(5, alfa*nbn)
 
-    def criaMatriRC(self,inst):
+    def criaMatriRC(self, inst):
         self.matriz_rc = {
             k: [[0.0] * inst.nbn for _ in range(inst.nbn)] for k in range(inst.nbv)
         }
+
 
 class Metodos:
 
     def __init__(self, inst):
         n = inst.nbn
         K = inst.nbv
+        self.tabb = 0
 
         def m3d():
             return [[[0 for _ in range(K)] for _ in range(n)] for _ in range(n)]
@@ -96,7 +97,6 @@ class Metodos:
 
         self.log_bp = None
         self.hist_bp = []  # NOVO: histórico textual da árvore
-
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -136,8 +136,8 @@ class Metodos:
     def _append_hist_bp(self, msg: str):
         if not hasattr(self, "hist_bp") or self.hist_bp is None:
             self.hist_bp = []
-        #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #self.hist_bp.append(f"[{timestamp}] {msg}")
+        # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # self.hist_bp.append(f"[{timestamp}] {msg}")
 
     def _salvar_hist_bp_txt(self, nome_arquivo=None):
 
@@ -184,8 +184,8 @@ class Metodos:
             "rotas_ativas_lp": rotas_no
         }
 
-        #nivel_entry = self._get_nivel_entry(profundidade)
-        #nivel_entry["nos"].append(info_no)
+        # nivel_entry = self._get_nivel_entry(profundidade)
+        # nivel_entry["nos"].append(info_no)
 
     def _salvar_log_bp(self, nome_arquivo=None):
         """Salva o JSON em disco."""
@@ -262,9 +262,7 @@ class Metodos:
                 print(f"   Custo:     {custo:.2f}")
         print("=== FIM LAMBDAS NÓ", no_bp.id_no, "===\n")
 
-
-
-    def exportar_colunas_pool_raiz_csv(self,sol_pool, no_bp, pool_ini_por_k, nome_arquivo=None):
+    def exportar_colunas_pool_raiz_csv(self, sol_pool, no_bp, pool_ini_por_k, nome_arquivo=None):
         if nome_arquivo is None:
             ts = time.strftime("%Y%m%d_%H%M%S")
             nome_arquivo = f"POOL_RAIZ_no{no_bp.id_no}_{ts}.csv"
@@ -530,13 +528,13 @@ class Metodos:
 
     def branch_and_price_global(self, inst, sol_pool, tipo_geracao="PD"):
 
-        raiz=True
+        raiz = True
         import time, math, json
 
         # === parâmetros ===
         time_limit = 3600
         gap = 1e-4
-        total_nos_processados=0
+        total_nos_processados = 0
 
         z_inc = float("inf")  # melhor inteiro (UB)
         x_inc = None
@@ -563,7 +561,7 @@ class Metodos:
 
         while ativos:
             elapsed = time.time() - t0
-            total_nos_processados+=1
+            total_nos_processados += 1
             # -------------------------------------------------
             # z_li = min custo_lp entre nós abertos COM LB confiável
             # -------------------------------------------------
@@ -594,15 +592,15 @@ class Metodos:
             # -------------------------------------------------
             no_atual, prof, pai = ativos.pop()
             print(f"\n=========== PROCESSANDO NÓ {no_atual.id_no} (prof={prof}, pai={pai}) ===========")
-            no_atual.tabu_tenure=self.TABU_TENURE
+            no_atual.tabu_tenure = self.TABU_TENURE
             # -------------------------------------------------
             # resolve nó
             # -------------------------------------------------
-            raiz=False
-            t00=time.time()
+            raiz = False
+            t00 = time.time()
 
-            if(raiz):
-                raiz=False
+            if (raiz):
+                raiz = False
                 self.resolver_no_com_poolRAIZ(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
             else:
                 self.resolver_no_com_pool(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
@@ -677,7 +675,7 @@ class Metodos:
                 melhor_no_frac = no_atual
 
             filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
-            #filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
+            # filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
 
             if (filho_esq is not None) and (filho_dir is not None):
                 # >>> IMPORTANTE: filhos NÃO herdam custo_lp do pai
@@ -763,14 +761,12 @@ class Metodos:
         # se você usa JSON da árvore:
         self._salvar_log_bp()
 
-    def SUB_PROG_DIN_PW(self, inst, pi, sigma_k, k,NO_BP,
+    def SUB_PROG_DIN_PW(self, inst, pi, sigma_k, k, NO_BP,
                         arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
-                        widening_seq=( 1,2, 4, 8, "ALL"),
+                        widening_seq=(1, 2, 4, 8, "ALL"),
                         eps=1e-6):
         import math
         from collections import deque
-
-
 
         if arcos_proibidos is None:
             arcos_proibidos = set()
@@ -779,20 +775,17 @@ class Metodos:
         if mu_arc is None:
             mu_arc = {}  # (i,j) or (i,j,k) -> dual
 
-
-        #flexible- a ideia é que o algoritmo fixe ou proiba em base das duais, para que
-        #assim eu consiga proibir ou fixar o arco de acordo com a dual,
+        # flexible- a ideia é que o algoritmo fixe ou proiba em base das duais, para que
+        # assim eu consiga proibir ou fixar o arco de acordo com a dual,
         # #senao nao estarei otimizando nada
-        print(f'Subprob ',k)
+        print(f'Subprob ', k)
         arcos_fixados = set()
         arcos_proibidos = set()
-        #fim flexible
+        # fim flexible
         nbn = inst.nbn
         nbcd = inst.nbcd
         dep0 = 0
         depf = nbn - 1
-
-
 
         a, b, s, d = [], [], [], []
         for i in range(nbn):
@@ -811,9 +804,8 @@ class Metodos:
         def cliente_mask(c):
             return 1 << (c - 1)
 
-        #print matriz custo reduzido
-
-
+        # print matriz custo reduzido
+        """
         print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
 
         for i in range(nbn):
@@ -850,10 +842,7 @@ class Metodos:
 
         print("==========================================\n")
         
-        
-
-
-
+        """
         # ------------------ FIXOS (FORÇAR) ------------------
         succ_fixo = {}
         pred_fixo = {}
@@ -940,10 +929,10 @@ class Metodos:
                 viaveis = []
                 for j in candidatos:
 
-                    #print(f'Tamanho Candidatos ',len(candidatos),' j: ',j,' - CANDIDATOS: ',candidatos)
+                    # print(f'Tamanho Candidatos ',len(candidatos),' j: ',j,' - CANDIDATOS: ',candidatos)
                     ######################################### expansão dos arcos
 
-                    #essa parte retirei, pois o pred e succ fica a cargo da dualidade
+                    # essa parte retirei, pois o pred e succ fica a cargo da dualidade
                     # proibido
                     if (no_i, j) in arcos_proibidos or (no_i, j, k) in arcos_proibidos:
                         continue
@@ -951,8 +940,6 @@ class Metodos:
                     # pred fixo
                     if j in pred_fixo and pred_fixo[j] != no_i:
                         continue
-
-
 
                     # bloqueia rota vazia 0->depf
                     if j == depf and mask_i == 0:
@@ -978,14 +965,12 @@ class Metodos:
                     if tempo_chegada > b[j] + 1e-9:
                         continue
 
-
-                    #TABU - se estiver em tabu nao passa
-                    if NO_BP.tabu_until[k][no_i][j]>0:
-                        #rint(f'tabu bloqueou  expansao',k,'-',no_i,'-',j,'- id NO= ',NO_BP.id_no)
+                    # TABU - se estiver em tabu nao passa
+                    if NO_BP.tabu_until[k][no_i][j] > 0:
+                        # rint(f'tabu bloqueou  expansao',k,'-',no_i,'-',j,'- id NO= ',NO_BP.id_no)
                         continue
 
-
-                    #se a rota\ arco sobreviveu até aqui, é pq é viavel
+                    # se a rota\ arco sobreviveu até aqui, é pq é viavel
                     viaveis.append((j, tempo_chegada, nova_carga, nova_mask))
 
                 if not viaveis:
@@ -1090,28 +1075,210 @@ class Metodos:
 
         return None, None
 
-    def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
-                      top_k=5, n_starts=30, eps=1e-6):
-        import math
+    def escolhe_vizinho_enviesado(self, lista_ordenada, alpha=0.7):
+        pesos=[]
+        for pos in range(len(lista_ordenada)):
+            pesos.append(alpha**pos)
+
+        return(random.choices(lista_ordenada,weights=pesos,k=1)[0])
+
+    def SUB_HEUR_VNS(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                     n_starts=40, alpha=0.3, eps=1e-6):
+
         import random
+        import math
 
         if mu_arc is None:
             mu_arc = {}
-
-        print(f"Subprob VNS RANDOM veículo {k}")
 
         nbn = inst.nbn
         nbcd = inst.nbcd
         dep0 = 0
         depf = nbn - 1
 
+        cap_k = inst.veiculos[k].capacidade
+        vel = inst.veiculos[k].velocidade
+
+        def travel(i, j):
+            return inst.matriz_distancia[i][j] / vel
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return mu_arc[(i, j, k)]
+            return mu_arc.get((i, j), 0.0)
+
+        def delta_rc(i, j):
+            rc = travel(i, j) - mu(i, j)
+
+            if 1 <= j <= nbcd:
+                rc -= pi[j - 1]
+
+            if j == depf:
+                rc -= sigma_k
+
+            return rc
+
+        def rota_para_binaria(rota):
+            bin_x = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_x[v - 1] = 1
+            return bin_x
+
+        # ---------------------
+        # viabilidade simples
+        # ---------------------
+
+        def verifica_rota(rota):
+
+            tempo = 0
+            carga = 0
+            visit = set()
+
+            for t in range(len(rota) - 1):
+
+                i = rota[t]
+                j = rota[t + 1]
+
+                tempo += travel(i, j)
+
+                if 1 <= j <= nbcd:
+
+                    if j in visit:
+                        return False
+
+                    visit.add(j)
+
+                    carga += inst.noh[j].DEMAND
+
+                    if carga > cap_k:
+                        return False
+
+                    a = inst.noh[j].READY_TIME[0]
+                    b = inst.noh[j].DUE_DATE[0]
+                    s = inst.noh[j].SERVICE_TIME[0]
+
+                    if tempo < a:
+                        tempo = a
+
+                    if tempo > b:
+                        return False
+
+                    tempo += s
+
+            return True
+
+        # ---------------------
+
+        melhor_rota = None
+        melhor_rc = math.inf
+        melhor_custo = None
+
+        for start in range(n_starts):
+
+            rota = [dep0, depf]
+            visitados = set([dep0, depf])
+
+            rc_total = delta_rc(dep0, depf)
+
+            while True:
+
+                insercoes = []
+
+                for cliente in range(1, nbcd + 1):
+
+                    if cliente in visitados:
+                        continue
+
+                    best_delta = math.inf
+                    best_pos = None
+
+                    for pos in range(1, len(rota)):
+
+                        i = rota[pos - 1]
+                        j = rota[pos]
+
+                        delta = (
+                                delta_rc(i, cliente)
+                                + delta_rc(cliente, j)
+                                - delta_rc(i, j)
+                        )
+
+                        nova = rota[:pos] + [cliente] + rota[pos:]
+
+                        if not verifica_rota(nova):
+                            continue
+
+                        if delta < best_delta:
+                            best_delta = delta
+                            best_pos = pos
+
+                    if best_pos is not None:
+                        insercoes.append((cliente, best_pos, best_delta))
+
+                if not insercoes:
+                    break
+
+                insercoes.sort(key=lambda x: x[2])
+
+                rcl_size = max(1, int(len(insercoes) * alpha))
+                cand = random.choice(insercoes[:rcl_size])
+
+                cliente, pos, delta = cand
+
+                rota.insert(pos, cliente)
+                visitados.add(cliente)
+
+                rc_total += delta
+
+            if len(rota) >= 3:
+
+                custo_real = 0
+                for t in range(len(rota) - 1):
+                    custo_real += travel(rota[t], rota[t + 1])
+
+                if rc_total < melhor_rc:
+                    melhor_rc = rc_total
+                    melhor_rota = rota[:]
+                    melhor_custo = custo_real
+
+            if melhor_rota is not None and melhor_rc < -eps:
+                return {
+                    "clientes": melhor_rota,
+                    "custo": melhor_custo,
+                    "bin_xij": rota_para_binaria(melhor_rota)
+                }, melhor_rc
+
+        return None, None
+
+    def SUB_HEUR_ALLBESTINSERTION(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                                  n_starts=30, eps=1e-6):
+        import math
+        import random
+
+        if mu_arc is None:
+            mu_arc = {}
+
+        #print(f"Subprob ALL BEST INSERTION veículo {k}")
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        # =========================================================
+        # DADOS DOS NÓS: múltiplas janelas por nó
+        # cada janela = (ready, due, service)
+        # =========================================================
         janelas = []
         d = []
 
         for i in range(nbn):
             noh = inst.noh[i]
 
-            if hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE") and noh.READY_TIME and noh.DUE_DATE:
+            if (hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE")
+                    and noh.READY_TIME and noh.DUE_DATE):
+
                 servs = noh.SERVICE_TIME if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else [0.0] * len(
                     noh.READY_TIME)
 
@@ -1124,14 +1291,16 @@ class Metodos:
             else:
                 lista_janelas = [(0.0, float("inf"), 0.0)]
 
+            lista_janelas.sort(key=lambda x: x[0])
+
             janelas.append(lista_janelas)
-            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+            d.append(float(noh.DEMAND) if hasattr(noh, "DEMAND") else 0.0)
 
         cap_k = float(inst.veiculos[k].capacidade)
         velocidade = float(inst.veiculos[k].velocidade)
 
         def travel_time(i, j):
-            return inst.matriz_distancia[i][j] / velocidade
+            return float(inst.matriz_distancia[i][j]) / velocidade
 
         def mu(i, j):
             if (i, j, k) in mu_arc:
@@ -1144,6 +1313,372 @@ class Metodos:
                 if 1 <= v <= nbcd:
                     bin_xij[v - 1] = 1
             return bin_xij
+
+        def custo_reduzido_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                i = rota_av[t]
+                j = rota_av[t + 1]
+
+                rc = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                val += rc
+            return val
+
+        def custo_real_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                val += travel_time(rota_av[t], rota_av[t + 1])
+            return val
+
+        def verifica_viabilidade(rota_av):
+            """
+            Retorna:
+                (True, janelas_escolhidas, tempo_final, carga_final)
+            ou
+                (False, None, None, None)
+            """
+            if not rota_av or rota_av[0] != dep0 or rota_av[-1] != depf:
+                return False, None, None, None
+
+            visitados_local = set()
+            carga = 0.0
+
+            a0, b0, s0 = janelas[dep0][0]
+            inicio0 = max(0.0, a0)
+            if inicio0 > b0 + 1e-9:
+                return False, None, None, None
+
+            tempo = inicio0 + s0
+            janelas_escolhidas = [0]
+
+            for pos in range(1, len(rota_av)):
+                i = rota_av[pos - 1]
+                j = rota_av[pos]
+
+                if 1 <= j <= nbcd:
+                    if j in visitados_local:
+                        return False, None, None, None
+                    visitados_local.add(j)
+
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return False, None, None, None
+
+                chegada_j = tempo + travel_time(i, j)
+
+                achou = False
+                for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                    inicio_servico_j = max(chegada_j, aj)
+                    fim_servico_j = inicio_servico_j + sj
+
+                    # se no seu modelo exigir término dentro da janela,
+                    # troque por: if fim_servico_j <= bj + 1e-9:
+                    if inicio_servico_j <= bj + 1e-9:
+                        tempo = fim_servico_j
+                        janelas_escolhidas.append(idx_janela)
+                        achou = True
+                        break
+
+                if not achou:
+                    return False, None, None, None
+
+            return True, janelas_escolhidas, tempo, carga
+
+        def melhores_insercoes(rota_atual, visitados, rc_atual):
+            """
+            Gera todas as inserções viáveis em todas as posições.
+            Retorna lista ordenada por delta de custo reduzido.
+            """
+            insercoes = []
+
+            for cliente in range(1, nbcd + 1):
+                if cliente in visitados:
+                    continue
+
+                for pos in range(1, len(rota_atual)):  # insere antes de pos
+                    nova_rota = rota_atual[:pos] + [cliente] + rota_atual[pos:]
+
+                    viavel, janelas_novas, tempo_final, carga_final = verifica_viabilidade(nova_rota)
+                    if not viavel:
+                        continue
+
+                    rc_nova = custo_reduzido_rota(nova_rota)
+                    custo_real_novo = custo_real_rota(nova_rota)
+                    delta_rc = rc_nova - rc_atual
+
+                    # folga simples: quanto menor tempo final, melhor
+                    score = delta_rc + 0.01 * tempo_final
+
+                    insercoes.append((
+                        cliente,  # 0
+                        pos,  # 1
+                        nova_rota,  # 2
+                        delta_rc,  # 3
+                        rc_nova,  # 4
+                        custo_real_novo,  # 5
+                        janelas_novas,  # 6
+                        tempo_final,  # 7
+                        carga_final,  # 8
+                        score  # 9
+                    ))
+
+            insercoes.sort(key=lambda x: (x[3], x[9], x[4]))
+            return insercoes
+
+        melhor_rota = None
+        melhor_custo_red = math.inf
+        melhor_custo_real = None
+
+        for ii in range(n_starts):
+            #print(f"\nSTART {ii}")
+
+            rota = [dep0, depf]
+            visitados = {dep0, depf}
+
+            viavel_ini, janelas_escolhidas, tempo_final, carga_final = verifica_viabilidade(rota)
+            if not viavel_ini:
+                #print("Rota inicial [dep0,depf] inviável")
+                return None, None
+
+            custo_red_total = custo_reduzido_rota(rota)
+            custo_real_total = custo_real_rota(rota)
+
+            #print(f"rota inicial = {rota} | rc = {custo_red_total}")
+
+            while True:
+                insercoes = melhores_insercoes(rota, visitados, custo_red_total)
+
+                if not insercoes:
+                    #print("sem inserções viáveis")
+                    break
+
+                melhor_delta = insercoes[0][3]
+                pior_delta = insercoes[-1][3]
+
+                alpha_rcl = random.uniform(0.15, 0.40)
+                limite = melhor_delta + alpha_rcl * (pior_delta - melhor_delta)
+
+                rcl = [ins for ins in insercoes if ins[3] <= limite]
+                if not rcl:
+                    rcl = insercoes[:1]
+
+                # diversificação
+                cliente, pos, rota_nova, delta_rc, rc_nova, custo_real_novo, janelas_novas, tempo_novo, carga_nova, score = random.choice(
+                    rcl)
+
+                #print(
+                #    f"inserindo cliente {cliente} na posição {pos} | delta_rc = {delta_rc:.6f} | rc_novo = {rc_nova:.6f}")
+
+                # regra de parada: se piorou demais e já não está promissor, para
+                if delta_rc > 1e-6 and custo_red_total > 1e-6:
+                    #print("inserção piora a rota e rc atual já não é promissor")
+                    break
+
+                rota = rota_nova
+                visitados.add(cliente)
+                janelas_escolhidas = janelas_novas
+                tempo_final = tempo_novo
+                carga_final = carga_nova
+                custo_red_total = rc_nova
+                custo_real_total = custo_real_novo
+
+                #print(f"rota atual = {rota} | rc = {custo_red_total:.6f}")
+
+                # se não sobrou cliente, para
+                if len(visitados) >= nbcd + 2:
+                    break
+
+            # precisa ter pelo menos 1 cliente
+            if len(rota) >= 3:
+                #print(f"rota construída final = {rota} | rc = {custo_red_total:.6f}")
+
+                rota_melhorada, custo_red_melhorado, custo_real_melhorado, janelas_melhoradas = self.busca_local_rota(
+                    rota, inst, pi, sigma_k, k, mu_arc, janelas, d
+                )
+
+                #print(f"rota BL = {rota_melhorada} | rc BL = {custo_red_melhorado}")
+
+                if rota_melhorada is not None and custo_red_melhorado < melhor_custo_red:
+                    melhor_rota = rota_melhorada[:]
+                    melhor_custo_red = custo_red_melhorado
+                    melhor_custo_real = custo_real_melhorado
+
+                if melhor_rota is not None and melhor_custo_red < -eps:
+                    return {
+                        "clientes": melhor_rota,
+                        "custo": melhor_custo_real,
+                        "bin_xij": rota_para_binaria(melhor_rota)
+                    }, melhor_custo_red
+
+        return None, None
+
+    def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                       n_starts=30, eps=1e-6):
+        import math
+        import random
+        top_k=5
+        if mu_arc is None:
+            mu_arc = {}
+
+        print(f"Subprob VNS RANDOM veículo {k}")
+
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+
+
+        # =========================================================
+        # DADOS DOS NÓS: múltiplas janelas por nó
+        # cada janela = (ready, due, service)
+        # =========================================================
+        janelas = []
+        d = []
+
+        for i in range(nbn):
+            noh = inst.noh[i]
+
+            if (hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE")
+                    and noh.READY_TIME and noh.DUE_DATE):
+
+                servs = noh.SERVICE_TIME if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else [0.0] * len(
+                    noh.READY_TIME)
+
+                lista_janelas = []
+                for r in range(len(noh.READY_TIME)):
+                    ai = float(noh.READY_TIME[r])
+                    bi = float(noh.DUE_DATE[r])
+                    si = float(servs[r]) if r < len(servs) else float(servs[0])
+                    lista_janelas.append((ai, bi, si))
+            else:
+                lista_janelas = [(0.0, float("inf"), 0.0)]
+
+            # opcional: ordenar por início da janela
+            lista_janelas.sort(key=lambda x: x[0])
+
+            janelas.append(lista_janelas)
+            d.append(float(noh.DEMAND) if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+
+        def travel_time(i, j):
+            return float(inst.matriz_distancia[i][j]) / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def rota_para_binaria(rota):
+            bin_xij = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_xij[v - 1] = 1
+            return bin_xij
+        """
+        print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
+
+        for i in range(nbn):
+
+            linha = []
+
+            for j in range(nbn):
+
+                if i == j:
+                    linha.append("   -   ")
+                    continue
+
+                # custo base
+                rc = travel_time(i, j)
+
+                # dual arco
+                rc -= float(mu_arc.get((i, j), 0.0))
+
+                # dual cliente
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                # dual veiculo (igual sua lógica: só ao fechar)
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                linha.append(f"{rc:7.2f}")
+
+            print(f"i={i:2d} | " + " ".join(linha))
+
+        print("==========================================\n")
+        """
+
+
+        def escolhe_janela_viavel(no_i, tempo_fim_i, j):
+            """
+            tempo_fim_i = instante em que o serviço terminou no nó i
+            retorna:
+                (inicio_servico_j, fim_servico_j, idx_janela)
+            ou None se j for inviável em todas as janelas
+            """
+            chegada_j = tempo_fim_i + travel_time(no_i, j)
+
+            melhor = None
+            for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                inicio_servico_j = max(chegada_j, aj)
+                fim_servico_j = inicio_servico_j + sj
+
+                # serviço deve começar dentro da janela
+                # se no seu modelo o serviço precisa TERMINAR dentro da janela,
+                # troque por: if fim_servico_j <= bj + 1e-9:
+                if inicio_servico_j <= bj + 1e-9:
+                    melhor = (inicio_servico_j, fim_servico_j, idx_janela)
+                    break
+
+            return melhor
+
+        def score_candidato(no_i, j, delta_rc, tempo_atual, nova_carga):
+            """
+            Quanto menor, melhor.
+            Mistura custo reduzido do arco com informação de futuro.
+            """
+            # chegada em j
+            chegada_j = tempo_atual + travel_time(no_i, j)
+
+            # melhor janela em j
+            melhor_janela = escolhe_janela_viavel(no_i, tempo_atual, j)
+            if melhor_janela is None:
+                return math.inf
+
+            inicio_servico_j, fim_servico_j, idx_janela = melhor_janela
+
+            # custo para voltar ao depósito final
+            rc_fecho = travel_time(j, depf) - mu(j, depf) - float(sigma_k)
+
+            # folga temporal na janela escolhida
+            aj, bj, sj = janelas[j][idx_janela]
+            folga = bj - inicio_servico_j
+
+            # ocupação da capacidade
+            ocup = nova_carga / max(cap_k, 1.0)
+
+            # score combinado
+            score = (
+                    1.0 * delta_rc +  # custo reduzido imediato
+                    0.25 * rc_fecho +  # facilidade de fechar
+                    0.02 * fim_servico_j +  # penaliza tempos tardios
+                    2.0 * ocup -  # empurra a usar capacidade
+                    0.01 * folga  # prefere mais folga
+            )
+
+            return score
+
 
         # melhor solução encontrada
         melhor_rota = None
@@ -1178,28 +1713,41 @@ class Metodos:
             vizinhos_ordenados[i] = linha
 
         # =========================================================
-        # MULTI-START RANDOMIZADO- caso eu nao consiga gerar uma rota de inicio,
-        #faço denovo
+        # MULTI-START RANDOMIZADO
         # =========================================================
         for ii in range(n_starts):
 
             rota = [dep0]
-            visitados = set()
-            visitados.add(dep0)
+            visitados = {dep0}
             no_atual = dep0
-            tempo_atual = max(a[dep0], 0.0)
+
+            # estado temporal = fim de serviço no nó atual
+            # depósito inicial: pega a primeira janela viável, se houver
+            a0, b0, s0 = janelas[dep0][0]
+            inicio_servico_0 = max(0.0, a0)
+            if inicio_servico_0 > b0 + 1e-9:
+                return None, None
+            tempo_atual = inicio_servico_0 + s0
+
             carga_atual = 0.0
             custo_red_total = 0.0
+
+            # opcional: guardar janela usada em cada nó
+            janelas_escolhidas = [0]
 
             while True:
                 viaveis = []
 
-                # percorre vizinhos já ordenados do melhor para o pior
+                top_k = random.randint(2, min(7, nbcd))
                 for (j, delta_rc) in vizinhos_ordenados[no_atual]:
 
-                    # cliente já visitado
-                    if  j in visitados:
+                    if j in visitados:
                         continue
+
+                    #aqui vou colocar o
+
+                    if NO_BP.tabu_until[k][no_atual][j] > 0:
+                        print(f"nó tabu {no_atual}-{j}")
 
                     # tabu
                     """
@@ -1208,46 +1756,58 @@ class Metodos:
                             continue
                     """
 
-                    # capacidade
                     nova_carga = carga_atual + (d[j] if 1 <= j <= nbcd else 0.0)
                     if nova_carga > cap_k + 1e-9:
                         continue
 
-                    # janela de tempo
-                    tempo_chegada = tempo_atual + s[no_atual] + travel_time(no_atual, j)
-                    if tempo_chegada < a[j]:
-                        tempo_chegada = a[j]
-                    if tempo_chegada > b[j] + 1e-9:
+                    janela_viavel = escolhe_janela_viavel(no_atual, tempo_atual, j)
+                    if janela_viavel is None:
+                        #print(f"janela inviavel para {j}")
                         continue
 
-                    viaveis.append((j, tempo_chegada, nova_carga, delta_rc))
+                    inicio_servico_j, fim_servico_j, idx_janela = janela_viavel
 
-                    # já pegou os top_k melhores viáveis
-                    if len(viaveis) >= top_k:
-                        break
+                    score = score_candidato(no_atual, j, delta_rc, tempo_atual, nova_carga)
 
-                # não há mais extensão viável
+                    viaveis.append((
+                        j,
+                        inicio_servico_j,
+                        fim_servico_j,
+                        nova_carga,
+                        delta_rc,
+                        idx_janela,
+                        score
+                    ))
+
+
                 if not viaveis:
                     break
 
-                # escolhe aleatoriamente entre os top_k melhores viáveis
-                j, tempo_chegada, nova_carga, delta_rc = random.choice(viaveis)
-                #j, tempo_chegada, nova_carga, delta_rc = viaveis[0]
+                viaveis.sort(key=lambda x: x[6])
+                viaveis = viaveis[:top_k]
+
+                #escolha enviesada
+
+                j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela,score =(
+                    self.escolhe_vizinho_enviesado(viaveis,alpha=0.55))
+                #j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela = random.choice(viaveis)
+                # j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela = viaveis[0]
+
                 rota.append(j)
+                janelas_escolhidas.append(idx_janela)
+
                 custo_red_total += delta_rc
-                tempo_atual = tempo_chegada
+                tempo_atual = fim_servico_j
                 carga_atual = nova_carga
                 no_atual = j
 
                 visitados.add(j)
 
-                # rota fechou
                 if j == depf:
                     break
 
-            # aceita apenas rota fechada com pelo menos 1 cliente
-            if len(rota) >= 3:
-
+            # rota fechada com pelo menos 1 cliente
+            if len(rota) >= 3 and rota[-1] == depf:
                 custo_real = 0.0
                 for t in range(len(rota) - 1):
                     custo_real += travel_time(rota[t], rota[t + 1])
@@ -1257,22 +1817,539 @@ class Metodos:
                     melhor_custo_real = custo_real
                     melhor_rota = rota[:]
 
-
             if melhor_rota is not None and melhor_custo_red < -eps:
-
                 return {
                     "clientes": melhor_rota,
                     "custo": melhor_custo_real,
                     "bin_xij": rota_para_binaria(melhor_rota)
                 }, melhor_custo_red
             else:
-                if(ii>= n_starts-1):
-                    print("")
-                print("NAO RETORNOU COLUNA-GERA NOVA")
-                print(ii)
+                if len(rota) >= 3 and rota[-1] == depf:
+                    #print(f"melhora uma vez custo antigo red {rota}= {custo_red_total}")
+                    rota_melhorada, custo_red_melhorado, custo_real_melhorado,janelas_melhoradas  = self.busca_local_rota(
+                        rota, inst, pi, sigma_k, k, mu_arc, janelas, d
+                    )
+                    #print(f"melhora uma vez custo novo red {rota_melhorada}= {custo_red_melhorado}")
+                    if rota_melhorada is not None and custo_red_melhorado < -eps:
+                        #print(f"heuristica deu boa patrão rota {rota_melhorada}- custor= {custo_red_melhorado}")
+                        return {
+                            "clientes": rota_melhorada,
+                            "custo": custo_real_melhorado,
+                            "bin_xij": rota_para_binaria(rota_melhorada)
+                        }, custo_red_melhorado
+                        print("")
+                    """
+                    
+                    if ii >= n_starts -2 and self.tabb==0:
+                        self.tabb=1
+                        print("")
+                        rota_forcada=[0,6,5,8,7,11,10,14]
+                        custo_real= 0.0
 
+                        for t in range (len(rota_forcada)-1):
+                            custo_real+=travel_time(rota_forcada[t],rota_forcada[t+1])
+
+                        custo_red=0.0
+                        for t in range (len(rota_forcada)-1):
+                            i=rota_forcada[t]
+                            j=rota_forcada[t+1]
+
+                            rc = travel_time(i,j)
+                            rc -=mu(i,j)
+
+                            if 1<=j<=nbcd:
+                                rc-= float(pi[j-1])
+
+                            if  j==depf:
+                                rc-=float(sigma_k)
+
+                            custo_red+= rc
+                            print(f"CR {custo_red}")
+                        print("ROTA FORÇADA:", rota_forcada)
+                        print("custo_real =", custo_real)
+                        print("custo_red =", custo_red)
+                        print("")
+                        return {
+                            "clientes": rota_forcada,
+                            "custo": custo_real,
+                            "bin_xij": rota_para_binaria(rota_forcada)
+                        }, custo_red
+
+                        print("")
+                    else:
+                        if ii >= n_starts - 2 and self.tabb==1:
+                            print("")
+                            rota_forcada = [0, 1, 9, 3, 12, 4, 2, 13,14]
+                            custo_real = 0.0
+
+                            for t in range(len(rota_forcada) - 1):
+                                custo_real += travel_time(rota_forcada[t], rota_forcada[t + 1])
+
+                            custo_red = 0.0
+                            for t in range(len(rota_forcada) - 1):
+                                i = rota_forcada[t]
+                                j = rota_forcada[t + 1]
+
+                                rc = travel_time(i, j)
+                                rc -= mu(i, j)
+
+                                if 1 <= j <= nbcd:
+                                    rc -= float(pi[j - 1])
+
+                                if j == depf:
+                                    rc -= float(sigma_k)
+
+                                custo_red += rc
+                                print(f"CR {custo_red}")
+                            print("ROTA FORÇADA:", rota_forcada)
+                            print("custo_real =", custo_real)
+                            print("custo_red =", custo_red)
+                            print("")
+                            return {
+                                "clientes": rota_forcada,
+                                "custo": custo_real,
+                                "bin_xij": rota_para_binaria(rota_forcada)
+                            }, custo_red
+
+                            print("")
+                    """
+                #print("NAO RETORNOU COLUNA-GERA NOVA")
+                #print(ii)
 
         return None, None
+
+    def busca_local_rota(self, rota, inst, pi, sigma_k, k, mu_arc, janelas, d,
+                         eps=1e-6, max_perturb=5):
+        import math
+        import random
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        velocidade = float(inst.veiculos[k].velocidade)
+        cap_k = float(inst.veiculos[k].capacidade)
+
+        def travel_time(i, j):
+            return float(inst.matriz_distancia[i][j]) / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def custo_reduzido_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                i = rota_av[t]
+                j = rota_av[t + 1]
+
+                rc = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                val += rc
+            return val
+
+        def custo_real_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                val += travel_time(rota_av[t], rota_av[t + 1])
+            return val
+
+        def verifica_viabilidade(rota_av):
+            if not rota_av or rota_av[0] != dep0 or rota_av[-1] != depf:
+                return False, None, None, None
+
+            visitados = set()
+            carga = 0.0
+
+            a0, b0, s0 = janelas[dep0][0]
+            inicio0 = max(0.0, a0)
+            if inicio0 > b0 + 1e-9:
+                return False, None, None, None
+
+            tempo = inicio0 + s0
+            janelas_escolhidas = [0]
+
+            for pos in range(1, len(rota_av)):
+                i = rota_av[pos - 1]
+                j = rota_av[pos]
+
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return False, None, None, None
+                    visitados.add(j)
+
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return False, None, None, None
+
+                chegada_j = tempo + travel_time(i, j)
+
+                achou = False
+                for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                    inicio_servico_j = max(chegada_j, aj)
+                    fim_servico_j = inicio_servico_j + sj
+
+                    # se quiser término dentro da janela, troque a linha abaixo
+                    if inicio_servico_j <= bj + 1e-9:
+                        tempo = fim_servico_j
+                        janelas_escolhidas.append(idx_janela)
+                        achou = True
+                        break
+
+                if not achou:
+                    return False, None, None, None
+
+            return True, janelas_escolhidas, tempo, carga
+
+        def gera_relocate(rota_base):
+            vizinhas = []
+            for i in range(1, len(rota_base) - 1):
+                cliente = rota_base[i]
+                if cliente == depf:
+                    continue
+
+                base_sem = rota_base[:i] + rota_base[i + 1:]
+
+                for j in range(1, len(base_sem)):
+                    nova = base_sem[:j] + [cliente] + base_sem[j:]
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+            return vizinhas
+
+        def gera_swap(rota_base):
+            vizinhas = []
+            for i in range(1, len(rota_base) - 2):
+                for j in range(i + 1, len(rota_base) - 1):
+                    if rota_base[i] == depf or rota_base[j] == depf:
+                        continue
+                    nova = rota_base[:]
+                    nova[i], nova[j] = nova[j], nova[i]
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+            return vizinhas
+
+        def gera_2opt(rota_base):
+            vizinhas = []
+            # não mexe no dep0 nem no depf
+            for i in range(1, len(rota_base) - 3):
+                for j in range(i + 1, len(rota_base) - 1):
+                    nova = rota_base[:i] + list(reversed(rota_base[i:j + 1])) + rota_base[j + 1:]
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+            return vizinhas
+
+        def gera_oropt2(rota_base):
+            vizinhas = []
+            # move bloco de 2 clientes
+            for i in range(1, len(rota_base) - 2):
+                bloco = rota_base[i:i + 2]
+                if depf in bloco:
+                    continue
+
+                base_sem = rota_base[:i] + rota_base[i + 2:]
+
+                for j in range(1, len(base_sem)):
+                    nova = base_sem[:j] + bloco + base_sem[j:]
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+            return vizinhas
+
+        def melhor_vizinho(vizinhas, melhor_atual):
+            melhor_cand = None
+            melhor_custo = melhor_atual
+            melhor_real = None
+            melhor_janelas = None
+
+            for cand in vizinhas:
+                viavel, cand_janelas, _, _ = verifica_viabilidade(cand)
+                if not viavel:
+                    continue
+
+                cand_custo = custo_reduzido_rota(cand)
+                if cand_custo < melhor_custo - eps:
+                    melhor_cand = cand
+                    melhor_custo = cand_custo
+                    melhor_real = custo_real_rota(cand)
+                    melhor_janelas = cand_janelas
+
+            return melhor_cand, melhor_custo, melhor_real, melhor_janelas
+
+        def perturbacao(rota_base):
+            if len(rota_base) <= 4:
+                return rota_base[:]
+
+            nova = rota_base[:]
+            i = random.randint(1, len(nova) - 3)
+            j = random.randint(1, len(nova) - 3)
+            while j == i:
+                j = random.randint(1, len(nova) - 3)
+
+            nova[i], nova[j] = nova[j], nova[i]
+            return nova
+
+        if rota is None:
+            return None, math.inf, math.inf, None
+
+        melhor_rota_global = rota[:]
+        viavel, melhor_janelas_global, _, _ = verifica_viabilidade(melhor_rota_global)
+        if not viavel:
+            return rota, math.inf, math.inf, None
+
+        melhor_custo_red_global = custo_reduzido_rota(melhor_rota_global)
+        melhor_custo_real_global = custo_real_rota(melhor_rota_global)
+
+        rota_corrente = melhor_rota_global[:]
+        custo_corrente = melhor_custo_red_global
+        real_corrente = melhor_custo_real_global
+        janelas_corrente = melhor_janelas_global
+
+        n_pert = 0
+        while n_pert <= max_perturb:
+            melhorou = True
+
+            while melhorou:
+                melhorou = False
+
+                # VND: relocate -> swap -> 2opt -> oropt2
+                estruturas = [
+                    gera_relocate,
+                    gera_swap,
+                    gera_2opt,
+                    gera_oropt2
+                ]
+
+                for gerador in estruturas:
+                    vizinhas = gerador(rota_corrente)
+                    cand, cand_custo, cand_real, cand_janelas = melhor_vizinho(vizinhas, custo_corrente)
+
+                    if cand is not None:
+                        rota_corrente = cand
+                        custo_corrente = cand_custo
+                        real_corrente = cand_real
+                        janelas_corrente = cand_janelas
+                        melhorou = True
+
+                        if custo_corrente < melhor_custo_red_global - eps:
+                            melhor_rota_global = rota_corrente[:]
+                            melhor_custo_red_global = custo_corrente
+                            melhor_custo_real_global = real_corrente
+                            melhor_janelas_global = janelas_corrente
+
+                        break
+
+            # travou: tenta perturbar
+            n_pert += 1
+            rota_pert = perturbacao(melhor_rota_global)
+            viavel, janelas_pert, _, _ = verifica_viabilidade(rota_pert)
+
+            if viavel:
+                custo_pert = custo_reduzido_rota(rota_pert)
+                real_pert = custo_real_rota(rota_pert)
+
+                rota_corrente = rota_pert
+                custo_corrente = custo_pert
+                real_corrente = real_pert
+                janelas_corrente = janelas_pert
+            else:
+                rota_corrente = melhor_rota_global[:]
+                custo_corrente = melhor_custo_red_global
+                real_corrente = melhor_custo_real_global
+                janelas_corrente = melhor_janelas_global
+
+        return melhor_rota_global, melhor_custo_red_global, melhor_custo_real_global, melhor_janelas_global
+
+    def busca_local_rotaMIOPE(self, rota, inst, pi, sigma_k, k, mu_arc, janelas, d, eps=1e-6):
+        import math
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        velocidade = float(inst.veiculos[k].velocidade)
+        cap_k = float(inst.veiculos[k].capacidade)
+
+        def travel_time(i, j):
+            return float(inst.matriz_distancia[i][j]) / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def custo_reduzido_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                i = rota_av[t]
+                j = rota_av[t + 1]
+
+                rc = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                val += rc
+            return val
+
+        def custo_real_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                val += travel_time(rota_av[t], rota_av[t + 1])
+            return val
+
+        def verifica_viabilidade(rota_av):
+            """
+            Retorna:
+                (True, janelas_escolhidas, tempo_final, carga_final)
+            ou
+                (False, None, None, None)
+            """
+            if not rota_av or rota_av[0] != dep0 or rota_av[-1] != depf:
+                return False, None, None, None
+
+            visitados = set()
+            carga = 0.0
+
+            # depósito inicial
+            a0, b0, s0 = janelas[dep0][0]
+            inicio0 = max(0.0, a0)
+            if inicio0 > b0 + 1e-9:
+                return False, None, None, None
+
+            tempo = inicio0 + s0
+            janelas_escolhidas = [0]
+
+            for pos in range(1, len(rota_av)):
+                i = rota_av[pos - 1]
+                j = rota_av[pos]
+
+                # não pode repetir cliente
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return False, None, None, None
+                    visitados.add(j)
+
+                # capacidade
+                if 1 <= j <= nbcd:
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return False, None, None, None
+
+                chegada_j = tempo + travel_time(i, j)
+
+                achou = False
+                for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                    inicio_servico_j = max(chegada_j, aj)
+                    fim_servico_j = inicio_servico_j + sj
+
+                    # se seu modelo exigir término dentro da janela, troque para:
+                    # if fim_servico_j <= bj + 1e-9:
+                    if inicio_servico_j <= bj + 1e-9:
+                        tempo = fim_servico_j
+                        janelas_escolhidas.append(idx_janela)
+                        achou = True
+                        break
+
+                if not achou:
+                    return False, None, None, None
+
+            return True, janelas_escolhidas, tempo, carga
+
+        def gera_relocate(rota_base):
+            vizinhas = []
+            # não mexe no depósito inicial nem final
+            for i in range(1, len(rota_base) - 1):
+                cliente = rota_base[i]
+
+                # normalmente não faz sentido mover o depósito final
+                if cliente == depf:
+                    continue
+
+                base_sem = rota_base[:i] + rota_base[i + 1:]
+
+                for j in range(1, len(base_sem)):
+                    nova = base_sem[:j] + [cliente] + base_sem[j:]
+
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+
+            return vizinhas
+
+        def gera_swap(rota_base):
+            vizinhas = []
+            for i in range(1, len(rota_base) - 2):
+                for j in range(i + 1, len(rota_base) - 1):
+                    # não troca depósito
+                    if rota_base[i] == depf or rota_base[j] == depf:
+                        continue
+
+                    nova = rota_base[:]
+                    nova[i], nova[j] = nova[j], nova[i]
+
+                    if nova[0] == dep0 and nova[-1] == depf:
+                        vizinhas.append(nova)
+
+            return vizinhas
+
+        melhor_rota = rota[:]
+        viavel, melhor_janelas, _, _ = verifica_viabilidade(melhor_rota)
+        if not viavel:
+            return rota, math.inf, math.inf, None
+
+        melhor_custo_red = custo_reduzido_rota(melhor_rota)
+        melhor_custo_real = custo_real_rota(melhor_rota)
+
+        melhorou = True
+        while melhorou:
+            melhorou = False
+
+            # 1) Relocate
+            candidatos = gera_relocate(melhor_rota)
+            for cand in candidatos:
+                viavel, cand_janelas, _, _ = verifica_viabilidade(cand)
+                if not viavel:
+                    continue
+
+                cand_custo_red = custo_reduzido_rota(cand)
+                if cand_custo_red < melhor_custo_red - eps:
+                    melhor_rota = cand
+                    melhor_janelas = cand_janelas
+                    melhor_custo_red = cand_custo_red
+                    melhor_custo_real = custo_real_rota(cand)
+                    melhorou = True
+                    break
+
+            if melhorou:
+                continue
+
+            # 2) Swap
+            candidatos = gera_swap(melhor_rota)
+            for cand in candidatos:
+                viavel, cand_janelas, _, _ = verifica_viabilidade(cand)
+                if not viavel:
+                    continue
+
+                cand_custo_red = custo_reduzido_rota(cand)
+                if cand_custo_red < melhor_custo_red - eps:
+                    melhor_rota = cand
+                    melhor_janelas = cand_janelas
+                    melhor_custo_red = cand_custo_red
+                    melhor_custo_real = custo_real_rota(cand)
+                    melhorou = True
+                    break
+
+        return melhor_rota, melhor_custo_red, melhor_custo_real, melhor_janelas
 
 
     def coluna_respeita_no(self, no_bp, seq, k):
@@ -1287,6 +2364,7 @@ class Metodos:
                 continue
             for t in range(len(seq) - 1):
                 if seq[t] == i_proib and seq[t + 1] == j_proib:
+                    print("PROIBIDO")
                     return False  # viola proibição
 
         # Arcos fixados em 1: todos esses arcos devem estar na rota
@@ -1298,11 +2376,10 @@ class Metodos:
                 for t in range(len(seq) - 1)
             )
             if not presente:
+                print("PROIBIDO")
                 return False  # não respeita arco obrigatório
 
         return True
-
-
 
     def resolver_no_com_poolRAIZz(self, inst, sol_pool, no_bp, tipo_geracao="PD"):
         import gurobipy as gp
@@ -1427,11 +2504,11 @@ class Metodos:
                     expr += float(rota_usa_arco(seq, i, j)) * lbd[k][p]
 
                 if (i, j) in proibidos_k:
-                    #aqui começa um primeiro teste onde quero testar colocar um -s para o lado esquerdo do nó,
-                    #vou usar o mesmo para depois eu ver se ele zera (para ser viável)
+                    # aqui começa um primeiro teste onde quero testar colocar um -s para o lado esquerdo do nó,
+                    # vou usar o mesmo para depois eu ver se ele zera (para ser viável)
                     s = model.addVar(lb=0.0, obj=BIGM_ARC, vtype=GRB.CONTINUOUS, name=f"slack_arc_{k}_{i}_{j}")
                     slack_arc[(k, i, j)] = s
-                    constr_arco[(k, i, j)] = model.addConstr(expr -s == 0.0, name=f"arc_{k}_{i}_{j}")
+                    constr_arco[(k, i, j)] = model.addConstr(expr - s == 0.0, name=f"arc_{k}_{i}_{j}")
 
 
                 else:
@@ -1439,13 +2516,11 @@ class Metodos:
                     slack_arc[(k, i, j)] = smenos
                     constr_arco[(k, i, j)] = model.addConstr(expr + smenos == 1.0, name=f"arc_{k}_{i}_{j}")
 
-
         model.update()
-
 
         # >>> logo no começo da resolver_no_com_poolRAIZz, depois do print inicial:
         pool_ini_por_k = {k: len(sol_pool.rotas[k]["sequencia_rota"]) for k in sol_pool.rotas.keys()}
-        #self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
+        # self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
         print("")
 
         # -------------------------
@@ -1494,7 +2569,8 @@ class Metodos:
                 no_bp.lambdas = {}
                 return
 
-            print(f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+            print(
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
 
             slack_sum_vis = sum(float(v.X) for v in slack_vis)
             slack_sum_arc = sum(float(v.X) for v in slack_arc.values()) if slack_arc else 0.0
@@ -1554,9 +2630,9 @@ class Metodos:
                 """
 
                 # pricing normal
-                t0=time.time()
+                t0 = time.time()
                 if tipo_geracao == "PD":
-                    #nova_rota, custo_red = self.SUB_PROG_DINCPP(
+                    # nova_rota, custo_red = self.SUB_PROG_DINCPP(
                     nova_rota, custo_red = self.SUB_PROG_DIN(
                         inst, pi, sigma_k=sigma[k], k=k,
                         arcos_proibidos=proibidos_equiv,
@@ -1584,11 +2660,8 @@ class Metodos:
                     print("")
                 """
 
-
                 if nova_rota is None:
                     continue
-
-
 
                 if float(custo_red) < -EPS_RC:
                     seq = nova_rota["clientes"]
@@ -1602,7 +2675,7 @@ class Metodos:
                 break
 
             print("t C : " + str(time.time() - t0))
-            print("NOVA ROTA ",nova_rota)
+            print("NOVA ROTA ", nova_rota)
             print("CUSTO R" + str(custo_red))
 
             # adiciona lote e repete
@@ -1676,13 +2749,11 @@ class Metodos:
             f"lb_confiavel={no_bp.lb_confiavel}"
         )
 
-
     def resolver_no_com_pool(self, inst, sol_pool, no_bp, tipo_geracao="PD"):
         import gurobipy as gp
         from gurobipy import GRB
 
         print(f"\n--- Resolve nó {no_bp.id_no} com POOL GLOBAL NORMALZITO ---")
-
 
         # ===== flags p/ controller global =====
         no_bp.cg_convergiu = False
@@ -1691,12 +2762,15 @@ class Metodos:
         no_bp.lb_confiavel = False
         no_bp.lp_status = None
 
-        N=inst.nbn
-        K=inst.nbv
-        #itens do tabu
-        no_bp.freq_arc=   [[[0 for _ in range (N)] for _ in range (N) ] for _ in range (K)]
-        no_bp.last_arc=   [[[0 for _ in range (N)] for _ in range (N) ] for _ in range (K)]
-        no_bp.tabu_until= [[[0 for _ in range (N)] for _ in range (N) ] for _ in range (K)]
+        #contadores
+        construtivas=[0,0,0]
+
+        N = inst.nbn
+        K = inst.nbv
+        # itens do tabu
+        no_bp.freq_arc = [[[0 for _ in range(N)] for _ in range(N)] for _ in range(K)]
+        no_bp.last_arc = [[[0 for _ in range(N)] for _ in range(N)] for _ in range(K)]
+        no_bp.tabu_until = [[[0 for _ in range(N)] for _ in range(N)] for _ in range(K)]
 
         model = gp.Model(f"Mestre_no_{no_bp.id_no}")
         model.setParam("OutputFlag", 0)
@@ -1808,18 +2882,17 @@ class Metodos:
                     expr += float(rota_usa_arco(seq, i, j)) * lbd[k][p]
 
                 if (i, j) in proibidos_k:
-                    #aqui começa um primeiro teste onde quero testar colocar um -s para o lado esquerdo do nó,
-                    #vou usar o mesmo para depois eu ver se ele zera (para ser viável)
+                    # aqui começa um primeiro teste onde quero testar colocar um -s para o lado esquerdo do nó,
+                    # vou usar o mesmo para depois eu ver se ele zera (para ser viável)
                     s = model.addVar(lb=0.0, obj=BIGM_ARC, vtype=GRB.CONTINUOUS, name=f"slack_arc_{k}_{i}_{j}")
                     slack_arc[(k, i, j)] = s
-                    constr_arco[(k, i, j)] = model.addConstr(expr -s == 0.0, name=f"arc_{k}_{i}_{j}")
+                    constr_arco[(k, i, j)] = model.addConstr(expr - s == 0.0, name=f"arc_{k}_{i}_{j}")
 
 
                 else:
                     smenos = model.addVar(lb=0.0, obj=BIGM_ARC, vtype=GRB.CONTINUOUS, name=f"slack_arc2_{k}_{i}_{j}")
                     slack_arc[(k, i, j)] = smenos
                     constr_arco[(k, i, j)] = model.addConstr(expr + smenos == 1.0, name=f"arc_{k}_{i}_{j}")
-
 
         model.update()
 
@@ -1869,10 +2942,35 @@ class Metodos:
                 no_bp.lambdas = {}
                 return
 
+            print(
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}"
+            )
 
+            print(f"[Nó {no_bp.id_no}] Colunas ativas na iteração {iter_cg}:")
+            tem_ativa = False
+            valor_recomposto = 0.0
+            tol_print = 1e-6
 
-            print(f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+            for k in sol_pool.rotas.keys():
+                n = min(len(lbd[k]), len(sol_pool.rotas[k]["sequencia_rota"]))
+                for p in range(n):
+                    val = float(lbd[k][p].X)
 
+                    if val > tol_print:
+                        tem_ativa = True
+                        seq = sol_pool.rotas[k]["sequencia_rota"][p]
+                        custo = float(sol_pool.rotas[k]["custo"][p])
+                        valor_recomposto += val * custo
+
+                        print(
+                            f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}"
+                        )
+
+            if not tem_ativa:
+                print("   nenhuma coluna ativa")
+
+            print(f"   valor recomposto = {valor_recomposto:.6f}")
+            print("")
             slack_sum_vis = sum(float(v.X) for v in slack_vis)
             slack_sum_arc = sum(float(v.X) for v in slack_arc.values()) if slack_arc else 0.0
             slack_sum_total = slack_sum_vis + slack_sum_arc
@@ -1885,7 +2983,7 @@ class Metodos:
             pi = [float(c.Pi) for c in visita_constr]
             sigma = {k: float(uma_rota_constr[k].Pi) for k in sol_pool.rotas.keys()}
 
-            if(no_bp.matriz_rc== {}):
+            if (no_bp.matriz_rc == {}):
                 no_bp.criaMatriRC(inst)
 
             """
@@ -1929,7 +3027,7 @@ class Metodos:
                 # print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
 
                 """
-                                
+
                 for i in range(inst.nbn):
 
                         linha = []
@@ -1957,7 +3055,7 @@ class Metodos:
                             no_bp.matriz_rc[k][i][j] = rc
 
                         print(f"i={i:2d} | " + " ".join(linha))
-                
+
                 """
                 # emergência: se há slack e há fixados, tenta gerar rota que respeite fixados (aceita rc>=0)
                 """
@@ -1976,98 +3074,74 @@ class Metodos:
                 """
 
                 # pricing normal
-                t0=time.time()
-                nova_rota,custo_red= self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
-                                                        mu_arc=mu_arc)
-                #if tipo_geracao == "PD":
-                if nova_rota == None:
-                    print("ABRIU ROTA PD")
-                    #nova_rota, custo_red = self.SUB_PROG_DINCPP(
-                    #nova_rota, custo_red = self.SUB_PROG_DIN(
-                    nova_rota, custo_red = self.SUB_PROG_DIN_PW(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
-                        arcos_proibidos=proibidos_equiv,
-                        arcos_fixados=fixados_k,
-                        mu_arc=mu_arc
-                    )
-                    print("")
-                """
-                else:
-                    nova_rota, custo_red = self.subproblema(inst, pi, sigma[k], k, duais_arcos=None)
-                """
+                t0 = time.time()
+                nova_rota, custo_red = self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
+                                                          mu_arc=mu_arc)
+                if (nova_rota is not None):
+                    construtivas[0]+=1
+                    print("gerou na 1")
+                if (nova_rota is None):
+                    nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
+                                                       mu_arc=mu_arc)
+                    if (nova_rota is not None):
+                        construtivas[1] += 1
+                        print("gerou na 2")
+                if (nova_rota is None):
+                    nova_rota, custo_red = self.SUB_HEUR_VNS(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
+                                                          mu_arc=mu_arc)
+                    if (nova_rota is not None):
+                        construtivas[2] += 1
+                        print("gerou na 3")
 
 
-
-                #cpp
-                t1=time.time()
-                """"
-                if tipo_geracao == "PD":
-                    nova_rotac, custo_redc = self.SUB_PROG_DIN_PW_CPP(
-                        inst=inst,
-                        pi=pi,
-                        sigma_k=float(sigma[k]),
-                        k=k,
-                        arcos_proibidos=proibidos_equiv,
-                        arcos_fixados=fixados_k,
-                        mu_arc=mu_arc
-                    )
-                """
-                t2 = time.time()
-
-                #print do cpp
-                """
-                print("ROTA P")
-                print(nova_rota)
-                print("ROTA C")
-                print(nova_rotac)
-                print("t python:", t1 - t0)
-                print("t C++   :", t2 - t1)
-                if(nova_rotac!=nova_rota):
-                    print("Diferentes ROTAC")
-                    print(nova_rotac)
-                    print("ROTA PY")
-                    print(nova_rotac)
+                if iter_cg==13:
                     print("")
 
-                """
+
 
 
                 if nova_rota is None:
+                    print("PASSOU PELOS 3 sem gerar nada")
                     continue
-
-
+                nova_rota["custo_reduzido"] = float(custo_red)
+                print(f"NOVA COLUNA GERAL | rc={nova_rota['custo_reduzido']:.6f}")
+                print(nova_rota)
 
                 if float(custo_red) < -EPS_RC:
+
                     seq = nova_rota["clientes"]
                     if not self.coluna_respeita_no(no_bp, seq, k):
                         continue
+
+
+
                     novas_colunas.append((k, seq, nova_rota["bin_xij"], nova_rota["custo"]))
-                    #print(f"NOVA COLUNA | rc={float(custo_red):.6f} | rota={nova_rota['clientes']} | custo={nova_rota['custo']:.4f}")
+                    # print(f"NOVA COLUNA | rc={float(custo_red):.6f} | rota={nova_rota['clientes']} | custo={nova_rota['custo']:.4f}")
                     nova_rota["custo_reduzido"] = float(custo_red)
                     print(f"NOVA COLUNA | rc={nova_rota['custo_reduzido']:.6f}")
                     print(nova_rota)
                     print("")
-                    #print(nova_rota)
+                    # print(nova_rota)
 
                     ##atualiza o tabu
                     print("")
-                    #primeiro eu diminuo um do tabu
+                    # primeiro eu diminuo um do tabu
 
-                    mat= no_bp.tabu_until[k]
-                    for i in range (inst.nbn):
-                        row=mat[i]
+                    mat = no_bp.tabu_until[k]
+                    for i in range(inst.nbn):
+                        row = mat[i]
                         for j in range(inst.nbn):
-                            if row[j]>0:
+                            if row[j] > 0:
                                 ###1print(f'atualizou tabu ',k,'-',i,'-',j,' --(',row[j],')---->(',row[j]-1,')')
-                                row[j]-=1
+                                row[j] -= 1
 
                     ## agora subo quem vai pra tabu
                     for t in range(len(seq) - 1):
                         i, j = seq[t], seq[t + 1]
-                        #if(no_bp.matriz_rc[k][i][j]>=0):
+                        # if(no_bp.matriz_rc[k][i][j]>=0):
                         no_bp.freq_arc[k][i][j] += 1
                         no_bp.last_arc[k][i][j] = iter_cg
-                        no_bp.tabu_until[k][i][j] =no_bp.tabu_tenure
+                        no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
                         """
                             print(f'subiu tabu MAIOR ', k, '-', i, '-', j)
                             print("valor RC")
@@ -2079,8 +3153,7 @@ class Metodos:
                         """
                     print("")
 
-
-                #CPP
+                # CPP
                 """
                 if float(custo_redc) < -EPS_RC:
                     seq = nova_rotac["clientes"]
@@ -2095,15 +3168,14 @@ class Metodos:
                     #print(nova_rota)
                 """
 
-
             # convergência
             if not novas_colunas:
                 no_bp.cg_convergiu = True
                 break
 
-            #print("t C : " + str(time.time() - t0))
-            #print("NOVA ROTA ",nova_rota)
-            #print("CUSTO R" + str(custo_red))
+            # print("t C : " + str(time.time() - t0))
+            # print("NOVA ROTA ",nova_rota)
+            # print("CUSTO R" + str(custo_red))
 
             # adiciona lote e repete
             for (k, seq, binx, custo) in novas_colunas:
@@ -2175,10 +3247,47 @@ class Metodos:
             f"max_iter={no_bp.parou_por_max_iter}, slack_final={no_bp.slack_sum_final:.6f}, "
             f"lb_confiavel={no_bp.lb_confiavel}"
         )
-        if(no_bp.id_no==0):
+
+        no_bp.lambdas = lambdas
+        no_bp.solucao_inteira = inteira
+
+        if no_bp.solucao_inteira:
+            selecao = []
+
+            for k in sol_pool.rotas.keys():
+                n = min(len(lbd[k]), len(sol_pool.rotas[k]["sequencia_rota"]))
+                for p in range(n):
+                    lam = float(lbd[k][p].X)
+                    if lam > 1e-6:
+                        selecao.append({
+                            "k": k,
+                            "p": p,
+                            "nome": f"veic={k} col={p}"
+                        })
+
+            if selecao:
+                mu_arc_total = {}
+                for kk in mu_arc_por_k:
+                    for (i, j), val in mu_arc_por_k[kk].items():
+                        mu_arc_total[(i, j, kk)] = float(val)
+
+                sol_pool.exportar_rotas_pares_js(
+                    inst=inst,
+                    selecao=selecao,
+                    pi=pi,
+                    mu_arc=mu_arc_total,
+                    sigma=sigma,
+                    nome_arquivo_js="rotas_plot_data.js",
+                    title=f"Solução inteira do nó {no_bp.id_no}",
+                    subtitle=f"Rotas ativas: {len(selecao)}"
+                )
+        print("SALDOS")
+        print(construtivas)
+
+        if (no_bp.id_no == 0):
             # >>> logo no começo da resolver_no_com_poolRAIZz, depois do print inicial:
             pool_ini_por_k = {k: len(sol_pool.rotas[k]["sequencia_rota"]) for k in sol_pool.rotas.keys()}
-            #self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
+            # self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
             print("PRIMEIRO NO")
 
     def resolver_no_com_poolRAIZ(self, inst, sol_pool, no_bp, tipo_geracao="PD"):
@@ -2305,7 +3414,7 @@ class Metodos:
         # -------------------------
         iter_cg = 0
         while True:
-            #print(
+            # print(
             #    f"[RAIZ Nó {no_bp.id_no}] Iter {iter_cg} | Obj={model.ObjVal:.6f} | Colunas={sum(len(lbd[k]) for k in lbd)}")
 
             # duais
@@ -2387,7 +3496,7 @@ class Metodos:
         )
 
         # exporta pool ao final da raiz
-        #self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
+        # self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
 
     def resolver_no_com_poolRAIZ2(self, inst, sol_pool, no_bp, tipo_geracao="PD"):
         import time
@@ -2654,7 +3763,7 @@ class Metodos:
 
         print(f"Nó {no_bp.id_no} finalizado: LP = {no_bp.custo_lp:.4f}, inteira? {no_bp.solucao_inteira}")
 
-    def soma_lambda_de_um_arco(self,sol_pool, lbd, k, i, j):
+    def soma_lambda_de_um_arco(self, sol_pool, lbd, k, i, j):
 
         # sanity: mesmo tamanho
         seqs = sol_pool.rotas[k]['sequencia_rota']
@@ -2675,7 +3784,6 @@ class Metodos:
             if usa:
                 s += float(lbd[k][p].X)
         return s
-
 
     def atualizar_score_arcos_lambda_com_lbd(self, inst, sol_pool, lbd, no_bp=None):
         score = {}
@@ -2764,9 +3872,6 @@ class Metodos:
                         row_vals.append(f"{v:7.{casas}f}")
                 print(f"{i:>3d} | " + " ".join(row_vals))
 
-
-
-
     def extrair_lambdas_do_modelo(sol_pool, lbd_vars):
 
         lbd_vals = {}
@@ -2774,7 +3879,6 @@ class Metodos:
             nrotas = len(data.get("sequencia_rota", []))
             lbd_vals[k] = [float(lbd_vars[k][p].X) for p in range(nrotas)]
         return lbd_vals
-
 
     def proibidos_com_fixados(self, inst, proibidos_k, fixados_k):
         """
@@ -2824,7 +3928,7 @@ class Metodos:
 
         # Função objetivo: minimizar tempo total percorrido
         model.setObjective(
-            #gp.quicksum(inst.matriz_distancia[i][j] * inst.veiculos[k].velocidade * x[i, j, k]  # FOO alterar FO
+            # gp.quicksum(inst.matriz_distancia[i][j] * inst.veiculos[k].velocidade * x[i, j, k]  # FOO alterar FO
             gp.quicksum(inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade * x[i, j, k]  # FOO alterar FO
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
@@ -3072,7 +4176,7 @@ class Metodos:
                 'lbd_iteracao': []
             }
 
-    #teste heuristica gulosa
+    # teste heuristica gulosa
     def rota_gulosa_veiculo(self, inst, k, clientes_disponiveis, alpha=5):
         """
         Constrói 1 rota para o veículo k:
@@ -3502,18 +4606,18 @@ class Metodos:
                 sol_pool.rotas[k]['vezes_usada_otimo'].append(0)
                 sol_pool.rotas[k]['lbd_iteracao'].append([])
 
-    #fim da gulosa
+    # fim da gulosa
 
     def gera_rotas_iniciaisUNICA(self, inst, sol, custo_alto=1e7):
 
         depf = inst.nbn - 1
         clientes = list(range(1, inst.nbcd + 1))
 
-        #sol.rotas = {}
+        # sol.rotas = {}
 
         for k in range(inst.nbv):
             # inicializa listas para o veículo k
-            #k=len(sol.rotas[ki])
+            # k=len(sol.rotas[ki])
             sol.rotas[k] = {
                 'rotas_binaria': [],
                 'sequencia_rota': [],
@@ -3524,7 +4628,8 @@ class Metodos:
             }
 
             # === Rota cheia (coluna artificial forte) ===
-            random.shuffle(clientes)
+            #random.shuffle(clientes)
+            rota_cheia = [0] + list(range(1, inst.nbcd + 1)) + [depf]
             rota_cheia = [0] + clientes[:] + [depf]
 
             bin_cheia = [1] * inst.nbcd  # marca que cobre todos os clientes
@@ -3784,37 +4889,37 @@ class Metodos:
             initerruptall = False
 
             model.optimize()
-            #print("%%%%%%%%%%%%%%%%% iteracao " + str(self.total_iteracoes_CG))
+            # print("%%%%%%%%%%%%%%%%% iteracao " + str(self.total_iteracoes_CG))
             if model.Status != GRB.OPTIMAL:
 
                 if nbIteracNoOpt < nbMAXIteracNoOpt:
                     nbIteracNoOpt += 1
-                    #print("Problema mestre não resolvido/ótimo. Parando.")
+                    # print("Problema mestre não resolvido/ótimo. Parando.")
                     # removo os cortes
 
-                    #print("🧹 Removendo restrições de arco fixado DENTRO DA GC ...")
+                    # print("🧹 Removendo restrições de arco fixado DENTRO DA GC ...")
 
                     for (i, j, k) in arcos_fixados_em_1:
                         nome_restr = f"arco_fixado_{i}_{j}_{k}"
                         restr = model.getConstrByName(nome_restr)
                         if restr:
                             model.remove(restr)
-                            #print(f"✔️ Removida: {nome_restr}")
-                        #else:
-                            #print(f"⚠️ Restrição {nome_restr} não encontrada no modelo.")
+                            # print(f"✔️ Removida: {nome_restr}")
+                        # else:
+                        # print(f"⚠️ Restrição {nome_restr} não encontrada no modelo.")
 
                     model.update()
                     model.optimize()
 
             else:
 
-                #print("\n--- Solução Ótima Encontrada NO GC MESTRE ---")
-                #print(f"Valor da Função Objetivo (Custo Total): {model.ObjVal:.4f}\n")
+                # print("\n--- Solução Ótima Encontrada NO GC MESTRE ---")
+                # print(f"Valor da Função Objetivo (Custo Total): {model.ObjVal:.4f}\n")
 
                 # ==================================================================
                 # INICIO Bloco para mostrar as colunas escolhidas na solução do mestre
                 # ==================================================================
-                #print(f"\n--- Colunas Escolhidas na Solução do Mestre (Iteração {self.total_iteracoes_CG}) ---")
+                # print(f"\n--- Colunas Escolhidas na Solução do Mestre (Iteração {self.total_iteracoes_CG}) ---")
                 custo_total_iteracao = 0
                 for k in sol.rotas.keys():  # range(inst.nbv):
 
@@ -3824,8 +4929,8 @@ class Metodos:
 
                         # Se o valor for maior que uma pequena tolerância, a coluna foi "usada"
                         if x_val > 1e-6:
-                            #print(f"  Veículo {k}, Rota {p}:")
-                            #print(f"    - Valor (lambda): {x_val:.4f}")
+                            # print(f"  Veículo {k}, Rota {p}:")
+                            # print(f"    - Valor (lambda): {x_val:.4f}")
 
                             # Acessa os dados da rota correspondente na sua estrutura sol.rotas
                             sequencia = sol.rotas[k]['sequencia_rota'][p]
@@ -3841,8 +4946,8 @@ class Metodos:
                             sol.rotas[k]['vezes_usada_geral'][p] += 1
                             custo_rota = sol.rotas[k]['custo'][p]
 
-                            #print(f"    - Sequência: {sequencia}")
-                            #print(f"    - Custo:     {custo_rota:.2f}")
+                            # print(f"    - Sequência: {sequencia}")
+                            # print(f"    - Custo:     {custo_rota:.2f}")
 
                             # Acumula o custo total da solução atual do mestre (Lower Bound)
                             custo_total_iteracao += x_val * custo_rota
@@ -3893,7 +4998,7 @@ class Metodos:
                     ##=====================terminou a GC
 
                     if (primeiromip):
-                        #print("/n/n/n-------- PRIMEIRO MIP------------")
+                        # print("/n/n/n-------- PRIMEIRO MIP------------")
 
                         # Altera o tipo de todas as variáveis lambda para Binário
                         for k in sol.rotas.keys():  # range(inst.nbv):
@@ -3910,7 +5015,7 @@ class Metodos:
                             ##salva a rota em rotas escolhidas
                             custo_total_inteiro = model.ObjVal
 
-                            #print("--- Detalhes das Rotas Escolhidas (Solução Inteira-MIP 1) ---")
+                            # print("--- Detalhes das Rotas Escolhidas (Solução Inteira-MIP 1) ---")
                             for k in range(inst.nbv):
                                 # Itera sobre todas as rotas geradas para o veículo k
                                 for p in range(len(lbd[k])):
@@ -4558,8 +5663,6 @@ class Metodos:
             pred_fixo[j] = i
         """
 
-
-
         tol = 1e-6
 
         def domina(cA, tA, qA, cB, tB, qB):
@@ -4664,9 +5767,6 @@ class Metodos:
 
                 chave = (j, nova_mask)
                 lista = fronteira.get(chave, [])
-
-
-
 
                 dominado = False
                 for idx_old in lista:
@@ -4795,9 +5895,8 @@ class Metodos:
         rota_dict = {"clientes": rota, "custo": custo_real, "bin_xij": bin_xij}
         return rota_dict, melhor_custo_reduzido
 
-
     def SUB_PROG_DINOK(self, inst, pi, sigma_k, k,
-                     arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
+                       arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import math
         from collections import deque
 
@@ -4844,7 +5943,6 @@ class Metodos:
                 return None, None  # conflito: 2 predecessores fixos
             succ_fixo[i] = j
             pred_fixo[j] = i
-
 
         tol = 1e-6
 
@@ -5019,7 +6117,7 @@ class Metodos:
         return rota_dict, melhor_custo_reduzido
 
     def SUB_PROG_DINLivre(self, inst, pi, sigma_k, k,
-                     arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
+                          arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import math
         from collections import deque
 
@@ -5030,10 +6128,10 @@ class Metodos:
         if mu_arc is None:
             mu_arc = {}  # (i,j)->dual arco
 
-        #mu_arc = {}  # (i,j)->dual arco
+        # mu_arc = {}  # (i,j)->dual arco
 
-        #arcos_proibidos = set()
-        #arcos_fixados = set()
+        # arcos_proibidos = set()
+        # arcos_fixados = set()
 
         nbn = inst.nbn
         nbcd = inst.nbcd
@@ -5071,7 +6169,6 @@ class Metodos:
                 return None, None  # conflito: 2 predecessores fixos
             succ_fixo[i] = j
             pred_fixo[j] = i
-
 
         tol = 1e-6
 
@@ -5248,7 +6345,6 @@ class Metodos:
     def SUB_PROG_DINLivre2(self, inst, pi, sigma_k, k, arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import math
         from collections import deque
-
 
         arcos_proibidos = set()
         arcos_fixados = set()  # não será forçado aqui (teste)
@@ -5534,17 +6630,15 @@ class Metodos:
             req_j
         )
 
-
-
     def SUB_PROG_DINCPP(self, inst, pi, sigma_k, k,
                         arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import sys
         import numpy as np
         from pathlib import Path
 
-        pyd_dir = Path(__file__).resolve().parent / "PD_PARA_PYTHON" /"PD_PARA_PYTHON" / "x64" / "Release"
+        pyd_dir = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON" / "x64" / "Release"
         if not pyd_dir.exists():
-            pyd_dir = Path(__file__).resolve().parent / "PD_PARA_PYTHON" /"PD_PARA_PYTHON" / "x64" / "Debug"
+            pyd_dir = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON" / "x64" / "Debug"
         if str(pyd_dir) not in sys.path:
             sys.path.insert(0, str(pyd_dir))
 
@@ -5604,9 +6698,8 @@ class Metodos:
 
         return vrptw_pd.SUB_PROG_DIN(tt, a, b, s, d, pi_np, float(sigma_k), cap_k, F, FX, MU)
 
-
     def SUB_PROG_DINCPP0202(self, inst, pi, sigma_k, k,
-                        arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
+                            arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import sys
         import numpy as np
         from pathlib import Path
@@ -5682,7 +6775,6 @@ class Metodos:
             pi_np, float(sigma_k), cap_k,
             F, FX, MU
         )
-
 
     def registrar_novo_corte(self, iteracao, indice_corte, i, j, k, nome_arquivo="log_gc.txt"):
 

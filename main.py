@@ -14,10 +14,10 @@ with open(ARQ_SAIDA, "w", encoding="utf-8") as f:
     f.write("tamanho;capacidade;tabu;tempo_exato;\ntempo_bp;fo_exato;\nfo_bp;nos_bp;colunas_bp\n")
 
 
-tamanhos=[4,7,13]#,20,25]
-capacidades=[36,70,110]#,200,200]
-#tamanhos=[13]#,20,25]
-#capacidades=[110]#,200,200]
+#tamanhos=[4,7,13]#,20,25]
+#capacidades=[36,70,110]#,200,200]
+tamanhos=[13]#,20,25]
+capacidades=[110]#,200,200]
 #N_TABUS=[3,4,5]
 N_TABUS=[0]
 
