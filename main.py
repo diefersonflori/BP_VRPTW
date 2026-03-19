@@ -18,8 +18,14 @@ with open(ARQ_SAIDA, "w", encoding="utf-8") as f:
 #capacidades=[36,70,110]#,200,200]
 tamanhos=[13]#,20,25]
 capacidades=[110]#,200,200]
+#capacidades~ 60% do total das demandas
+
+#tamanhos=[16]#,20,25]
+#capacidades=[150]#,200,200]
+#tamanhos=[20]#,25]
+#capacidades=[200]#,200]
 #N_TABUS=[3,4,5]
-N_TABUS=[0]
+N_TABUS=[0,1,2,3]
 
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
