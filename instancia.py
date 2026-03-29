@@ -27,6 +27,9 @@ class Instancia:
         self.matriz_distancia = []  # Distance matrix
         self.veiculos = []  # List of Veiculo objects
         self.fileName = ""
+        #para teste com muitas
+        self.ninst=0
+        self.nbconstrutiva=0
 
     def leitura(self, argv):
         """
@@ -53,7 +56,7 @@ class Instancia:
         #Q = 110
         #self.nbcd = 7
         #Q = 70
-        self.nbv = 2
+        #self.nbv = 2
         #"""
         #self.nbcd = 20
         #self.nbv = 2
@@ -93,10 +96,11 @@ class Instancia:
         found = False
         idx = 0
         for i, line in enumerate(lines):
-            if "TIME2" in line:
+            if "TIME" in line:
                 found = True
                 for j in range(self.nbn - 1):  # nbn-1 nodes before final depot
-                    parts = lines[i + j + 1].split()
+                    parts = lines[i + j + 2].split()
+                    #parts = lines[i + j + 1].split() ## ajuste para instancias em geral
                     #if len(parts) < 10:
                     #    continue  # Skip invalid lines
                     no_aux = Node(
@@ -107,18 +111,18 @@ class Instancia:
                     )
                     a1 = int(parts[4])
                     a2 = int(parts[5])
-                    a3 = int(parts[6])
-                    a4 = int(parts[7])
+                    #a3 = int(parts[6])
+                    #a4 = int(parts[7])
+                    #a5 = int(parts[8])
                     a5 = int(parts[6])
                     #a5 = int(parts[8])
                     #a6 = int(parts[9])
                     no_aux.READY_TIME.append(a1)
                     no_aux.DUE_DATE.append(a2)
-                    no_aux.READY_TIME.append(a3)
-                    no_aux.DUE_DATE.append(a4)
-                    # READY_TIME 2, DUE_DATE 2 existem mas não usa aqui
-                    ##no_aux.SERVICE_TIME.append(a5)
-                    no_aux.SERVICE_TIME.append(0)
+                    #no_aux.READY_TIME.append(a3)
+                    #no_aux.DUE_DATE.append(a4)
+                    no_aux.SERVICE_TIME.append(a5)
+                    #no_aux.SERVICE_TIME.append(90)
                     #$talvez colocar depois o servico
                     self.noh[j] = no_aux
                 self.noh[self.nbn - 1] = Node(

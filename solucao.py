@@ -25,6 +25,8 @@ class Solucao:
         #GC
         self.rotas_escolhidas = {}
 
+        self.construtivas = [0, 0, 0, 0, 0]
+
 
     def travel_time(self, inst, i, j,k):
         return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade

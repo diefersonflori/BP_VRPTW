@@ -1,4 +1,7 @@
 import random
+
+
+random.seed(42)
 import copy
 import time
 import gurobipy as gp
@@ -38,6 +41,11 @@ class NoBP:
 
         # Resultados da GC neste nó
         self.custo_lp = None
+        self.custo_mip = None
+        self.custo_lp_HERDADO = None
+        self.custo_mip_HERDADO = None
+
+
         self.lambdas = {}
         self.solucao_inteira = False
 
@@ -97,6 +105,7 @@ class Metodos:
 
         self.log_bp = None
         self.hist_bp = []  # NOVO: histórico textual da árvore
+        self.printarsol=False
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -483,6 +492,8 @@ class Metodos:
             arcos_proibidos=pai_proib.union({melhor_arco})
         )
         filho_esq.branching_from = {"pai": no_pai.id_no, "arco": [i_sel, j_sel, k_sel], "tipo": "proibido"}
+        filho_esq.custo_lp_HERDADO=no_pai.custo_lp
+        filho_esq.custo_mip_HERDADO=no_pai.custo_mip
 
         # filho direito: obriga arco
         filho_dir = NoBP(
@@ -491,11 +502,14 @@ class Metodos:
             arcos_proibidos=pai_proib
         )
         filho_dir.branching_from = {"pai": no_pai.id_no, "arco": [i_sel, j_sel, k_sel], "tipo": "obrigatorio"}
+        filho_dir.custo_lp_HERDADO=no_pai.custo_lp
+        filho_dir.custo_mip_HERDADO=no_pai.custo_mip
 
-        self._append_hist_bp(
-            f"Do nó {no_pai.id_no} gerados filhos {filho_esq.id_no} (proíbe arco {i_sel}->{j_sel}, k={k_sel}) "
-            f"e {filho_dir.id_no} (obriga arco {i_sel}->{j_sel}, k={k_sel})."
-        )
+
+        #self._append_hist_bp(
+        #    f"Do nó {no_pai.id_no} gerados filhos {filho_esq.id_no} (proíbe arco {i_sel}->{j_sel}, k={k_sel}) "
+        ##    f"e {filho_dir.id_no} (obriga arco {i_sel}->{j_sel}, k={k_sel})."
+        #)
 
         return filho_esq, filho_dir, proximo_id + 2
 
@@ -527,6 +541,13 @@ class Metodos:
         return True
 
     def branch_and_price_global(self, inst, sol_pool, tipo_geracao="PD"):
+
+        #limpeza arquivo principal dos logs meus
+        nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+
+        with open(nome_arquivo_log, "w", encoding="utf-8") as f:
+            f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
+
 
         raiz = True
         import time, math, json
@@ -598,6 +619,14 @@ class Metodos:
             # -------------------------------------------------
             raiz = False
             t00 = time.time()
+            #teste poda do no ja com o herdado
+            if no_atual.custo_lp_HERDADO is not None and not math.isinf(z_inc):
+                if no_atual.custo_lp_HERDADO > z_inc - 1e-6:
+                    print(
+                        f"Poda nó {no_atual.id_no} por bound herdado: {no_atual.custo_lp_HERDADO:.4f} >= incumbente {z_inc:.4f}")
+                    no_atual.status = "podado"
+                    no_atual.motivo_poda = "bound_herdado"
+                    continue
 
             if (raiz):
                 raiz = False
@@ -614,13 +643,14 @@ class Metodos:
                 no_atual.motivo_poda = "LP_inviavel"
                 continue
 
-            z = float(no_atual.custo_lp)
+            z_lp = float(no_atual.custo_lp)
+            z_mip = float(no_atual.custo_mip) if no_atual.custo_mip is not None else float("inf")
             no_atual.status = "resolvido"
 
             lb_ok = bool(getattr(no_atual, "lb_confiavel", False))
 
             print(
-                f"[Nó {no_atual.id_no}] LP={z:.4f} inteira={no_atual.solucao_inteira} "
+                f"[Nó {no_atual.id_no}] LP={z_lp:.4f} inteira={no_atual.solucao_inteira} "
                 f"lb_confiavel={lb_ok} slack_final={getattr(no_atual, 'slack_sum_final', 0.0):.6f} "
                 f"cg_convergiu={getattr(no_atual, 'cg_convergiu', False)} max_iter={getattr(no_atual, 'parou_por_max_iter', False)}"
             )
@@ -628,21 +658,23 @@ class Metodos:
             # -------------------------------------------------
             # poda por bound (SÓ com LB confiável)
             # -------------------------------------------------
-            if lb_ok and (not math.isinf(z_inc)) and (z >= z_inc - 1e-6):
-                print(f"Poda por bound (LB ok): LP {z:.4f} >= z_inc {z_inc:.4f}")
+            if lb_ok and (not math.isinf(z_inc)) and (z_lp > z_inc - 1e-6):
+                print(f"Poda por bound (LB ok): LP {z_lp:.4f} >= z_inc {z_inc:.4f}")
                 no_atual.status = "podado"
                 no_atual.motivo_poda = "poda_bound"
                 continue
 
             # -------------------------------------------------
-            # caso 1: nó inteiro
+            # caso 1: nó tem novo inteiro
             # -------------------------------------------------
             if no_atual.solucao_inteira:
-                print(f"Nó {no_atual.id_no} inteiro com custo {z:.4f}")
+                print(f"Nó {no_atual.id_no} tem inteiro com custo {z_mip:.4f}")
 
-                if z < z_inc:
-                    z_inc = z
-                    x_inc = getattr(no_atual, "lambdas", None)
+                if z_mip < z_inc:
+                    z_inc = z_mip
+
+                    print(f"ATUALIZOU MELHOR INTEIRO Nó {no_atual.id_no} Valor INTEIRO com custo {z_mip:.4f}")
+                    x_inc = getattr(no_atual, "lambdas_inteiras", None)
                     melhor_no = no_atual
                     print(f"Novo incumbente: z_inc={z_inc:.4f}")
 
@@ -663,17 +695,25 @@ class Metodos:
 
                     ativos = novos_ativos
 
-                no_atual.motivo_poda = no_atual.motivo_poda or "no_inteiro_folha"
-                continue
+                if(z_mip==z_lp): #incumbente é igual a fracionaria, logo o nó é inteiro
+                    print("PODOU por ser inteiro- fim da linha")
+                    no_atual.motivo_poda = no_atual.motivo_poda or "no_inteiro_folha"
+                    continue
+                nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+                with open(nome_arquivo_log, "a", encoding="utf-8") as f:
+                    f.write(f"{no_atual.id_no};{z_inc};{z_lp};{z_li};{self.total_colunas}\n")
+
+                print("")
 
             # -------------------------------------------------
-            # caso 2: fracionário -> branching
+            # caso 2: melhor fracionário -> branching
             # -------------------------------------------------
-            print(f"Nó {no_atual.id_no} fracionário com custo {z:.4f}")
+            print(f"Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
 
-            if z < z_frac:
-                z_frac = z
+            if z_lp < z_frac:
+                z_frac = z_lp
                 melhor_no_frac = no_atual
+                print(f"ATUALIZOU MELHOR FRAC Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
 
             filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
             # filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
@@ -691,6 +731,8 @@ class Metodos:
             else:
                 no_atual.status = "podado"
                 no_atual.motivo_poda = "sem_lambda_fracionario"
+
+            print(f"FIM do nó  {no_atual.id_no} ")
 
         # =========================
         # Fim
@@ -710,7 +752,7 @@ class Metodos:
 
             #################
             sol_pool.rotas_escolhidas = {}
-            for (k, p), val in melhor_no.lambdas.items():
+            for (k, p), val in melhor_no.lambdas_inteiras.items():
                 if val > 0.5:
                     if k not in sol_pool.rotas_escolhidas:
                         sol_pool.rotas_escolhidas[k] = {
@@ -760,7 +802,7 @@ class Metodos:
             print("Nenhuma solução fracionária registrada (ou todos nós foram inteiros/podados).")
 
         # se você usa JSON da árvore:
-        self._salvar_log_bp()
+        #self._salvar_log_bp()
 
 
     def SUB_PROG_DIN_PW(self, inst, pi, sigma_k, k, NO_BP,
@@ -3027,7 +3069,7 @@ class Metodos:
                 return
 
             print(
-                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
 
             slack_sum_vis = sum(float(v.X) for v in slack_vis)
             slack_sum_arc = sum(float(v.X) for v in slack_arc.values()) if slack_arc else 0.0
@@ -3465,7 +3507,7 @@ class Metodos:
                 return
 
             print(
-                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
             print(f"[Nó {no_bp.id_no}] Solução LP fracionada na iteração {iter_cg}:")
 
             tem_ativa = False
@@ -3530,7 +3572,7 @@ class Metodos:
                     inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
                 if nova_rota is not None:
-                    construtivas[0] += 1
+                    sol_pool.construtivas[0] += 1
                     print("gerou na 1")
 
                 if nova_rota is None:
@@ -3538,7 +3580,7 @@ class Metodos:
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                     )
                     if nova_rota is not None:
-                        construtivas[1] += 1
+                        sol_pool.construtivas[1] += 1
                         print("gerou na 2")
 
                 if nova_rota is None:
@@ -3546,7 +3588,7 @@ class Metodos:
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                     )
                     if nova_rota is not None:
-                        construtivas[2] += 1
+                        sol_pool.construtivas[2] += 1
                         print("gerou na 3")
 
 
@@ -3555,7 +3597,7 @@ class Metodos:
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                     )
                     if nova_rota is not None:
-                        construtivas[3] += 1
+                        sol_pool.construtivas[3] += 1
                         print("gerou na 4")
 
                 if nova_rota is None:
@@ -3563,7 +3605,7 @@ class Metodos:
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                     )
                     if nova_rota is not None:
-                        construtivas[4] += 1
+                        sol_pool.construtivas[4] += 1
                         print("gerou na 5")
 
                 if nova_rota is None:
@@ -4044,7 +4086,7 @@ class Metodos:
                 return
 
             print(
-                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
 
             print(f"[Nó {no_bp.id_no}] Colunas ativas na iteração {iter_cg}:")
             tem_ativa = False
@@ -4116,28 +4158,28 @@ class Metodos:
 
                 nova_rota, custo_red = self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
                 if nova_rota is not None:
-                    construtivas[0] += 1
+                    sol_pool.construtivas[0] += 1
                     print("gerou na 1")
 
                 if nova_rota is None:
                     nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
                                                                           mu_arc=mu_arc)
                     if nova_rota is not None:
-                        construtivas[1] += 1
+                        sol_pool.construtivas[1] += 1
                         print("gerou na 2")
 
                 if nova_rota is None:
                     nova_rota, custo_red = self.SUB_HEUR_VNS(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
                                                              mu_arc=mu_arc)
                     if nova_rota is not None:
-                        construtivas[2] += 1
+                        sol_pool.construtivas[2] += 1
                         print("gerou na 3")
 
 
                 if nova_rota is None:
                     nova_rota, custo_red = self.SUB_PROG_DIN_PW(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
                     if nova_rota is not None:
-                        construtivas[3] += 1
+                        sol_pool.construtivas[3] += 1
                         print("gerou na 4")
                 #"""
 
@@ -4385,7 +4427,7 @@ class Metodos:
         no_bp.arc_score = {}
 
         # contadores
-        construtivas = [0, 0, 0, 0,0]
+        sol_pool.construtivas = [0, 0, 0, 0,0]
 
         N = inst.nbn
         K = inst.nbv
@@ -4561,9 +4603,15 @@ class Metodos:
                 return
 
             print(
-                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} | Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
 
             print(f"[Nó {no_bp.id_no}] Colunas ativas na iteração {iter_cg}:")
+
+            #escreve no arquivo a sol do nó
+            ##mudanca para diminuir o tempo
+            ###nome_arquivo_logLOCAL = f"log_bounds_{inst.nbcd}_{inst.ninst}_LOCAL.csv"
+            ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
+            ###    f.write(f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj LP = {model.ObjVal:.4f} CONSTRUTIVA CANCELADA = {inst.nbconstrutiva}| Colunas = {sum(len(lbd[k]) for k in lbd)} \n")
             tem_ativa = False
             valor_recomposto = 0.0
             tol_print = 1e-6
@@ -4579,21 +4627,23 @@ class Metodos:
                         custo = float(sol_pool.rotas[k]["custo"][p])
                         valor_recomposto += val * custo
 
-                        print(f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}")
+                        if(self.printarsol):
+                            print(f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}")
 
             if not tem_ativa:
                 print("   nenhuma coluna ativa")
-
-            print(f"   valor recomposto = {valor_recomposto:.6f}")
-            print("")
+            if (self.printarsol):
+                print(f"   valor recomposto = {valor_recomposto:.6f}")
+                print("")
 
             slack_sum_vis = sum(float(v.X) for v in slack_vis)
             slack_sum_arc = sum(float(v.X) for v in slack_arc.values()) if slack_arc else 0.0
             slack_sum_total = slack_sum_vis + slack_sum_arc
 
             if slack_sum_total > 1e-9:
-                print(
-                    f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f})")
+                if (self.printarsol):
+                    print(
+                        f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f})")
 
             # duais
             pi = [float(c.Pi) for c in visita_constr]
@@ -4623,45 +4673,61 @@ class Metodos:
 
             novas_colunas = []
 
-            for k in sol_pool.rotas.keys():
+            for k in  range(1): # sol_pool.rotas.keys(): ## frota homogenea
                 proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
                 fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
                 proibidos_equiv = self.proibidos_com_fixados(inst, proibidos_k, fixados_k)
                 mu_arc = mu_arc_por_k.get(k, {})
 
                 t0 = time.time()
+                nova_rota=None
 
-                nova_rota, custo_red = self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
-                if nova_rota is not None:
-                    construtivas[0] += 1
-                    print("gerou na 1")
 
-                if nova_rota is None:
-                    nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                    )
+                if(inst.nbconstrutiva!=0 and inst.nbconstrutiva!=22): #22 é arbitrario para testar o ultimo so
+                    nova_rota, custo_red = self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
                     if nova_rota is not None:
-                        construtivas[1] += 1
-                        print("gerou na 2")
+                        sol_pool.construtivas[0] += 1
+                        print("gerou na 1")
 
-                if nova_rota is None:
-                    nova_rota, custo_red = self.SUB_HEUR_VNS(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                    )
-                    if nova_rota is not None:
-                        construtivas[2] += 1
-                        print("gerou na 3")
+
+
+
+                if (inst.nbconstrutiva != 1 and inst.nbconstrutiva!=22):
+                    if nova_rota is None:
+                        nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(
+                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                        )
+                        if nova_rota is not None:
+                            sol_pool.construtivas[1] += 1
+                            if (self.printarsol):
+                                print("gerou na 2")
+
+                if (inst.nbconstrutiva != 2 and inst.nbconstrutiva!=22):
+                    if nova_rota is None:
+                        nova_rota, custo_red = self.SUB_HEUR_VNS( #é o VNS com um chorinho pra quem está indo bem
+                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                        )
+                        if nova_rota is not None:
+                            sol_pool.construtivas[2] += 1
+                            if (self.printarsol):
+                                print("gerou na 3")
+
+
+                if (inst.nbconstrutiva != 3 ):
+                    if nova_rota is None:
+                        if (self.printarsol):
+                            print("%%%%%%%%%TESTE BIDIRECIONAL")
+                        nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(
+                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                        )
+                        if (self.printarsol):
+                            print("%%%%%%% BIDIRECIONALACHOU")
+                        if nova_rota is not None:
+                            sol_pool.construtivas[3] += 1
+                            if (self.printarsol):
+                                print("gerou na BID")
 
                 """"""
-                if nova_rota is None:
-                    print("%%%%%%%%%TESTE BIDIRECIONAL")
-                    nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                    )
-                    print("%%%%%%% BIDIRECIONALACHOU")
-                    if nova_rota is not None:
-                        construtivas[3] += 1
-                        print("gerou na BID")
 
                 """
                 if nova_rota is None:
@@ -4670,9 +4736,10 @@ class Metodos:
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                     )
                     if nova_rota is not None:
-                        construtivas[3] += 1
+                        sol_pool.construtivas[3] += 1
                         print("gerou na 4")
                 """
+
 
 
 
@@ -4706,6 +4773,8 @@ class Metodos:
                             if row[j] > 0:
                                 row[j] -= 1
 
+
+
                     for t in range(len(seq) - 1):
                         i, j = seq[t], seq[t + 1]
                         no_bp.freq_arc[k][i][j] += 1
@@ -4714,15 +4783,30 @@ class Metodos:
                     #"""
 
                     print("")
+                    ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
+                    ###    f.write(
+                    ###        f"   adicionou coluna | veic={k} | idx={no_bp.id_no} | rc={custo_red:.6f} | rota={nova_rota}\n")
 
             if not novas_colunas:
                 no_bp.cg_convergiu = True
                 break
 
-            for (k, seq, binx, custo) in novas_colunas:
-                idx_pool = len(sol_pool.rotas[k]["sequencia_rota"])
-                add_rota_no_pool(k, seq, binx, custo)
-                add_lambda_var_model(k, idx_pool, seq, binx, custo)
+            # frota heterogenea
+            """
+            for k in range (len(sol_pool.rotas.keys())):
+                for (k, seq, binx, custo) in novas_colunas:
+                    idx_pool = len(sol_pool.rotas[k]["sequencia_rota"])
+                    add_rota_no_pool(k, seq, binx, custo)
+                    add_lambda_var_model(k, idx_pool, seq, binx, custo)
+            """
+
+            # frota homogenea
+            for kk in range (len(sol_pool.rotas.keys())):
+                for (_, seq, binx, custo) in novas_colunas:
+                    idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
+                    add_rota_no_pool(kk, seq, binx, custo)
+                    add_lambda_var_model(kk, idx_pool, seq, binx, custo)
+
 
             model.update()
 
@@ -4868,12 +4952,16 @@ class Metodos:
         mip.optimize()
 
         if mip.Status == GRB.OPTIMAL:
+            #preciso ver se esse mip não tem por acaso aquelas solucoes das colunas inicias
             no_bp.custo_mip = float(mip.ObjVal)
-            no_bp.solucao_inteira = True
+            #no_bp.solucao_inteira = True
+
+
+
 
             lambdas_int = {}
             selecao = []
-
+            usou_coluna_inicial = False
             for k in sol_pool.rotas.keys():
                 for p, var in z[k]:
                     val = float(var.X)
@@ -4884,6 +4972,8 @@ class Metodos:
                             "p": p,
                             "nome": f"veic={k} col={p}"
                         })
+                        if p in (0, 1):
+                            usou_coluna_inicial = True
 
             no_bp.lambdas_inteiras = lambdas_int
 
@@ -4891,7 +4981,6 @@ class Metodos:
             for (k, p), val in sorted(no_bp.lambdas_inteiras.items()):
                 if val > 1e-6:
                     print(f"   lambda_int[{k},{p}] = {val:.0f}")
-            print("")
 
             print(f"[Nó {no_bp.id_no}] Melhor solução inteira final (MIP no pool):")
             valor_int_recomposto = 0.0
@@ -4904,6 +4993,13 @@ class Metodos:
                 valor_int_recomposto += custo
                 print(f"   veic={k} | col={p} | z=1 | custo={custo:.4f} | rota={seq}")
 
+            # escreve no arquivo a sol do nó
+            nome_arquivo_logLOCAL = f"log_bounds_{inst.nbcd}_{inst.ninst}_LOCAL.csv"
+            ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
+            ###    f.write(
+            ###        f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj MIP = {mip.ObjVal:.4f} |  CONSTRUTIVA CANCELADA = {inst.nbconstrutiva}"
+            ###        f"Colunas = {sum(1 for v in no_bp.lambdas_inteiras.values() if v > 1e-6)}\n"
+            ###    )
             print(f"   valor inteiro recomposto = {valor_int_recomposto:.6f}")
             print("")
 
@@ -4929,32 +5025,38 @@ class Metodos:
 
             no_bp.valor_recomposto_inteiro = valor_int_recomposto
 
+            # decide se a solução inteira é válida
+            if usou_coluna_inicial:
+                no_bp.solucao_inteira = False
+                print(f"[Nó {no_bp.id_no}] MIP usou coluna inicial. Inteira inválida.")
+            else:
+                no_bp.solucao_inteira = True
             # exporta a solução inteira do MIP
-            if selecao:
-                mu_arc_total = {}
-                if mu_arc_por_k is not None:
-                    for kk in mu_arc_por_k:
-                        for (i, j), val in mu_arc_por_k[kk].items():
-                            mu_arc_total[(i, j, kk)] = float(val)
+                if selecao:
+                    mu_arc_total = {}
+                    if mu_arc_por_k is not None:
+                        for kk in mu_arc_por_k:
+                            for (i, j), val in mu_arc_por_k[kk].items():
+                                mu_arc_total[(i, j, kk)] = float(val)
 
-                if pi is None:
-                    pi = [0.0 for _ in range(inst.nbcd)]
-                if sigma is None:
-                    sigma = {k: 0.0 for k in sol_pool.rotas.keys()}
+                    if pi is None:
+                        pi = [0.0 for _ in range(inst.nbcd)]
+                    if sigma is None:
+                        sigma = {k: 0.0 for k in sol_pool.rotas.keys()}
 
-                print(f"[Nó {no_bp.id_no}] Exportando solução inteira do MIP para JS...")
-                print(f"   colunas ativas no MIP: {[(item['k'], item['p']) for item in selecao]}")
+                    print(f"[Nó {no_bp.id_no}] Exportando solução inteira do MIP para JS...")
+                    print(f"   colunas ativas no MIP: {[(item['k'], item['p']) for item in selecao]}")
 
-                sol_pool.exportar_rotas_pares_js(
-                    inst=inst,
-                    selecao=selecao,
-                    pi=pi,
-                    mu_arc=mu_arc_total,
-                    sigma=sigma,
-                    nome_arquivo_js="rotas_plot_data.js",
-                    title=f"Solução inteira do nó {no_bp.id_no}",
-                    subtitle=f"Melhor inteira do pool | rotas ativas: {len(selecao)}"
-                )
+                    sol_pool.exportar_rotas_pares_js(
+                        inst=inst,
+                        selecao=selecao,
+                        pi=pi,
+                        mu_arc=mu_arc_total,
+                        sigma=sigma,
+                        nome_arquivo_js="rotas_plot_data.js",
+                        title=f"Solução inteira do nó {no_bp.id_no}",
+                        subtitle=f"Melhor inteira do pool | rotas ativas: {len(selecao)}"
+                    )
         else:
             print(f"[Nó {no_bp.id_no}] MIP final do pool inviável/sem solução ótima.")
 
@@ -4970,7 +5072,7 @@ class Metodos:
         )
 
         print("SALDOS")
-        print(construtivas)
+        print(sol_pool.construtivas)
 
         if no_bp.id_no == 0:
             pool_ini_por_k = {k: len(sol_pool.rotas[k]["sequencia_rota"]) for k in sol_pool.rotas.keys()}
@@ -5625,7 +5727,7 @@ class Metodos:
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
         )
-        # model.Params.TimeLimit = 150
+        model.Params.TimeLimit = 1200
         """
         T_retorno = model.addVar(vtype=GRB.CONTINUOUS, name='T_retorno')
         model.addConstr(
@@ -5724,7 +5826,8 @@ class Metodos:
         model.optimize()
 
         # Extração da solução, preenche bin_visitas para compatibilidade com sua estrutura
-        if model.status == GRB.OPTIMAL:
+        #if model.status == GRB.OPTIMAL:
+        if model.SolCount >0:
             # --- RESULTADOS DETALHADOS ---
             sol.custo = model.ObjVal
 
