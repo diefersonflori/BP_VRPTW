@@ -1,0 +1,868 @@
+No0 | iter_cg=99 | FO=785,200000
+   veic=0 col=52 custo=97,200000 rota=[0, 18, 6, 24, 26]
+   veic=1 col=91 custo=70,700000 rota=[0, 2, 21, 22, 13, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=12 custo=101,800000 rota=[0, 5, 16, 10, 26]
+   veic=4 col=43 custo=80,100000 rota=[0, 7, 8, 1, 26]
+   veic=5 col=38 custo=113,500000 rota=[0, 14, 15, 17, 26]
+   veic=6 col=94 custo=98,300000 rota=[0, 23, 3, 26]
+   veic=7 col=47 custo=140,500000 rota=[0, 11, 19, 4, 25, 26]
+
+No0 | iter_cg=119 | FO=656,500000
+   veic=0 col=92 custo=121,200000 rota=[0, 14, 15, 22, 4, 25, 26]
+   veic=1 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=95 custo=79,100000 rota=[0, 23, 13, 26]
+   veic=4 col=111 custo=58,200000 rota=[0, 16, 6, 26]
+   veic=5 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=6 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=7 col=119 custo=97,700000 rota=[0, 5, 7, 8, 17, 26]
+
+No0 | iter_cg=139 | FO=628,700000
+   veic=0 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=1 col=81 custo=77,700000 rota=[0, 7, 8, 17, 26]
+   veic=2 col=137 custo=78,200000 rota=[0, 14, 15, 26]
+   veic=3 col=141 custo=104,700000 rota=[0, 23, 22, 4, 25, 26]
+   veic=4 col=105 custo=67,800000 rota=[0, 5, 16, 6, 13, 26]
+   veic=5 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=6 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=7 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+
+No0 | iter_cg=99 | FO=785,200000
+   veic=0 col=52 custo=97,200000 rota=[0, 18, 6, 24, 26]
+   veic=1 col=91 custo=70,700000 rota=[0, 2, 21, 22, 13, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=12 custo=101,800000 rota=[0, 5, 16, 10, 26]
+   veic=4 col=43 custo=80,100000 rota=[0, 7, 8, 1, 26]
+   veic=5 col=38 custo=113,500000 rota=[0, 14, 15, 17, 26]
+   veic=6 col=94 custo=98,300000 rota=[0, 23, 3, 26]
+   veic=7 col=47 custo=140,500000 rota=[0, 11, 19, 4, 25, 26]
+
+No0 | iter_cg=119 | FO=656,500000
+   veic=0 col=92 custo=121,200000 rota=[0, 14, 15, 22, 4, 25, 26]
+   veic=1 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=95 custo=79,100000 rota=[0, 23, 13, 26]
+   veic=4 col=111 custo=58,200000 rota=[0, 16, 6, 26]
+   veic=5 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=6 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=7 col=119 custo=97,700000 rota=[0, 5, 7, 8, 17, 26]
+
+No0 | iter_cg=139 | FO=628,700000
+   veic=0 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=1 col=81 custo=77,700000 rota=[0, 7, 8, 17, 26]
+   veic=2 col=137 custo=78,200000 rota=[0, 14, 15, 26]
+   veic=3 col=141 custo=104,700000 rota=[0, 23, 22, 4, 25, 26]
+   veic=4 col=105 custo=67,800000 rota=[0, 5, 16, 6, 13, 26]
+   veic=5 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=6 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=7 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+
+No0 | iter_cg=99 | FO=785,200000
+   veic=0 col=52 custo=97,200000 rota=[0, 18, 6, 24, 26]
+   veic=1 col=91 custo=70,700000 rota=[0, 2, 21, 22, 13, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=12 custo=101,800000 rota=[0, 5, 16, 10, 26]
+   veic=4 col=43 custo=80,100000 rota=[0, 7, 8, 1, 26]
+   veic=5 col=38 custo=113,500000 rota=[0, 14, 15, 17, 26]
+   veic=6 col=94 custo=98,300000 rota=[0, 23, 3, 26]
+   veic=7 col=47 custo=140,500000 rota=[0, 11, 19, 4, 25, 26]
+
+No0 | iter_cg=119 | FO=656,500000
+   veic=0 col=92 custo=121,200000 rota=[0, 14, 15, 22, 4, 25, 26]
+   veic=1 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=95 custo=79,100000 rota=[0, 23, 13, 26]
+   veic=4 col=111 custo=58,200000 rota=[0, 16, 6, 26]
+   veic=5 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=6 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=7 col=119 custo=97,700000 rota=[0, 5, 7, 8, 17, 26]
+
+No0 | iter_cg=139 | FO=628,700000
+   veic=0 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=1 col=81 custo=77,700000 rota=[0, 7, 8, 17, 26]
+   veic=2 col=137 custo=78,200000 rota=[0, 14, 15, 26]
+   veic=3 col=141 custo=104,700000 rota=[0, 23, 22, 4, 25, 26]
+   veic=4 col=105 custo=67,800000 rota=[0, 5, 16, 6, 13, 26]
+   veic=5 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=6 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=7 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+
+No0 | iter_cg=99 | FO=785,200000
+   veic=0 col=52 custo=97,200000 rota=[0, 18, 6, 24, 26]
+   veic=1 col=91 custo=70,700000 rota=[0, 2, 21, 22, 13, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=12 custo=101,800000 rota=[0, 5, 16, 10, 26]
+   veic=4 col=43 custo=80,100000 rota=[0, 7, 8, 1, 26]
+   veic=5 col=38 custo=113,500000 rota=[0, 14, 15, 17, 26]
+   veic=6 col=94 custo=98,300000 rota=[0, 23, 3, 26]
+   veic=7 col=47 custo=140,500000 rota=[0, 11, 19, 4, 25, 26]
+
+No0 | iter_cg=119 | FO=656,500000
+   veic=0 col=92 custo=121,200000 rota=[0, 14, 15, 22, 4, 25, 26]
+   veic=1 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=95 custo=79,100000 rota=[0, 23, 13, 26]
+   veic=4 col=111 custo=58,200000 rota=[0, 16, 6, 26]
+   veic=5 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=6 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=7 col=119 custo=97,700000 rota=[0, 5, 7, 8, 17, 26]
+
+No0 | iter_cg=139 | FO=628,700000
+   veic=0 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=1 col=81 custo=77,700000 rota=[0, 7, 8, 17, 26]
+   veic=2 col=137 custo=78,200000 rota=[0, 14, 15, 26]
+   veic=3 col=141 custo=104,700000 rota=[0, 23, 22, 4, 25, 26]
+   veic=4 col=105 custo=67,800000 rota=[0, 5, 16, 6, 13, 26]
+   veic=5 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=6 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=7 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+
+No0 | iter_cg=99 | FO=785,200000
+   veic=0 col=52 custo=97,200000 rota=[0, 18, 6, 24, 26]
+   veic=1 col=91 custo=70,700000 rota=[0, 2, 21, 22, 13, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=12 custo=101,800000 rota=[0, 5, 16, 10, 26]
+   veic=4 col=43 custo=80,100000 rota=[0, 7, 8, 1, 26]
+   veic=5 col=38 custo=113,500000 rota=[0, 14, 15, 17, 26]
+   veic=6 col=94 custo=98,300000 rota=[0, 23, 3, 26]
+   veic=7 col=47 custo=140,500000 rota=[0, 11, 19, 4, 25, 26]
+
+No0 | iter_cg=119 | FO=656,500000
+   veic=0 col=92 custo=121,200000 rota=[0, 14, 15, 22, 4, 25, 26]
+   veic=1 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+   veic=2 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=3 col=95 custo=79,100000 rota=[0, 23, 13, 26]
+   veic=4 col=111 custo=58,200000 rota=[0, 16, 6, 26]
+   veic=5 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=6 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=7 col=119 custo=97,700000 rota=[0, 5, 7, 8, 17, 26]
+
+No0 | iter_cg=139 | FO=628,700000
+   veic=0 col=73 custo=83,100000 rota=[0, 12, 9, 20, 26]
+   veic=1 col=81 custo=77,700000 rota=[0, 7, 8, 17, 26]
+   veic=2 col=137 custo=78,200000 rota=[0, 14, 15, 26]
+   veic=3 col=141 custo=104,700000 rota=[0, 23, 22, 4, 25, 26]
+   veic=4 col=105 custo=67,800000 rota=[0, 5, 16, 6, 13, 26]
+   veic=5 col=102 custo=86,200000 rota=[0, 11, 19, 10, 1, 26]
+   veic=6 col=61 custo=31,600000 rota=[0, 18, 26]
+   veic=7 col=49 custo=99,400000 rota=[0, 2, 21, 3, 24, 26]
+
+No0 | iter_cg=119 | FO=686,300000
+   veic=0 col=19 custo=93,900000 rota=[0, 18, 6, 1, 7, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=81 custo=97,600000 rota=[0, 23, 24, 12, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=89 custo=82,400000 rota=[0, 9, 10, 26]
+   veic=6 col=40 custo=125,700000 rota=[0, 11, 20, 3, 21, 26]
+
+No0 | iter_cg=139 | FO=644,700000
+   veic=0 col=95 custo=83,100000 rota=[0, 19, 8, 7, 26]
+   veic=1 col=60 custo=106,500000 rota=[0, 11, 20, 1, 12, 26]
+   veic=2 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=3 col=106 custo=87,700000 rota=[0, 3, 9, 10, 26]
+   veic=4 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=5 col=126 custo=77,300000 rota=[0, 18, 6, 5, 17, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=159 | FO=594,700000
+   veic=0 col=156 custo=92,500000 rota=[0, 1, 9, 20, 3, 12, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=179 | FO=584,900000
+   veic=0 col=116 custo=106,500000 rota=[0, 15, 22, 4, 25, 12, 26]
+   veic=1 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=2 col=181 custo=80,000000 rota=[0, 3, 9, 20, 1, 26]
+   veic=3 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+   veic=4 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=5 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=6 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+
+No0 | iter_cg=119 | FO=686,300000
+   veic=0 col=19 custo=93,900000 rota=[0, 18, 6, 1, 7, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=81 custo=97,600000 rota=[0, 23, 24, 12, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=89 custo=82,400000 rota=[0, 9, 10, 26]
+   veic=6 col=40 custo=125,700000 rota=[0, 11, 20, 3, 21, 26]
+
+No0 | iter_cg=139 | FO=644,700000
+   veic=0 col=95 custo=83,100000 rota=[0, 19, 8, 7, 26]
+   veic=1 col=60 custo=106,500000 rota=[0, 11, 20, 1, 12, 26]
+   veic=2 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=3 col=106 custo=87,700000 rota=[0, 3, 9, 10, 26]
+   veic=4 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=5 col=126 custo=77,300000 rota=[0, 18, 6, 5, 17, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=159 | FO=594,700000
+   veic=0 col=156 custo=92,500000 rota=[0, 1, 9, 20, 3, 12, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=179 | FO=584,900000
+   veic=0 col=116 custo=106,500000 rota=[0, 15, 22, 4, 25, 12, 26]
+   veic=1 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=2 col=181 custo=80,000000 rota=[0, 3, 9, 20, 1, 26]
+   veic=3 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+   veic=4 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=5 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=6 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+
+No0 | iter_cg=119 | FO=686,300000
+   veic=0 col=19 custo=93,900000 rota=[0, 18, 6, 1, 7, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=81 custo=97,600000 rota=[0, 23, 24, 12, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=89 custo=82,400000 rota=[0, 9, 10, 26]
+   veic=6 col=40 custo=125,700000 rota=[0, 11, 20, 3, 21, 26]
+
+No0 | iter_cg=139 | FO=644,700000
+   veic=0 col=95 custo=83,100000 rota=[0, 19, 8, 7, 26]
+   veic=1 col=60 custo=106,500000 rota=[0, 11, 20, 1, 12, 26]
+   veic=2 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=3 col=106 custo=87,700000 rota=[0, 3, 9, 10, 26]
+   veic=4 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=5 col=126 custo=77,300000 rota=[0, 18, 6, 5, 17, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=159 | FO=594,700000
+   veic=0 col=156 custo=92,500000 rota=[0, 1, 9, 20, 3, 12, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=179 | FO=584,900000
+   veic=0 col=116 custo=106,500000 rota=[0, 15, 22, 4, 25, 12, 26]
+   veic=1 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=2 col=181 custo=80,000000 rota=[0, 3, 9, 20, 1, 26]
+   veic=3 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+   veic=4 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=5 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=6 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+
+No0 | iter_cg=119 | FO=686,300000
+   veic=0 col=19 custo=93,900000 rota=[0, 18, 6, 1, 7, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=81 custo=97,600000 rota=[0, 23, 24, 12, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=89 custo=82,400000 rota=[0, 9, 10, 26]
+   veic=6 col=40 custo=125,700000 rota=[0, 11, 20, 3, 21, 26]
+
+No0 | iter_cg=139 | FO=644,700000
+   veic=0 col=95 custo=83,100000 rota=[0, 19, 8, 7, 26]
+   veic=1 col=60 custo=106,500000 rota=[0, 11, 20, 1, 12, 26]
+   veic=2 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=3 col=106 custo=87,700000 rota=[0, 3, 9, 10, 26]
+   veic=4 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=5 col=126 custo=77,300000 rota=[0, 18, 6, 5, 17, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=159 | FO=594,700000
+   veic=0 col=156 custo=92,500000 rota=[0, 1, 9, 20, 3, 12, 26]
+   veic=1 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=2 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=3 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+   veic=4 col=115 custo=103,800000 rota=[0, 15, 22, 4, 25, 26]
+   veic=5 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=6 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+
+No0 | iter_cg=179 | FO=584,900000
+   veic=0 col=116 custo=106,500000 rota=[0, 15, 22, 4, 25, 12, 26]
+   veic=1 col=33 custo=88,700000 rota=[0, 14, 16, 2, 13, 26]
+   veic=2 col=181 custo=80,000000 rota=[0, 3, 9, 20, 1, 26]
+   veic=3 col=123 custo=97,600000 rota=[0, 21, 23, 24, 26]
+   veic=4 col=86 custo=79,900000 rota=[0, 11, 10, 7, 26]
+   veic=5 col=35 custo=94,200000 rota=[0, 19, 8, 17, 5, 26]
+   veic=6 col=133 custo=38,000000 rota=[0, 18, 6, 26]
+
+No0 | iter_cg=179 | FO=563,500000
+   veic=0 col=135 custo=90,000000 rota=[0, 6, 19, 7, 1, 26]
+   veic=1 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=2 col=109 custo=111,900000 rota=[0, 11, 8, 13, 2, 26]
+   veic=3 col=165 custo=117,400000 rota=[0, 9, 10, 20, 3, 26]
+   veic=4 col=151 custo=105,300000 rota=[0, 15, 14, 16, 17, 5, 18, 26]
+
+No0 | iter_cg=259 | FO=506,700000
+   veic=0 col=137 custo=58,100000 rota=[0, 1, 6, 13, 26]
+   veic=1 col=247 custo=99,400000 rota=[0, 2, 15, 14, 16, 17, 26]
+   veic=2 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=205 custo=106,100000 rota=[0, 3, 20, 9, 10, 26]
+   veic=4 col=169 custo=104,200000 rota=[0, 7, 19, 11, 8, 5, 18, 26]
+
+No0 | iter_cg=279 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=3 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=19 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=41 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+   veic=4 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+
+No0 | iter_cg=179 | FO=563,500000
+   veic=0 col=135 custo=90,000000 rota=[0, 6, 19, 7, 1, 26]
+   veic=1 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=2 col=109 custo=111,900000 rota=[0, 11, 8, 13, 2, 26]
+   veic=3 col=165 custo=117,400000 rota=[0, 9, 10, 20, 3, 26]
+   veic=4 col=151 custo=105,300000 rota=[0, 15, 14, 16, 17, 5, 18, 26]
+
+No0 | iter_cg=259 | FO=506,700000
+   veic=0 col=137 custo=58,100000 rota=[0, 1, 6, 13, 26]
+   veic=1 col=247 custo=99,400000 rota=[0, 2, 15, 14, 16, 17, 26]
+   veic=2 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=205 custo=106,100000 rota=[0, 3, 20, 9, 10, 26]
+   veic=4 col=169 custo=104,200000 rota=[0, 7, 19, 11, 8, 5, 18, 26]
+
+No0 | iter_cg=279 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=3 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=19 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=41 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+   veic=4 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+
+No0 | iter_cg=179 | FO=563,500000
+   veic=0 col=135 custo=90,000000 rota=[0, 6, 19, 7, 1, 26]
+   veic=1 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=2 col=109 custo=111,900000 rota=[0, 11, 8, 13, 2, 26]
+   veic=3 col=165 custo=117,400000 rota=[0, 9, 10, 20, 3, 26]
+   veic=4 col=151 custo=105,300000 rota=[0, 15, 14, 16, 17, 5, 18, 26]
+
+No0 | iter_cg=259 | FO=506,700000
+   veic=0 col=137 custo=58,100000 rota=[0, 1, 6, 13, 26]
+   veic=1 col=247 custo=99,400000 rota=[0, 2, 15, 14, 16, 17, 26]
+   veic=2 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=205 custo=106,100000 rota=[0, 3, 20, 9, 10, 26]
+   veic=4 col=169 custo=104,200000 rota=[0, 7, 19, 11, 8, 5, 18, 26]
+
+No0 | iter_cg=279 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=3 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=19 | FO=454,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=2 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+   veic=3 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=4 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+
+No0 | iter_cg=41 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=3 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=179 | FO=563,500000
+   veic=0 col=135 custo=90,000000 rota=[0, 6, 19, 7, 1, 26]
+   veic=1 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=2 col=109 custo=111,900000 rota=[0, 11, 8, 13, 2, 26]
+   veic=3 col=165 custo=117,400000 rota=[0, 9, 10, 20, 3, 26]
+   veic=4 col=151 custo=105,300000 rota=[0, 15, 14, 16, 17, 5, 18, 26]
+
+No0 | iter_cg=259 | FO=506,700000
+   veic=0 col=137 custo=58,100000 rota=[0, 1, 6, 13, 26]
+   veic=1 col=247 custo=99,400000 rota=[0, 2, 15, 14, 16, 17, 26]
+   veic=2 col=91 custo=138,900000 rota=[0, 24, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=205 custo=106,100000 rota=[0, 3, 20, 9, 10, 26]
+   veic=4 col=169 custo=104,200000 rota=[0, 7, 19, 11, 8, 5, 18, 26]
+
+No0 | iter_cg=279 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=3 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=19 | FO=454,600000
+   veic=0 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+   veic=4 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+
+No0 | iter_cg=40 | FO=454,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=224 custo=131,500000 rota=[0, 12, 24, 3, 9, 10, 20, 1, 26]
+   veic=2 col=277 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=3 col=262 custo=89,600000 rota=[0, 7, 19, 11, 8, 18, 26]
+   veic=4 col=184 custo=29,200000 rota=[0, 6, 13, 26]
+
+No0 | iter_cg=259 | FO=471,200000
+   veic=0 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=1 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=2 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=3 col=225 custo=120,200000 rota=[0, 15, 14, 16, 17, 5, 2, 26]
+
+No0 | iter_cg=279 | FO=450,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+
+No0 | iter_cg=299 | FO=450,600000
+   veic=0 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+
+No0 | iter_cg=319 | FO=426,100000
+   veic=0 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=1 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=339 | FO=426,100000
+   veic=0 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=1 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=359 | FO=419,600000
+   veic=0 col=348 custo=103,000000 rota=[0, 7, 19, 11, 8, 18, 6, 13, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=354 custo=137,900000 rota=[0, 1, 10, 20, 9, 3, 24, 25, 12, 26]
+   veic=3 col=202 custo=79,100000 rota=[0, 21, 22, 23, 4, 26]
+
+No0 | iter_cg=259 | FO=471,200000
+   veic=0 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=1 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=2 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=3 col=225 custo=120,200000 rota=[0, 15, 14, 16, 17, 5, 2, 26]
+
+No0 | iter_cg=279 | FO=450,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+
+No0 | iter_cg=299 | FO=450,600000
+   veic=0 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+
+No0 | iter_cg=319 | FO=426,100000
+   veic=0 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=1 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=339 | FO=426,100000
+   veic=0 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=1 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=359 | FO=419,600000
+   veic=0 col=348 custo=103,000000 rota=[0, 7, 19, 11, 8, 18, 6, 13, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=354 custo=137,900000 rota=[0, 1, 10, 20, 9, 3, 24, 25, 12, 26]
+   veic=3 col=202 custo=79,100000 rota=[0, 21, 22, 23, 4, 26]
+
+No0 | iter_cg=259 | FO=471,200000
+   veic=0 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=1 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=2 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=3 col=225 custo=120,200000 rota=[0, 15, 14, 16, 17, 5, 2, 26]
+
+No0 | iter_cg=279 | FO=450,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+
+No0 | iter_cg=299 | FO=450,600000
+   veic=0 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+
+No0 | iter_cg=319 | FO=426,100000
+   veic=0 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=1 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=339 | FO=426,100000
+   veic=0 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=1 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=359 | FO=419,600000
+   veic=0 col=348 custo=103,000000 rota=[0, 7, 19, 11, 8, 18, 6, 13, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=354 custo=137,900000 rota=[0, 1, 10, 20, 9, 3, 24, 25, 12, 26]
+   veic=3 col=202 custo=79,100000 rota=[0, 21, 22, 23, 4, 26]
+
+No0 | iter_cg=259 | FO=471,200000
+   veic=0 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=1 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=2 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=3 col=225 custo=120,200000 rota=[0, 15, 14, 16, 17, 5, 2, 26]
+
+No0 | iter_cg=279 | FO=450,600000
+   veic=0 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=1 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+
+No0 | iter_cg=299 | FO=450,600000
+   veic=0 col=259 custo=134,900000 rota=[0, 21, 22, 23, 24, 4, 25, 12, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=178 custo=118,900000 rota=[0, 1, 3, 9, 20, 10, 19, 7, 26]
+   veic=3 col=124 custo=97,200000 rota=[0, 11, 8, 18, 6, 13, 26]
+
+No0 | iter_cg=319 | FO=426,100000
+   veic=0 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=1 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=339 | FO=426,100000
+   veic=0 col=316 custo=100,300000 rota=[0, 21, 22, 23, 4, 25, 12, 26]
+   veic=1 col=304 custo=116,700000 rota=[0, 24, 3, 9, 20, 10, 1, 26]
+   veic=2 col=266 custo=126,400000 rota=[0, 7, 19, 11, 8, 17, 16, 5, 18, 26]
+   veic=3 col=300 custo=82,700000 rota=[0, 6, 14, 15, 2, 13, 26]
+
+No0 | iter_cg=359 | FO=419,600000
+   veic=0 col=348 custo=103,000000 rota=[0, 7, 19, 11, 8, 18, 6, 13, 26]
+   veic=1 col=275 custo=99,600000 rota=[0, 2, 15, 14, 16, 17, 5, 26]
+   veic=2 col=354 custo=137,900000 rota=[0, 1, 10, 20, 9, 3, 24, 25, 12, 26]
+   veic=3 col=202 custo=79,100000 rota=[0, 21, 22, 23, 4, 26]
+
+No0 | iter_cg=119 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=139 | FO=561,500000
+   veic=0 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=3 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=4 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=5 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+
+No0 | iter_cg=159 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=179 | FO=544,300000
+   veic=0 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=1 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+   veic=5 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+
+No0 | iter_cg=199 | FO=544,300000
+   veic=0 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=1 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=5 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+
+No0 | iter_cg=219 | FO=537,000000
+   veic=0 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=1 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=2 col=137 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=3 col=209 custo=87,800000 rota=[0, 5, 14, 16, 6, 13, 26]
+   veic=4 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=5 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+
+No0 | iter_cg=119 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=139 | FO=561,500000
+   veic=0 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=3 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=4 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=5 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+
+No0 | iter_cg=159 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=179 | FO=544,300000
+   veic=0 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=1 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+   veic=5 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+
+No0 | iter_cg=199 | FO=544,300000
+   veic=0 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=1 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=5 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+
+No0 | iter_cg=219 | FO=537,000000
+   veic=0 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=1 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=2 col=137 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=3 col=209 custo=87,800000 rota=[0, 5, 14, 16, 6, 13, 26]
+   veic=4 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=5 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+
+No0 | iter_cg=119 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=139 | FO=561,500000
+   veic=0 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=3 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=4 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=5 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+
+No0 | iter_cg=159 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=179 | FO=544,300000
+   veic=0 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=1 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+   veic=5 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+
+No0 | iter_cg=199 | FO=544,300000
+   veic=0 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=1 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=5 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+
+No0 | iter_cg=219 | FO=537,000000
+   veic=0 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=1 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=2 col=137 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=3 col=209 custo=87,800000 rota=[0, 5, 14, 16, 6, 13, 26]
+   veic=4 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=5 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+
+No0 | iter_cg=119 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=139 | FO=561,500000
+   veic=0 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=3 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=4 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=5 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+
+No0 | iter_cg=159 | FO=561,500000
+   veic=0 col=99 custo=104,400000 rota=[0, 2, 15, 22, 4, 25, 26]
+   veic=1 col=12 custo=72,000000 rota=[0, 21, 23, 26]
+   veic=2 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=3 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=4 col=105 custo=93,300000 rota=[0, 5, 8, 18, 17, 26]
+   veic=5 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+
+No0 | iter_cg=179 | FO=544,300000
+   veic=0 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=1 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+   veic=5 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+
+No0 | iter_cg=199 | FO=544,300000
+   veic=0 col=121 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+   veic=1 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=2 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=3 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+   veic=4 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=5 col=178 custo=86,400000 rota=[0, 5, 18, 8, 17, 26]
+
+No0 | iter_cg=219 | FO=537,000000
+   veic=0 col=157 custo=61,400000 rota=[0, 2, 15, 26]
+   veic=1 col=163 custo=104,700000 rota=[0, 21, 23, 22, 4, 25, 26]
+   veic=2 col=137 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=3 col=209 custo=87,800000 rota=[0, 5, 14, 16, 6, 13, 26]
+   veic=4 col=97 custo=113,100000 rota=[0, 11, 19, 7, 10, 20, 1, 26]
+   veic=5 col=96 custo=99,500000 rota=[0, 12, 9, 3, 24, 26]
+
+No0 | iter_cg=199 | FO=571,300000
+   veic=0 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=1 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=219 | FO=571,300000
+   veic=0 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=1 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=239 | FO=571,300000
+   veic=0 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=1 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=4 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+
+No0 | iter_cg=259 | FO=497,200000
+   veic=0 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=1 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=2 col=244 custo=110,600000 rota=[0, 14, 16, 8, 17, 5, 26]
+   veic=3 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=4 col=260 custo=45,000000 rota=[0, 18, 6, 13, 26]
+
+No0 | iter_cg=279 | FO=494,400000
+   veic=0 col=269 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=1 col=263 custo=82,300000 rota=[0, 14, 16, 5, 6, 13, 26]
+   veic=2 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=3 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=299 | FO=494,400000
+   veic=0 col=269 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=1 col=263 custo=82,300000 rota=[0, 14, 16, 5, 6, 13, 26]
+   veic=2 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=4 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+
+No0 | iter_cg=319 | FO=468,000000
+   veic=0 col=132 custo=91,100000 rota=[0, 9, 3, 24, 12, 26]
+   veic=1 col=311 custo=129,200000 rota=[0, 2, 15, 23, 22, 4, 25, 21, 26]
+   veic=2 col=304 custo=97,800000 rota=[0, 7, 19, 11, 10, 20, 1, 26]
+   veic=3 col=243 custo=70,700000 rota=[0, 18, 8, 17, 5, 26]
+   veic=4 col=307 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+
+No0 | iter_cg=199 | FO=571,300000
+   veic=0 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=1 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=219 | FO=571,300000
+   veic=0 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=1 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=239 | FO=571,300000
+   veic=0 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=1 col=33 custo=143,700000 rota=[0, 14, 23, 22, 4, 25, 12, 26]
+   veic=2 col=197 custo=96,600000 rota=[0, 16, 8, 17, 5, 26]
+   veic=3 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=4 col=155 custo=122,700000 rota=[0, 15, 18, 6, 13, 2, 21, 26]
+
+No0 | iter_cg=259 | FO=497,200000
+   veic=0 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=1 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=2 col=244 custo=110,600000 rota=[0, 14, 16, 8, 17, 5, 26]
+   veic=3 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=4 col=260 custo=45,000000 rota=[0, 18, 6, 13, 26]
+
+No0 | iter_cg=279 | FO=494,400000
+   veic=0 col=269 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=1 col=263 custo=82,300000 rota=[0, 14, 16, 5, 6, 13, 26]
+   veic=2 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+   veic=3 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=4 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+
+No0 | iter_cg=299 | FO=494,400000
+   veic=0 col=269 custo=70,500000 rota=[0, 18, 8, 17, 26]
+   veic=1 col=263 custo=82,300000 rota=[0, 14, 16, 5, 6, 13, 26]
+   veic=2 col=256 custo=133,300000 rota=[0, 2, 15, 23, 22, 21, 4, 25, 12, 26]
+   veic=3 col=138 custo=92,100000 rota=[0, 1, 9, 3, 24, 26]
+   veic=4 col=130 custo=116,200000 rota=[0, 19, 11, 10, 20, 7, 26]
+
+No0 | iter_cg=319 | FO=468,000000
+   veic=0 col=132 custo=91,100000 rota=[0, 9, 3, 24, 12, 26]
+   veic=1 col=311 custo=129,200000 rota=[0, 2, 15, 23, 22, 4, 25, 21, 26]
+   veic=2 col=304 custo=97,800000 rota=[0, 7, 19, 11, 10, 20, 1, 26]
+   veic=3 col=243 custo=70,700000 rota=[0, 18, 8, 17, 5, 26]
+   veic=4 col=307 custo=79,200000 rota=[0, 14, 16, 6, 13, 26]
+

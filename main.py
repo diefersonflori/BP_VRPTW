@@ -9,7 +9,7 @@ from solucao import Solucao
 from metodos import Metodos, NoBP
 
 SEED_DEBUG = 123
-random.seed(SEED_DEBUG)
+#SEED_DEBUG = 9999
 
 ARQ_CSV_FINAL = "resultados_finais.csv"
 ARQ_TXT_FINAL = "resultados_finais_legivel.txt"
@@ -76,7 +76,7 @@ nbvv=[3,5]
 N_TABUS=[0]#,1,2,3]
 #combinacao_construtivas=[1,2,3,22]#10 só pra testar ta ligado? quero tirar ninguem não fióti
 #combinacao_construtivas=[10]#,0,1,2,3,22]#10 só pra testar ta ligado? quero tirar ninguem não fióti
-combinacao_construtivas=[0,1,2,3,22]#10 só pra testar ta ligado? quero tirar ninguem não fióti
+combinacao_construtivas=[10]#10 só pra testar ta ligado? quero tirar ninguem não fióti
 #combinacao_construtivas=[0,1,2,3,22]#10 só pra testar ta ligado? quero tirar ninguem não fióti
 #combinacao_construtivas=[22]#10 só pra testar ta ligado? quero tirar ninguem não fióti
 #combinacao_construtivas=[10]#10 só pra testar ta ligado? quero tirar ninguem não fióti
@@ -84,40 +84,48 @@ combinacao_construtivas=[0,1,2,3,22]#10 só pra testar ta ligado? quero tirar ni
 
 # todas_instancias = ["instancias/c101N.txt"]
 """
-todas_instancias = ["instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
-                    "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt",
+todas_instancias = [ "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt",
                     "instancias/c108.txt", "instancias/c109.txt"]#,
-
-                    "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
-                    "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt",
-                    "instancias/c208.txt", "instancias/r101.txt", "instancias/r102.txt"]
-
+"""
+"""
+"instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
+todas_instancias = [ "instancias/c203.txt", "instancias/c204.txt",
+                    "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt"]
+"""
+"instancias/c201.txt","instancias/c202.txt",
+#"""
+"""
 
                   ,
                   "instancias/r103.txt","instancias/r104.txt",
                   "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
                   "instancias/r108.txt"]
-"""
 #"""
-todas_instancias = ["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+#"""
+todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
                       "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
                       "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
                       "instancias/r111.txt","instancias/r112.txt",
-                    "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
-                    "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt",
-                    "instancias/c208.txt"]
+                     "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",])
+"""
+    ,)
+"instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
+"instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt",
+"instancias/c208.txt"]
+"""
 
 #"""
-todas_instancias = ["instancias/c209.txt"]
-nbv=[3]
-
+#todas_instancias = ["instancias/c104.txt"]
+#nbv=[3]
+ab=1
+semMelhora=[2,4,6,8]
 #instancais grandes
-#nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
+nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
 #nbv=[3,3,3,3,3,3,3,3,3]
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
     cap=capacidades[0]
-    nbv_atual = nbvv[i]
+    #nbv_atual = nbvv[i]
 
 
     for tabu in N_TABUS:
@@ -135,6 +143,7 @@ for i in range(len(tamanhos)):
             inst.nbn = tam + 2
             #inst.nbv = nbv_atual
             inst.nbv = nbv[ii]
+            #inst.nbv = nbv[ninst]
             ii+=1
             inst.ninst = ninst
 
@@ -156,7 +165,7 @@ for i in range(len(tamanhos)):
 
             for v in inst.veiculos:
                 v.capacidade = cap
-                v.velocidade=1
+                v.velocidade=10
             # Métodos
             metod = Metodos(inst)
             metod.TABU_TENURE = tabu
@@ -181,8 +190,13 @@ for i in range(len(tamanhos)):
             #tipo_geracao="GUROBI"
             #metod.geracao_colunas(inst, solc,tipo_geracao)
 
-            for construtiva in combinacao_construtivas:
-                inst.nbconstrutiva = construtiva
+            #for construtiva in combinacao_construtivas:
+                #inst.nbconstrutiva = construtiva
+            for SM in semMelhora:
+                inst.nbconstrutiva = 10
+                inst.iteraSemMelhora=SM
+
+                random.seed(SEED_DEBUG)
 
                 print("\n--------------------------------------------------")
                 print(f"Heurística retirada = {inst.nbconstrutiva}")
@@ -204,96 +218,110 @@ for i in range(len(tamanhos)):
                 # =========================
                 # Branch-and-Price
                 # =========================
-                t1 = time.time()
-                metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
-                tempo_bp = time.time() - t1
+                #teste para com e sem mip
+                for j in range(2):
+                    #print(f"JJJJ {j}")
+                    if j==0:
+                        inst.temmip=False
+                    else:
+                        inst.temmip=True
 
-                print(f"Tempo total BP: {tempo_bp:.4f}")
+                    t1 = time.time()
+                    metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+                    tempo_bp = time.time() - t1
 
-                fo_bp = metod.best_obj
-                seq_bp = sol_pool.sequencias_bp_para_texto()
-                nos_bp = metod.total_nos
-                colunas_bp = metod.total_colunas
+                    print(f"Tempo total BP: {tempo_bp:.4f}")
 
-                # =========================
-                # Pós-processamento
-                # =========================
-                run_id = f"tam{tam}_cap{cap}_tabu{tabu}_inst{ninst}_cons{inst.nbconstrutiva}"
+                    fo_bp = metod.best_obj
+                    seq_bp = sol_pool.sequencias_bp_para_texto()
+                    nos_bp = metod.total_nos
+                    colunas_bp = metod.total_colunas
 
-                gap = ""
-                if fo_exato not in (None, 0, -1) and fo_bp not in (None, -1):
-                    gap = ((fo_bp - fo_exato) / fo_exato) * 100.0
+                    # =========================
+                    # Pós-processamento
+                    # =========================
+                    run_id = f"tam{tam}_cap{cap}_tabu{tabu}_inst{ninst}_cons{inst.nbconstrutiva}"
 
-                igual_exato = ""
-                if fo_exato not in (None, -1) and fo_bp not in (None, -1):
-                    igual_exato = 1 if abs(fo_bp - fo_exato) <= 1e-6 else 0
+                    gap = ""
+                    if fo_exato not in (None, 0, -1) and fo_bp not in (None, -1):
+                        gap = ((fo_bp - fo_exato) / fo_exato) * 100.0
 
-                if not seq_bp:
-                    seq_bp = "SEM_SOLUCAO_BP"
+                    igual_exato = ""
+                    if fo_exato not in (None, -1) and fo_bp not in (None, -1):
+                        igual_exato = 1 if abs(fo_bp - fo_exato) <= 1e-6 else 0
 
-                # =========================
-                # TXT legível
-                # =========================
-                with open(ARQ_TXT_FINAL, "a", encoding="utf-8") as f:
-                    f.write("=" * 120 + "\n")
-                    f.write(f"RUN_ID: {run_id}\n")
-                    f.write(f"Instância: {arquivo_instancia}\n")
-                    f.write(
-                        f"Clientes={inst.nbcd} | Nós_rede={inst.nbn} | Veículos={inst.nbv} | "
-                        f"Capacidade={cap} | Tabu={tabu} | Heurística_retirada={inst.nbconstrutiva}\n"
-                    )
-                    f.write(
-                        f"Tempo exato={tempo_exato:.4f} | Tempo BP={tempo_bp:.4f} | "
-                        f"FO exato={fo_exato:.4f} | FO BP={fo_bp:.4f}\n"
-                    )
+                    if not seq_bp:
+                        seq_bp = "SEM_SOLUCAO_BP"
 
-                    if gap != "":
-                        f.write(f"GAP (%) = {gap:.4f}\n")
+                    # =========================
+                    # TXT legível
+                    # =========================
+                    with open(ARQ_TXT_FINAL, "a", encoding="utf-8") as f:
+                        f.write("=" * 120 + "\n")
+                        f.write(f"RUN_ID: {run_id}\n")
+                        f.write(f"Instância: {arquivo_instancia}\n")
+                        f.write(
+                            f"Clientes={inst.nbcd} | Nós_rede={inst.nbn} | Veículos={inst.nbv} | "
+                            f"Capacidade={cap} | Tabu={tabu} | Heurística_retirada={inst.nbconstrutiva}\n"
+                        )
+                        #fo_exato=-1
+                        f.write(
+                            f"Tempo exato={tempo_exato:.4f} | Tempo BP={tempo_bp:.4f} | "
+                            f"FO exato={fo_exato:.4f} | FO BP={fo_bp:.4f}\n"
+                        )
 
-                    if igual_exato != "":
-                        f.write(f"Igual ao exato = {igual_exato}\n")
+                        if gap != "":
+                            f.write(f"GAP (%) = {gap:.4f}\n")
 
-                    f.write(f"Nós processados BP = {nos_bp}\n")
-                    f.write(f"Colunas geradas BP = {colunas_bp}\n")
-                    f.write(f"SCORE DAS CONSTRUTIBAS BP = {sol_pool.construtivas}\n")
-                    f.write(f"SEQ_EXATO: {seq_exato}\n")
-                    f.write(f"SEQ_BP: {seq_bp}\n\n")
+                        if igual_exato != "":
+                            f.write(f"Igual ao exato = {igual_exato}\n")
 
-                # =========================
-                # CSV final
-                # =========================
-                with open(ARQ_CSV_FINAL, "a", newline="", encoding="utf-8") as f:
-                    w = csv.writer(f, delimiter=";")
-                    w.writerow([
-                        run_id,
-                        arquivo_instancia,
-                        ninst,
-                        tem_janelas,
-                        inst.nbconstrutiva,
-                        inst.nbcd,
-                        inst.nbn,
-                        inst.nbv,
-                        cap,
-                        tabu,
-                        tipo_geracao,
-                        round(tempo_exato, 4),
-                        round(tempo_bp, 4),
-                        round(fo_exato, 4) if fo_exato is not None else "",
-                        round(fo_bp, 4) if fo_bp is not None else "",
-                        round(gap, 4) if gap != "" else "",
-                        igual_exato,
-                        nos_bp,
-                        colunas_bp,
-                        seq_exato,
-                        seq_bp,
-                        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    ])
+                        f.write(f"Nós processados BP = {nos_bp}\n")
+                        f.write(f"Colunas geradas BP = {colunas_bp}\n")
+                        f.write(f"MIP = {inst.temmip}\n")
+                        f.write(f"SEM MELHORA = {inst.iteraSemMelhora}\n")
+                        f.write(f"SCORE DAS CONSTRUTIBAS BP = {sol_pool.construtivas}\n")
+                        f.write(f"SEQ_EXATO: {seq_exato}\n")
+                        f.write(f"SEQ_BP: {seq_bp}\n\n")
 
-                print("")
+                    # =========================
+                    # CSV final
+                    # =========================
+                    with open(ARQ_CSV_FINAL, "a", newline="", encoding="utf-8") as f:
+                        w = csv.writer(f, delimiter=";")
+                        w.writerow([
+                            run_id,
+                            arquivo_instancia,
+                            ninst,
+                            tem_janelas,
+                            inst.nbconstrutiva,
+                            inst.nbcd,
+                            inst.nbn,
+                            inst.nbv,
+                            cap,
+                            tabu,
+                            tipo_geracao,
+                            round(tempo_exato, 4),
+                            round(tempo_bp, 4),
+                            round(fo_exato, 4) if fo_exato is not None else "",
+                            round(fo_bp, 4) if fo_bp is not None else "",
+                            round(gap, 4) if gap != "" else "",
+                            igual_exato,
+                            nos_bp,
+                            colunas_bp,
+                            inst.temmip,
+                            inst.iteraSemMelhora,
+                            seq_exato,
+                            seq_bp,
+                            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        ])
+
+                    print("")
+
+                ab=0
 
 
-
-metod.geracao_colunas(inst, solc,tipo_geracao)
+#metod.geracao_colunas(inst, solc,tipo_geracao)
 
 
 
@@ -305,7 +333,7 @@ solex.registrar_fo_gc(inst,solex.custo)
 solc.exportar_json_gc(inst, "solucao_gcm.json")
 
 print("\n tempo total exato:", tfex - tiex)
-print("\n tempo total gc:", tfseq - tiseq)
-print("\n tempo total diff:", ((tfex - tiex) - (tfseq - tiseq)) / (tiex - tfex))
+#print("\n tempo total gc:", tfseq - tiseq)
+#print("\n tempo total diff:", ((tfex - tiex) - (tfseq - tiseq)) / (tiex - tfex))
 
 

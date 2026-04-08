@@ -1962,3 +1962,2290 @@ SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 130, 0]
 SEQ_EXATO: V0: [0,5,2,1,7,3,4,26] ; V1: [0,23,18,19,16,14,12,15,17,13,26] ; V2: [0,20,22,24,6,25,9,11,10,8,21,26]
 SEQ_BP: SEM_SEQUENCIA_BP
 
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=48.4826 | Tempo BP=493.5167 | FO exato=191.8136 | FO BP=198.4930
+GAP (%) = 3.4822
+Igual ao exato = 0
+Nós processados BP = 1
+Colunas geradas BP = 1506
+SCORE DAS CONSTRUTIBAS BP = [369, 10, 78, 43, 0]
+SEQ_EXATO: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,13,17,18,19,15,16,14,12,26] ; V1: [0,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1200.9376 | Tempo BP=346.8208 | FO exato=191.8136 | FO BP=198.4930
+GAP (%) = 3.4822
+Igual ao exato = 0
+Nós processados BP = 1
+Colunas geradas BP = 1506
+SCORE DAS CONSTRUTIBAS BP = [369, 10, 78, 43, 0]
+SEQ_EXATO: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,13,17,18,19,15,16,14,12,26] ; V1: [0,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1200.9532 | Tempo BP=267.2786 | FO exato=191.8136 | FO BP=198.4930
+GAP (%) = 3.4822
+Igual ao exato = 0
+Nós processados BP = 1
+Colunas geradas BP = 1506
+SCORE DAS CONSTRUTIBAS BP = [369, 10, 78, 43, 0]
+SEQ_EXATO: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,13,17,18,19,15,16,14,12,26] ; V1: [0,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=495.2472 | FO exato=-1.0000 | FO BP=198.4930
+Nós processados BP = 1
+Colunas geradas BP = 1506
+SCORE DAS CONSTRUTIBAS BP = [369, 10, 78, 43, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,5,13,17,18,19,15,16,14,12,26] ; V1: [0,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=899.9821 | FO exato=-1.0000 | FO BP=191.8136
+Nós processados BP = 1
+Colunas geradas BP = 2028
+SCORE DAS CONSTRUTIBAS BP = [406, 14, 97, 157, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c203.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=19502.7611 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [333, 85, 133, 133, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2661 | Tempo BP=108.8039 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 975
+SCORE DAS CONSTRUTIBAS BP = [236, 56, 10, 21, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=19.5950 | Tempo BP=828.1247 | FO exato=190.7376 | FO BP=190.7376
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2391
+SCORE DAS CONSTRUTIBAS BP = [438, 82, 150, 125, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1201.4904 | Tempo BP=1009.9421 | FO exato=190.7376 | FO BP=190.7376
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2328
+SCORE DAS CONSTRUTIBAS BP = [428, 14, 178, 154, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1201.9546 | Tempo BP=518.4715 | FO exato=187.4495 | FO BP=190.7412
+GAP (%) = 1.7561
+Igual ao exato = 0
+Nós processados BP = 1
+Colunas geradas BP = 2121
+SCORE DAS CONSTRUTIBAS BP = [467, 31, 156, 51, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,15,12,14,16,19,18,17,10,26] ; V2: [0,7,8,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.6184 | Tempo BP=684.6371 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2424
+SCORE DAS CONSTRUTIBAS BP = [538, 71, 64, 133, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.3072 | Tempo BP=418.1565 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1686
+SCORE DAS CONSTRUTIBAS BP = [332, 79, 59, 90, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c107.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.6161 | Tempo BP=340.2205 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2040
+SCORE DAS CONSTRUTIBAS BP = [507, 71, 34, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c108.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=15.0551 | Tempo BP=683.3420 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2415
+SCORE DAS CONSTRUTIBAS BP = [455, 59, 160, 129, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1200.9615 | Tempo BP=905.8647 | FO exato=191.8136 | FO BP=191.8136
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2028
+SCORE DAS CONSTRUTIBAS BP = [406, 14, 97, 157, 0, 0, 0]
+SEQ_EXATO: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2324 | Tempo BP=511.3036 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [4, 0, 0, 0, 0, 0, 0]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=236.2620 | Tempo BP=3653.1544 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [1, 1, 3, 7, 0, 0, 0]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=1201.8190 | Tempo BP=3600.2653 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [1, 0, 0, 0, 0, 0, 0]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7401 | Tempo BP=83.8383 | FO exato=618.3299 | FO BP=618.3299
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 3
+Colunas geradas BP = 1288
+SCORE DAS CONSTRUTIBAS BP = [114, 23, 3, 19, 0, 0, 0]
+SEQ_EXATO: V0: [0,12,9,20,1,26] ; V1: [0,11,19,10,26] ; V2: [0,18,26] ; V3: [0,23,22,4,26] ; V4: [0,7,8,17,26] ; V5: [0,5,16,6,26] ; V6: [0,2,21,3,24,25,26] ; V7: [0,14,15,13,26]
+SEQ_BP: V0: [0,14,15,13,26] ; V1: [0,12,9,20,1,26] ; V2: [0,23,22,4,25,26] ; V3: [0,5,16,6,26] ; V4: [0,11,19,10,26] ; V5: [0,18,26] ; V6: [0,2,21,3,24,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.5235 | Tempo BP=3688.5971 | FO exato=548.1078 | FO BP=548.1078
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 272
+Colunas geradas BP = 2170
+SCORE DAS CONSTRUTIBAS BP = [1, 0, 0, 3, 0, 0, 0]
+SEQ_EXATO: V0: [0,14,16,6,13,26] ; V1: [0,3,9,20,1,26] ; V2: [0,7,11,19,10,26] ; V3: [0,2,15,22,4,25,26] ; V4: [0,18,26] ; V5: [0,8,17,5,26] ; V6: [0,21,23,24,12,26]
+SEQ_BP: V0: [0,14,16,6,13,26] ; V1: [0,8,17,5,26] ; V2: [0,2,15,22,4,25,26] ; V3: [0,18,26] ; V4: [0,3,9,20,1,26] ; V5: [0,21,23,24,12,26] ; V6: [0,7,11,19,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=201.4841 | Tempo BP=1528.8382 | FO exato=490.9734 | FO BP=455.6982
+GAP (%) = -7.1847
+Igual ao exato = 0
+Nós processados BP = 1
+Colunas geradas BP = 1965
+SCORE DAS CONSTRUTIBAS BP = [259, 28, 18, 86, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,19,11,10,26] ; V1: [0,21,23,22,2,4,25,12,26] ; V2: [0,14,15,6,13,26] ; V3: [0,3,24,9,20,1,26] ; V4: [0,18,8,16,17,5,26]
+SEQ_BP: V0: [0,12,24,3,9,10,20,1,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,21,23,22,4,25,26] ; V3: [0,7,19,11,8,18,26] ; V4: [0,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.8732 | Tempo BP=848.9515 | FO exato=-1.0000 | FO BP=417.9612
+Nós processados BP = 1
+Colunas geradas BP = 1848
+SCORE DAS CONSTRUTIBAS BP = [344, 50, 11, 55, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,17,5,26] ; V1: [0,7,19,11,8,18,6,13,26] ; V2: [0,21,22,23,4,25,26] ; V3: [0,12,24,3,9,20,10,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=26.0318 | Tempo BP=267.1819 | FO exato=531.5386 | FO BP=531.5386
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1404
+SCORE DAS CONSTRUTIBAS BP = [198, 12, 4, 18, 0, 0, 0]
+SEQ_EXATO: V0: [0,5,14,16,6,26] ; V1: [0,12,9,3,24,25,26] ; V2: [0,2,15,13,26] ; V3: [0,21,23,22,4,26] ; V4: [0,7,18,8,17,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,12,9,3,24,26] ; V1: [0,5,14,16,6,26] ; V2: [0,7,18,8,17,26] ; V3: [0,19,11,10,20,1,26] ; V4: [0,2,15,13,26] ; V5: [0,21,23,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r106.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=201.2862 | Tempo BP=3642.4569 | FO exato=466.4802 | FO BP=466.4802
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 151
+Colunas geradas BP = 2525
+SCORE DAS CONSTRUTIBAS BP = [2, 0, 0, 6, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,23,22,4,25,21,26] ; V1: [0,14,16,6,13,26] ; V2: [0,7,19,11,10,26] ; V3: [0,18,8,17,5,26] ; V4: [0,1,9,20,3,24,12,26]
+SEQ_BP: V0: [0,18,8,17,5,26] ; V1: [0,14,16,6,13,26] ; V2: [0,2,15,23,22,4,25,21,26] ; V3: [0,7,19,11,10,26] ; V4: [0,1,9,20,3,24,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r107.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.8063 | Tempo BP=1103.3267 | FO exato=-1.0000 | FO BP=425.2685
+Nós processados BP = 1
+Colunas geradas BP = 1860
+SCORE DAS CONSTRUTIBAS BP = [279, 62, 51, 71, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,18,7,11,19,8,17,16,5,26] ; V1: [0,12,3,9,20,10,1,26] ; V2: [0,21,23,22,4,25,24,26] ; V3: [0,2,15,14,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r108.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=201.0159 | Tempo BP=3735.8646 | FO exato=467.1724 | FO BP=398.2947
+GAP (%) = -14.7435
+Igual ao exato = 0
+Nós processados BP = 5
+Colunas geradas BP = 1952
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 1, 17, 0, 0, 0]
+SEQ_EXATO: V0: [0,19,11,7,8,17,18,26] ; V1: [0,10,20,9,3,12,1,26] ; V2: [0,5,16,14,6,13,21,26] ; V3: [0,2,15,23,22,4,25,24,26]
+SEQ_BP: V0: [0,21,22,23,4,25,24,26] ; V1: [0,2,15,14,16,17,5,6,13,26] ; V2: [0,7,10,11,19,8,18,26] ; V3: [0,1,20,9,3,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r109.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=111.6148 | Tempo BP=792.7108 | FO exato=442.6252 | FO BP=442.6252
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2085
+SCORE DAS CONSTRUTIBAS BP = [313, 29, 18, 55, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,14,16,17,13,26] ; V1: [0,5,8,18,6,26] ; V2: [0,21,22,23,4,25,24,26] ; V3: [0,12,3,9,20,1,26] ; V4: [0,7,19,11,10,26]
+SEQ_BP: V0: [0,21,22,23,4,25,24,26] ; V1: [0,2,15,14,16,17,13,26] ; V2: [0,12,3,9,20,1,26] ; V3: [0,7,19,11,10,26] ; V4: [0,5,8,18,6,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r110.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=201.1952 | Tempo BP=4107.8911 | FO exato=-1.0000 | FO BP=445.8722
+Nós processados BP = 31
+Colunas geradas BP = 2816
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 3, 25, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,18,8,17,6,26] ; V1: [0,5,16,14,15,22,23,13,26] ; V2: [0,11,19,7,10,20,9,1,26] ; V3: [0,2,21,12,3,24,25,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r111.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.9118 | Tempo BP=2720.2744 | FO exato=-1.0000 | FO BP=429.6968
+Nós processados BP = 25
+Colunas geradas BP = 1960
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,6,13,26] ; V1: [0,7,11,19,8,18,17,5,26] ; V2: [0,21,23,22,4,25,24,26] ; V3: [0,12,3,9,20,10,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r112.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.8882 | Tempo BP=3610.0806 | FO exato=394.1013 | FO BP=395.0909
+GAP (%) = 0.2511
+Igual ao exato = 0
+Nós processados BP = 61
+Colunas geradas BP = 2044
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 3, 0, 0, 0]
+SEQ_EXATO: V0: [0,18,8,7,19,11,10,26] ; V1: [0,21,22,23,4,25,24,26] ; V2: [0,2,15,14,16,17,5,6,13,26] ; V3: [0,12,3,9,20,1,26]
+SEQ_BP: V0: [0,21,22,23,25,4,26] ; V1: [0,2,15,14,16,17,5,6,13,26] ; V2: [0,18,8,7,19,11,10,26] ; V3: [0,12,24,3,9,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c201.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=4.7680 | Tempo BP=3940.9443 | FO exato=268.5325 | FO BP=268.8531
+GAP (%) = 0.1194
+Igual ao exato = 0
+Nós processados BP = 97
+Colunas geradas BP = 2682
+SCORE DAS CONSTRUTIBAS BP = [1, 1, 13, 28, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,25,9,11,10,8,21,26] ; V1: [0,23,18,19,16,14,12,15,17,13,26] ; V2: [0,5,2,1,7,3,4,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,17,25,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,19,16,14,12,15,13,9,11,10,8,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c202.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.6991 | Tempo BP=6590.9756 | FO exato=271.5942 | FO BP=277.7884
+GAP (%) = 2.2807
+Igual ao exato = 0
+Nós processados BP = 2
+Colunas geradas BP = 1593
+SCORE DAS CONSTRUTIBAS BP = [208, 48, 123, 150, 0, 0, 0]
+SEQ_EXATO: V0: [0,21,12,16,14,15,13,9,11,10,26] ; V1: [0,4,3,7,1,2,5,26] ; V2: [0,20,22,24,6,23,18,19,17,25,8,26]
+SEQ_BP: V0: [0,20,22,24,21,26] ; V1: [0,4,3,7,1,2,5,17,13,25,8,26] ; V2: [0,6,23,18,19,16,14,12,15,9,11,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c203.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=176.2201 | Tempo BP=13985.7473 | FO exato=276.6242 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [333, 85, 133, 133, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,23,19,15,17,13,9,11,10,26] ; V1: [0,21,25,18,16,14,12,8,26] ; V2: [0,4,3,7,1,2,5,26]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c204.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.6124 | Tempo BP=10859.9500 | FO exato=278.8716 | FO BP=284.4612
+GAP (%) = 2.0044
+Igual ao exato = 0
+Nós processados BP = 2
+Colunas geradas BP = 2583
+SCORE DAS CONSTRUTIBAS BP = [409, 28, 189, 233, 0, 0, 0]
+SEQ_EXATO: V0: [0,4,3,7,1,2,12,14,16,13,11,5,26] ; V1: [0,22,21,8,26] ; V2: [0,20,24,6,23,18,19,15,17,25,9,10,26]
+SEQ_BP: V0: [0,4,3,7,1,2,5,11,10,8,22,24,6,20,26] ; V1: [0,17,18,19,16,14,12,15,13,9,26] ; V2: [0,23,25,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c205.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.9742 | Tempo BP=4307.8068 | FO exato=268.5325 | FO BP=280.8755
+GAP (%) = 4.5964
+Igual ao exato = 0
+Nós processados BP = 2
+Colunas geradas BP = 1518
+SCORE DAS CONSTRUTIBAS BP = [212, 50, 93, 149, 0, 0, 0]
+SEQ_EXATO: V0: [0,23,18,19,16,14,12,15,17,13,26] ; V1: [0,20,22,24,6,25,9,11,10,8,21,26] ; V2: [0,5,2,1,7,3,4,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,19,17,25,21,8,26] ; V1: [0,2,12,16,14,15,13,9,11,10,26] ; V2: [0,5,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c206.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.9454 | Tempo BP=3717.1342 | FO exato=266.5696 | FO BP=278.4903
+GAP (%) = 4.4719
+Igual ao exato = 0
+Nós processados BP = 30
+Colunas geradas BP = 1662
+SCORE DAS CONSTRUTIBAS BP = [10, 14, 33, 70, 0, 0, 0]
+SEQ_EXATO: V0: [0,5,2,1,7,3,4,26] ; V1: [0,20,22,24,6,23,18,19,17,25,21,26] ; V2: [0,12,14,16,15,13,9,11,10,8,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,19,17,25,21,8,26] ; V1: [0,5,1,7,3,4,26] ; V2: [0,2,12,14,16,15,13,9,11,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c207.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.6136 | Tempo BP=3630.6540 | FO exato=264.6319 | FO BP=274.4477
+GAP (%) = 3.7093
+Igual ao exato = 0
+Nós processados BP = 176
+Colunas geradas BP = 2382
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 3, 12, 0, 0, 0]
+SEQ_EXATO: V0: [0,5,2,1,7,3,4,26] ; V1: [0,8,9,15,19,16,14,12,11,10,26] ; V2: [0,20,22,24,6,23,18,17,13,25,21,26]
+SEQ_BP: V0: [0,5,2,1,7,3,4,11,9,13,25,8,26] ; V1: [0,6,23,17,18,19,15,16,14,12,10,26] ; V2: [0,20,24,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c208.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=200.6399 | Tempo BP=3607.9214 | FO exato=265.8097 | FO BP=273.0839
+GAP (%) = 2.7366
+Igual ao exato = 0
+Nós processados BP = 58
+Colunas geradas BP = 3141
+SCORE DAS CONSTRUTIBAS BP = [0, 1, 16, 14, 0, 0, 0]
+SEQ_EXATO: V0: [0,12,14,16,19,15,13,9,11,10,8,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,20,22,24,6,23,18,17,25,21,26]
+SEQ_BP: V0: [0,13,15,17,25,21,8,26] ; V1: [0,20,22,24,6,23,18,19,16,14,12,9,11,10,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2002 | Tempo BP=972.1018 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.1532 | Tempo BP=1792.8007 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 1, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2703 | Tempo BP=234.2785 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1284
+SCORE DAS CONSTRUTIBAS BP = [259, 94, 20, 53, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=27.1456 | Tempo BP=687.8110 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2562
+SCORE DAS CONSTRUTIBAS BP = [479, 95, 173, 105, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=601.2561 | Tempo BP=3292.6818 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2550
+SCORE DAS CONSTRUTIBAS BP = [353, 21, 215, 259, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=325.1313 | Tempo BP=1082.2246 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2535
+SCORE DAS CONSTRUTIBAS BP = [468, 29, 232, 114, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,13,17,18,19,15,16,14,12,10,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5444 | Tempo BP=760.7758 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2355
+SCORE DAS CONSTRUTIBAS BP = [473, 71, 79, 160, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2769 | Tempo BP=181.3435 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1236
+SCORE DAS CONSTRUTIBAS BP = [268, 89, 18, 35, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c107.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5056 | Tempo BP=1106.9342 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2922
+SCORE DAS CONSTRUTIBAS BP = [560, 96, 105, 211, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c108.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=14.5905 | Tempo BP=968.0916 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2718
+SCORE DAS CONSTRUTIBAS BP = [516, 44, 150, 194, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=600.4621 | Tempo BP=706.8116 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1518
+SCORE DAS CONSTRUTIBAS BP = [294, 13, 70, 127, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2682 | Tempo BP=1014.1641 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2379
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [455, 95, 85, 156, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=26.5462 | Tempo BP=706.0858 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2211
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [433, 59, 130, 113, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=600.6616 | Tempo BP=731.9191 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2040
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [388, 36, 154, 100, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=600.9615 | Tempo BP=1209.3053 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2517
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [457, 54, 176, 150, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,20,24,25,23,22,21,26] ; V1: [0,7,8,11,9,6,4,2,1,3,5,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5143 | Tempo BP=252.1514 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1554
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [379, 61, 24, 52, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2717 | Tempo BP=284.4751 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1407
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [303, 73, 28, 63, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c107.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5014 | Tempo BP=314.8135 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2121
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [496, 88, 71, 50, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c108.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=14.2248 | Tempo BP=699.8162 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2400
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [473, 41, 156, 128, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c109.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=600.5246 | Tempo BP=1377.4721 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2538
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [465, 35, 101, 243, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c201.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=3.1272 | Tempo BP=3637.0295 | FO exato=267.7000 | FO BP=290.1000
+GAP (%) = 8.3676
+Igual ao exato = 0
+Nós processados BP = 504
+Colunas geradas BP = 2520
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [5, 0, 24, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,25,9,11,10,8,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,23,18,19,16,14,12,15,17,13,26]
+SEQ_BP: V0: [0,2,16,14,15,17,25,21,26] ; V1: [0,20,22,24,6,23,18,19,12,13,9,11,10,8,26] ; V2: [0,5,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c201.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=3.0007 | Tempo BP=3605.0020 | FO exato=267.7000 | FO BP=290.1000
+GAP (%) = 8.3676
+Igual ao exato = 0
+Nós processados BP = 504
+Colunas geradas BP = 2520
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [5, 0, 24, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,25,9,11,10,8,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,23,18,19,16,14,12,15,17,13,26]
+SEQ_BP: V0: [0,2,16,14,15,17,25,21,26] ; V1: [0,20,22,24,6,23,18,19,12,13,9,11,10,8,26] ; V2: [0,5,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c202.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=2.5897 | Tempo BP=3637.5090 | FO exato=333.2000 | FO BP=321.1000
+GAP (%) = -3.6315
+Igual ao exato = 0
+Nós processados BP = 481
+Colunas geradas BP = 4818
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [2, 0, 3, 8, 0, 0, 0]
+SEQ_EXATO: V0: [0,19,15,17,25,26] ; V1: [0,20,22,24,6,23,18,2,5,8,21,26] ; V2: [0,4,7,3,1,12,16,14,13,9,11,10,26]
+SEQ_BP: V0: [0,14,15,5,26] ; V1: [0,20,22,24,6,23,18,19,17,13,9,11,10,8,26] ; V2: [0,4,3,7,1,2,12,16,25,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c202.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=2.5897 | Tempo BP=4375.8422 | FO exato=333.2000 | FO BP=280.0000
+GAP (%) = -15.9664
+Igual ao exato = 0
+Nós processados BP = 205
+Colunas geradas BP = 5388
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [20, 5, 32, 17, 0, 0, 0]
+SEQ_EXATO: V0: [0,19,15,17,25,26] ; V1: [0,20,22,24,6,23,18,2,5,8,21,26] ; V2: [0,4,7,3,1,12,16,14,13,9,11,10,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,19,17,25,21,8,26] ; V1: [0,2,12,16,14,15,13,9,11,10,26] ; V2: [0,5,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c202.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=14.0547 | Tempo BP=3602.4236 | FO exato=291.4000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,21,25,8,26] ; V1: [0,20,22,24,6,23,18,19,15,17,11,5,26] ; V2: [0,4,3,7,1,2,12,16,14,13,9,10,26]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c202.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=14.0547 | Tempo BP=4305.5973 | FO exato=291.4000 | FO BP=315.9000
+GAP (%) = 8.4077
+Igual ao exato = 0
+Nós processados BP = 3
+Colunas geradas BP = 2124
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [26, 6, 54, 77, 0, 0, 0]
+SEQ_EXATO: V0: [0,21,25,8,26] ; V1: [0,20,22,24,6,23,18,19,15,17,11,5,26] ; V2: [0,4,3,7,1,2,12,16,14,13,9,10,26]
+SEQ_BP: V0: [0,5,3,1,12,16,14,15,25,8,26] ; V1: [0,4,7,2,26] ; V2: [0,20,22,24,6,21,23,18,19,17,13,9,11,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c203.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=9.9198 | Tempo BP=3607.7972 | FO exato=291.7000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,21,25,9,11,10,26] ; V1: [0,4,3,7,1,2,12,14,16,15,5,26] ; V2: [0,20,22,24,6,23,18,19,17,13,8,26]
+SEQ_BP: SEM_SEQUENCIA_BP
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c203.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=6.8393 | Tempo BP=3675.0829 | FO exato=302.0000 | FO BP=269.0000
+GAP (%) = -10.9272
+Igual ao exato = 0
+Nós processados BP = 60
+Colunas geradas BP = 4725
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 6, 0, 0, 0]
+SEQ_EXATO: V0: [0,21,25,9,11,10,26] ; V1: [0,1,7,3,4,2,5,12,14,16,15,26] ; V2: [0,20,22,24,6,23,18,19,17,13,8,26]
+SEQ_BP: V0: [0,4,3,7,1,2,5,11,10,8,26] ; V1: [0,20,22,24,6,23,25,21,26] ; V2: [0,12,14,16,19,15,18,17,13,9,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c204.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2869 | Tempo BP=3618.3038 | FO exato=278.1000 | FO BP=328.8000
+GAP (%) = 18.2309
+Igual ao exato = 0
+Nós processados BP = 97
+Colunas geradas BP = 3120
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 19, 0, 0, 0]
+SEQ_EXATO: V0: [0,4,3,7,1,2,15,13,9,11,10,8,26] ; V1: [0,20,6,24,22,21,26] ; V2: [0,5,12,14,16,19,18,17,23,25,26]
+SEQ_BP: V0: [0,4,3,1,2,10,12,17,9,11,7,5,8,21,26] ; V1: [0,23,18,19,16,14,15,13,25,26] ; V2: [0,20,22,24,6,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c204.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2869 | Tempo BP=3885.1981 | FO exato=278.1000 | FO BP=277.7000
+GAP (%) = -0.1438
+Igual ao exato = 0
+Nós processados BP = 3
+Colunas geradas BP = 3858
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [28, 1, 29, 73, 0, 0, 0]
+SEQ_EXATO: V0: [0,4,3,7,1,2,15,13,9,11,10,8,26] ; V1: [0,20,6,24,22,21,26] ; V2: [0,5,12,14,16,19,18,17,23,25,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,19,17,25,21,8,26] ; V1: [0,2,12,14,16,15,13,9,11,10,26] ; V2: [0,4,3,7,1,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c205.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2372 | Tempo BP=3634.4701 | FO exato=267.7000 | FO BP=274.0000
+GAP (%) = 2.3534
+Igual ao exato = 0
+Nós processados BP = 82
+Colunas geradas BP = 3450
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [5, 21, 7, 12, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,25,9,11,10,8,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,23,18,19,16,14,12,15,17,13,26]
+SEQ_BP: V0: [0,14,16,12,15,25,21,26] ; V1: [0,20,22,24,6,23,18,19,17,13,9,11,10,8,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c205.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2372 | Tempo BP=3653.6029 | FO exato=267.7000 | FO BP=272.7000
+GAP (%) = 1.8678
+Igual ao exato = 0
+Nós processados BP = 64
+Colunas geradas BP = 4221
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 15, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,25,9,11,10,8,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,23,18,19,16,14,12,15,17,13,26]
+SEQ_BP: V0: [0,12,16,14,15,13,9,11,10,26] ; V1: [0,20,22,24,6,23,18,19,17,25,21,8,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c206.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8873 | Tempo BP=3661.5070 | FO exato=265.7000 | FO BP=268.7000
+GAP (%) = 1.1291
+Igual ao exato = 0
+Nós processados BP = 14
+Colunas geradas BP = 1320
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 8, 0, 0, 0]
+SEQ_EXATO: V0: [0,12,14,16,15,13,9,11,10,8,26] ; V1: [0,20,22,24,6,23,18,19,17,25,21,26] ; V2: [0,5,2,1,7,3,4,26]
+SEQ_BP: V0: [0,12,14,16,15,25,21,26] ; V1: [0,20,22,24,6,23,18,19,17,13,9,11,10,8,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c206.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8873 | Tempo BP=3855.4402 | FO exato=265.7000 | FO BP=268.7000
+GAP (%) = 1.1291
+Igual ao exato = 0
+Nós processados BP = 13
+Colunas geradas BP = 1785
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [2, 0, 16, 43, 0, 0, 0]
+SEQ_EXATO: V0: [0,12,14,16,15,13,9,11,10,8,26] ; V1: [0,20,22,24,6,23,18,19,17,25,21,26] ; V2: [0,5,2,1,7,3,4,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,19,17,13,9,11,10,8,26] ; V1: [0,12,14,16,15,25,21,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c207.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7441 | Tempo BP=3770.1240 | FO exato=264.7000 | FO BP=266.2000
+GAP (%) = 0.5667
+Igual ao exato = 0
+Nós processados BP = 10
+Colunas geradas BP = 2367
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 9, 19, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,23,18,19,17,25,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,8,9,12,14,16,15,13,11,10,26]
+SEQ_BP: V0: [0,21,25,17,15,13,11,10,26] ; V1: [0,20,22,24,6,23,18,19,16,14,12,9,8,26] ; V2: [0,5,2,1,7,3,4,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c207.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7441 | Tempo BP=3673.9273 | FO exato=264.7000 | FO BP=264.2000
+GAP (%) = -0.1889
+Igual ao exato = 0
+Nós processados BP = 13
+Colunas geradas BP = 3195
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 1, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,22,24,6,23,18,19,17,25,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,8,9,12,14,16,15,13,11,10,26]
+SEQ_BP: V0: [0,20,22,24,6,23,18,17,25,21,26] ; V1: [0,5,2,1,7,3,4,26] ; V2: [0,8,13,15,19,16,14,12,9,11,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.3146 | Tempo BP=173.3073 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 996
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [192, 92, 14, 32, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.3146 | Tempo BP=289.0318 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1446
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [77, 3, 13, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2737 | Tempo BP=165.9645 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 996
+MIP = False
+SCORE DAS CONSTRUTIBAS BP = [192, 92, 14, 32, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2737 | Tempo BP=261.7774 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1446
+MIP = True
+SCORE DAS CONSTRUTIBAS BP = [77, 3, 13, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2728 | Tempo BP=168.2456 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 996
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [192, 92, 14, 32, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2728 | Tempo BP=263.9520 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1446
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [77, 3, 13, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2728 | Tempo BP=163.5549 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 996
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [192, 92, 14, 32, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2728 | Tempo BP=286.0176 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1446
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [77, 3, 13, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=457.3505 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2001
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [458, 75, 75, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=435.1895 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2574
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [26, 10, 89, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=408.5730 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2001
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [458, 75, 75, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=434.9023 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2574
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [26, 10, 89, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=407.7031 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2001
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [458, 75, 75, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=433.9203 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2574
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [26, 10, 89, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=407.0304 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2001
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [458, 75, 75, 57, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=5.3093 | Tempo BP=434.1616 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2574
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [26, 10, 89, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=543.8641 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1653
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [318, 27, 140, 64, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=469.8999 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2034
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [23, 8, 27, 69, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=543.5429 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1653
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [318, 27, 140, 64, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=471.8062 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2034
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [23, 8, 27, 69, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=544.1082 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1653
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [318, 27, 140, 64, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=473.0568 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2034
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [23, 8, 27, 69, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=545.1322 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1653
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [318, 27, 140, 64, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c103.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.2935 | Tempo BP=470.6830 | FO exato=190.3000 | FO BP=190.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2034
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [23, 8, 27, 69, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,7,8,10,11,9,6,4,2,1,3,5,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,7,8,10,11,9,6,4,2,1,3,5,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=452.1228 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1755
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [406, 22, 114, 41, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=1739.5288 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2928
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [24, 4, 151, 212, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=451.6329 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1755
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [406, 22, 114, 41, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=1755.2417 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2928
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [24, 4, 151, 212, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=452.3297 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1755
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [406, 22, 114, 41, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=1588.2440 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 2838
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [24, 5, 143, 189, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,13,17,18,19,15,16,14,12,10,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c104.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.7754 | Tempo BP=452.5872 | FO exato=186.9000 | FO BP=186.9000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1755
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [406, 22, 114, 41, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+SEQ_BP: V0: [0,7,8,11,9,6,4,2,1,3,5,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=256.2144 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1539
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [405, 46, 22, 38, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=302.9805 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1734
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [18, 15, 6, 26, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=401.4372 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1539
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [405, 46, 22, 38, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=128.1723 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1734
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [18, 15, 6, 26, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=206.8982 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1539
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [405, 46, 22, 38, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=230.1151 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1734
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [18, 15, 6, 26, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=379.7966 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1539
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [405, 46, 22, 38, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c105.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.5748 | Tempo BP=127.8826 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1734
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [18, 15, 6, 26, 0, 0, 0]
+SEQ_EXATO: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=89.2724 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1050
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [235, 88, 14, 11, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=200.0011 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1425
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [69, 4, 11, 41, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=94.0466 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1050
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [235, 88, 14, 11, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=312.8545 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1524
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [76, 4, 12, 66, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=102.6532 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1050
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [235, 88, 14, 11, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=534.6690 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1785
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [129, 19, 25, 72, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=222.4217 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1050
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [235, 88, 14, 11, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c106.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.2574 | Tempo BP=386.8347 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1479
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [90, 1, 8, 44, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c107.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.6945 | Tempo BP=187.3490 | FO exato=191.3000 | FO BP=191.3000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1644
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [430, 65, 24, 27, 0, 0, 0]
+SEQ_EXATO: V0: [0,20,24,25,23,22,21,26] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,13,17,18,19,15,16,14,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.6988 | Tempo BP=49.9346 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1200
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [118, 22, 1, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,5,16,6,26] ; V2: [0,23,22,4,26] ; V3: [0,11,19,10,26] ; V4: [0,2,21,3,24,25,26] ; V5: [0,18,26] ; V6: [0,14,15,13,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=23.1043 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1200
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [118, 22, 1, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,5,16,6,26] ; V2: [0,23,22,4,26] ; V3: [0,11,19,10,26] ; V4: [0,2,21,3,24,25,26] ; V5: [0,18,26] ; V6: [0,14,15,13,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=1745.6791 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1368
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [6, 3, 0, 12, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,23,22,4,25,26] ; V1: [0,12,9,20,1,26] ; V2: [0,2,21,3,24,26] ; V3: [0,14,15,13,26] ; V4: [0,18,26] ; V5: [0,5,16,6,26] ; V6: [0,11,19,10,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=32.4192 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1200
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [118, 22, 1, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,5,16,6,26] ; V2: [0,23,22,4,26] ; V3: [0,11,19,10,26] ; V4: [0,2,21,3,24,25,26] ; V5: [0,18,26] ; V6: [0,14,15,13,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=21.7386 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1264
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [4, 1, 0, 3, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,11,19,10,26] ; V2: [0,5,16,6,26] ; V3: [0,23,22,4,26] ; V4: [0,14,15,13,26] ; V5: [0,7,8,17,26] ; V6: [0,2,21,3,24,25,26] ; V7: [0,18,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=37.5430 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1200
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [118, 22, 1, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,5,16,6,26] ; V2: [0,23,22,4,26] ; V3: [0,11,19,10,26] ; V4: [0,2,21,3,24,25,26] ; V5: [0,18,26] ; V6: [0,14,15,13,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=105.6552 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1312
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [8, 0, 0, 6, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,2,21,3,24,26] ; V1: [0,12,9,20,1,26] ; V2: [0,18,26] ; V3: [0,11,19,10,26] ; V4: [0,23,22,4,25,26] ; V5: [0,14,15,13,26] ; V6: [0,7,8,17,26] ; V7: [0,5,16,6,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=43.1272 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1200
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [118, 22, 1, 7, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,12,9,20,1,26] ; V1: [0,5,16,6,26] ; V2: [0,23,22,4,26] ; V3: [0,11,19,10,26] ; V4: [0,2,21,3,24,25,26] ; V5: [0,18,26] ; V6: [0,14,15,13,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r101.txt
+Clientes=25 | Nós_rede=27 | Veículos=8 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.7005 | Tempo BP=147.5141 | FO exato=617.1000 | FO BP=617.1000
+GAP (%) = -0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1352
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [7, 1, 0, 11, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,21,3,24,25,26] ; V1: [0,7,8,17,26] ; V2: [0,11,19,10,26] ; V3: [0,5,16,6,26] ; V4: [0,18,26] ; V5: [0,14,15,13,26] ; V6: [0,12,9,20,1,26] ; V7: [0,23,22,4,26]
+SEQ_BP: V0: [0,18,26] ; V1: [0,12,9,20,1,26] ; V2: [0,23,22,4,26] ; V3: [0,2,21,3,24,25,26] ; V4: [0,11,19,10,26] ; V5: [0,14,15,13,26] ; V6: [0,5,16,6,26] ; V7: [0,7,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3611.1686 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 268
+Colunas geradas BP = 2471
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,2,15,22,4,25,26] ; V1: [0,21,23,24,12,26] ; V2: [0,8,17,5,26] ; V3: [0,14,16,6,13,26] ; V4: [0,18,26] ; V5: [0,3,9,20,1,26] ; V6: [0,7,11,19,10,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3609.1689 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 134
+Colunas geradas BP = 2667
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 1, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,8,17,5,26] ; V1: [0,14,16,6,13,26] ; V2: [0,18,26] ; V3: [0,7,11,19,10,26] ; V4: [0,3,9,20,1,26] ; V5: [0,21,23,24,12,26] ; V6: [0,2,15,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3609.5011 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 172
+Colunas geradas BP = 2233
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,14,16,6,13,26] ; V1: [0,18,26] ; V2: [0,2,15,22,4,25,26] ; V3: [0,8,17,5,26] ; V4: [0,7,11,19,10,26] ; V5: [0,21,23,24,12,26] ; V6: [0,3,9,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3628.7834 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 93
+Colunas geradas BP = 2436
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,2,15,22,4,25,26] ; V1: [0,21,23,24,12,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,7,11,19,10,26] ; V5: [0,18,26] ; V6: [0,3,9,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3613.5405 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 119
+Colunas geradas BP = 2345
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,8,17,5,26] ; V1: [0,7,11,19,10,26] ; V2: [0,18,26] ; V3: [0,3,9,20,1,26] ; V4: [0,21,23,24,12,26] ; V5: [0,2,15,22,4,25,26] ; V6: [0,14,16,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3651.8935 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 63
+Colunas geradas BP = 2702
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [1, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,8,17,5,26] ; V1: [0,14,16,6,13,26] ; V2: [0,7,11,19,10,26] ; V3: [0,18,26] ; V4: [0,21,23,24,12,26] ; V5: [0,3,9,20,1,26] ; V6: [0,2,15,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3618.6474 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 89
+Colunas geradas BP = 1715
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,7,11,19,10,26] ; V1: [0,18,26] ; V2: [0,8,17,5,26] ; V3: [0,3,9,20,1,26] ; V4: [0,2,15,22,4,25,26] ; V5: [0,21,23,24,12,26] ; V6: [0,14,16,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r102.txt
+Clientes=25 | Nós_rede=27 | Veículos=7 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4562 | Tempo BP=3994.9203 | FO exato=550.9000 | FO BP=547.1000
+GAP (%) = -0.6898
+Igual ao exato = 0
+Nós processados BP = 15
+Colunas geradas BP = 2058
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [4, 0, 0, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,7,11,19,10,26] ; V1: [0,9,20,1,26] ; V2: [0,14,16,6,13,26] ; V3: [0,8,17,5,26] ; V4: [0,21,23,24,3,26] ; V5: [0,18,26] ; V6: [0,2,15,22,4,25,12,26]
+SEQ_BP: V0: [0,7,11,19,10,26] ; V1: [0,3,9,20,1,26] ; V2: [0,8,17,5,26] ; V3: [0,14,16,6,13,26] ; V4: [0,18,26] ; V5: [0,21,23,24,12,26] ; V6: [0,2,15,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=326.2382 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1415
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [223, 28, 10, 20, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,17,5,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,6,13,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=647.2575 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1690
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [11, 9, 6, 29, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,12,24,3,9,10,20,1,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,21,23,22,4,25,26] ; V4: [0,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=325.6983 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1415
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [223, 28, 10, 20, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,17,5,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,6,13,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=1075.8479 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1730
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [12, 7, 6, 38, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,6,13,26] ; V2: [0,12,24,3,9,10,20,1,26] ; V3: [0,7,19,11,8,18,26] ; V4: [0,2,15,14,16,17,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=340.6257 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1415
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [223, 28, 10, 20, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,17,5,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,6,13,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=1674.5527 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1720
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [8, 9, 5, 39, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,6,13,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=380.0850 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1415
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [223, 28, 10, 20, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,15,14,16,17,5,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,19,11,8,18,26] ; V3: [0,6,13,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r103.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.9421 | Tempo BP=1914.5677 | FO exato=-1.0000 | FO BP=454.6000
+Nós processados BP = 1
+Colunas geradas BP = 1765
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [8, 5, 10, 47, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,6,13,26] ; V3: [0,21,23,22,4,25,26] ; V4: [0,12,24,3,9,10,20,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=1256.4216 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 23
+Colunas geradas BP = 1876
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [1, 1, 2, 4, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,12,24,3,9,20,10,1,26] ; V1: [0,7,19,11,8,18,6,13,26] ; V2: [0,2,15,14,16,17,5,26] ; V3: [0,21,22,23,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=241.5011 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 1
+Colunas geradas BP = 1932
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [5, 0, 3, 6, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,6,13,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,21,22,23,4,25,26] ; V3: [0,12,24,3,9,20,10,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=1580.6073 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 23
+Colunas geradas BP = 1888
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 8, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,6,13,26] ; V1: [0,21,22,23,4,25,26] ; V2: [0,2,15,14,16,17,5,26] ; V3: [0,1,10,20,9,3,24,12,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=287.2783 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 1
+Colunas geradas BP = 1948
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [1, 0, 1, 13, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,6,13,26] ; V1: [0,21,22,23,4,25,26] ; V2: [0,1,10,20,9,3,24,12,26] ; V3: [0,2,15,14,16,17,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=1623.1244 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 17
+Colunas geradas BP = 1768
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [1, 0, 0, 5, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,22,23,4,25,26] ; V1: [0,7,19,11,8,18,6,13,26] ; V2: [0,1,10,20,9,3,24,12,26] ; V3: [0,2,15,14,16,17,5,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=132.3251 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 1
+Colunas geradas BP = 1772
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 1, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,6,13,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,1,10,20,9,3,24,12,26] ; V3: [0,21,22,23,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=3067.8113 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 29
+Colunas geradas BP = 1976
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 5, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,7,19,11,8,18,6,13,26] ; V1: [0,2,15,14,16,17,5,26] ; V2: [0,21,22,23,4,25,26] ; V3: [0,12,24,3,9,20,10,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r104.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.8234 | Tempo BP=1197.8686 | FO exato=-1.0000 | FO BP=416.9000
+Nós processados BP = 1
+Colunas geradas BP = 2044
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [2, 0, 2, 13, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,12,24,3,9,20,10,1,26] ; V1: [0,21,22,23,4,25,26] ; V2: [0,2,15,14,16,17,5,26] ; V3: [0,7,19,11,8,18,6,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=140.6139 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1398
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [210, 10, 2, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,19,11,10,20,1,26] ; V2: [0,12,9,3,24,26] ; V3: [0,5,14,16,6,26] ; V4: [0,7,18,8,17,26] ; V5: [0,2,15,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=162.5435 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1488
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [6, 4, 0, 5, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,7,18,8,17,26] ; V1: [0,5,14,16,6,26] ; V2: [0,2,15,13,26] ; V3: [0,12,9,3,24,26] ; V4: [0,19,11,10,20,1,26] ; V5: [0,21,23,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=151.3460 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1398
+MIP = False
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [210, 10, 2, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,19,11,10,20,1,26] ; V2: [0,12,9,3,24,26] ; V3: [0,5,14,16,6,26] ; V4: [0,7,18,8,17,26] ; V5: [0,2,15,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=319.0726 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1530
+MIP = True
+SEM MELHORA = 4
+SCORE DAS CONSTRUTIBAS BP = [7, 3, 2, 10, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,19,11,10,20,1,26] ; V1: [0,12,9,3,24,26] ; V2: [0,2,15,13,26] ; V3: [0,21,23,22,4,25,26] ; V4: [0,5,14,16,6,26] ; V5: [0,7,18,8,17,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=64.4269 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1398
+MIP = False
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [210, 10, 2, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,19,11,10,20,1,26] ; V2: [0,12,9,3,24,26] ; V3: [0,5,14,16,6,26] ; V4: [0,7,18,8,17,26] ; V5: [0,2,15,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=92.1198 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1482
+MIP = True
+SEM MELHORA = 6
+SCORE DAS CONSTRUTIBAS BP = [4, 3, 1, 6, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,19,11,10,20,1,26] ; V1: [0,5,14,16,6,26] ; V2: [0,12,9,3,24,26] ; V3: [0,2,15,13,26] ; V4: [0,7,18,8,17,26] ; V5: [0,21,23,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=72.2592 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1398
+MIP = False
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [210, 10, 2, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,21,23,22,4,25,26] ; V1: [0,19,11,10,20,1,26] ; V2: [0,12,9,3,24,26] ; V3: [0,5,14,16,6,26] ; V4: [0,7,18,8,17,26] ; V5: [0,2,15,13,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r105.txt
+Clientes=25 | Nós_rede=27 | Veículos=6 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=30.7768 | Tempo BP=334.9825 | FO exato=530.5000 | FO BP=530.5000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 1
+Colunas geradas BP = 1530
+MIP = True
+SEM MELHORA = 8
+SCORE DAS CONSTRUTIBAS BP = [6, 3, 4, 9, 0, 0, 0]
+SEQ_EXATO: V0: [0,2,15,13,26] ; V1: [0,21,23,22,4,25,26] ; V2: [0,7,18,8,17,26] ; V3: [0,12,9,3,24,26] ; V4: [0,5,14,16,6,26] ; V5: [0,19,11,10,20,1,26]
+SEQ_BP: V0: [0,19,11,10,20,1,26] ; V1: [0,5,14,16,6,26] ; V2: [0,7,18,8,17,26] ; V3: [0,2,15,13,26] ; V4: [0,12,9,3,24,26] ; V5: [0,21,23,22,4,25,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r106.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4326 | Tempo BP=3539.9697 | FO exato=465.4000 | FO BP=465.4000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 237
+Colunas geradas BP = 3290
+MIP = False
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 2, 0, 0, 0]
+SEQ_EXATO: V0: [0,14,16,6,13,26] ; V1: [0,2,15,23,22,4,25,21,26] ; V2: [0,7,19,11,10,26] ; V3: [0,1,9,20,3,24,12,26] ; V4: [0,18,8,17,5,26]
+SEQ_BP: V0: [0,1,9,20,3,24,12,26] ; V1: [0,7,19,11,10,26] ; V2: [0,14,16,6,13,26] ; V3: [0,18,8,17,5,26] ; V4: [0,2,15,23,22,4,25,21,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/r106.txt
+Clientes=25 | Nós_rede=27 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=60.4326 | Tempo BP=3606.9697 | FO exato=465.4000 | FO BP=465.4000
+GAP (%) = 0.0000
+Igual ao exato = 1
+Nós processados BP = 42
+Colunas geradas BP = 3585
+MIP = True
+SEM MELHORA = 2
+SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
+SEQ_EXATO: V0: [0,14,16,6,13,26] ; V1: [0,2,15,23,22,4,25,21,26] ; V2: [0,7,19,11,10,26] ; V3: [0,1,9,20,3,24,12,26] ; V4: [0,18,8,17,5,26]
+SEQ_BP: V0: [0,1,9,20,3,24,12,26] ; V1: [0,14,16,6,13,26] ; V2: [0,2,15,23,22,4,25,21,26] ; V3: [0,18,8,17,5,26] ; V4: [0,7,19,11,10,26]
+

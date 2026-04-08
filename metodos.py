@@ -1120,7 +1120,1444 @@ class Metodos:
 
         return None, None
 
+    def SUB_PROG_DIN_BIDIRECIONAL_MICHEL(self, inst, pi, sigma_k, k, NO_BP,
+                                         arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
+                                         max_labels_por_no=100,
+                                         usar_poda_por_no=True,
+                                         usar_bound_tempo=True,
+                                         frac_tempo_critico=0.5,
+                                         modo="heur",  # "heur" ou "exato"
+                                         eps=1e-6):
+        import math
+        from collections import deque, defaultdict
+
+        print(f"Subprob BIDIRECIONAL MICHEL veículo {k} | modo={modo}")
+
+        if arcos_proibidos is None:
+            arcos_proibidos = set()
+        if arcos_fixados is None:
+            arcos_fixados = set()
+        if mu_arc is None:
+            mu_arc = {}
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        a, b, s, d = [], [], [], []
+        for i in range(nbn):
+            noh = inst.noh[i]
+            a.append(noh.READY_TIME[0] if hasattr(noh, "READY_TIME") and noh.READY_TIME else 0.0)
+            b.append(noh.DUE_DATE[0] if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else float("inf"))
+            s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
+            d.append(float(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0))
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+        tol = 1e-6
+
+        horizonte = b[depf] - a[dep0]
+        limite_meia_busca = frac_tempo_critico * horizonte
+
+        def travel_time(i, j):
+            return inst.matriz_distancia[i][j] / velocidade
+
+        def cliente_mask(c):
+            return 1 << (c - 1)
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def delta_rc(i, j):
+            val = travel_time(i, j) - mu(i, j)
+            if 1 <= j <= nbcd:
+                val -= float(pi[j - 1])
+            if j == depf:
+                val -= float(sigma_k)
+            return val
+
+        def domina_heur(cA, tA, qA, cB, tB, qB):
+            return (
+                    cA <= cB + tol and
+                    tA <= tB + tol and
+                    qA <= qB + tol and
+                    (cA < cB - tol or tA < tB - tol or qA < qB - tol)
+            )
+
+        def domina_exata(maskA, cA, tA, qA, maskB, cB, tB, qB):
+            if maskA != maskB:
+                return False
+            return domina_heur(cA, tA, qA, cB, tB, qB)
+
+        def domina_label(maskA, cA, tA, qA, maskB, cB, tB, qB):
+            if modo == "heur":
+                return domina_heur(cA, tA, qA, cB, tB, qB)
+            return domina_exata(maskA, cA, tA, qA, maskB, cB, tB, qB)
+
+        def chave_fronteira(no, mask):
+            if modo == "heur":
+                return no
+            return (no, mask)
+
+        def rota_forward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            seq.reverse()
+            return seq
+
+        def rota_backward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            return seq
+
+        def avaliar_rota(rota):
+            if not rota:
+                return None, None
+
+            if rota[0] != dep0 or rota[-1] != depf:
+                return None, None
+
+            visitados = set()
+            tempo = max(a[dep0], 0.0)
+            carga = 0.0
+            custo_real = 0.0
+            custo_red = 0.0
+
+            for t_idx in range(len(rota) - 1):
+                i = rota[t_idx]
+                j = rota[t_idx + 1]
+
+                if i == j:
+                    return None, None
+
+                if (i, j) in arcos_proibidos or (i, j, k) in arcos_proibidos:
+                    return None, None
+
+                if NO_BP.tabu_until[k][i][j] > 0:
+                    return None, None
+
+                tempo = tempo + s[i] + travel_time(i, j)
+                if tempo < a[j]:
+                    tempo = a[j]
+                if tempo > b[j] + 1e-9:
+                    return None, None
+
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return None, None
+                    visitados.add(j)
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return None, None
+
+                custo_real += travel_time(i, j)
+                custo_red += delta_rc(i, j)
+
+            if len(visitados) == 0:
+                return None, None
+
+            bin_xij = [0 for _ in range(nbcd)]
+            for v in visitados:
+                bin_xij[v - 1] = 1
+
+            return {"clientes": rota, "custo": custo_real, "bin_xij": bin_xij}, custo_red
+
+        # =========================
+        # FORWARD
+        # =========================
+        rot_f = []
+        abertos_f = deque()
+        labels_f_por_no = defaultdict(list)
+        fronteira_f = defaultdict(list)
+
+        rot_f.append({
+            "no": dep0,
+            "tempo": max(a[dep0], 0.0),
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+        abertos_f.append(0)
+        labels_f_por_no[dep0].append(0)
+        fronteira_f[chave_fronteira(dep0, 0)].append(0)
+
+        while abertos_f:
+            idx_atual = abertos_f.popleft()
+            r = rot_f[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_i = r["no"]
+            tempo_i = r["tempo"]
+            carga_i = r["carga"]
+            custo_i = r["custo_mod"]
+            mask_i = r["mask"]
+            nvisit_i = r["nvisit"]
+
+            candidatos = [j for j in range(1, nbcd + 1) if (mask_i & cliente_mask(j)) == 0]
+
+            viaveis = []
+            for j in candidatos:
+                if (no_i, j) in arcos_proibidos or (no_i, j, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][j] > 0:
+                    continue
+
+                bit = cliente_mask(j)
+                if (mask_i & bit) != 0:
+                    continue
+
+                nova_mask = mask_i | bit
+                nova_carga = carga_i + d[j]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                tempo_chegada = tempo_i + s[no_i] + travel_time(no_i, j)
+                if tempo_chegada < a[j]:
+                    tempo_chegada = a[j]
+                if tempo_chegada > b[j] + 1e-9:
+                    continue
+
+                if usar_bound_tempo and tempo_chegada > limite_meia_busca + 1e-9:
+                    continue
+
+                viaveis.append((j, tempo_chegada, nova_carga, nova_mask))
+
+            viaveis.sort(key=lambda tpl: (delta_rc(no_i, tpl[0]), tpl[1], tpl[2]))
+
+            for (j, tempo_chegada, nova_carga, nova_mask) in viaveis:
+                custo_novo = custo_i + delta_rc(no_i, j)
+                chave = chave_fronteira(j, nova_mask)
+                lista = fronteira_f.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina_label(ro["mask"], ro["custo_mod"], ro["tempo"], ro["carga"],
+                                    nova_mask, custo_novo, tempo_chegada, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina_label(nova_mask, custo_novo, tempo_chegada, nova_carga,
+                                    ro["mask"], ro["custo_mod"], ro["tempo"], ro["carga"]):
+                        rot_f[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_f)
+                rot_f.append({
+                    "no": j,
+                    "tempo": tempo_chegada,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_i + 1
+                })
+                abertos_f.append(idx_novo)
+                labels_f_por_no[j].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_f[chave] = nova_lista
+
+            if usar_poda_por_no:
+                lista_no = [idx for idx in labels_f_por_no[no_i] if rot_f[idx]["ativo"]]
+                if len(lista_no) > max_labels_por_no:
+                    lista_no.sort(key=lambda idx: (
+                        rot_f[idx]["custo_mod"],
+                        rot_f[idx]["tempo"],
+                        rot_f[idx]["carga"]
+                    ))
+                    manter = set(lista_no[:max_labels_por_no])
+                    for idx in lista_no[max_labels_por_no:]:
+                        rot_f[idx]["ativo"] = False
+                    labels_f_por_no[no_i] = [idx for idx in labels_f_por_no[no_i] if idx in manter]
+
+        # =========================
+        # BACKWARD
+        # =========================
+        rot_b = []
+        abertos_b = deque()
+        labels_b_por_no = defaultdict(list)
+        fronteira_b = defaultdict(list)
+
+        rot_b.append({
+            "no": depf,
+            "tempo_back": 0.0,
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+        abertos_b.append(0)
+        labels_b_por_no[depf].append(0)
+        fronteira_b[chave_fronteira(depf, 0)].append(0)
+
+        while abertos_b:
+            idx_atual = abertos_b.popleft()
+            r = rot_b[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_j = r["no"]
+            tempo_back_j = r["tempo_back"]
+            carga_j = r["carga"]
+            custo_j = r["custo_mod"]
+            mask_j = r["mask"]
+            nvisit_j = r["nvisit"]
+
+            candidatos = [i for i in range(1, nbcd + 1) if (mask_j & cliente_mask(i)) == 0]
+
+            viaveis = []
+            for i in candidatos:
+                if (i, no_j) in arcos_proibidos or (i, no_j, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][i][no_j] > 0:
+                    continue
+
+                bit = cliente_mask(i)
+                if (mask_j & bit) != 0:
+                    continue
+
+                nova_mask = mask_j | bit
+                nova_carga = carga_j + d[i]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                novo_tempo_back = tempo_back_j + s[i] + travel_time(i, no_j)
+
+                # base backward da tese: 50% do recurso crítico em cada direção
+                if usar_bound_tempo and novo_tempo_back > limite_meia_busca + 1e-9:
+                    continue
+
+                custo_novo = custo_j + delta_rc(i, no_j)
+                viaveis.append((i, novo_tempo_back, nova_carga, nova_mask, custo_novo))
+
+            viaveis.sort(key=lambda tpl: (tpl[4], tpl[1], tpl[2]))
+
+            for (i, novo_tempo_back, nova_carga, nova_mask, custo_novo) in viaveis:
+                chave = chave_fronteira(i, nova_mask)
+                lista = fronteira_b.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina_label(ro["mask"], ro["custo_mod"], ro["tempo_back"], ro["carga"],
+                                    nova_mask, custo_novo, novo_tempo_back, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina_label(nova_mask, custo_novo, novo_tempo_back, nova_carga,
+                                    ro["mask"], ro["custo_mod"], ro["tempo_back"], ro["carga"]):
+                        rot_b[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_b)
+                rot_b.append({
+                    "no": i,
+                    "tempo_back": novo_tempo_back,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_j + 1
+                })
+                abertos_b.append(idx_novo)
+                labels_b_por_no[i].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_b[chave] = nova_lista
+
+            if usar_poda_por_no:
+                lista_no = [idx for idx in labels_b_por_no[no_j] if rot_b[idx]["ativo"]]
+                if len(lista_no) > max_labels_por_no:
+                    lista_no.sort(key=lambda idx: (
+                        rot_b[idx]["custo_mod"],
+                        rot_b[idx]["tempo_back"],
+                        rot_b[idx]["carga"]
+                    ))
+                    manter = set(lista_no[:max_labels_por_no])
+                    for idx in lista_no[max_labels_por_no:]:
+                        rot_b[idx]["ativo"] = False
+                    labels_b_por_no[no_j] = [idx for idx in labels_b_por_no[no_j] if idx in manter]
+
+        # =========================
+        # COMBINAÇÃO FORWARD/BACKWARD
+        # =========================
+        melhor_coluna = None
+        melhor_rc = math.inf
+
+        nos_encontro = set(labels_f_por_no.keys()).intersection(set(labels_b_por_no.keys()))
+        nos_encontro = [m for m in nos_encontro if 1 <= m <= nbcd]
+
+        for m in nos_encontro:
+            lista_f = [idx for idx in labels_f_por_no[m] if rot_f[idx]["ativo"]]
+            lista_b = [idx for idx in labels_b_por_no[m] if rot_b[idx]["ativo"]]
+
+            for idx_f in lista_f:
+                rf = rot_f[idx_f]
+                rota_f = rota_forward(rot_f, idx_f)  # 0 -> ... -> m
+
+                for idx_b in lista_b:
+                    rb = rot_b[idx_b]
+                    rota_b = rota_backward(rot_b, idx_b)  # m -> ... -> depf
+
+                    mask_f = rf["mask"]
+                    mask_b = rb["mask"]
+
+                    # só o nó de encontro pode repetir
+                    if (mask_f & mask_b) != cliente_mask(m):
+                        continue
+
+                    rota_completa = rota_f[:-1] + rota_b
+
+                    coluna, rc = avaliar_rota(rota_completa)
+                    if coluna is None:
+                        continue
+
+                    if rc < melhor_rc:
+                        melhor_rc = rc
+                        melhor_coluna = coluna
+
+        # =========================
+        # FECHAMENTO DIRETO FORWARD
+        # =========================
+        for no_i, lista_idx in labels_f_por_no.items():
+            if no_i == depf:
+                continue
+
+            for idx in lista_idx:
+                r = rot_f[idx]
+                if not r["ativo"]:
+                    continue
+
+                if (no_i, depf) in arcos_proibidos or (no_i, depf, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][depf] > 0:
+                    continue
+
+                rota_f = rota_forward(rot_f, idx)
+                rota = rota_f + [depf]
+                coluna, rc = avaliar_rota(rota)
+                if coluna is None:
+                    continue
+
+                if rc < melhor_rc:
+                    melhor_rc = rc
+                    melhor_coluna = coluna
+
+        if melhor_coluna is not None and melhor_rc < -eps:
+            return melhor_coluna, melhor_rc
+
+        return None, None
+
+    def SUB_PROG_DIN_BIDIRECIONAL_DEPTH(self, inst, pi, sigma_k, k, NO_BP,
+                                        arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
+                                        max_labels_por_no=100,
+                                        max_depth=None,
+                                        usar_poda_por_no=True,
+                                        usar_poda_profundidade=True,
+                                        eps=1e-6):
+        import math
+        from collections import deque, defaultdict
+
+        print(f"Subprob BIDIRECIONAL veículo {k}")
+
+        if arcos_proibidos is None:
+            arcos_proibidos = set()
+        if arcos_fixados is None:
+            arcos_fixados = set()
+        if mu_arc is None:
+            mu_arc = {}
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        if max_depth is None:
+            max_depth = math.ceil(nbcd / 2)
+
+        a, b, s, d = [], [], [], []
+        for i in range(nbn):
+            noh = inst.noh[i]
+            a.append(noh.READY_TIME[0] if hasattr(noh, "READY_TIME") and noh.READY_TIME else 0.0)
+            b.append(noh.DUE_DATE[0] if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else float("inf"))
+            s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
+            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+        tol = 1e-6
+
+        def travel_time(i, j):
+            return inst.matriz_distancia[i][j] / velocidade
+
+        def cliente_mask(c):
+            return 1 << (c - 1)
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def delta_rc(i, j):
+            val = travel_time(i, j) - mu(i, j)
+            if 1 <= j <= nbcd:
+                val -= float(pi[j - 1])
+            if j == depf:
+                val -= float(sigma_k)
+            return val
+
+        def domina(cA, tA, qA, cB, tB, qB):
+            return (
+                    cA <= cB + tol and
+                    tA <= tB + tol and
+                    qA <= qB + tol and
+                    (cA < cB - tol or tA < tB - tol or qA < qB - tol)
+            )
+
+        def rota_forward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            seq.reverse()
+            return seq
+
+        def rota_backward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            return seq
+
+        def avaliar_rota(rota):
+            if not rota:
+                return None, None
+
+            if rota[0] != dep0 or rota[-1] != depf:
+                return None, None
+
+            visitados = set()
+            tempo = max(a[dep0], 0.0)
+            carga = 0.0
+            custo_real = 0.0
+            custo_red = 0.0
+
+            for t_idx in range(len(rota) - 1):
+                i = rota[t_idx]
+                j = rota[t_idx + 1]
+
+                if i == j:
+                    return None, None
+
+                if (i, j) in arcos_proibidos or (i, j, k) in arcos_proibidos:
+                    return None, None
+
+                if NO_BP.tabu_until[k][i][j] > 0:
+                    return None, None
+
+                tempo = tempo + s[i] + travel_time(i, j)
+                if tempo < a[j]:
+                    tempo = a[j]
+                if tempo > b[j] + 1e-9:
+                    return None, None
+
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return None, None
+                    visitados.add(j)
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return None, None
+
+                custo_real += travel_time(i, j)
+                custo_red += delta_rc(i, j)
+
+            if len(visitados) == 0:
+                return None, None
+
+            bin_xij = [0 for _ in range(nbcd)]
+            for v in visitados:
+                bin_xij[v - 1] = 1
+
+            return {"clientes": rota, "custo": custo_real, "bin_xij": bin_xij}, custo_red
+
+        # =========================
+        # GERAÇÃO FORWARD
+        # =========================
+        rot_f = []
+        abertos_f = deque()
+        labels_f_por_no = defaultdict(list)
+        fronteira_f = defaultdict(list)
+
+        idx0 = 0
+        rot_f.append({
+            "no": dep0,
+            "tempo": max(a[dep0], 0.0),
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+        abertos_f.append(idx0)
+        labels_f_por_no[dep0].append(idx0)
+        fronteira_f[(dep0, 0)].append(idx0)
+
+        while abertos_f:
+            idx_atual = abertos_f.popleft()
+            r = rot_f[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_i = r["no"]
+            tempo_i = r["tempo"]
+            carga_i = r["carga"]
+            custo_i = r["custo_mod"]
+            mask_i = r["mask"]
+            nvisit_i = r["nvisit"]
+
+            if usar_poda_profundidade and nvisit_i >= max_depth:
+                continue
+
+            candidatos = []
+            for j in range(1, nbcd + 1):
+                if (mask_i & cliente_mask(j)) == 0:
+                    candidatos.append(j)
+
+            viaveis = []
+            for j in candidatos:
+                if (no_i, j) in arcos_proibidos or (no_i, j, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][j] > 0:
+                    continue
+
+                bit = cliente_mask(j)
+                if (mask_i & bit) != 0:
+                    continue
+
+                nova_mask = mask_i | bit
+                nova_carga = carga_i + d[j]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                tempo_chegada = tempo_i + s[no_i] + travel_time(no_i, j)
+                if tempo_chegada < a[j]:
+                    tempo_chegada = a[j]
+                if tempo_chegada > b[j] + 1e-9:
+                    continue
+
+                viaveis.append((j, tempo_chegada, nova_carga, nova_mask))
+
+            viaveis.sort(key=lambda tpl: delta_rc(no_i, tpl[0]))
+
+            for (j, tempo_chegada, nova_carga, nova_mask) in viaveis:
+                custo_novo = custo_i + delta_rc(no_i, j)
+                chave = (j, nova_mask)
+                lista = fronteira_f.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(ro["custo_mod"], ro["tempo"], ro["carga"],
+                              custo_novo, tempo_chegada, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(custo_novo, tempo_chegada, nova_carga,
+                              ro["custo_mod"], ro["tempo"], ro["carga"]):
+                        rot_f[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_f)
+                rot_f.append({
+                    "no": j,
+                    "tempo": tempo_chegada,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_i + 1
+                })
+                abertos_f.append(idx_novo)
+                labels_f_por_no[j].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_f[chave] = nova_lista
+
+            if usar_poda_por_no:
+                lista_no = [idx for idx in labels_f_por_no[no_i] if rot_f[idx]["ativo"]]
+                if len(lista_no) > max_labels_por_no:
+                    lista_no.sort(key=lambda idx: (
+                        rot_f[idx]["custo_mod"],
+                        rot_f[idx]["tempo"],
+                        rot_f[idx]["carga"]
+                    ))
+                    manter = set(lista_no[:max_labels_por_no])
+                    for idx in lista_no[max_labels_por_no:]:
+                        rot_f[idx]["ativo"] = False
+                    labels_f_por_no[no_i] = [idx for idx in labels_f_por_no[no_i] if idx in manter]
+
+        # =========================
+        # GERAÇÃO BACKWARD
+        # =========================
+        rot_b = []
+        abertos_b = deque()
+        labels_b_por_no = defaultdict(list)
+        fronteira_b = defaultdict(list)
+
+        idx0b = 0
+        rot_b.append({
+            "no": depf,
+            "tempo_back": 0.0,
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+        abertos_b.append(idx0b)
+        labels_b_por_no[depf].append(idx0b)
+        fronteira_b[(depf, 0)].append(idx0b)
+
+        while abertos_b:
+            idx_atual = abertos_b.popleft()
+            r = rot_b[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_j = r["no"]
+            tempo_back_j = r["tempo_back"]
+            carga_j = r["carga"]
+            custo_j = r["custo_mod"]
+            mask_j = r["mask"]
+            nvisit_j = r["nvisit"]
+
+            if usar_poda_profundidade and nvisit_j >= max_depth:
+                continue
+
+            candidatos = []
+            for i in range(1, nbcd + 1):
+                if (mask_j & cliente_mask(i)) == 0:
+                    candidatos.append(i)
+
+            viaveis = []
+            for i in candidatos:
+                if (i, no_j) in arcos_proibidos or (i, no_j, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][i][no_j] > 0:
+                    continue
+
+                bit = cliente_mask(i)
+                if (mask_j & bit) != 0:
+                    continue
+
+                nova_mask = mask_j | bit
+                nova_carga = carga_j + d[i]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                novo_tempo_back = tempo_back_j + s[i] + travel_time(i, no_j)
+                custo_novo = custo_j + delta_rc(i, no_j)
+                viaveis.append((i, novo_tempo_back, nova_carga, nova_mask, custo_novo))
+
+            viaveis.sort(key=lambda tpl: tpl[4])
+
+            for (i, novo_tempo_back, nova_carga, nova_mask, custo_novo) in viaveis:
+                chave = (i, nova_mask)
+                lista = fronteira_b.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(ro["custo_mod"], ro["tempo_back"], ro["carga"],
+                              custo_novo, novo_tempo_back, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(custo_novo, novo_tempo_back, nova_carga,
+                              ro["custo_mod"], ro["tempo_back"], ro["carga"]):
+                        rot_b[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_b)
+                rot_b.append({
+                    "no": i,
+                    "tempo_back": novo_tempo_back,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_j + 1
+                })
+                abertos_b.append(idx_novo)
+                labels_b_por_no[i].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_b[chave] = nova_lista
+
+            if usar_poda_por_no:
+                lista_no = [idx for idx in labels_b_por_no[no_j] if rot_b[idx]["ativo"]]
+                if len(lista_no) > max_labels_por_no:
+                    lista_no.sort(key=lambda idx: (
+                        rot_b[idx]["custo_mod"],
+                        rot_b[idx]["tempo_back"],
+                        rot_b[idx]["carga"]
+                    ))
+                    manter = set(lista_no[:max_labels_por_no])
+                    for idx in lista_no[max_labels_por_no:]:
+                        rot_b[idx]["ativo"] = False
+                    labels_b_por_no[no_j] = [idx for idx in labels_b_por_no[no_j] if idx in manter]
+
+        # =========================
+        # COMBINAÇÃO
+        # =========================
+        melhor_coluna = None
+        melhor_rc = math.inf
+
+        nos_encontro = set(labels_f_por_no.keys()).intersection(set(labels_b_por_no.keys()))
+        nos_encontro = [m for m in nos_encontro if 1 <= m <= nbcd]
+
+        for m in nos_encontro:
+            lista_f = [idx for idx in labels_f_por_no[m] if rot_f[idx]["ativo"]]
+            lista_b = [idx for idx in labels_b_por_no[m] if rot_b[idx]["ativo"]]
+
+            for idx_f in lista_f:
+                rf = rot_f[idx_f]
+                rota_f = rota_forward(rot_f, idx_f)
+
+                for idx_b in lista_b:
+                    rb = rot_b[idx_b]
+                    rota_b = rota_backward(rot_b, idx_b)
+
+                    mask_f = rf["mask"]
+                    mask_b = rb["mask"]
+
+                    inter = mask_f & mask_b
+                    if inter != cliente_mask(m):
+                        continue
+
+                    rota_completa = rota_f[:-1] + rota_b
+
+                    coluna, rc = avaliar_rota(rota_completa)
+                    if coluna is None:
+                        continue
+
+                    if rc < melhor_rc:
+                        melhor_rc = rc
+                        melhor_coluna = coluna
+
+        # =========================
+        # FECHAMENTO DIRETO FORWARD
+        # =========================
+        for no_i, lista_idx in labels_f_por_no.items():
+            if no_i == depf:
+                continue
+
+            for idx in lista_idx:
+                r = rot_f[idx]
+                if not r["ativo"]:
+                    continue
+
+                if (no_i, depf) in arcos_proibidos or (no_i, depf, k) in arcos_proibidos:
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][depf] > 0:
+                    continue
+
+                rota_f = rota_forward(rot_f, idx)
+                rota = rota_f + [depf]
+                coluna, rc = avaliar_rota(rota)
+                if coluna is None:
+                    continue
+
+                if rc < melhor_rc:
+                    melhor_rc = rc
+                    melhor_coluna = coluna
+
+        if melhor_coluna is not None and melhor_rc < -eps:
+            return melhor_coluna, melhor_rc
+
+        return None, None
+
     def SUB_PROG_DIN_BIDIRECIONAL(self, inst, pi, sigma_k, k, NO_BP,
+                                  arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
+                                  max_labels_por_no=100,
+                                  max_depth=None,
+                                  eps=1e-6):
+        import math
+        from collections import deque, defaultdict
+
+        print(f"Subprob BIDIRECIONAL veículo {k}")
+
+        if arcos_proibidos is None:
+            arcos_proibidos = set()
+        if arcos_fixados is None:
+            arcos_fixados = set()
+        if mu_arc is None:
+            mu_arc = {}
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        if max_depth is None:
+            max_depth = math.ceil(nbcd / 2)
+
+        a, b, s, d = [], [], [], []
+        for i in range(nbn):
+            noh = inst.noh[i]
+            a.append(noh.READY_TIME[0] if hasattr(noh, "READY_TIME") and noh.READY_TIME else 0.0)
+            b.append(noh.DUE_DATE[0] if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else float("inf"))
+            s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
+            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+        tol = 1e-6
+
+        proibidos_k = set()
+        fixados_k = set()
+
+        for arc in arcos_proibidos:
+            if len(arc) == 2:
+                proibidos_k.add(arc)
+            elif len(arc) == 3 and arc[2] == k:
+                proibidos_k.add((arc[0], arc[1]))
+
+        for arc in arcos_fixados:
+            if len(arc) == 2:
+                fixados_k.add(arc)
+            elif len(arc) == 3 and arc[2] == k:
+                fixados_k.add((arc[0], arc[1]))
+
+        if hasattr(NO_BP, "arcos_proibidos"):
+            for (i, j, kk) in NO_BP.arcos_proibidos:
+                if kk == k:
+                    proibidos_k.add((i, j))
+
+        if hasattr(NO_BP, "arcos_fixados_em_1"):
+            for (i, j, kk) in NO_BP.arcos_fixados_em_1:
+                if kk == k:
+                    fixados_k.add((i, j))
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return None, None
+            if j in pred_fixo and pred_fixo[j] != i:
+                return None, None
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_proibido(i, j):
+            return (i, j) in proibidos_k
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def todos_fixados_na_rota(rota):
+            aset = {(rota[t], rota[t + 1]) for t in range(len(rota) - 1)}
+            for arc in fixados_k:
+                if arc not in aset:
+                    return False
+            return True
+
+        def travel_time(i, j):
+            return inst.matriz_distancia[i][j] / velocidade
+
+        def cliente_mask(c):
+            return 1 << (c - 1)
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def delta_rc(i, j):
+            val = travel_time(i, j) - mu(i, j)
+            if 1 <= j <= nbcd:
+                val -= float(pi[j - 1])
+            if j == depf:
+                val -= float(sigma_k)
+            return val
+
+        def domina(cA, tA, qA, cB, tB, qB):
+            return (
+                    cA <= cB + tol and
+                    tA <= tB + tol and
+                    qA <= qB + tol and
+                    (cA < cB - tol or tA < tB - tol or qA < qB - tol)
+            )
+
+        def rota_forward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            seq.reverse()
+            return seq
+
+        def rota_backward(rotulos, idx):
+            seq = []
+            while idx is not None:
+                seq.append(rotulos[idx]["no"])
+                idx = rotulos[idx]["pai"]
+            return seq
+
+        def avaliar_rota(rota):
+            if not rota:
+                return None, None
+
+            if rota[0] != dep0 or rota[-1] != depf:
+                return None, None
+
+            visitados = set()
+            tempo = max(a[dep0], 0.0)
+            carga = 0.0
+            custo_real = 0.0
+            custo_red = 0.0
+
+            for t_idx in range(len(rota) - 1):
+                i = rota[t_idx]
+                j = rota[t_idx + 1]
+
+                if i == j:
+                    return None, None
+
+                if not arco_permitido(i, j):
+                    return None, None
+
+                if NO_BP.tabu_until[k][i][j] > 0:
+                    return None, None
+
+                tempo = tempo + s[i] + travel_time(i, j)
+                if tempo < a[j]:
+                    tempo = a[j]
+                if tempo > b[j] + 1e-9:
+                    return None, None
+
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return None, None
+                    visitados.add(j)
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return None, None
+
+                custo_real += travel_time(i, j)
+                custo_red += delta_rc(i, j)
+
+            if len(visitados) == 0:
+                return None, None
+
+            if len(fixados_k) > 0 and not todos_fixados_na_rota(rota):
+                return None, None
+
+            bin_xij = [0 for _ in range(nbcd)]
+            for v in visitados:
+                bin_xij[v - 1] = 1
+
+            return {"clientes": rota, "custo": custo_real, "bin_xij": bin_xij}, custo_red
+
+        # =========================
+        # GERAÇÃO FORWARD
+        # =========================
+        rot_f = []
+        abertos_f = deque()
+        labels_f_por_no = defaultdict(list)
+        fronteira_f = defaultdict(list)
+
+        idx0 = 0
+        rot_f.append({
+            "no": dep0,
+            "tempo": max(a[dep0], 0.0),
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+
+        abertos_f.append(idx0)
+        labels_f_por_no[dep0].append(idx0)
+        fronteira_f[(dep0, 0)].append(idx0)
+
+        while abertos_f:
+            idx_atual = abertos_f.popleft()
+            r = rot_f[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_i = r["no"]
+            tempo_i = r["tempo"]
+            carga_i = r["carga"]
+            custo_i = r["custo_mod"]
+            mask_i = r["mask"]
+            nvisit_i = r["nvisit"]
+
+            if nvisit_i >= max_depth:
+                continue
+
+            candidatos = []
+            for j in range(1, nbcd + 1):
+                if (mask_i & cliente_mask(j)) == 0:
+                    candidatos.append(j)
+
+            viaveis = []
+            for j in candidatos:
+                if arco_proibido(no_i, j):
+                    continue
+
+                if not arco_permitido(no_i, j):
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][j] > 0:
+                    continue
+
+                bit = cliente_mask(j)
+                if (mask_i & bit) != 0:
+                    continue
+
+                nova_mask = mask_i | bit
+                nova_carga = carga_i + d[j]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                tempo_chegada = tempo_i + s[no_i] + travel_time(no_i, j)
+                if tempo_chegada < a[j]:
+                    tempo_chegada = a[j]
+                if tempo_chegada > b[j] + 1e-9:
+                    continue
+
+                viaveis.append((j, tempo_chegada, nova_carga, nova_mask))
+
+            viaveis.sort(key=lambda tpl: delta_rc(no_i, tpl[0]))
+
+            for (j, tempo_chegada, nova_carga, nova_mask) in viaveis:
+                custo_novo = custo_i + delta_rc(no_i, j)
+                chave = (j, nova_mask)
+                lista = fronteira_f.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(ro["custo_mod"], ro["tempo"], ro["carga"],
+                              custo_novo, tempo_chegada, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_f[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(custo_novo, tempo_chegada, nova_carga,
+                              ro["custo_mod"], ro["tempo"], ro["carga"]):
+                        rot_f[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_f)
+                rot_f.append({
+                    "no": j,
+                    "tempo": tempo_chegada,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_i + 1
+                })
+                abertos_f.append(idx_novo)
+                labels_f_por_no[j].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_f[chave] = nova_lista
+
+            lista_no = [idx for idx in labels_f_por_no[no_i] if rot_f[idx]["ativo"]]
+            if len(lista_no) > max_labels_por_no:
+                lista_no.sort(key=lambda idx: (rot_f[idx]["custo_mod"], rot_f[idx]["tempo"], rot_f[idx]["carga"]))
+                manter = set(lista_no[:max_labels_por_no])
+                for idx in lista_no[max_labels_por_no:]:
+                    rot_f[idx]["ativo"] = False
+                labels_f_por_no[no_i] = [idx for idx in labels_f_por_no[no_i] if idx in manter]
+
+        # =========================
+        # GERAÇÃO BACKWARD
+        # =========================
+        rot_b = []
+        abertos_b = deque()
+        labels_b_por_no = defaultdict(list)
+        fronteira_b = defaultdict(list)
+
+        idx0b = 0
+        rot_b.append({
+            "no": depf,
+            "tempo_back": 0.0,
+            "carga": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True,
+            "nvisit": 0
+        })
+        abertos_b.append(idx0b)
+        labels_b_por_no[depf].append(idx0b)
+        fronteira_b[(depf, 0)].append(idx0b)
+
+        while abertos_b:
+            idx_atual = abertos_b.popleft()
+            r = rot_b[idx_atual]
+
+            if not r["ativo"]:
+                continue
+
+            no_j = r["no"]
+            tempo_back_j = r["tempo_back"]
+            carga_j = r["carga"]
+            custo_j = r["custo_mod"]
+            mask_j = r["mask"]
+            nvisit_j = r["nvisit"]
+
+            if nvisit_j >= max_depth:
+                continue
+
+            candidatos = []
+            for i in range(1, nbcd + 1):
+                if (mask_j & cliente_mask(i)) == 0:
+                    candidatos.append(i)
+
+            viaveis = []
+            for i in candidatos:
+                if arco_proibido(i, no_j):
+                    continue
+
+                if not arco_permitido(i, no_j):
+                    continue
+
+                if NO_BP.tabu_until[k][i][no_j] > 0:
+                    continue
+
+                bit = cliente_mask(i)
+                if (mask_j & bit) != 0:
+                    continue
+
+                nova_mask = mask_j | bit
+                nova_carga = carga_j + d[i]
+                if nova_carga > cap_k + 1e-9:
+                    continue
+
+                novo_tempo_back = tempo_back_j + s[i] + travel_time(i, no_j)
+                custo_novo = custo_j + delta_rc(i, no_j)
+                viaveis.append((i, novo_tempo_back, nova_carga, nova_mask, custo_novo))
+
+            viaveis.sort(key=lambda tpl: tpl[4])
+
+            for (i, novo_tempo_back, nova_carga, nova_mask, custo_novo) in viaveis:
+                chave = (i, nova_mask)
+                lista = fronteira_b.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(ro["custo_mod"], ro["tempo_back"], ro["carga"],
+                              custo_novo, novo_tempo_back, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    ro = rot_b[idx_old]
+                    if not ro["ativo"]:
+                        continue
+                    if domina(custo_novo, novo_tempo_back, nova_carga,
+                              ro["custo_mod"], ro["tempo_back"], ro["carga"]):
+                        rot_b[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                idx_novo = len(rot_b)
+                rot_b.append({
+                    "no": i,
+                    "tempo_back": novo_tempo_back,
+                    "carga": nova_carga,
+                    "custo_mod": custo_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True,
+                    "nvisit": nvisit_j + 1
+                })
+                abertos_b.append(idx_novo)
+                labels_b_por_no[i].append(idx_novo)
+                nova_lista.append(idx_novo)
+                fronteira_b[chave] = nova_lista
+
+            lista_no = [idx for idx in labels_b_por_no[no_j] if rot_b[idx]["ativo"]]
+            if len(lista_no) > max_labels_por_no:
+                lista_no.sort(key=lambda idx: (rot_b[idx]["custo_mod"], rot_b[idx]["tempo_back"], rot_b[idx]["carga"]))
+                manter = set(lista_no[:max_labels_por_no])
+                for idx in lista_no[max_labels_por_no:]:
+                    rot_b[idx]["ativo"] = False
+                labels_b_por_no[no_j] = [idx for idx in labels_b_por_no[no_j] if idx in manter]
+
+        # =========================
+        # COMBINAÇÃO
+        # =========================
+        melhor_coluna = None
+        melhor_rc = math.inf
+
+        nos_encontro = set(labels_f_por_no.keys()).intersection(set(labels_b_por_no.keys()))
+        nos_encontro = [m for m in nos_encontro if 1 <= m <= nbcd]
+
+        for m in nos_encontro:
+            lista_f = [idx for idx in labels_f_por_no[m] if rot_f[idx]["ativo"]]
+            lista_b = [idx for idx in labels_b_por_no[m] if rot_b[idx]["ativo"]]
+
+            for idx_f in lista_f:
+                rf = rot_f[idx_f]
+                rota_f = rota_forward(rot_f, idx_f)
+
+                for idx_b in lista_b:
+                    rb = rot_b[idx_b]
+                    rota_b = rota_backward(rot_b, idx_b)
+
+                    mask_f = rf["mask"]
+                    mask_b = rb["mask"]
+
+                    inter = mask_f & mask_b
+                    if inter != cliente_mask(m):
+                        continue
+
+                    rota_completa = rota_f[:-1] + rota_b
+
+                    coluna, rc = avaliar_rota(rota_completa)
+                    if coluna is None:
+                        continue
+
+                    if rc < melhor_rc:
+                        melhor_rc = rc
+                        melhor_coluna = coluna
+
+        # =========================
+        # FECHAMENTO DIRETO FORWARD
+        # =========================
+        for no_i, lista_idx in labels_f_por_no.items():
+            if no_i == depf:
+                continue
+
+            for idx in lista_idx:
+                r = rot_f[idx]
+                if not r["ativo"]:
+                    continue
+
+                if arco_proibido(no_i, depf):
+                    continue
+
+                if not arco_permitido(no_i, depf):
+                    continue
+
+                if NO_BP.tabu_until[k][no_i][depf] > 0:
+                    continue
+
+                rota_f = rota_forward(rot_f, idx)
+                rota = rota_f + [depf]
+                coluna, rc = avaliar_rota(rota)
+                if coluna is None:
+                    continue
+
+                if rc < melhor_rc:
+                    melhor_rc = rc
+                    melhor_coluna = coluna
+
+        if melhor_coluna is not None and melhor_rc < -eps:
+            return melhor_coluna, melhor_rc
+
+        return None, None
+
+    def SUB_PROG_DIN_BIDIRECIONALSemFixos(self, inst, pi, sigma_k, k, NO_BP,
                                   arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
                                   max_labels_por_no=100,
                                   max_depth=None,
@@ -1272,6 +2709,8 @@ class Metodos:
             "ativo": True,
             "nvisit": 0
         })
+        """
+        """
         abertos_f.append(idx0)
         labels_f_por_no[dep0].append(idx0)
         fronteira_f[(dep0, 0)].append(idx0)
@@ -1595,6 +3034,346 @@ class Metodos:
         cap_k = inst.veiculos[k].capacidade
         vel = inst.veiculos[k].velocidade
 
+        proibidos_k = {(i, j) for (i, j, kk) in NO_BP.arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in NO_BP.arcos_fixados_em_1 if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return None, None
+            if j in pred_fixo and pred_fixo[j] != i:
+                return None, None
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def travel(i, j):
+            return inst.matriz_distancia[i][j] / vel
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return mu_arc[(i, j, k)]
+            return mu_arc.get((i, j), 0.0)
+
+        def delta_rc(i, j):
+            rc = travel(i, j) - mu(i, j)
+
+            if 1 <= j <= nbcd:
+                rc -= pi[j - 1]
+
+            if j == depf:
+                rc -= sigma_k
+
+            return rc
+
+        def rota_para_binaria(rota):
+            bin_x = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_x[v - 1] = 1
+            return bin_x
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def arcos_da_rota(rota):
+            return [(rota[t], rota[t + 1]) for t in range(len(rota) - 1)]
+
+        def custo_real_rota(rota):
+            return sum(travel(rota[t], rota[t + 1]) for t in range(len(rota) - 1))
+
+        def custo_reduzido_rota(rota):
+            return sum(delta_rc(rota[t], rota[t + 1]) for t in range(len(rota) - 1))
+
+        def checa_fixados_na_rota(rota):
+            aset = set(arcos_da_rota(rota))
+            for arc in fixados_k:
+                if arc not in aset:
+                    return False
+            return True
+
+        def prefixo_estado(rota):
+            """
+            Retorna:
+              tempos_saida[pos]: instante de saída do nó rota[pos]
+              cargas[pos]: carga acumulada ao sair de rota[pos]
+              visitados_clientes
+            """
+            tempos_saida = [0.0] * len(rota)
+            cargas = [0.0] * len(rota)
+            visitados = set()
+
+            # depósito inicial
+            tempos_saida[0] = 0.0
+            cargas[0] = 0.0
+
+            for pos in range(1, len(rota)):
+                i = rota[pos - 1]
+                j = rota[pos]
+
+                if not arco_permitido(i, j):
+                    return None
+
+                chegada = tempos_saida[pos - 1] + travel(i, j)
+
+                if 1 <= j <= nbcd:
+                    if j in visitados:
+                        return None
+                    visitados.add(j)
+
+                    carga = cargas[pos - 1] + inst.noh[j].DEMAND
+                    if carga > cap_k:
+                        return None
+                    cargas[pos] = carga
+
+                    a = inst.noh[j].READY_TIME[0]
+                    b = inst.noh[j].DUE_DATE[0]
+                    s = inst.noh[j].SERVICE_TIME[0]
+
+                    if chegada < a:
+                        chegada = a
+                    if chegada > b:
+                        return None
+
+                    tempos_saida[pos] = chegada + s
+                else:
+                    cargas[pos] = cargas[pos - 1]
+                    tempos_saida[pos] = chegada
+
+            return tempos_saida, cargas, visitados
+
+        def avalia_insercao(rota, tempos_saida, cargas, visitados, cliente, pos):
+            """
+            Testa inserir 'cliente' na posição pos.
+            Recalcula só a partir de pos-1.
+            Retorna:
+                (ok, nova_rota, novos_tempos, novas_cargas, delta)
+            """
+            if cliente in visitados:
+                return False, None, None, None, None
+
+            i = rota[pos - 1]
+            j = rota[pos]
+
+            # não pode quebrar arco fixado existente
+            if (i, j) in fixados_k:
+                return False, None, None, None, None
+
+            # novos arcos devem ser permitidos
+            if not arco_permitido(i, cliente):
+                return False, None, None, None, None
+            if not arco_permitido(cliente, j):
+                return False, None, None, None, None
+
+            delta = delta_rc(i, cliente) + delta_rc(cliente, j) - delta_rc(i, j)
+
+            nova_rota = rota[:pos] + [cliente] + rota[pos:]
+
+            # recálculo incremental a partir de pos
+            novos_tempos = tempos_saida[:pos]
+            novas_cargas = cargas[:pos]
+            novos_visit = set(v for v in visitados)
+
+            prev_saida = tempos_saida[pos - 1]
+            prev_carga = cargas[pos - 1]
+
+            chegada = prev_saida + travel(i, cliente)
+
+            if cliente in novos_visit:
+                return False, None, None, None, None
+            novos_visit.add(cliente)
+
+            carga_cli = prev_carga + inst.noh[cliente].DEMAND
+            if carga_cli > cap_k:
+                return False, None, None, None, None
+
+            a = inst.noh[cliente].READY_TIME[0]
+            b = inst.noh[cliente].DUE_DATE[0]
+            s = inst.noh[cliente].SERVICE_TIME[0]
+
+            if chegada < a:
+                chegada = a
+            if chegada > b:
+                return False, None, None, None, None
+
+            saida = chegada + s
+            novos_tempos.append(saida)
+            novas_cargas.append(carga_cli)
+
+            for idx in range(pos + 1, len(nova_rota)):
+                u = nova_rota[idx - 1]
+                v = nova_rota[idx]
+
+                if not arco_permitido(u, v):
+                    return False, None, None, None, None
+
+                chegada_v = novos_tempos[idx - 1] + travel(u, v)
+
+                if 1 <= v <= nbcd:
+                    carga_v = novas_cargas[idx - 1] + inst.noh[v].DEMAND
+                    a_v = inst.noh[v].READY_TIME[0]
+                    b_v = inst.noh[v].DUE_DATE[0]
+                    s_v = inst.noh[v].SERVICE_TIME[0]
+
+                    if chegada_v < a_v:
+                        chegada_v = a_v
+                    if chegada_v > b_v:
+                        return False, None, None, None, None
+                    if carga_v > cap_k:
+                        return False, None, None, None, None
+
+                    novos_tempos.append(chegada_v + s_v)
+                    novas_cargas.append(carga_v)
+                else:
+                    novos_tempos.append(chegada_v)
+                    novas_cargas.append(novas_cargas[idx - 1])
+
+            return True, nova_rota, novos_tempos, novas_cargas, delta
+
+        def constrói_rota_base():
+            """
+            Tenta criar uma base coerente com os arcos fixos.
+            """
+            rota = [dep0]
+            usados = {dep0}
+            atual = dep0
+
+            while atual in succ_fixo:
+                prox = succ_fixo[atual]
+                if prox in usados:
+                    return None
+                rota.append(prox)
+                usados.add(prox)
+                atual = prox
+                if atual == depf:
+                    break
+
+            if rota[-1] != depf:
+                if depf in pred_fixo and pred_fixo[depf] != rota[-1]:
+                    return None
+                rota.append(depf)
+
+            # se há fixados desconectados da cadeia iniciada em 0, esta heurística não costura ainda
+            if not checa_fixados_na_rota(rota) and len(fixados_k) > 0:
+                return None
+
+            estado = prefixo_estado(rota)
+            if estado is None:
+                return None
+
+            return rota, estado[0], estado[1], estado[2]
+
+        melhor_rota = None
+        melhor_rc = math.inf
+        melhor_custo = None
+
+        base = constrói_rota_base()
+        if base is None:
+            # fallback: rota vazia só se não houver fixados
+            if len(fixados_k) > 0:
+                return None, None
+            rota0 = [dep0, depf]
+            estado0 = prefixo_estado(rota0)
+            if estado0 is None:
+                return None, None
+            base = (rota0, estado0[0], estado0[1], estado0[2])
+
+        for _ in range(n_starts):
+            rota = base[0][:]
+            tempos_saida = base[1][:]
+            cargas = base[2][:]
+            visitados = set(base[3])
+
+            rc_total = custo_reduzido_rota(rota)
+
+            while True:
+                insercoes = []
+
+                for cliente in range(1, nbcd + 1):
+                    if cliente in visitados:
+                        continue
+
+                    # predecessor fixo ainda não está na rota
+                    if cliente in pred_fixo and pred_fixo[cliente] not in rota:
+                        continue
+
+                    # sucessor fixo já está na rota, mas cliente ainda não
+                    # a inserção só será aceita pelo teste local se estiver consistente
+
+                    best_delta = math.inf
+                    best_move = None
+
+                    for pos in range(1, len(rota)):
+                        ok, nova_rota, novos_tempos, novas_cargas, delta = avalia_insercao(
+                            rota, tempos_saida, cargas, visitados, cliente, pos
+                        )
+
+                        if not ok:
+                            continue
+
+                        if delta < best_delta:
+                            best_delta = delta
+                            best_move = (pos, nova_rota, novos_tempos, novas_cargas, delta)
+
+                    if best_move is not None:
+                        insercoes.append((cliente, best_delta, best_move))
+
+                if not insercoes:
+                    break
+
+                insercoes.sort(key=lambda x: x[1])
+
+                rcl_size = max(1, int(len(insercoes) * alpha))
+                cliente, _, move = random.choice(insercoes[:rcl_size])
+
+                pos, rota, tempos_saida, cargas, delta = move
+                visitados.add(cliente)
+                rc_total += delta
+
+            if len(rota) >= 3:
+                if len(fixados_k) > 0 and not checa_fixados_na_rota(rota):
+                    continue
+
+                custo_real = custo_real_rota(rota)
+
+                if rc_total < melhor_rc:
+                    melhor_rc = rc_total
+                    melhor_rota = rota[:]
+                    melhor_custo = custo_real
+
+                if melhor_rota is not None and melhor_rc < -eps:
+                    return {
+                        "clientes": melhor_rota,
+                        "custo": melhor_custo,
+                        "bin_xij": rota_para_binaria(melhor_rota)
+                    }, melhor_rc
+
+        return None, None
+
+    def SUB_HEUR_VNSSemProibidos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                     n_starts=40, alpha=0.3, eps=1e-6):
+
+        import random
+        import math
+
+        if mu_arc is None:
+            mu_arc = {}
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        cap_k = inst.veiculos[k].capacidade
+        vel = inst.veiculos[k].velocidade
+
         def travel(i, j):
             return inst.matriz_distancia[i][j] / vel
 
@@ -1748,6 +3527,362 @@ class Metodos:
         return None, None
 
     def SUB_HEUR_ALLBESTINSERTION(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                                  n_starts=30, eps=1e-6):
+        import math
+        import random
+
+        if mu_arc is None:
+            mu_arc = {}
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        # =========================================================
+        # ARCOS FIXOS / PROIBIDOS DO NÓ BP
+        # =========================================================
+        proibidos_k = {(i, j) for (i, j, kk) in NO_BP.arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in NO_BP.arcos_fixados_em_1 if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return None, None
+            if j in pred_fixo and pred_fixo[j] != i:
+                return None, None
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def arcos_da_rota(rota):
+            return [(rota[t], rota[t + 1]) for t in range(len(rota) - 1)]
+
+        def contem_todos_fixados(rota):
+            aset = set(arcos_da_rota(rota))
+            for arc in fixados_k:
+                if arc not in aset:
+                    return False
+            return True
+
+        # =========================================================
+        # DADOS DOS NÓS: múltiplas janelas por nó
+        # =========================================================
+        janelas = []
+        d = []
+
+        for i in range(nbn):
+            noh = inst.noh[i]
+
+            if (hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE")
+                    and noh.READY_TIME and noh.DUE_DATE):
+
+                servs = noh.SERVICE_TIME if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else [0.0] * len(
+                    noh.READY_TIME)
+
+                lista_janelas = []
+                for r in range(len(noh.READY_TIME)):
+                    ai = float(noh.READY_TIME[r])
+                    bi = float(noh.DUE_DATE[r])
+                    si = float(servs[r]) if r < len(servs) else float(servs[0])
+                    lista_janelas.append((ai, bi, si))
+            else:
+                lista_janelas = [(0.0, float("inf"), 0.0)]
+
+            lista_janelas.sort(key=lambda x: x[0])
+
+            janelas.append(lista_janelas)
+            d.append(float(noh.DEMAND) if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+
+        def travel_time(i, j):
+            return float(inst.matriz_distancia[i][j]) / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def rota_para_binaria(rota):
+            bin_xij = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_xij[v - 1] = 1
+            return bin_xij
+
+        def custo_reduzido_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                i = rota_av[t]
+                j = rota_av[t + 1]
+
+                rc = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                val += rc
+            return val
+
+        def custo_real_rota(rota_av):
+            val = 0.0
+            for t in range(len(rota_av) - 1):
+                val += travel_time(rota_av[t], rota_av[t + 1])
+            return val
+
+        def verifica_viabilidade(rota_av):
+            """
+            Retorna:
+                (True, janelas_escolhidas, tempo_final, carga_final)
+            ou
+                (False, None, None, None)
+            """
+            if not rota_av or rota_av[0] != dep0 or rota_av[-1] != depf:
+                return False, None, None, None
+
+            # todos os arcos da rota precisam ser permitidos
+            for (i, j) in arcos_da_rota(rota_av):
+                if not arco_permitido(i, j):
+                    return False, None, None, None
+
+            visitados_local = set()
+            carga = 0.0
+
+            a0, b0, s0 = janelas[dep0][0]
+            inicio0 = max(0.0, a0)
+            if inicio0 > b0 + 1e-9:
+                return False, None, None, None
+
+            tempo = inicio0 + s0
+            janelas_escolhidas = [0]
+
+            for pos in range(1, len(rota_av)):
+                i = rota_av[pos - 1]
+                j = rota_av[pos]
+
+                if 1 <= j <= nbcd:
+                    if j in visitados_local:
+                        return False, None, None, None
+                    visitados_local.add(j)
+
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return False, None, None, None
+
+                chegada_j = tempo + travel_time(i, j)
+
+                achou = False
+                for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                    inicio_servico_j = max(chegada_j, aj)
+                    fim_servico_j = inicio_servico_j + sj
+
+                    if inicio_servico_j <= bj + 1e-9:
+                        tempo = fim_servico_j
+                        janelas_escolhidas.append(idx_janela)
+                        achou = True
+                        break
+
+                if not achou:
+                    return False, None, None, None
+
+            return True, janelas_escolhidas, tempo, carga
+
+        def constroi_rota_base():
+            """
+            Tenta iniciar a rota já com a cadeia fixa a partir do depósito.
+            """
+            rota = [dep0]
+            usados = {dep0}
+            atual = dep0
+
+            while atual in succ_fixo:
+                prox = succ_fixo[atual]
+
+                if prox in usados:
+                    return None
+
+                rota.append(prox)
+                usados.add(prox)
+                atual = prox
+
+                if atual == depf:
+                    break
+
+            if rota[-1] != depf:
+                if depf in pred_fixo and pred_fixo[depf] != rota[-1]:
+                    return None
+                rota.append(depf)
+
+            viavel, janelas_escolhidas, tempo_final, carga_final = verifica_viabilidade(rota)
+            if not viavel:
+                return None
+
+            return rota, set(rota), janelas_escolhidas, tempo_final, carga_final
+
+        def melhores_insercoes(rota_atual, visitados, rc_atual):
+            """
+            Gera todas as inserções viáveis em todas as posições.
+            Retorna lista ordenada por delta de custo reduzido.
+            """
+            insercoes = []
+
+            for cliente in range(1, nbcd + 1):
+                if cliente in visitados:
+                    continue
+
+                # se cliente tem predecessor fixo, esse predecessor precisa já estar na rota
+                if cliente in pred_fixo and pred_fixo[cliente] not in rota_atual:
+                    continue
+
+                for pos in range(1, len(rota_atual)):  # insere antes de pos
+                    i = rota_atual[pos - 1]
+                    j = rota_atual[pos]
+
+                    # não pode quebrar um arco fixado existente
+                    if (i, j) in fixados_k:
+                        continue
+
+                    # novos arcos devem ser permitidos
+                    if not arco_permitido(i, cliente):
+                        continue
+                    if not arco_permitido(cliente, j):
+                        continue
+
+                    nova_rota = rota_atual[:pos] + [cliente] + rota_atual[pos:]
+
+                    viavel, janelas_novas, tempo_final, carga_final = verifica_viabilidade(nova_rota)
+                    if not viavel:
+                        continue
+
+                    rc_nova = custo_reduzido_rota(nova_rota)
+                    custo_real_novo = custo_real_rota(nova_rota)
+                    delta_rc = rc_nova - rc_atual
+
+                    score = delta_rc + 0.01 * tempo_final
+
+                    insercoes.append((
+                        cliente,  # 0
+                        pos,  # 1
+                        nova_rota,  # 2
+                        delta_rc,  # 3
+                        rc_nova,  # 4
+                        custo_real_novo,  # 5
+                        janelas_novas,  # 6
+                        tempo_final,  # 7
+                        carga_final,  # 8
+                        score  # 9
+                    ))
+
+            insercoes.sort(key=lambda x: (x[3], x[9], x[4]))
+            return insercoes
+
+        melhor_rota = None
+        melhor_custo_red = math.inf
+        melhor_custo_real = None
+
+        base = constroi_rota_base()
+
+        if base is None:
+            if len(fixados_k) > 0:
+                return None, None
+
+            rota0 = [dep0, depf]
+            viavel_ini, janelas_escolhidas0, tempo_final0, carga_final0 = verifica_viabilidade(rota0)
+            if not viavel_ini:
+                return None, None
+
+            base = (rota0, {dep0, depf}, janelas_escolhidas0, tempo_final0, carga_final0)
+
+        for ii in range(n_starts):
+
+            rota = base[0][:]
+            visitados = set(base[1])
+            janelas_escolhidas = list(base[2])
+            tempo_final = base[3]
+            carga_final = base[4]
+
+            custo_red_total = custo_reduzido_rota(rota)
+            custo_real_total = custo_real_rota(rota)
+
+            while True:
+                insercoes = melhores_insercoes(rota, visitados, custo_red_total)
+
+                if not insercoes:
+                    break
+
+                melhor_delta = insercoes[0][3]
+                pior_delta = insercoes[-1][3]
+
+                alpha_rcl = random.uniform(0.15, 0.40)
+                limite = melhor_delta + alpha_rcl * (pior_delta - melhor_delta)
+
+                rcl = [ins for ins in insercoes if ins[3] <= limite]
+                if not rcl:
+                    rcl = insercoes[:1]
+
+                cliente, pos, rota_nova, delta_rc, rc_nova, custo_real_novo, janelas_novas, tempo_novo, carga_nova, score = random.choice(
+                    rcl)
+
+                if delta_rc > 1e-6 and custo_red_total > 1e-6:
+                    break
+
+                rota = rota_nova
+                visitados.add(cliente)
+                janelas_escolhidas = janelas_novas
+                tempo_final = tempo_novo
+                carga_final = carga_nova
+                custo_red_total = rc_nova
+                custo_real_total = custo_real_novo
+
+                if len(visitados) >= nbcd + 2:
+                    break
+
+            if len(rota) >= 3:
+                if len(fixados_k) > 0 and not contem_todos_fixados(rota):
+                    continue
+
+                rota_melhorada, custo_red_melhorado, custo_real_melhorado, janelas_melhoradas = self.busca_local_rota(
+                    rota, inst, pi, sigma_k, k, mu_arc, janelas, d
+                )
+
+                if rota_melhorada is not None:
+                    # garante que a BL não destruiu os fixos / proibidos
+                    viavel_bl, _, _, _ = verifica_viabilidade(rota_melhorada)
+                    if not viavel_bl:
+                        rota_melhorada = None
+                    elif len(fixados_k) > 0 and not contem_todos_fixados(rota_melhorada):
+                        rota_melhorada = None
+
+                if rota_melhorada is not None and custo_red_melhorado < melhor_custo_red:
+                    melhor_rota = rota_melhorada[:]
+                    melhor_custo_red = custo_red_melhorado
+                    melhor_custo_real = custo_real_melhorado
+
+                if melhor_rota is not None and melhor_custo_red < -eps:
+                    return {
+                        "clientes": melhor_rota,
+                        "custo": melhor_custo_real,
+                        "bin_xij": rota_para_binaria(melhor_rota)
+                    }, melhor_custo_red
+
+        return None, None
+
+    def SUB_HEUR_ALLBESTINSERTIONsemfixos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
                                   n_starts=30, eps=1e-6):
         import math
         import random
@@ -2016,6 +4151,449 @@ class Metodos:
         return None, None
 
     def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+                      n_starts=30, eps=1e-6):
+        import math
+        import random
+
+        if mu_arc is None:
+            mu_arc = {}
+
+        print(f"Subprob VNS RANDOM veículo {k}")
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        proibidos_k = {(i, j) for (i, j, kk) in NO_BP.arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in NO_BP.arcos_fixados_em_1 if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return None, None
+            if j in pred_fixo and pred_fixo[j] != i:
+                return None, None
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def arcos_da_rota(rota):
+            return [(rota[t], rota[t + 1]) for t in range(len(rota) - 1)]
+
+        def contem_todos_fixados(rota):
+            aset = set(arcos_da_rota(rota))
+            for arc in fixados_k:
+                if arc not in aset:
+                    return False
+            return True
+
+        # =========================================================
+        # DADOS DOS NÓS: múltiplas janelas por nó
+        # =========================================================
+        janelas = []
+        d = []
+
+        for i in range(nbn):
+            noh = inst.noh[i]
+
+            if (hasattr(noh, "READY_TIME") and hasattr(noh, "DUE_DATE")
+                    and noh.READY_TIME and noh.DUE_DATE):
+
+                servs = noh.SERVICE_TIME if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else [0.0] * len(
+                    noh.READY_TIME)
+
+                lista_janelas = []
+                for r in range(len(noh.READY_TIME)):
+                    ai = float(noh.READY_TIME[r])
+                    bi = float(noh.DUE_DATE[r])
+                    si = float(servs[r]) if r < len(servs) else float(servs[0])
+                    lista_janelas.append((ai, bi, si))
+            else:
+                lista_janelas = [(0.0, float("inf"), 0.0)]
+
+            lista_janelas.sort(key=lambda x: x[0])
+
+            janelas.append(lista_janelas)
+            d.append(float(noh.DEMAND) if hasattr(noh, "DEMAND") else 0.0)
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        velocidade = float(inst.veiculos[k].velocidade)
+
+        def travel_time(i, j):
+            return float(inst.matriz_distancia[i][j]) / velocidade
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def rota_para_binaria(rota):
+            bin_xij = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_xij[v - 1] = 1
+            return bin_xij
+
+        def custo_real_rota(rota):
+            val = 0.0
+            for t in range(len(rota) - 1):
+                val += travel_time(rota[t], rota[t + 1])
+            return val
+
+        def custo_reduzido_rota(rota):
+            val = 0.0
+            for t in range(len(rota) - 1):
+                i = rota[t]
+                j = rota[t + 1]
+
+                rc = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    rc -= float(pi[j - 1])
+
+                if j == depf:
+                    rc -= float(sigma_k)
+
+                val += rc
+            return val
+
+        def escolhe_janela_viavel(no_i, tempo_fim_i, j):
+            chegada_j = tempo_fim_i + travel_time(no_i, j)
+
+            melhor = None
+            for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                inicio_servico_j = max(chegada_j, aj)
+                fim_servico_j = inicio_servico_j + sj
+
+                if inicio_servico_j <= bj + 1e-9:
+                    melhor = (inicio_servico_j, fim_servico_j, idx_janela)
+                    break
+
+            return melhor
+
+        def score_candidato(no_i, j, delta_rc, tempo_atual, nova_carga):
+            melhor_janela = escolhe_janela_viavel(no_i, tempo_atual, j)
+            if melhor_janela is None:
+                return math.inf
+
+            inicio_servico_j, fim_servico_j, idx_janela = melhor_janela
+
+            rc_fecho = travel_time(j, depf) - mu(j, depf) - float(sigma_k)
+
+            aj, bj, sj = janelas[j][idx_janela]
+            folga = bj - inicio_servico_j
+            ocup = nova_carga / max(cap_k, 1.0)
+
+            score = (
+                    1.0 * delta_rc +
+                    0.25 * rc_fecho +
+                    0.02 * fim_servico_j +
+                    2.0 * ocup -
+                    0.01 * folga
+            )
+
+            return score
+
+        def verifica_rota(rota):
+            if not rota or rota[0] != dep0 or rota[-1] != depf:
+                return False, None, None, None
+
+            for (i, j) in arcos_da_rota(rota):
+                if not arco_permitido(i, j):
+                    return False, None, None, None
+                if NO_BP.tabu_until[k][i][j] > 0:
+                    return False, None, None, None
+
+            visitados_local = set()
+            carga = 0.0
+
+            a0, b0, s0 = janelas[dep0][0]
+            inicio0 = max(0.0, a0)
+            if inicio0 > b0 + 1e-9:
+                return False, None, None, None
+
+            tempo = inicio0 + s0
+            janelas_escolhidas = [0]
+
+            for pos in range(1, len(rota)):
+                i = rota[pos - 1]
+                j = rota[pos]
+
+                if 1 <= j <= nbcd:
+                    if j in visitados_local:
+                        return False, None, None, None
+                    visitados_local.add(j)
+
+                    carga += d[j]
+                    if carga > cap_k + 1e-9:
+                        return False, None, None, None
+
+                chegada_j = tempo + travel_time(i, j)
+
+                achou = False
+                for idx_janela, (aj, bj, sj) in enumerate(janelas[j]):
+                    inicio_servico_j = max(chegada_j, aj)
+                    fim_servico_j = inicio_servico_j + sj
+
+                    if inicio_servico_j <= bj + 1e-9:
+                        tempo = fim_servico_j
+                        janelas_escolhidas.append(idx_janela)
+                        achou = True
+                        break
+
+                if not achou:
+                    return False, None, None, None
+
+            if len(fixados_k) > 0 and not contem_todos_fixados(rota):
+                return False, None, None, None
+
+            return True, janelas_escolhidas, tempo, carga
+
+        def constroi_rota_base():
+            rota = [dep0]
+            usados = {dep0}
+            atual = dep0
+
+            while atual in succ_fixo:
+                prox = succ_fixo[atual]
+
+                if prox in usados:
+                    return None
+
+                rota.append(prox)
+                usados.add(prox)
+                atual = prox
+
+                if atual == depf:
+                    break
+
+            if rota[-1] != depf:
+                if depf in pred_fixo and pred_fixo[depf] != rota[-1]:
+                    return None
+                rota.append(depf)
+
+            viavel, janelas_escolhidas, tempo_final, carga_final = verifica_rota(rota)
+            if not viavel:
+                return None
+
+            return rota, set(rota), janelas_escolhidas, tempo_final, carga_final
+
+        melhor_rota = None
+        melhor_custo_real = None
+        melhor_custo_red = math.inf
+
+        # =========================================================
+        # PRE-CÁLCULO
+        # =========================================================
+        rc = [[math.inf] * nbn for _ in range(nbn)]
+        vizinhos_ordenados = [[] for _ in range(nbn)]
+
+        for i in range(nbn):
+            linha = []
+
+            for j in range(nbn):
+                if i == j:
+                    continue
+
+                if not arco_permitido(i, j):
+                    continue
+
+                val = travel_time(i, j) - mu(i, j)
+
+                if 1 <= j <= nbcd:
+                    val -= float(pi[j - 1])
+
+                if j == depf:
+                    val -= float(sigma_k)
+
+                rc[i][j] = val
+                linha.append((j, val))
+
+            linha.sort(key=lambda x: x[1])
+            vizinhos_ordenados[i] = linha
+
+        base = constroi_rota_base()
+
+        if base is None:
+            if len(fixados_k) > 0:
+                return None, None
+
+            rota0 = [dep0, depf]
+            viavel0, janelas0, tempo0, carga0 = verifica_rota(rota0)
+            if not viavel0:
+                return None, None
+            base = (rota0, {dep0, depf}, janelas0, tempo0, carga0)
+
+        # =========================================================
+        # MULTI-START RANDOMIZADO
+        # =========================================================
+        for ii in range(n_starts):
+
+            rota = base[0][:]
+            visitados = set(base[1])
+            janelas_escolhidas = list(base[2])
+            tempo_atual = base[3]
+            carga_atual = base[4]
+            no_atual = rota[-1]
+
+            if no_atual == depf and len(rota) > 1:
+                # se a base já terminou no depósito final, reabre para inserir no meio
+                rota = rota[:-1]
+                janelas_escolhidas = janelas_escolhidas[:-1]
+                no_atual = rota[-1]
+
+                # recalcula estado até o último nó atual
+                a0, b0, s0 = janelas[dep0][0]
+                inicio_servico_0 = max(0.0, a0)
+                tempo_atual = inicio_servico_0 + s0
+                carga_atual = 0.0
+
+                for pos in range(1, len(rota)):
+                    i = rota[pos - 1]
+                    j = rota[pos]
+                    janela_viavel = escolhe_janela_viavel(i, tempo_atual, j)
+                    if janela_viavel is None:
+                        return None, None
+                    inicio_servico_j, fim_servico_j, idx_janela = janela_viavel
+                    tempo_atual = fim_servico_j
+                    if 1 <= j <= nbcd:
+                        carga_atual += d[j]
+
+            custo_red_total = custo_reduzido_rota(rota) if len(rota) >= 2 else 0.0
+
+            while True:
+                viaveis = []
+
+                top_k = random.randint(2, min(7, max(2, nbcd)))
+
+                for (j, delta_rc) in vizinhos_ordenados[no_atual]:
+
+                    if j in visitados:
+                        continue
+
+                    if NO_BP.tabu_until[k][no_atual][j] > 0:
+                        continue
+
+                    nova_carga = carga_atual + (d[j] if 1 <= j <= nbcd else 0.0)
+                    if nova_carga > cap_k + 1e-9:
+                        continue
+
+                    janela_viavel = escolhe_janela_viavel(no_atual, tempo_atual, j)
+                    if janela_viavel is None:
+                        continue
+
+                    inicio_servico_j, fim_servico_j, idx_janela = janela_viavel
+
+                    # se j tem sucessor fixo, não pode ficar "preso" sem possibilidade de continuar
+                    if j in succ_fixo:
+                        prox_fixo = succ_fixo[j]
+                        if prox_fixo in visitados:
+                            continue
+                        if not arco_permitido(j, prox_fixo):
+                            continue
+
+                    score = score_candidato(no_atual, j, delta_rc, tempo_atual, nova_carga)
+
+                    viaveis.append((
+                        j,
+                        inicio_servico_j,
+                        fim_servico_j,
+                        nova_carga,
+                        delta_rc,
+                        idx_janela,
+                        score
+                    ))
+
+                # tenta fechar no depósito final quando a rota atual não termina lá
+                if no_atual != depf and arco_permitido(no_atual, depf) and NO_BP.tabu_until[k][no_atual][depf] <= 0:
+                    janela_fecho = escolhe_janela_viavel(no_atual, tempo_atual, depf)
+                    if janela_fecho is not None:
+                        inicio_servico_f, fim_servico_f, idx_janela_f = janela_fecho
+                        delta_fecho = rc[no_atual][depf]
+                        score_fecho = score_candidato(no_atual, depf, delta_fecho, tempo_atual, carga_atual)
+                        viaveis.append((
+                            depf,
+                            inicio_servico_f,
+                            fim_servico_f,
+                            carga_atual,
+                            delta_fecho,
+                            idx_janela_f,
+                            score_fecho
+                        ))
+
+                if not viaveis:
+                    break
+
+                viaveis.sort(key=lambda x: x[6])
+                viaveis = viaveis[:top_k]
+
+                j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela, score = (
+                    self.escolhe_vizinho_enviesado(viaveis, alpha=0.55)
+                )
+
+                rota.append(j)
+                janelas_escolhidas.append(idx_janela)
+
+                custo_red_total += delta_rc
+                tempo_atual = fim_servico_j
+                carga_atual = nova_carga
+                no_atual = j
+
+                visitados.add(j)
+
+                if j == depf:
+                    break
+
+            if len(rota) >= 3 and rota[-1] == depf:
+                viavel_final, _, _, _ = verifica_rota(rota)
+                if viavel_final:
+                    custo_real = custo_real_rota(rota)
+
+                    if custo_red_total < melhor_custo_red:
+                        melhor_custo_red = custo_red_total
+                        melhor_custo_real = custo_real
+                        melhor_rota = rota[:]
+
+            if melhor_rota is not None and melhor_custo_red < -eps:
+                return {
+                    "clientes": melhor_rota,
+                    "custo": melhor_custo_real,
+                    "bin_xij": rota_para_binaria(melhor_rota)
+                }, melhor_custo_red
+            else:
+                if len(rota) >= 3 and rota[-1] == depf:
+                    viavel_final, _, _, _ = verifica_rota(rota)
+                    if viavel_final:
+                        rota_melhorada, custo_red_melhorado, custo_real_melhorado, janelas_melhoradas = self.busca_local_rota(
+                            rota, inst, pi, sigma_k, k, mu_arc, janelas, d
+                        )
+
+                        if rota_melhorada is not None:
+                            viavel_bl, _, _, _ = verifica_rota(rota_melhorada)
+                            if not viavel_bl:
+                                rota_melhorada = None
+
+                        if rota_melhorada is not None and custo_red_melhorado < -eps:
+                            return {
+                                "clientes": rota_melhorada,
+                                "custo": custo_real_melhorado,
+                                "bin_xij": rota_para_binaria(rota_melhorada)
+                            }, custo_red_melhorado
+
+        return None, None
+
+    def SUB_VNSRANDOMSemFixos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
                        n_starts=30, eps=1e-6):
         import math
         import random
@@ -2863,7 +5441,7 @@ class Metodos:
                 continue
             for t in range(len(seq) - 1):
                 if seq[t] == i_proib and seq[t + 1] == j_proib:
-                    print("PROIBIDO")
+                    #print("PROIBIDO viola arco proibido")
                     return False  # viola proibição
 
         # Arcos fixados em 1: todos esses arcos devem estar na rota
@@ -2875,7 +5453,7 @@ class Metodos:
                 for t in range(len(seq) - 1)
             )
             if not presente:
-                print("PROIBIDO")
+                #print("PROIBIDa COlujna não respeita arco obrigatorio")
                 return False  # não respeita arco obrigatório
 
         return True
@@ -4410,6 +6988,12 @@ class Metodos:
         import time
         import gurobipy as gp
         from gurobipy import GRB
+        tentativasLP=0
+
+        rodadas_sem_melhoria=0
+        nmaxrodadas_sem_melhoria=inst.iteraSemMelhora
+        colunas_reais_usadas=False
+        ULTIMAFO=-1
 
         print(f"\n--- Resolve nó {no_bp.id_no} com POOL GLOBAL NORMALZITO ---")
 
@@ -4427,7 +7011,7 @@ class Metodos:
         no_bp.arc_score = {}
 
         # contadores
-        sol_pool.construtivas = [0, 0, 0, 0,0]
+        sol_pool.construtivas = [0, 0, 0, 0,0,0,0]
 
         N = inst.nbn
         K = inst.nbv
@@ -4592,6 +7176,9 @@ class Metodos:
         sigma = None
         mu_arc_por_k = None
 
+        colunas_desde_ultimo_mip = 0
+        nome_arquivo_mip = f"mip_periodico_no_{no_bp.id_no}.txt"
+
         while True:
             model.optimize()
             no_bp.lp_status = model.Status
@@ -4609,7 +7196,7 @@ class Metodos:
 
             #escreve no arquivo a sol do nó
             ##mudanca para diminuir o tempo
-            ###nome_arquivo_logLOCAL = f"log_bounds_{inst.nbcd}_{inst.ninst}_LOCAL.csv"
+            nome_arquivo_logLOCAL = f"log_bounds_{inst.nbcd}_{inst.ninst}_LOCAL.csv"
             ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
             ###    f.write(f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj LP = {model.ObjVal:.4f} CONSTRUTIVA CANCELADA = {inst.nbconstrutiva}| Colunas = {sum(len(lbd[k]) for k in lbd)} \n")
             tem_ativa = False
@@ -4623,12 +7210,23 @@ class Metodos:
 
                     if val > tol_print:
                         tem_ativa = True
+                        # IGNORA artificiais (p = 0 e 1)
+                        if p > 1:
+                            colunas_reais_usadas = True
                         seq = sol_pool.rotas[k]["sequencia_rota"][p]
                         custo = float(sol_pool.rotas[k]["custo"][p])
                         valor_recomposto += val * custo
 
                         if(self.printarsol):
                             print(f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}")
+
+            if abs(valor_recomposto - ULTIMAFO) <= 0.001:
+                if colunas_reais_usadas:
+                    rodadas_sem_melhoria += 1
+            else:
+                rodadas_sem_melhoria = 0
+                ULTIMAFO = valor_recomposto
+
 
             if not tem_ativa:
                 print("   nenhuma coluna ativa")
@@ -4646,6 +7244,8 @@ class Metodos:
                         f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f})")
 
             # duais
+            #subsitui por uma funcao
+            """
             pi = [float(c.Pi) for c in visita_constr]
             sigma = {k: float(uma_rota_constr[k].Pi) for k in sol_pool.rotas.keys()}
 
@@ -4672,124 +7272,48 @@ class Metodos:
                         mu_arc_por_k[k] = {}
 
             novas_colunas = []
+            """
+            pi, sigma, mu_arc_por_k = self.extrair_duais_do_mestre(
+                model=model,sol_pool=sol_pool,visita_constr=visita_constr,
+                uma_rota_constr=uma_rota_constr,constr_arco=constr_arco
+            )
 
-            for k in  range(1): # sol_pool.rotas.keys(): ## frota homogenea
-                proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
-                fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
-                proibidos_equiv = self.proibidos_com_fixados(inst, proibidos_k, fixados_k)
-                mu_arc = mu_arc_por_k.get(k, {})
+            if no_bp.matriz_rc == {}:
+                no_bp.criaMatriRC(inst)
 
-                t0 = time.time()
-                nova_rota=None
-
-
-                if(inst.nbconstrutiva!=0 and inst.nbconstrutiva!=22): #22 é arbitrario para testar o ultimo so
-                    nova_rota, custo_red = self.SUB_VNSRANDOM(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
-                    if nova_rota is not None:
-                        sol_pool.construtivas[0] += 1
-                        print("gerou na 1")
-
-
-
-
-                if (inst.nbconstrutiva != 1 and inst.nbconstrutiva!=22):
-                    if nova_rota is None:
-                        nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(
-                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+            novas_colunas = self.gerar_novas_colunas_com_duais(
+                inst=inst,sol_pool=sol_pool,no_bp=no_bp,pi=pi,sigma=sigma,
+                mu_arc_por_k=mu_arc_por_k,EPS_RC=EPS_RC
+            )
+            tentativasLP+=1
+            #teste- alteracao para funcao
+            """"""
+            if not novas_colunas:# or tentativasLP==60:
+                #teste de numero de iteracoes sem mudar a FO
+                if rodadas_sem_melhoria>=nmaxrodadas_sem_melhoria and colunas_reais_usadas:
+                    if inst.temmip:
+                        rodadas_sem_melhoria=0
+                        gerou_extra = self.tenta_intensificar_com_mip(
+                            inst=inst,
+                            sol_pool=sol_pool,no_bp=no_bp,model=model,lbd=lbd,
+                            visita_constr=visita_constr,uma_rota_constr=uma_rota_constr,
+                            constr_arco=constr_arco,slack_vis=slack_vis,slack_arc=slack_arc,
+                            EPS_RC=EPS_RC,add_rota_no_pool=add_rota_no_pool,add_lambda_var_model=add_lambda_var_model,
+                            rota_usa_arco=rota_usa_arco,max_tentativas=3,max_arcos_mip=5
                         )
-                        if nova_rota is not None:
-                            sol_pool.construtivas[1] += 1
-                            if (self.printarsol):
-                                print("gerou na 2")
 
-                if (inst.nbconstrutiva != 2 and inst.nbconstrutiva!=22):
-                    if nova_rota is None:
-                        nova_rota, custo_red = self.SUB_HEUR_VNS( #é o VNS com um chorinho pra quem está indo bem
-                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                        )
-                        if nova_rota is not None:
-                            sol_pool.construtivas[2] += 1
-                            if (self.printarsol):
-                                print("gerou na 3")
+                        if gerou_extra:
+                            model.update()
+                            iter_cg += 1
+                            continue
 
-
-                if (inst.nbconstrutiva != 3 ):
-                    if nova_rota is None:
-                        if (self.printarsol):
-                            print("%%%%%%%%%TESTE BIDIRECIONAL")
-                        nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(
-                            inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                        )
-                        if (self.printarsol):
-                            print("%%%%%%% BIDIRECIONALACHOU")
-                        if nova_rota is not None:
-                            sol_pool.construtivas[3] += 1
-                            if (self.printarsol):
-                                print("gerou na BID")
-
-                """"""
-
-                """
-                if nova_rota is None:
-                    print("$$$$$$$$$$$$$$ nao achou sol, testa PD")
-                    nova_rota, custo_red = self.SUB_PROG_DIN_PW(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                    )
-                    if nova_rota is not None:
-                        sol_pool.construtivas[3] += 1
-                        print("gerou na 4")
-                """
-
-
-
-
-                if iter_cg == 13:
-                    print("")
-
-                if nova_rota is None:
-                    print("PASSOU PELOS 3 sem gerar nada")
-                    continue
-
-                nova_rota["custo_reduzido"] = float(custo_red)
-                print(f"NOVA COLUNA GERAL | rc={nova_rota['custo_reduzido']:.6f}")
-                print(nova_rota)
-
-                if float(custo_red) < -EPS_RC:
-                    seq = nova_rota["clientes"]
-                    if not self.coluna_respeita_no(no_bp, seq, k):
-                        continue
-
-                    novas_colunas.append((k, seq, nova_rota["bin_xij"], nova_rota["custo"]))
-
-                    print(f"NOVA COLUNA | rc={nova_rota['custo_reduzido']:.6f}")
-                    print(nova_rota)
-                    print("")
-
-                    #""" TABOOOOOO
-                    mat = no_bp.tabu_until[k]
-                    for i in range(inst.nbn):
-                        row = mat[i]
-                        for j in range(inst.nbn):
-                            if row[j] > 0:
-                                row[j] -= 1
-
-
-
-                    for t in range(len(seq) - 1):
-                        i, j = seq[t], seq[t + 1]
-                        no_bp.freq_arc[k][i][j] += 1
-                        no_bp.last_arc[k][i][j] = iter_cg
-                        no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
-                    #"""
-
-                    print("")
-                    ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
-                    ###    f.write(
-                    ###        f"   adicionou coluna | veic={k} | idx={no_bp.id_no} | rc={custo_red:.6f} | rota={nova_rota}\n")
-
+                    no_bp.cg_convergiu = True
+                    break
+            """
             if not novas_colunas:
                 no_bp.cg_convergiu = True
                 break
+            """
 
             # frota heterogenea
             """
@@ -4801,20 +7325,141 @@ class Metodos:
             """
 
             # frota homogenea
+            """
             for kk in range (len(sol_pool.rotas.keys())):
                 for (_, seq, binx, custo) in novas_colunas:
                     idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
                     add_rota_no_pool(kk, seq, binx, custo)
                     add_lambda_var_model(kk, idx_pool, seq, binx, custo)
-
+            """
+            # frota homogenea
+            """
+            for kk in range(len(sol_pool.rotas.keys())):
+                for col in novas_colunas:
+                    _, seq, binx, custo, _ = col
+                    idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
+                    add_rota_no_pool(kk, seq, binx, custo)
+                    add_lambda_var_model(kk, idx_pool, seq, binx, custo)
 
             model.update()
 
+            """
+            # primeiro adiciona todas as novas colunas ao pool/modelo
+            for col in novas_colunas:
+                _, seq, binx, custo, _ = col
+
+                for kk in sol_pool.rotas.keys():
+                    idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
+                    add_rota_no_pool(kk, seq, binx, custo)
+                    add_lambda_var_model(kk, idx_pool, seq, binx, custo)
+
+                # conta 1 por coluna gerada, não 1 por veículo
+                colunas_desde_ultimo_mip += 1
+
+            model.update()
+
+            # a cada 20 colunas geradas, roda um MIP no pool atual
+            if colunas_desde_ultimo_mip >= 20:
+                print(f"[Nó {no_bp.id_no}] Rodando MIP periódico após {colunas_desde_ultimo_mip} colunas...")
+
+                mip_periodico = gp.Model(f"MIP_periodico_no_{no_bp.id_no}")
+                mip_periodico.setParam("OutputFlag", 0)
+
+                z_per = {k: [] for k in sol_pool.rotas.keys()}
+
+                # variáveis binárias
+                for k in sol_pool.rotas.keys():
+                    nrotas = len(sol_pool.rotas[k]["sequencia_rota"])
+                    for p in range(nrotas):
+                        seqp = sol_pool.rotas[k]["sequencia_rota"][p]
+                        custop = float(sol_pool.rotas[k]["custo"][p])
+
+                        if not self.coluna_respeita_no(no_bp, seqp, k):
+                            continue
+
+                        var = mip_periodico.addVar(
+                            lb=0.0,
+                            ub=1.0,
+                            obj=custop,
+                            vtype=GRB.BINARY,
+                            name=f"zper_{k}_{p}"
+                        )
+                        z_per[k].append((p, var))
+
+                mip_periodico.ModelSense = GRB.MINIMIZE
+                mip_periodico.update()
+
+                # visita única
+                for i in range(inst.nbcd):
+                    expr = gp.LinExpr()
+                    for k in sol_pool.rotas.keys():
+                        for p, var in z_per[k]:
+                            expr += float(sol_pool.rotas[k]["rotas_binaria"][p][i]) * var
+                    mip_periodico.addConstr(expr == 1.0, name=f"visita_{i}")
+
+                # uma rota por veículo
+                for k in sol_pool.rotas.keys():
+                    expr = gp.LinExpr()
+                    for p, var in z_per[k]:
+                        expr += var
+                    mip_periodico.addConstr(expr == 1.0, name=f"uma_rota_veic_{k}")
+
+                # arcos do nó
+                for k in sol_pool.rotas.keys():
+                    proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
+                    fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
+                    branch_arcs_k = set(proibidos_k) | set(fixados_k)
+
+                    for (i, j) in branch_arcs_k:
+                        expr = gp.LinExpr()
+                        for p, var in z_per[k]:
+                            seqp = sol_pool.rotas[k]["sequencia_rota"][p]
+                            expr += float(rota_usa_arco(seqp, i, j)) * var
+
+                        if (i, j) in proibidos_k:
+                            mip_periodico.addConstr(expr == 0.0, name=f"arc_{k}_{i}_{j}")
+                        else:
+                            mip_periodico.addConstr(expr == 1.0, name=f"arc_{k}_{i}_{j}")
+
+                mip_periodico.optimize()
+
+                if mip_periodico.Status == GRB.OPTIMAL:
+                    usou_coluna_inicial = False
+                    selecionadas = []
+
+                    for k in sol_pool.rotas.keys():
+                        for p, var in z_per[k]:
+                            if float(var.X) > 0.5:
+                                selecionadas.append((k, p))
+                                if p in (0, 1):
+                                    usou_coluna_inicial = True
+
+                    if not usou_coluna_inicial:
+                        with open(nome_arquivo_mip, "a", encoding="utf-8") as f:
+                            f.write(f"Nó {no_bp.id_no} | iter_cg={iter_cg} | FO={mip_periodico.ObjVal:.6f}\n")
+                            for k, p in selecionadas:
+                                seqp = sol_pool.rotas[k]["sequencia_rota"][p]
+                                custop = float(sol_pool.rotas[k]["custo"][p])
+                                f.write(f"   veic={k} col={p} custo={custop:.6f} rota={seqp}\n")
+                            f.write("\n")
+
+                        print(
+                            f"[Nó {no_bp.id_no}] MIP periódico encontrou solução inteira válida. FO={mip_periodico.ObjVal:.6f}")
+                    else:
+                        print(f"[Nó {no_bp.id_no}] MIP periódico usou coluna inicial, então foi ignorado.")
+                else:
+                    print(f"[Nó {no_bp.id_no}] MIP periódico não foi ótimo.")
+
+                colunas_desde_ultimo_mip = 0
+
+
             iter_cg += 1
+            """
             if iter_cg >= max_iter_cg:
                 no_bp.parou_por_max_iter = True
                 no_bp.cg_convergiu = False
                 break
+            """
 
         # =========================
         # Final do nó - LP com slack
@@ -5078,6 +7723,390 @@ class Metodos:
             pool_ini_por_k = {k: len(sol_pool.rotas[k]["sequencia_rota"]) for k in sol_pool.rotas.keys()}
             # self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
             print("PRIMEIRO NO")
+
+    def extrair_duais_do_mestre(self, model, sol_pool, visita_constr, uma_rota_constr, constr_arco):
+        import gurobipy as gp
+
+        pi = [float(c.Pi) for c in visita_constr]
+        sigma = {k: float(uma_rota_constr[k].Pi) for k in sol_pool.rotas.keys()}
+
+        mu_arc_por_k = {k: {} for k in sol_pool.rotas.keys()}
+        if constr_arco:
+            cons_by_k = {k: [] for k in sol_pool.rotas.keys()}
+            keys_by_k = {k: [] for k in sol_pool.rotas.keys()}
+
+            for (k, i, j), con in constr_arco.items():
+                cons_by_k[k].append(con)
+                keys_by_k[k].append((i, j))
+
+            for k in sol_pool.rotas.keys():
+                if not cons_by_k[k]:
+                    continue
+                try:
+                    pis = model.getAttr("Pi", cons_by_k[k])
+                    for (i, j), pi_ in zip(keys_by_k[k], pis):
+                        mu_arc_por_k[k][(i, j)] = float(pi_)
+                except gp.GurobiError:
+                    mu_arc_por_k[k] = {}
+
+        return pi, sigma, mu_arc_por_k
+
+
+    def gerar_novas_colunas_com_duais(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+        import time
+
+        novas_colunas = []
+
+        # frota homogênea: resolve só um k e replica depois
+        for k in range(1):
+            proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
+            fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
+            proibidos_equiv = self.proibidos_com_fixados(inst, proibidos_k, fixados_k)
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            t0 = time.time()
+            nova_rota = None
+            custo_red = None
+
+            if (inst.nbconstrutiva != 0 and inst.nbconstrutiva != 22):
+                nova_rota, custo_red = self.SUB_VNSRANDOM(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+
+                if nova_rota is not None:
+                    sol_pool.construtivas[0] += 1
+                    print("gerou na 1")
+
+            if (inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22):
+                if nova_rota is None:
+                    nova_rota, custo_red = self.SUB_HEUR_ALLBESTINSERTION(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+                    if nova_rota is not None:
+                        sol_pool.construtivas[1] += 1
+                        if self.printarsol:
+                            print("gerou na 2")
+
+            if (inst.nbconstrutiva != 2 and inst.nbconstrutiva != 22):
+                if nova_rota is None:
+                    nova_rota, custo_red = self.SUB_HEUR_VNS(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+                    if nova_rota is not None:
+                        sol_pool.construtivas[2] += 1
+                        if self.printarsol:
+                            print("gerou na 3")
+
+            if (inst.nbconstrutiva != 3):
+                if nova_rota is None:
+                    if self.printarsol:
+                        print("%%%%%%%%%TESTE BIDIRECIONAL")
+                    nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+                    if self.printarsol:
+                        print("%%%%%%% BIDIRECIONALACHOU")
+                    if nova_rota is not None:
+                        sol_pool.construtivas[3] += 1
+                        if self.printarsol:
+                            print("gerou na BID")
+            """
+            if nova_rota is None or float(custo_red) >= -EPS_RC:
+                print("$$$$$$$$$$$$$$ nao achou sol, testa PD")
+                nova_rota, custo_red = self.SUB_PROG_DIN_PW(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if nova_rota is not None:
+                    sol_pool.construtivas[5] += 1
+                    print("gerou na PD COMPLETA")
+            """
+
+            if nova_rota is None:
+                print("PASSOU PELOS 3 sem gerar nada")
+                continue
+
+            nova_rota["custo_reduzido"] = float(custo_red)
+            print(f"NOVA COLUNA GERAL | rc={nova_rota['custo_reduzido']:.6f}")
+            print(nova_rota)
+
+            if float(custo_red) < -EPS_RC:
+                seq = nova_rota["clientes"]
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    continue
+
+                novas_colunas.append((k, seq, nova_rota["bin_xij"], nova_rota["custo"], float(custo_red)))
+
+                print(f"NOVA COLUNA | rc={nova_rota['custo_reduzido']:.6f}")
+                print(nova_rota)
+                print("")
+
+                # tabu
+                mat = no_bp.tabu_until[k]
+                for i in range(inst.nbn):
+                    row = mat[i]
+                    for j in range(inst.nbn):
+                        if row[j] > 0:
+                            row[j] -= 1
+
+                for t in range(len(seq) - 1):
+                    i, j = seq[t], seq[t + 1]
+                    no_bp.freq_arc[k][i][j] += 1
+                    no_bp.last_arc[k][i][j] = 0
+                    no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+        return novas_colunas
+
+
+    def resolve_mip_pool_para_intensificacao(self, inst, sol_pool, no_bp, rota_usa_arco):
+        import gurobipy as gp
+        from gurobipy import GRB
+
+        mip = gp.Model(f"MIP_intens_no_{no_bp.id_no}")
+        mip.setParam("OutputFlag", 0)
+
+        z = {k: [] for k in sol_pool.rotas.keys()}
+
+        for k in sol_pool.rotas.keys():
+            nrotas = len(sol_pool.rotas[k]["sequencia_rota"])
+            for p in range(nrotas):
+                seq = sol_pool.rotas[k]["sequencia_rota"][p]
+                custo = float(sol_pool.rotas[k]["custo"][p])
+
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    continue
+
+                var = mip.addVar(
+                    lb=0.0,
+                    ub=1.0,
+                    obj=custo,
+                    vtype=GRB.BINARY,
+                    name=f"z_{k}_{p}"
+                )
+                z[k].append((p, var))
+
+        mip.ModelSense = GRB.MINIMIZE
+        mip.update()
+
+        # visita única
+        for i in range(inst.nbcd):
+            expr = gp.LinExpr()
+            for k in sol_pool.rotas.keys():
+                for p, var in z[k]:
+                    expr += float(sol_pool.rotas[k]["rotas_binaria"][p][i]) * var
+            mip.addConstr(expr == 1.0, name=f"visita_{i}")
+
+        # uma rota por veículo
+        for k in sol_pool.rotas.keys():
+            expr = gp.LinExpr()
+            for p, var in z[k]:
+                expr += var
+            mip.addConstr(expr == 1.0, name=f"uma_rota_veic_{k}")
+
+        # arcos do nó
+        for k in sol_pool.rotas.keys():
+            proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
+            fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
+            branch_arcs_k = set(proibidos_k) | set(fixados_k)
+
+            for (i, j) in branch_arcs_k:
+                expr = gp.LinExpr()
+                for p, var in z[k]:
+                    seq = sol_pool.rotas[k]["sequencia_rota"][p]
+                    expr += float(rota_usa_arco(seq, i, j)) * var
+
+                if (i, j) in proibidos_k:
+                    mip.addConstr(expr == 0.0, name=f"arc_{k}_{i}_{j}")
+                else:
+                    mip.addConstr(expr == 1.0, name=f"arc_{k}_{i}_{j}")
+
+
+
+
+
+        mip.optimize()
+
+        import time
+        import csv
+        import os
+
+        caminho = "log_mip_intensificacao.csv"
+        novo = not os.path.exists(caminho)
+
+        with open(caminho, "a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f, delimiter=";")
+
+            if novo:
+                w.writerow([
+                    "id_no",
+                    "obj_mip",
+                ])
+
+            w.writerow([
+                no_bp.id_no,
+                round(mip.ObjVal, 6)
+            ])
+
+        if mip.Status != GRB.OPTIMAL:
+            return {
+                "status": mip.Status,
+                "obj": None,
+                "selecao": [],
+                "arcos_mip": []
+            }
+
+        selecao = []
+        arcos_mip = set()
+
+        for k in sol_pool.rotas.keys():
+            for p, var in z[k]:
+                if float(var.X) > 0.5:
+                    seq = list(sol_pool.rotas[k]["sequencia_rota"][p])
+                    selecao.append((k, p, seq))
+                    for t in range(len(seq) - 1):
+                        i, j = seq[t], seq[t + 1]
+                        arcos_mip.add((i, j, k))
+        print(f"[Nó {no_bp.id_no}] Arcos presentes na solução do MIP de intensificação:")
+        for (i, j, k) in sorted(arcos_mip):
+            print(f"   arco=({i},{j},{k})")
+
+        print(f"[Nó {no_bp.id_no}] Solução do MIP de intensificação:")
+        valor_recomposto = 0.0
+        for (k, p, seq) in selecao:
+            custo = float(sol_pool.rotas[k]["custo"][p])
+            valor_recomposto += custo
+            print(f"   veic={k} | col={p} | z=1 | custo={custo:.4f} | rota={seq}")
+        print(f"   valor recomposto MIP = {valor_recomposto:.6f}")
+
+
+        return {
+            "status": mip.Status,
+            "obj": float(mip.ObjVal),
+            "selecao": selecao,
+            "arcos_mip": list(arcos_mip)
+        }
+
+
+    def rankear_arcos_candidatos_mip(self, no_bp, arcos_mip):
+        candidatos = []
+
+        for (i, j, k) in arcos_mip:
+            if (i, j, k) in no_bp.arcos_fixados_em_1:
+                continue
+            if (i, j, k) in no_bp.arcos_proibidos:
+                continue
+
+            arc_lp = no_bp.arc_score.get((i, j, k), 0.0)
+            score = 10.0 + arc_lp
+            candidatos.append((i, j, k, score))
+
+        candidatos.sort(key=lambda x: x[3], reverse=True)
+        return candidatos
+
+
+    def tenta_intensificar_com_mip(
+        self, inst, sol_pool, no_bp, model, lbd,
+        visita_constr, uma_rota_constr, constr_arco, slack_vis, slack_arc,
+        EPS_RC, add_rota_no_pool, add_lambda_var_model, rota_usa_arco, max_tentativas=3,
+        max_arcos_mip=5
+    ):
+
+
+        print(f"[Nó {no_bp.id_no}] Iniciando intensificação por MIP...")
+
+        info_mip = self.resolve_mip_pool_para_intensificacao(
+            inst=inst, sol_pool=sol_pool, no_bp=no_bp, rota_usa_arco=rota_usa_arco
+        )
+
+        if info_mip["status"] != GRB.OPTIMAL:
+            print(f"[Nó {no_bp.id_no}] MIP de intensificação não ótimo.")
+            return False
+
+        print(f"[Nó {no_bp.id_no}] MIP de intensificação obj = {info_mip['obj']:.6f}")
+
+        candidatos = self.rankear_arcos_candidatos_mip(
+            no_bp=no_bp,
+            arcos_mip=info_mip["arcos_mip"]
+        )
+
+        if not candidatos:
+            print(f"[Nó {no_bp.id_no}] Sem arcos candidatos para intensificação.")
+            return False
+
+        tentativas = 0
+
+        for (i_sel, j_sel, k_sel, score) in candidatos[:max_arcos_mip]:
+            if tentativas >= max_tentativas:
+                break
+
+            print(f"[Nó {no_bp.id_no}] Testando arco temporário ({i_sel},{j_sel},{k_sel}) | score={score:.4f}")
+
+            expr = gp.LinExpr()
+            nrotas = min(len(lbd[k_sel]), len(sol_pool.rotas[k_sel]["sequencia_rota"]))
+            for p in range(nrotas):
+                seq = sol_pool.rotas[k_sel]["sequencia_rota"][p]
+                expr += float(rota_usa_arco(seq, i_sel, j_sel)) * lbd[k_sel][p]
+
+            nome_tmp = f"tmp_fix_mip_{no_bp.id_no}_{k_sel}_{i_sel}_{j_sel}_{tentativas}"
+            constr_tmp = model.addConstr(expr == 1.0, name=nome_tmp)
+            model.update()
+
+            try:
+                model.optimize()
+
+                if model.Status != GRB.OPTIMAL:
+                    print(f"[Nó {no_bp.id_no}] LP temporário inviável/não ótimo para arco ({i_sel},{j_sel},{k_sel})")
+                    model.remove(constr_tmp)
+                    model.update()
+                    tentativas += 1
+                    continue
+
+
+                pi, sigma, mu_arc_por_k = self.extrair_duais_do_mestre(
+                    model=model,
+                    sol_pool=sol_pool,
+                    visita_constr=visita_constr,
+                    uma_rota_constr=uma_rota_constr,
+                    constr_arco=constr_arco
+                )
+
+                novas_colunas = self.gerar_novas_colunas_com_duais(
+                    inst=inst,
+                    sol_pool=sol_pool,
+                    no_bp=no_bp,
+                    pi=pi,
+                    sigma=sigma,
+                    mu_arc_por_k=mu_arc_por_k,
+                    EPS_RC=EPS_RC
+                )
+
+                model.remove(constr_tmp)
+                model.update()
+
+                if novas_colunas:
+                    print(f"[Nó {no_bp.id_no}] Intensificação encontrou {len(novas_colunas)} coluna(s).")
+
+                    for kk in range(len(sol_pool.rotas.keys())):
+                        for (_, seq, binx, custo, custo_red) in novas_colunas:
+                            idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
+                            add_rota_no_pool(kk, seq, binx, custo)
+                            add_lambda_var_model(kk, idx_pool, seq, binx, custo)
+                            print(f"[Nó {no_bp.id_no}] Coluna adicionada pela intensificação | kk={kk} | rc={custo_red:.6f} | rota={seq}")
+
+                    model.update()
+                    return True
+
+            except Exception as e:
+                try:
+                    model.remove(constr_tmp)
+                    model.update()
+                except:
+                    pass
+                print(f"[Nó {no_bp.id_no}] Erro na intensificação: {e}")
+
+            tentativas += 1
+
+        print(f"[Nó {no_bp.id_no}] Intensificação não encontrou colunas novas.")
+        return False
 
     def resolver_no_com_poolRAIZ(self, inst, sol_pool, no_bp, tipo_geracao="PD"):
         import time
@@ -5698,6 +8727,7 @@ class Metodos:
         return proib
 
     def metodo_exato(self, inst, sol):
+
         print("==================== Iniciando a resolução do modelo exato")
         K = range(inst.nbv)  # Veículos
         V = list(range(inst.nbn))  # Nós (depósito + clientes + depósito final)
@@ -5727,7 +8757,7 @@ class Metodos:
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
         )
-        model.Params.TimeLimit = 1200
+        model.Params.TimeLimit = 60
         """
         T_retorno = model.addVar(vtype=GRB.CONTINUOUS, name='T_retorno')
         model.addConstr(

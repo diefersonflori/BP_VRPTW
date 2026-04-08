@@ -30,6 +30,8 @@ class Instancia:
         #para teste com muitas
         self.ninst=0
         self.nbconstrutiva=0
+        self.temmip=True
+        self.iteraSemMelhora=0
 
     def leitura(self, argv):
         """
@@ -163,7 +165,14 @@ class Instancia:
                 else:
                     self.matriz_distancia[i][j] = -1
 
-    def calculo_distancia(self, cond, cordx1, cordy1, cordx2, cordy2):
+    def calculo_distancia2(self, cond, cordx1, cordy1, cordx2, cordy2):
         if cond == 1:
             return math.hypot(cordx1 - cordx2, cordy1 - cordy2)
         return 0.0
+
+    def calculo_distancia(self, cond, cordx1, cordy1, cordx2, cordy2):
+        if cond == 1:
+            dist = math.hypot(cordx1 - cordx2, cordy1 - cordy2)
+            dist_trunc_1casa = math.floor(dist * 10.0) / 10.0
+            return int(dist_trunc_1casa * 10)
+        return 0
