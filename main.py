@@ -101,13 +101,16 @@ todas_instancias = [ "instancias/c203.txt", "instancias/c204.txt",
                   "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
                   "instancias/r108.txt"]
 #"""
-#"""
+
+todas_instancias = (["instancias/c101N.txt"])
+"""
 todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+#"""
+"""
                       "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
                       "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
                       "instancias/r111.txt","instancias/r112.txt",
                      "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",])
-"""
     ,)
 "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
 "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt",
@@ -118,10 +121,10 @@ todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r10
 #todas_instancias = ["instancias/c104.txt"]
 #nbv=[3]
 ab=1
-semMelhora=[2,4,6,8]
+semMelhora=[0]#,2,4,6,8]
 #instancais grandes
-nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
-#nbv=[3,3,3,3,3,3,3,3,3]
+#nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
+nbv=[3,3,3,3,3,3,3,3,3]
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
     cap=capacidades[0]
@@ -177,7 +180,7 @@ for i in range(len(tamanhos)):
 
 
             tiex = time.time()
-            metod.metodo_exato(inst, solex)
+            #metod.metodo_exato(inst, solex)
             tfex = time.time()
             #solex.exportar_json(inst, "solucao_ex.json")
             #solex.printar_sol_exata(inst)
@@ -219,7 +222,7 @@ for i in range(len(tamanhos)):
                 # Branch-and-Price
                 # =========================
                 #teste para com e sem mip
-                for j in range(2):
+                for j in range(1):
                     #print(f"JJJJ {j}")
                     if j==0:
                         inst.temmip=False

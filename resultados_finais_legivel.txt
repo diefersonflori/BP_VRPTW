@@ -4249,3 +4249,29 @@ SCORE DAS CONSTRUTIBAS BP = [0, 0, 0, 0, 0, 0, 0]
 SEQ_EXATO: V0: [0,14,16,6,13,26] ; V1: [0,2,15,23,22,4,25,21,26] ; V2: [0,7,19,11,10,26] ; V3: [0,1,9,20,3,24,12,26] ; V4: [0,18,8,17,5,26]
 SEQ_BP: V0: [0,1,9,20,3,24,12,26] ; V1: [0,14,16,6,13,26] ; V2: [0,2,15,23,22,4,25,21,26] ; V3: [0,18,8,17,5,26] ; V4: [0,7,19,11,10,26]
 
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=130.1638 | FO exato=-1.0000 | FO BP=191.3000
+Nós processados BP = 1
+Colunas geradas BP = 984
+MIP = False
+SEM MELHORA = 0
+SCORE DAS CONSTRUTIBAS BP = [248, 55, 4, 19, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,13,17,18,19,15,16,14,12,26] ; V1: [0,20,24,25,23,22,21,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+========================================================================================================================
+RUN_ID: tam25_cap200_tabu0_inst0_cons10
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=159.6251 | FO exato=-1.0000 | FO BP=191.3000
+Nós processados BP = 1
+Colunas geradas BP = 789
+MIP = False
+SEM MELHORA = 0
+SCORE DAS CONSTRUTIBAS BP = [0, 224, 10, 27, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,20,24,25,23,22,21,26]
+
