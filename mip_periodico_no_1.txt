@@ -1,18 +1,1 @@
-Nó 1 | iter_cg=19 | FO=547.100000
-   veic=0 col=193 custo=97.600000 rota=[0, 21, 23, 24, 12, 26]
-   veic=1 col=181 custo=80.000000 rota=[0, 3, 9, 20, 1, 26]
-   veic=2 col=141 custo=70.700000 rota=[0, 8, 17, 5, 26]
-   veic=3 col=197 custo=83.600000 rota=[0, 7, 11, 19, 10, 26]
-   veic=4 col=191 custo=104.400000 rota=[0, 2, 15, 22, 4, 25, 26]
-   veic=5 col=99 custo=31.600000 rota=[0, 18, 26]
-   veic=6 col=185 custo=79.200000 rota=[0, 14, 16, 6, 13, 26]
-
-Nó 1 | iter_cg=19 | FO=547.100000
-   veic=0 col=193 custo=97.600000 rota=[0, 21, 23, 24, 12, 26]
-   veic=1 col=191 custo=104.400000 rota=[0, 2, 15, 22, 4, 25, 26]
-   veic=2 col=197 custo=83.600000 rota=[0, 7, 11, 19, 10, 26]
-   veic=3 col=185 custo=79.200000 rota=[0, 14, 16, 6, 13, 26]
-   veic=4 col=99 custo=31.600000 rota=[0, 18, 26]
-   veic=5 col=181 custo=80.000000 rota=[0, 3, 9, 20, 1, 26]
-   veic=6 col=141 custo=70.700000 rota=[0, 8, 17, 5, 26]
-
+=SEERRO(MÁXIMOSES(tabela_dados!$M:$M;tabela_dados!$E:$E;AW17;tabela_dados!$M:$M;">=0");"")

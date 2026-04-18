@@ -14,10 +14,10 @@ SEED_DEBUG = 123
 ARQ_CSV_FINAL = "resultados_finais.csv"
 ARQ_TXT_FINAL = "resultados_finais_legivel.txt"
 
-#import os
+import os
 #import sys
 
-#sys.stdout = open(os.devnull, 'w')
+sys.stdout = open(os.devnull, 'w')
 # =========================
 # Arquivos de saída
 # =========================
@@ -82,40 +82,42 @@ combinacao_construtivas=[10]#10 só pra testar ta ligado? quero tirar ninguem n�
 #combinacao_construtivas=[10]#10 só pra testar ta ligado? quero tirar ninguem não fióti
 
 
-# todas_instancias = ["instancias/c101N.txt"]
-"""
-todas_instancias = [ "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt",
+#todas_instancias = ["instancias/r110.txt"]
+#"""
+todas_instancias = ["instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
+                    "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt",
                     "instancias/c108.txt", "instancias/c109.txt"]#,
-"""
+#"""
 """
 "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
 todas_instancias = [ "instancias/c203.txt", "instancias/c204.txt",
                     "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt"]
 """
 "instancias/c201.txt","instancias/c202.txt",
-#"""
 """
 
-                  ,
+todas_instancias = ["instancias/r101.txt","instancias/r102.txt",
                   "instancias/r103.txt","instancias/r104.txt",
                   "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
                   "instancias/r108.txt"]
-#"""
 
-todas_instancias = (["instancias/c101N.txt"])
+
 """
-todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+"""
+#todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+#                      "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
+#                      "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
+#                      "instancias/r111.txt","instancias/r112.txt"])
 #"""
-"""
-                      "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
-                      "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
-                      "instancias/r111.txt","instancias/r112.txt",
-                     "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",])
-    ,)
+#todas_instancias = (["instancias/c103.txt"])
+"""    
 "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
 "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt",
 "instancias/c208.txt"]
 """
+#todas_instancias = (["instancias/c101N.txt","instancias/c102.txt","instancias/c103.txt",
+#                     "instancias/c104.txt","instancias/c105.txt","instancias/c106.txt", "instancias/c107.txt",
+#                    "instancias/c108.txt", "instancias/c109.txt"])
 
 #"""
 #todas_instancias = ["instancias/c104.txt"]
@@ -124,7 +126,9 @@ ab=1
 semMelhora=[0]#,2,4,6,8]
 #instancais grandes
 #nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
-nbv=[3,3,3,3,3,3,3,3,3]
+#nbv=[4]#25
+nbv=[3,3,3,3,3,3,3,3,3]#25
+#nbv=[5,5,4,3,5,5,5,5,3]#50
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
     cap=capacidades[0]
@@ -214,6 +218,10 @@ for i in range(len(tamanhos)):
                 sol_pool = Solucao(inst.nbv, inst.nbcd)
                 metod.init_pool_vazio(inst, sol_pool)
                 metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
+                #metod.gera_rotas_iniciais_geometricas(inst, sol_pool, n_starts=10, max_rotas_por_k=25)
+
+                metod.gera_rotas_iniciais_boas(inst, sol_pool)
+                #metod.gerar_rotas_unitarias_insercao(inst, sol_pool, custo_art=100000, remover_base=False)
 
                 for k in range(inst.nbv):
                     print("veic", k, "rotas iniciais =", len(sol_pool.rotas[k]["sequencia_rota"]))

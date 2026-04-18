@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -105,13 +105,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\diefe\anaconda3\Lib\site-packages\pybind11\include;C:\Users\diefe\anaconda3\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\PolyanaSilva\anaconda3\include;C:\Users\PolyanaSilva\anaconda3\Lib\site-packages\pybind11\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)vrptw_pd.pyd</OutputFile>
-      <AdditionalLibraryDirectories>C:\Users\diefe\anaconda3\libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\PolyanaSilva\anaconda3\libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>python313.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -124,12 +124,12 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\diefe\anaconda3\Lib\site-packages\pybind11\include;C:\Users\diefe\anaconda3\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\PolyanaSilva\anaconda3\include;C:\Users\PolyanaSilva\anaconda3\Lib\site-packages\pybind11\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\diefe\anaconda3\libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\PolyanaSilva\anaconda3\libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>python313.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

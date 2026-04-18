@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualizador de Instância VRPTW no OpenStreetMap</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .topbar {
+      padding: 14px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar input[type="file"] {
+      background: white;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .topbar button {
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #1f6feb;
+      color: white;
+      cursor: pointer;
+    }
+
+    .topbar button:hover {
+      background: #1557b0;
+    }
+
+    .panel {
+      padding: 12px 18px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #map {
+      width: 100%;
+      height: calc(100vh - 150px);
+    }
+
+    .mono {
+      font-family: Consolas, Monaco, monospace;
+      white-space: pre-wrap;
+      background: #f7f7f7;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e4e4e4;
+      margin-top: 8px;
+    }
+
+    .hint {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <input type="file" id="fileInput" accept=".txt" />
+    <button id="btnLimpar">Limpar mapa</button>
+    <button id="btnReplotarRotas">Replotar rotas</button>
+  </div>
+
+  <div class="panel">
+    <div><strong>Uso:</strong> selecione um arquivo como <span class="mono" style="display:inline;padding:2px 6px;">instancias/c101N.txt</span>.</div>
+    <div class="hint">
+      O arquivo da instância parece usar coordenadas cartesianas, não latitude/longitude reais.
+      Então este HTML projeta os pontos sobre o mapa do OpenStreetMap apenas para visualização relativa.
+    </div>
+    <div id="info"></div>
+  </div>
+
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // =========================================================
+    // COLE SUAS ROTAS AQUI
+    // Exemplo:
+    // [
+    //   [0, 3, 5, 7, 10],
+    //   [0, 1, 2, 4, 6, 10]
+    // ]
+    // Onde 0 é o depósito inicial e 10 poderia ser o depósito final.
+    // =========================================================
+    const ROTAS = [
+      // [0, 3, 5, 7, 10],
+      // [0, 1, 2, 4, 6, 10]
+    ];
+
+    let map = L.map('map').setView([-23.5505, -46.6333], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const markersLayer = L.layerGroup().addTo(map);
+    const routesLayer = L.layerGroup().addTo(map);
+
+    let instanciaAtual = null;
+
+    const info = document.getElementById('info');
+    const fileInput = document.getElementById('fileInput');
+    const btnLimpar = document.getElementById('btnLimpar');
+    const btnReplotarRotas = document.getElementById('btnReplotarRotas');
+
+    btnLimpar.addEventListener('click', () => {
+      markersLayer.clearLayers();
+      routesLayer.clearLayers();
+      instanciaAtual = null;
+      info.innerHTML = '';
+    });
+
+    btnReplotarRotas.addEventListener('click', () => {
+      if (!instanciaAtual) return;
+      plotarRotas(instanciaAtual, ROTAS);
+    });
+
+    fileInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const texto = await file.text();
+      const instancia = parseInstanciaTexto(texto, file.name);
+      instanciaAtual = instancia;
+
+      plotarInstancia(instancia);
+      plotarRotas(instancia, ROTAS);
+      mostrarResumo(instancia);
+    });
+
+    function parseInstanciaTexto(texto, nomeArquivo = '') {
+      const lines = texto.split(/\r?\n/);
+      const idxTime2 = lines.findIndex(line => line.includes('TIME2'));
+
+      if (idxTime2 === -1) {
+        throw new Error('Não encontrei a linha TIME2 no arquivo.');
+      }
+
+      const nos = [];
+
+      for (let i = idxTime2 + 1; i < lines.length; i++) {
+        const linha = lines[i].trim();
+        if (!linha) continue;
+
+        const parts = linha.split(/\s+/);
+
+        // Pelo seu parser Python, esperamos pelo menos 10 colunas.
+        if (parts.length < 10) continue;
+
+        const nodeId = Number(parts[0]);
+        const x = Number(parts[1]);
+        const y = Number(parts[2]);
+        const demand = Number(parts[3]);
+        const ready1 = Number(parts[4]);
+        const due1 = Number(parts[5]);
+        const service1 = Number(parts[8]);
+        const service2 = Number(parts[9]);
+
+        if (Number.isNaN(nodeId) || Number.isNaN(x) || Number.isNaN(y)) continue;
+
+        nos.push({
+          idArquivo: nodeId,
+          x,
+          y,
+          demand,
+          ready1,
+          due1,
+          service1,
+          service2
+        });
+      }
+
+      if (nos.length === 0) {
+        throw new Error('Nenhum nó foi lido após a linha TIME2.');
+      }
+
+      // No seu Python, o último nó é um depósito final duplicando o depósito inicial.
+      const depositoInicial = { ...nos[0] };
+      const depositoFinal = {
+        ...depositoInicial,
+        idArquivo: nos.length
+      };
+
+      const nosComDeposFinal = [...nos, depositoFinal];
+
+      // Índice interno usado nas rotas do Python:
+      // 0 = depósito inicial
+      // 1..n = clientes
+      // último = depósito final
+      nosComDeposFinal.forEach((no, idx) => {
+        no.idxInterno = idx;
+      });
+
+      return {
+        nomeArquivo,
+        nos: nosComDeposFinal,
+        depositoInicialIdx: 0,
+        depositoFinalIdx: nosComDeposFinal.length - 1
+      };
+    }
+
+    function converterXYparaLatLng(nos) {
+      const xs = nos.map(n => n.x);
+      const ys = nos.map(n => n.y);
+
+      const minX = Math.min(...xs);
+      const maxX = Math.max(...xs);
+      const minY = Math.min(...ys);
+      const maxY = Math.max(...ys);
+
+      const spanX = Math.max(1, maxX - minX);
+      const spanY = Math.max(1, maxY - minY);
+
+      // Centro visual em São Paulo apenas como base do OSM.
+      const baseLat = -23.5505;
+      const baseLng = -46.6333;
+
+      // Escala visual pequena para manter tudo perto e bem visível.
+      const scaleLat = 0.10;
+      const scaleLng = 0.10;
+
+      return nos.map(no => {
+        const normX = (no.x - minX) / spanX - 0.5;
+        const normY = (no.y - minY) / spanY - 0.5;
+
+        return {
+          ...no,
+          lat: baseLat + (-normY * scaleLat),
+          lng: baseLng + (normX * scaleLng)
+        };
+      });
+    }
+
+    function plotarInstancia(instancia) {
+      markersLayer.clearLayers();
+      routesLayer.clearLayers();
+
+      const nosGeo = converterXYparaLatLng(instancia.nos);
+      instancia.nosGeo = nosGeo;
+
+      nosGeo.forEach(no => {
+        const isDepositoInicial = no.idxInterno === instancia.depositoInicialIdx;
+        const isDepositoFinal = no.idxInterno === instancia.depositoFinalIdx;
+
+        let cor = 'blue';
+        let raio = 6;
+        let rotulo = `Nó ${no.idxInterno}`;
+
+        if (isDepositoInicial) {
+          cor = 'green';
+          raio = 9;
+          rotulo = `Depósito inicial (${no.idxInterno})`;
+        } else if (isDepositoFinal) {
+          cor = 'red';
+          raio = 9;
+          rotulo = `Depósito final (${no.idxInterno})`;
+        }
+
+        const marker = L.circleMarker([no.lat, no.lng], {
+          radius: raio,
+          color: cor,
+          fillColor: cor,
+          fillOpacity: 0.85,
+          weight: 2
+        });
+
+        marker.bindPopup(`
+          <strong>${rotulo}</strong><br>
+          id arquivo: ${no.idArquivo}<br>
+          x: ${no.x}<br>
+          y: ${no.y}<br>
+          demanda: ${no.demand ?? ''}<br>
+          ready: ${no.ready1 ?? ''}<br>
+          due: ${no.due1 ?? ''}
+        `);
+
+        marker.bindTooltip(`${no.idxInterno}`);
+        marker.addTo(markersLayer);
+      });
+
+      const bounds = L.latLngBounds(nosGeo.map(no => [no.lat, no.lng]));
+      map.fitBounds(bounds.pad(0.2));
+    }
+
+    function plotarRotas(instancia, rotas) {
+      routesLayer.clearLayers();
+
+      if (!rotas || rotas.length === 0) return;
+      if (!instancia.nosGeo) return;
+
+      const cores = [
+        '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00',
+        '#a65628', '#f781bf', '#999999', '#66c2a5', '#fc8d62'
+      ];
+
+      const mapaNos = new Map(instancia.nosGeo.map(no => [no.idxInterno, no]));
+
+      rotas.forEach((rota, idxRota) => {
+        const coords = [];
+
+        for (const noIdx of rota) {
+          const no = mapaNos.get(noIdx);
+          if (!no) {
+            console.warn(`Nó ${noIdx} da rota ${idxRota} não existe na instância.`);
+            continue;
+          }
+          coords.push([no.lat, no.lng]);
+        }
+
+        if (coords.length >= 2) {
+          L.polyline(coords, {
+            color: cores[idxRota % cores.length],
+            weight: 4,
+            opacity: 0.9
+          })
+          .bindPopup(`<strong>Rota ${idxRota}</strong><br>${rota.join(' → ')}`)
+          .addTo(routesLayer);
+        }
+      });
+    }
+
+    function mostrarResumo(instancia) {
+      info.innerHTML = `
+        <div class="mono">Arquivo: ${instancia.nomeArquivo}
+Nós lidos (com depósito final duplicado): ${instancia.nos.length}
+Depósito inicial: ${instancia.depositoInicialIdx}
+Depósito final: ${instancia.depositoFinalIdx}
+Clientes internos: 1 até ${instancia.depositoFinalIdx - 1}</div>
+      `;
+    }
+  </script>
+</body>
+</html>

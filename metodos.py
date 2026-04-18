@@ -105,7 +105,7 @@ class Metodos:
 
         self.log_bp = None
         self.hist_bp = []  # NOVO: histórico textual da árvore
-        self.printarsol=True
+        self.printarsol= False
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -128,6 +128,430 @@ class Metodos:
     ##############################################PARA REGISTROS NA ARVORE JSON
 
     # ===================== LOG DO BRANCH-AND-PRICE =====================
+
+    def gera_rotas_iniciais_boas(self, inst, sol, max_rotas_por_criterio=3):
+        nbcd = inst.nbcd
+        depf = inst.nbn - 1
+
+        def ready(i):
+            return inst.noh[i].READY_TIME[0] if inst.noh[i].READY_TIME else 0
+
+        def due(i):
+            return inst.noh[i].DUE_DATE[0] if inst.noh[i].DUE_DATE else 1e9
+
+        def demand(i):
+            return getattr(inst.noh[i], 'DEMAND', 0.0)
+
+        def service(i):
+            return inst.noh[i].SERVICE_TIME[0] if inst.noh[i].SERVICE_TIME else 0
+
+        def travel(k, i, j):
+            return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
+
+        def custo_seq(k, seq):
+            return sum(travel(k, seq[t], seq[t + 1]) for t in range(len(seq) - 1))
+
+        def avaliar_seq(k, seq):
+            Q = inst.veiculos[k].capacidade
+            carga = 0.0
+            tempo = 0.0
+
+            for t in range(1, len(seq)):
+                i = seq[t - 1]
+                j = seq[t]
+
+                tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
+                if tempo > due(j):
+                    return False, None, None
+
+                carga += demand(j)
+                if carga > Q:
+                    return False, None, None
+
+            return True, tempo, carga
+
+        def melhor_insercao(k, seq, cliente):
+            melhor = None
+
+            for pos in range(1, len(seq)):
+                nova = seq[:pos] + [cliente] + seq[pos:]
+                fact, tempo_final, carga_final = avaliar_seq(k, nova)
+                if not fact:
+                    continue
+
+                delta = custo_seq(k, nova) - custo_seq(k, seq)
+
+                # penaliza terminar muito perto da janela
+                folga_final = due(cliente) - max(ready(cliente), 0)
+                score = delta + 0.001 * tempo_final - 0.0001 * folga_final
+
+                if (melhor is None) or (score < melhor[0]):
+                    melhor = (score, nova)
+
+            return melhor
+
+        def add_rota(sol, k, seq):
+            binaria = [0] * nbcd
+            for no in seq:
+                if 1 <= no <= nbcd:
+                    binaria[no - 1] = 1
+
+            if k not in sol.rotas:
+                sol.rotas[k] = {
+                    'sequencia_rota': [],
+                    'rotas_binaria': [],
+                    'custo': [],
+                    'vezes_usada_geral': [],
+                    'vezes_usada_otimo': [],
+                    'lbd_iteracao': [],
+                    'artificial': [],
+                }
+
+            # evita duplicata
+            for s in sol.rotas[k]['sequencia_rota']:
+                if s == seq:
+                    return
+
+            sol.rotas[k]['sequencia_rota'].append(seq[:])
+            sol.rotas[k]['rotas_binaria'].append(binaria)
+            sol.rotas[k]['custo'].append(custo_seq(k, seq))
+            sol.rotas[k]['vezes_usada_geral'].append(0)
+            sol.rotas[k]['vezes_usada_otimo'].append(0)
+            sol.rotas[k]['lbd_iteracao'].append([])
+            sol.rotas[k]['artificial'].append(False)
+
+        clientes = list(range(1, nbcd + 1))
+
+        criterios = [
+            ("due", lambda i: due(i)),
+            ("dist", lambda i: -inst.matriz_distancia[0][i]),
+            ("demanda", lambda i: -demand(i)),
+            ("folga", lambda i: (due(i) - ready(i))),
+        ]
+
+        sol.rotas = {k: {
+            'sequencia_rota': [],
+            'rotas_binaria': [],
+            'custo': [],
+            'vezes_usada_geral': [],
+            'vezes_usada_otimo': [],
+            'lbd_iteracao': [],
+            'artificial': [],
+        } for k in range(inst.nbv)}
+
+        for nome_criterio, chave in criterios:
+            ordenados = sorted(clientes, key=chave)
+
+            usados_global = set()
+            rotas_criadas = 0
+
+            for seed in ordenados:
+                if seed in usados_global:
+                    continue
+                if rotas_criadas >= max_rotas_por_criterio:
+                    break
+
+                melhor_seed = None
+
+                for k in range(inst.nbv):
+                    seq0 = [0, seed, depf]
+                    fact, _, _ = avaliar_seq(k, seq0)
+                    if fact:
+                        c = custo_seq(k, seq0)
+                        if (melhor_seed is None) or (c < melhor_seed[0]):
+                            melhor_seed = (c, k, seq0)
+
+                if melhor_seed is None:
+                    continue
+
+                _, kbest, seq = melhor_seed
+                usados_rota = {seed}
+                melhorou = True
+
+                while melhorou:
+                    melhorou = False
+                    melhor_cand = None
+
+                    for cli in ordenados:
+                        if cli in usados_rota or cli in usados_global:
+                            continue
+
+                        ins = melhor_insercao(kbest, seq, cli)
+                        if ins is None:
+                            continue
+
+                        score, nova_seq = ins
+                        if (melhor_cand is None) or (score < melhor_cand[0]):
+                            melhor_cand = (score, cli, nova_seq)
+
+                    if melhor_cand is not None:
+                        _, cli_add, seq = melhor_cand
+                        usados_rota.add(cli_add)
+                        melhorou = True
+
+                add_rota(sol, kbest, seq)
+                usados_global.update(usados_rota)
+                rotas_criadas += 1
+
+        # fallback: se algum veículo ficou sem coluna, adiciona rota nula
+        for k in range(inst.nbv):
+            if len(sol.rotas[k]['sequencia_rota']) == 0:
+                seq = [0, depf]
+                add_rota(sol, k, seq)
+
+        sol.numero_de_rotas = [len(sol.rotas[k]['sequencia_rota']) for k in range(inst.nbv)]
+        return sol.rotas
+
+    def gera_rotas_iniciais_geometricas(self, inst, sol, n_starts=8, max_rotas_por_k=30):
+        import math
+        import random
+
+        nbcd = inst.nbcd
+        depf = inst.nbn - 1
+        depot = 0
+
+        def ready(i):
+            return inst.noh[i].READY_TIME[0] if inst.noh[i].READY_TIME else 0.0
+
+        def due(i):
+            return inst.noh[i].DUE_DATE[0] if inst.noh[i].DUE_DATE else 1e9
+
+        def service(i):
+            return inst.noh[i].SERVICE_TIME[0] if inst.noh[i].SERVICE_TIME else 0.0
+
+        def demand(i):
+            return getattr(inst.noh[i], "DEMAND", 0.0)
+
+        def travel(k, i, j):
+            return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
+
+        def custo_seq(k, seq):
+            return sum(travel(k, seq[t], seq[t + 1]) for t in range(len(seq) - 1))
+
+        def angle_from_depot(i):
+            dx = inst.noh[i].XCOORD - inst.noh[depot].XCOORD
+            dy = inst.noh[i].YCOORD - inst.noh[depot].YCOORD
+            ang = math.atan2(dy, dx)
+            if ang < 0:
+                ang += 2 * math.pi
+            return ang
+
+        def dist_from_depot(i):
+            return inst.matriz_distancia[depot][i]
+
+        def avalia_seq(k, seq):
+            Q = inst.veiculos[k].capacidade
+            carga = 0.0
+            tempo = 0.0
+
+            for t in range(1, len(seq)):
+                i = seq[t - 1]
+                j = seq[t]
+
+                tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
+                if tempo > due(j):
+                    return False, None, None
+
+                if 1 <= j <= nbcd:
+                    carga += demand(j)
+                    if carga > Q:
+                        return False, None, None
+
+            return True, tempo, carga
+
+        def melhor_insercao_cliente(k, seq, cliente, peso_tempo=0.001, peso_folga=0.0001):
+            custo_base = custo_seq(k, seq)
+            melhores = []
+
+            for pos in range(1, len(seq)):
+                nova = seq[:pos] + [cliente] + seq[pos:]
+                fact, tempo_final, _ = avalia_seq(k, nova)
+                if not fact:
+                    continue
+
+                delta = custo_seq(k, nova) - custo_base
+                folga = max(1.0, due(cliente) - ready(cliente))
+                score = delta + peso_tempo * tempo_final + peso_folga * (1.0 / folga)
+                melhores.append((score, pos, nova))
+
+            melhores.sort(key=lambda x: x[0])
+            return melhores
+
+        def add_rota(k, seq):
+            binaria = [0] * nbcd
+            for no in seq:
+                if 1 <= no <= nbcd:
+                    binaria[no - 1] = 1
+
+            for antiga in sol.rotas[k]['sequencia_rota']:
+                if antiga == seq:
+                    return
+
+            sol.rotas[k]['sequencia_rota'].append(seq[:])
+            sol.rotas[k]['rotas_binaria'].append(binaria)
+            sol.rotas[k]['custo'].append(custo_seq(k, seq))
+            sol.rotas[k]['vezes_usada_geral'].append(0)
+            sol.rotas[k]['vezes_usada_otimo'].append(0)
+            sol.rotas[k]['lbd_iteracao'].append([])
+            sol.rotas[k]['artificial'].append(False)
+
+        def two_opt(k, seq):
+            melhor = seq[:]
+            melhor_custo = custo_seq(k, melhor)
+            mudou = True
+
+            while mudou:
+                mudou = False
+                for i in range(1, len(melhor) - 3):
+                    for j in range(i + 1, len(melhor) - 1):
+                        cand = melhor[:i] + melhor[i:j + 1][::-1] + melhor[j + 1:]
+                        fact, _, _ = avalia_seq(k, cand)
+                        if not fact:
+                            continue
+                        c = custo_seq(k, cand)
+                        if c + 1e-9 < melhor_custo:
+                            melhor = cand
+                            melhor_custo = c
+                            mudou = True
+                            break
+                    if mudou:
+                        break
+
+            return melhor
+
+        # inicializa estrutura
+        sol.rotas = {}
+        for k in range(inst.nbv):
+            sol.rotas[k] = {
+                'sequencia_rota': [],
+                'rotas_binaria': [],
+                'custo': [],
+                'vezes_usada_geral': [],
+                'vezes_usada_otimo': [],
+                'lbd_iteracao': [],
+                'artificial': []
+            }
+
+        clientes = list(range(1, nbcd + 1))
+
+        base_ordenada = sorted(
+            clientes,
+            key=lambda i: (angle_from_depot(i), dist_from_depot(i))
+        )
+
+        for st in range(n_starts):
+            ordem = base_ordenada[:]
+
+            # diversificação geométrica
+            shift = 0 if len(ordem) == 0 else (st * max(1, len(ordem) // max(1, n_starts))) % len(ordem)
+            ordem = ordem[shift:] + ordem[:shift]
+
+            # alterna sentido
+            if st % 2 == 1:
+                ordem = list(reversed(ordem))
+
+            nao_atendidos = set(ordem)
+
+            while nao_atendidos:
+                seed = None
+                for c in ordem:
+                    if c in nao_atendidos:
+                        seed = c
+                        break
+
+                if seed is None:
+                    break
+
+                melhor_seed = None
+                for k in range(inst.nbv):
+                    seq0 = [0, seed, depf]
+                    fact, tempo_final, _ = avalia_seq(k, seq0)
+                    if not fact:
+                        continue
+
+                    # favorece cliente longe e urgente na semente
+                    folga = max(1.0, due(seed) - ready(seed))
+                    prioridade = custo_seq(k, seq0) - 0.01 * dist_from_depot(seed) + 1.0 / folga
+
+                    if (melhor_seed is None) or (prioridade < melhor_seed[0]):
+                        melhor_seed = (prioridade, k, seq0)
+
+                if melhor_seed is None:
+                    nao_atendidos.remove(seed)
+                    continue
+
+                _, kbest, seq = melhor_seed
+                usados = {seed}
+
+                melhorou = True
+                while melhorou:
+                    melhorou = False
+                    melhor_cliente = None
+
+                    for cli in ordem:
+                        if cli not in nao_atendidos or cli in usados:
+                            continue
+
+                        insercoes = melhor_insercao_cliente(kbest, seq, cli)
+                        if not insercoes:
+                            continue
+
+                        melhor1 = insercoes[0][0]
+                        melhor2 = insercoes[1][0] if len(insercoes) > 1 else melhor1 + 1e6
+                        regret = melhor2 - melhor1
+
+                        # score final: maior regret, com leve viés para longe/urgente
+                        folga = max(1.0, due(cli) - ready(cli))
+                        prioridade = regret + 0.01 * dist_from_depot(cli) + 1.0 / folga
+
+                        if (melhor_cliente is None) or (prioridade > melhor_cliente[0]):
+                            melhor_cliente = (prioridade, cli, insercoes[0][2])
+
+                    if melhor_cliente is not None:
+                        _, cli_add, nova_seq = melhor_cliente
+                        seq = nova_seq
+                        usados.add(cli_add)
+                        melhorou = True
+
+                seq = two_opt(kbest, seq)
+                add_rota(kbest, seq)
+
+                for u in usados:
+                    nao_atendidos.discard(u)
+
+        # sobe também unitárias viáveis
+        for i in clientes:
+            for k in range(inst.nbv):
+                seq = [0, i, depf]
+                fact, _, _ = avalia_seq(k, seq)
+                if fact:
+                    add_rota(k, seq)
+
+        # garante pelo menos uma rota por veículo
+        for k in range(inst.nbv):
+            if len(sol.rotas[k]['sequencia_rota']) == 0:
+                seq = [0, depf]
+                sol.rotas[k]['sequencia_rota'].append(seq)
+                sol.rotas[k]['rotas_binaria'].append([0] * nbcd)
+                sol.rotas[k]['custo'].append(custo_seq(k, seq))
+                sol.rotas[k]['vezes_usada_geral'].append(0)
+                sol.rotas[k]['vezes_usada_otimo'].append(0)
+                sol.rotas[k]['lbd_iteracao'].append([])
+                sol.rotas[k]['artificial'].append(False)
+
+        # limita número de rotas por veículo
+        for k in range(inst.nbv):
+            idxs = list(range(len(sol.rotas[k]['sequencia_rota'])))
+            idxs.sort(key=lambda p: sol.rotas[k]['custo'][p])
+            idxs = idxs[:max_rotas_por_k]
+
+            for chave in ['sequencia_rota', 'rotas_binaria', 'custo',
+                          'vezes_usada_geral', 'vezes_usada_otimo',
+                          'lbd_iteracao', 'artificial']:
+                sol.rotas[k][chave] = [sol.rotas[k][chave][p] for p in idxs]
+
+        sol.numero_de_rotas = [len(sol.rotas[k]['sequencia_rota']) for k in range(inst.nbv)]
+        return sol.rotas
 
     def _init_log_bp(self, inst):
         self.log_bp = {
@@ -628,14 +1052,12 @@ class Metodos:
                     no_atual.motivo_poda = "bound_herdado"
                     continue
 
-            if (raiz):
-                raiz = False
-                self.resolver_no_com_poolRAIZ(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
-            else:
-                self.resolver_no_com_pool(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
-                #self.resolver_no_com_pool_semSlack(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
+            self.resolver_no_com_pool(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
+            #self.resolver_no_com_pool_semSlack(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
 
             # caso 0: LP inviável/sem solução
+            if(no_atual.id_no==50):
+                print("")
             print(f'Tempo total: {time.time() - t00:.1f}s')
             if no_atual.custo_lp is None:
                 print("Nó inviável ou sem solução LP, podado.")
@@ -715,7 +1137,11 @@ class Metodos:
                 melhor_no_frac = no_atual
                 print(f"ATUALIZOU MELHOR FRAC Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
 
-            filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
+            if (z_mip != z_lp):
+                print("DIVIDE")
+                filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
+            else:
+                print("INTEIROSS")
             # filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
 
             if (filho_esq is not None) and (filho_dir is not None):
@@ -2043,6 +2469,120 @@ class Metodos:
             return melhor_coluna, melhor_rc
 
         return None, None
+
+    def SUB_PROG_DIN_BIDIRECIONAL_CPP(
+            self, inst, pi, sigma_k, k,
+            arcos_proibidos=None,
+            arcos_fixados=None,
+            mu_arc=None,
+            eps=1e-6
+    ):
+        import os
+        import sys
+        import numpy as np
+
+        from pathlib import Path
+        import sys
+
+        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        p_release = base / "x64" / "Release"
+        p_debug = base / "x64" / "Debug"
+
+        if p_release.exists():
+            sys.path.append(str(p_release))
+        if p_debug.exists():
+            sys.path.append(str(p_debug))
+
+        import vrptw_pd
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = inst.nbn - 1
+
+        tt = np.array([
+            [inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade for j in range(nbn)]
+            for i in range(nbn)
+        ], dtype=np.float64)
+
+        a = np.array(
+            [inst.noh[i].READY_TIME[0] if inst.noh[i].READY_TIME else 0.0 for i in range(nbn)],
+            dtype=np.float64
+        )
+        b = np.array(
+            [inst.noh[i].DUE_DATE[0] if inst.noh[i].DUE_DATE else 1e9 for i in range(nbn)],
+            dtype=np.float64
+        )
+        s = np.array(
+            [inst.noh[i].SERVICE_TIME[0] if inst.noh[i].SERVICE_TIME else 0.0 for i in range(nbn)],
+            dtype=np.float64
+        )
+        d = np.array(
+            [inst.noh[i].DEMAND if hasattr(inst.noh[i], "DEMAND") else 0.0 for i in range(nbn)],
+            dtype=np.float64
+        )
+
+        cap_k = float(inst.veiculos[k].capacidade)
+
+        if mu_arc is None:
+            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+        else:
+            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+            for key, val in mu_arc.items():
+                if len(key) == 3:
+                    i, j, kk = key
+                    if kk != k:
+                        continue
+                else:
+                    i, j = key
+                mu_flat[i * nbn + j] = float(val)
+
+        forbid_flat = np.zeros(nbn * nbn, dtype=np.uint8)
+        if arcos_proibidos:
+            for arco in arcos_proibidos:
+                if len(arco) == 3:
+                    i, j, kk = arco
+                    if kk != k:
+                        continue
+                else:
+                    i, j = arco
+                forbid_flat[i * nbn + j] = 1
+
+        req_i, req_j = [], []
+        if arcos_fixados:
+            for arco in arcos_fixados:
+                if len(arco) == 3:
+                    i, j, kk = arco
+                    if kk != k:
+                        continue
+                else:
+                    i, j = arco
+                req_i.append(i)
+                req_j.append(j)
+
+        rota, rc = vrptw_pd.sub_prog_din_bidirecional(
+            tt=tt,
+            a=a.tolist(),
+            b=b.tolist(),
+            s=s.tolist(),
+            d=d.tolist(),
+            pi=list(map(float, pi)),
+            sigma_k=float(sigma_k),
+            cap_k=cap_k,
+            nbcd=nbcd,
+            dep0=dep0,
+            depf=depf,
+            mu_flat=mu_flat.tolist(),
+            forbid_flat=forbid_flat.tolist(),
+            req_i=req_i,
+            req_j=req_j,
+            eps=float(eps),
+        )
+
+        if rota is None:
+            return None, None
+
+        return rota, rc
 
     def SUB_PROG_DIN_BIDIRECIONAL(self, inst, pi, sigma_k, k, NO_BP,
                                   arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
@@ -4150,7 +4690,7 @@ class Metodos:
 
         return None, None
 
-    def SUB_VNSRANDOMant(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+    def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
                       n_starts=30, eps=1e-6):
         import math
         import random
@@ -4593,7 +5133,9 @@ class Metodos:
 
         return None, None
 
-    def SUB_VNSRANDOM(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+
+
+    def SUB_VNSRANDOMant(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
                       n_starts=30, eps=1e-6):
         import math
         import random
@@ -7232,7 +7774,9 @@ class Metodos:
 
 
                 if nova_rota is None:
-                    nova_rota, custo_red = self.SUB_PROG_DIN_PW(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
+                    #nova_rota, custo_red = self.SUB_PROG_DIN_PW(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
+                    nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
+
                     if nova_rota is not None:
                         sol_pool.construtivas[3] += 1
                         print("gerou na 4")
@@ -7665,6 +8209,8 @@ class Metodos:
                 no_bp.solucao_inteira = False
                 no_bp.lambdas = {}
                 return
+            if model.ObjVal<192:
+                break
 
             print(
                 f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
@@ -7720,6 +8266,8 @@ class Metodos:
                     print(
                         f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f})")
 
+            """
+
             print("\n--- COBERTURA POR CLIENTE ---")
             for i in range(inst.nbcd):
                 soma_lambda = 0.0
@@ -7738,6 +8286,7 @@ class Metodos:
                     f"slack={float(slack_vis[i].X):.6f} | "
                     f"total={soma_lambda + float(slack_vis[i].X):.6f}"
                 )
+            """
             # duais
             #subsitui por uma funcao
             """
@@ -7779,13 +8328,55 @@ class Metodos:
             if no_bp.matriz_rc == {}:
                 no_bp.criaMatriRC(inst)
 
+            #"""
             novas_colunas = self.gerar_novas_colunas_com_duais(
                 inst=inst,sol_pool=sol_pool,no_bp=no_bp,pi=pi,sigma=sigma,
                 mu_arc_por_k=mu_arc_por_k,EPS_RC=EPS_RC
             )
+            #"""
+            # definir limiar dinâmico
+            if iter_cg < 15:
+                limiar_rc = -0.10
+            elif iter_cg < 40:
+                limiar_rc = -0.05
+            else:
+                limiar_rc = -EPS_RC
+
+            usar_insertion = (slack_sum_total > 4.0)
+
+            # chamada principal
+            """
+            novas_colunas = self.gerar_novas_colunas_com_duais(
+                inst=inst,
+                sol_pool=sol_pool,
+                no_bp=no_bp,
+                pi=pi,
+                sigma=sigma,
+                mu_arc_por_k=mu_arc_por_k,
+                EPS_RC=EPS_RC,
+                limiar_rc=limiar_rc
+            )
+
+            # fallback (se travar)
+            if not novas_colunas and limiar_rc < -EPS_RC:
+                novas_colunas = self.gerar_novas_colunas_com_duais(
+                    inst=inst,
+                    sol_pool=sol_pool,
+                    no_bp=no_bp,
+                    pi=pi,
+                    sigma=sigma,
+                    mu_arc_por_k=mu_arc_por_k,
+                    EPS_RC=EPS_RC,
+                    limiar_rc=-EPS_RC
+                )
+            """
+
             tentativasLP+=1
             #teste- alteracao para funcao
             """"""
+
+
+
             if not novas_colunas:# or tentativasLP==60:
                 #teste de numero de iteracoes sem mudar a FO
                 if rodadas_sem_melhoria>=nmaxrodadas_sem_melhoria and colunas_reais_usadas:
@@ -8250,7 +8841,7 @@ class Metodos:
         return pi, sigma, mu_arc_por_k
 
 
-    def gerar_novas_colunas_com_duais(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+    def gerar_novas_colunas_com_duaisant(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
         import time
 
         novas_colunas = []
@@ -8267,13 +8858,13 @@ class Metodos:
             custo_red = None
 
             if (inst.nbconstrutiva != 0 and inst.nbconstrutiva != 22):
-                #nova_rota, custo_red = self.SUB_VNSRANDOM(
-                #    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                #)
-
-                nova_rota2, custo_red2 = self.SUB_VNSRANDOMant(
+                nova_rota, custo_red = self.SUB_VNSRANDOM(
                     inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
+
+                #nova_rota2, custo_red2 = self.SUB_VNSRANDOMant(
+                #    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                #)
 
                 if nova_rota is not None:
                     sol_pool.construtivas[0] += 1
@@ -8358,6 +8949,645 @@ class Metodos:
 
         return novas_colunas
 
+    def gerar_novas_colunas_com_duaismanha(
+            self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC,
+            limiar_rc=None, usar_insertion=True
+    ):
+        if limiar_rc is None:
+            limiar_rc = -EPS_RC
+
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        # round-robin
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        # função de similaridade leve
+        def rota_parecida(seq, rotas_existentes, limiar=0.9):
+            arcos_novos = {(seq[t], seq[t + 1]) for t in range(len(seq) - 1)}
+
+            for seq2 in rotas_existentes:
+                arcos_old = {(seq2[t], seq2[t + 1]) for t in range(len(seq2) - 1)}
+
+                inter = len(arcos_novos & arcos_old)
+                base = max(1, min(len(arcos_novos), len(arcos_old)))
+
+                if inter / base >= limiar:
+                    return True
+            return False
+
+        # ordem de tentativa dos veículos
+        lista_k_tentativa = []
+        nks = len(ks)
+        for off in range(nks):
+            idx = (no_bp.prox_k_idx + off) % nks
+            lista_k_tentativa.append(ks[idx])
+
+        max_colunas_aceitas = 1
+
+        for k in lista_k_tentativa:
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            candidatas = []
+
+            # -----------------------
+            # HEURÍSTICAS
+            # -----------------------
+
+            # insertion (controlada)
+            if usar_insertion and inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None:
+                    candidatas.append({"rota": rota, "rc": float(rc), "metodo": 1})
+
+            # bidirecional
+            if inst.nbconstrutiva != 3:
+                rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None:
+                    candidatas.append({"rota": rota, "rc": float(rc), "metodo": 3})
+
+            if not candidatas:
+                continue
+
+            # ordena por melhor rc
+            candidatas.sort(key=lambda x: x["rc"])
+
+            escolhida = None
+
+            for cand in candidatas:
+                seq = cand["rota"]["clientes"]
+                rc = cand["rc"]
+
+                print(f"[Nó {no_bp.id_no}] k={k} | tenta metodo={cand['metodo']} | rc={rc:.6f}")
+
+                # filtro rc
+                if rc >= limiar_rc:
+                    continue
+
+                # respeita branching
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    continue
+
+                # filtro 1: rota idêntica
+                if seq in sol_pool.rotas[k]["sequencia_rota"]:
+                    print("REJEITA: rota idêntica")
+                    continue
+
+                # filtro 2: rota parecida
+                if rota_parecida(seq, sol_pool.rotas[k]["sequencia_rota"], 0.9):
+                    print("REJEITA: muito parecida")
+                    continue
+
+                escolhida = cand
+                break
+
+            if escolhida is None:
+                continue
+
+            seq = escolhida["rota"]["clientes"]
+            rc = escolhida["rc"]
+
+            escolhida["rota"]["custo_reduzido"] = rc
+
+            novas_colunas.append((
+                k,
+                seq,
+                escolhida["rota"]["bin_xij"],
+                escolhida["rota"]["custo"],
+                rc
+            ))
+
+            print(f"[Nó {no_bp.id_no}] k={k} | ACEITA | rc={rc:.6f} | seq={seq}")
+
+            # contabiliza heurística
+            sol_pool.construtivas[escolhida["metodo"]] += 1
+
+            # tabu update
+            mat = no_bp.tabu_until[k]
+            for i in range(inst.nbn):
+                for j in range(inst.nbn):
+                    if mat[i][j] > 0:
+                        mat[i][j] -= 1
+
+            for t in range(len(seq) - 1):
+                i, j = seq[t], seq[t + 1]
+                no_bp.freq_arc[k][i][j] += 1
+                no_bp.last_arc[k][i][j] = 0
+                no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+            # atualiza round-robin
+            pos_k = ks.index(k)
+            no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+
+            if len(novas_colunas) >= max_colunas_aceitas:
+                break
+
+        return novas_colunas
+
+    def gerar_novas_colunas_com_duais5(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC, limiar_rc=None):
+        if limiar_rc is None:
+            limiar_rc = -EPS_RC
+
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        # round-robin
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        # fase inicial: enquanto todos tiverem só artificiais
+        num_artificiais_iniciais = 2
+        so_artificiais = True
+        for kk in ks:
+            if len(sol_pool.rotas[kk]["sequencia_rota"]) > num_artificiais_iniciais:
+                so_artificiais = False
+                break
+
+        if so_artificiais:
+            lista_k_tentativa = ks[:]
+            max_colunas_aceitas = len(ks)
+        else:
+            lista_k_tentativa = []
+            nks = len(ks)
+            for off in range(nks):
+                idx = (no_bp.prox_k_idx + off) % nks
+                lista_k_tentativa.append(ks[idx])
+            max_colunas_aceitas = 1
+
+        for k in lista_k_tentativa:
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            melhor_rota = None
+            melhor_custo_red = float("inf")
+            metodo_escolhido = -1
+
+            # 1) ALL BEST INSERTION
+            if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 1
+
+            # se insertion já achou coluna suficientemente boa, não chama o bidirecional
+            if not (melhor_rota is not None and melhor_custo_red < limiar_rc):
+                if inst.nbconstrutiva != 3:
+                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+                    if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                        melhor_rota = rota
+                        melhor_custo_red = float(rc)
+                        metodo_escolhido = 3
+
+            if melhor_rota is None:
+                print(f"[Nó {no_bp.id_no}] k={k} | nenhuma coluna encontrada")
+                continue
+
+            print(
+                f"[Nó {no_bp.id_no}] k={k} | melhor metodo={metodo_escolhido} | "
+                f"rc={float(melhor_custo_red):.6f} | limiar={float(limiar_rc):.6f}"
+            )
+
+            if metodo_escolhido >= 0:
+                sol_pool.construtivas[metodo_escolhido] += 1
+
+            if float(melhor_custo_red) < limiar_rc:
+                seq = melhor_rota["clientes"]
+
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    print(f"[Nó {no_bp.id_no}] k={k} | REJEITA por não respeitar nó | seq={seq}")
+                    continue
+
+                melhor_rota["custo_reduzido"] = float(melhor_custo_red)
+
+                novas_colunas.append((
+                    k,
+                    seq,
+                    melhor_rota["bin_xij"],
+                    melhor_rota["custo"],
+                    float(melhor_custo_red)
+                ))
+
+                print(
+                    f"[Nó {no_bp.id_no}] k={k} | ACEITA | "
+                    f"rc={float(melhor_custo_red):.6f} | seq={seq}"
+                )
+
+                # tabu
+                mat = no_bp.tabu_until[k]
+                for i in range(inst.nbn):
+                    for j in range(inst.nbn):
+                        if mat[i][j] > 0:
+                            mat[i][j] -= 1
+
+                for t in range(len(seq) - 1):
+                    i, j = seq[t], seq[t + 1]
+                    no_bp.freq_arc[k][i][j] += 1
+                    no_bp.last_arc[k][i][j] = 0
+                    no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+                if len(novas_colunas) >= max_colunas_aceitas:
+                    pos_k = ks.index(k)
+                    no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+                    break
+            else:
+                print(
+                    f"[Nó {no_bp.id_no}] k={k} | REJEITA por limiar | "
+                    f"rc={float(melhor_custo_red):.6f} | limiar={float(limiar_rc):.6f}"
+                )
+
+        return novas_colunas
+
+    def gerar_novas_colunas_com_duais4(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC, limiar_rc=None):
+        if limiar_rc is None:
+            limiar_rc = -EPS_RC
+
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        # round-robin
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        # fase inicial: enquanto todos tiverem só artificiais
+        num_artificiais_iniciais = 2
+        so_artificiais = True
+        for kk in ks:
+            if len(sol_pool.rotas[kk]["sequencia_rota"]) > num_artificiais_iniciais:
+                so_artificiais = False
+                break
+
+        if so_artificiais:
+            lista_k_tentativa = ks[:]
+            max_colunas_aceitas = len(ks)
+        else:
+            lista_k_tentativa = []
+            nks = len(ks)
+            for off in range(nks):
+                idx = (no_bp.prox_k_idx + off) % nks
+                lista_k_tentativa.append(ks[idx])
+            max_colunas_aceitas = 1
+
+        for k in lista_k_tentativa:
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            melhor_rota = None
+            melhor_custo_red = float("inf")
+            metodo_escolhido = -1
+
+            # 1) ALL BEST INSERTION
+            if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 1
+
+            # early stop: se a insertion já achou coluna suficientemente boa,
+            # não chama o bidirecional
+            if not (melhor_rota is not None and melhor_custo_red < limiar_rc):
+                # 3) BIDIRECIONAL
+                if inst.nbconstrutiva != 3:
+                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+                    if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                        melhor_rota = rota
+                        melhor_custo_red = float(rc)
+                        metodo_escolhido = 3
+
+            if melhor_rota is None:
+                continue
+
+            if metodo_escolhido >= 0:
+                sol_pool.construtivas[metodo_escolhido] += 1
+
+            if float(melhor_custo_red) < limiar_rc:
+                seq = melhor_rota["clientes"]
+
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    continue
+
+                melhor_rota["custo_reduzido"] = float(melhor_custo_red)
+
+                novas_colunas.append((
+                    k,
+                    seq,
+                    melhor_rota["bin_xij"],
+                    melhor_rota["custo"],
+                    float(melhor_custo_red)
+                ))
+
+                # tabu
+                mat = no_bp.tabu_until[k]
+                for i in range(inst.nbn):
+                    for j in range(inst.nbn):
+                        if mat[i][j] > 0:
+                            mat[i][j] -= 1
+
+                for t in range(len(seq) - 1):
+                    i, j = seq[t], seq[t + 1]
+                    no_bp.freq_arc[k][i][j] += 1
+                    no_bp.last_arc[k][i][j] = 0
+                    no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+                if len(novas_colunas) >= max_colunas_aceitas:
+                    pos_k = ks.index(k)
+                    no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+                    break
+
+        return novas_colunas
+
+    def gerar_novas_colunas_com_duais(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        # round-robin
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        # fase inicial: enquanto todos tiverem só artificiais
+        num_artificiais_iniciais = 2
+        so_artificiais = True
+        for kk in ks:
+            if len(sol_pool.rotas[kk]["sequencia_rota"]) > num_artificiais_iniciais:
+                so_artificiais = False
+                break
+
+        if so_artificiais:
+            lista_k_tentativa = ks[:]
+            max_colunas_aceitas = len(ks)
+        else:
+            lista_k_tentativa = []
+            nks = len(ks)
+            for off in range(nks):
+                idx = (no_bp.prox_k_idx + off) % nks
+                lista_k_tentativa.append(ks[idx])
+            max_colunas_aceitas = 1
+
+        for k in lista_k_tentativa:
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            melhor_rota = None
+            melhor_custo_red = float("inf")
+            metodo_escolhido = -1
+
+            # 1) ALL BEST INSERTION
+            if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 1
+
+            # early stop: achou coluna boa na heurística
+            if melhor_rota is not None and melhor_custo_red < -EPS_RC:
+                pass
+            else:
+                # 3) BIDIRECIONAL
+                if inst.nbconstrutiva != 3:
+
+                    #CPPP
+                    t0=time.time()
+                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
+                        inst, pi, sigma[k], k,
+                        arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                        arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                        mu_arc=mu_arc
+                    )
+                    t2=time.time()
+                    print(f'Tempo CPP {t2-t0}')
+                    """
+                    print("BID CPP")
+                    print(rota)
+
+
+                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    )
+
+                    print(f'Tempo PYTHON {time.time()-t2}')
+                    print("BID PYTHON")
+                    print(rota)
+                    """
+
+
+                    if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                        melhor_rota = rota
+                        melhor_custo_red = float(rc)
+                        metodo_escolhido = 3
+
+            if melhor_rota is None:
+                #PD COMPLETA
+                rota, rc = self.SUB_VNSRANDOM(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 3
+            if melhor_rota is None:
+                continue
+
+            if metodo_escolhido >= 0:
+                sol_pool.construtivas[metodo_escolhido] += 1
+
+            if float(melhor_custo_red) < -EPS_RC:
+                seq = melhor_rota["clientes"]
+
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    continue
+
+                melhor_rota["custo_reduzido"] = float(melhor_custo_red)
+
+                novas_colunas.append((
+                    k,
+                    seq,
+                    melhor_rota["bin_xij"],
+                    melhor_rota["custo"],
+                    float(melhor_custo_red)
+                ))
+
+                # tabu
+                mat = no_bp.tabu_until[k]
+                for i in range(inst.nbn):
+                    for j in range(inst.nbn):
+                        if mat[i][j] > 0:
+                            mat[i][j] -= 1
+
+                for t in range(len(seq) - 1):
+                    i, j = seq[t], seq[t + 1]
+                    no_bp.freq_arc[k][i][j] += 1
+                    no_bp.last_arc[k][i][j] = 0
+                    no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+                if len(novas_colunas) >= max_colunas_aceitas:
+                    pos_k = ks.index(k)
+                    no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+                    break
+
+        return novas_colunas
+
+    def gerar_novas_colunas_com_duais3(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+        import time
+
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        print("\n================ GERAR NOVAS COLUNAS ================")
+        print(f"[Nó {no_bp.id_no}] ks disponíveis = {ks}")
+
+        # controle round-robin
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        print(f"[Nó {no_bp.id_no}] prox_k_idx antes = {no_bp.prox_k_idx}")
+
+        # detectar fase inicial (só artificiais)
+        num_artificiais_iniciais = 2
+
+        so_artificiais = True
+        for kk in ks:
+            if len(sol_pool.rotas[kk]["sequencia_rota"]) > num_artificiais_iniciais:
+                so_artificiais = False
+                break
+
+        # definir lista de veículos a tentar
+        if so_artificiais:
+            lista_k_tentativa = ks[:]
+            max_colunas_aceitas = len(ks)
+        else:
+            lista_k_tentativa = []
+            nks = len(ks)
+            for off in range(nks):
+                idx = (no_bp.prox_k_idx + off) % nks
+                lista_k_tentativa.append(ks[idx])
+            max_colunas_aceitas = 1
+
+        print(f"[Nó {no_bp.id_no}] so_artificiais = {so_artificiais}")
+        print(f"[Nó {no_bp.id_no}] lista_k_tentativa = {lista_k_tentativa}")
+        print(f"[Nó {no_bp.id_no}] max_colunas_aceitas = {max_colunas_aceitas}")
+
+        # loop de tentativa
+        for k in lista_k_tentativa:
+
+            print(f"\n[Nó {no_bp.id_no}] >>> Tentando gerar coluna para veículo k={k}")
+            print(f"[Nó {no_bp.id_no}] colunas atuais de k={k}: {len(sol_pool.rotas[k]['sequencia_rota'])}")
+
+            proibidos_k = {(i, j) for (i, j, kk) in no_bp.arcos_proibidos if kk == k}
+            fixados_k = {(i, j) for (i, j, kk) in no_bp.arcos_fixados_em_1 if kk == k}
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            melhor_rota = None
+            melhor_custo_red = float("inf")
+            metodo_escolhido = -1
+
+            # ===== VNS RANDOM ANT =====
+            if (inst.nbconstrutiva != 0 and inst.nbconstrutiva != 22):
+                rota, rc = self.SUB_VNSRANDOMant(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                print(f"[Nó {no_bp.id_no}] k={k} | método 0 VNS -> {'OK' if rota else 'X'} | rc={rc}")
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 0
+
+            # ===== ALL INSERTION =====
+            if (inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22):
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                print(f"[Nó {no_bp.id_no}] k={k} | método 1 INSERTION -> {'OK' if rota else 'X'} | rc={rc}")
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 1
+
+            # ===== HEUR VNS =====
+            if (inst.nbconstrutiva != 2 and inst.nbconstrutiva != 22):
+                rota, rc = self.SUB_HEUR_VNS(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                print(f"[Nó {no_bp.id_no}] k={k} | método 2 HEUR_VNS -> {'OK' if rota else 'X'} | rc={rc}")
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 2
+
+            # ===== BIDIRECIONAL =====
+            if (inst.nbconstrutiva != 3):
+                rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                )
+                print(f"[Nó {no_bp.id_no}] k={k} | método 3 BID -> {'OK' if rota else 'X'} | rc={rc}")
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 3
+
+            # nenhum método achou
+            if melhor_rota is None:
+                print(f"[Nó {no_bp.id_no}] k={k} | nenhum método gerou coluna")
+                continue
+
+            print(f"[Nó {no_bp.id_no}] k={k} | melhor método = {metodo_escolhido} | melhor_rc = {melhor_custo_red:.6f}")
+
+            nova_rota = melhor_rota
+            custo_red = melhor_custo_red
+
+            if metodo_escolhido >= 0:
+                sol_pool.construtivas[metodo_escolhido] += 1
+
+            nova_rota["custo_reduzido"] = float(custo_red)
+
+            if float(custo_red) < -EPS_RC:
+                seq = nova_rota["clientes"]
+
+                if not self.coluna_respeita_no(no_bp, seq, k):
+                    print(f"[Nó {no_bp.id_no}] k={k} | coluna rejeitada por restrição")
+                    continue
+
+                novas_colunas.append((k, seq, nova_rota["bin_xij"], nova_rota["custo"], float(custo_red)))
+
+                print(f"[Nó {no_bp.id_no}] k={k} | COLUNA ACEITA | rc={float(custo_red):.6f} | seq={seq}")
+
+                # tabu
+                mat = no_bp.tabu_until[k]
+                for i in range(inst.nbn):
+                    for j in range(inst.nbn):
+                        if mat[i][j] > 0:
+                            mat[i][j] -= 1
+
+                for t in range(len(seq) - 1):
+                    i, j = seq[t], seq[t + 1]
+                    no_bp.freq_arc[k][i][j] += 1
+                    no_bp.last_arc[k][i][j] = 0
+                    no_bp.tabu_until[k][i][j] = no_bp.tabu_tenure
+
+                # parar se atingiu limite da iteração
+                if len(novas_colunas) >= max_colunas_aceitas:
+                    pos_k = ks.index(k)
+                    no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+
+                    print(f"[Nó {no_bp.id_no}] parada após aceitar {len(novas_colunas)} coluna(s)")
+                    print(f"[Nó {no_bp.id_no}] prox_k_idx depois = {no_bp.prox_k_idx}")
+
+                    break
+
+        return novas_colunas
 
     def resolve_mip_pool_para_intensificacao(self, inst, sol_pool, no_bp, rota_usa_arco):
         import gurobipy as gp
@@ -9259,7 +10489,7 @@ class Metodos:
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
         )
-        model.Params.TimeLimit = 60
+        model.Params.TimeLimit = 600
         """
         T_retorno = model.addVar(vtype=GRB.CONTINUOUS, name='T_retorno')
         model.addConstr(
