@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Plot Instância Cartesiana</title>
+<style>
+  body { font-family: Arial; }
+  canvas { border: 1px solid #000; }
+</style>
+</head>
+<body>
+
+<h3>Plot da Instância</h3>
+<canvas id="canvas" width="900" height="700"></canvas>
+
+<script>
+// ====== AJUSTE AQUI ======
+const CAMINHO_ARQUIVO = "instancias/r101.txt";
+
+// ROTAS (edite aqui)
+const ROTAS = [
+  
+  [0,39,23,22,4,25,51] ,
+  [0,5,16,37,51] ,
+  [0,45,8,46,17,51] ,
+  [0,2,21,40,50,1,51] ,
+  [0,33,29,9,34,35,51] ,
+  [0,36,47,7,10,51] ,
+  [0,42,15,41,26,51] ,
+  [0,27,18,6,51],
+  [0,31,30,20,32,51] ,
+[0,11,19,49,48,51] ,
+[0,14,44,38,43,13,51] ,
+[0,28,12,3,24,51] ,
+
+];
+
+
+// =========================
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function parseInstancia(texto) {
+  const linhas = texto.split("\n");
+  const pontos = [];
+  let start = false;
+
+  for (let i = 0; i < linhas.length; i++) {
+    if (linhas[i].includes("TIME2") || linhas[i].includes("CUST NO.")) {
+      start = true;
+      continue;
+    }
+
+    if (start) {
+      if (pontos.length >= 51) break; // <<< LIMITADOR
+
+      const p = linhas[i].trim().split(/\s+/);
+      if (p.length < 3) continue;
+      if (isNaN(parseInt(p[0])) || isNaN(parseFloat(p[1])) || isNaN(parseFloat(p[2]))) continue;
+
+      pontos.push({
+        id: parseInt(p[0]),
+        x: parseFloat(p[1]),
+        y: parseFloat(p[2])
+      });
+    }
+  }
+
+  // depósito final
+  if (pontos.length > 0) {
+    pontos.push({
+      id: pontos.length,
+      x: pontos[0].x,
+      y: pontos[0].y
+    });
+  }
+
+  return pontos;
+}
+function desenharCirculo(x, y, raio, cor) {
+  ctx.beginPath();
+  ctx.arc(x, y, raio, 0, 2 * Math.PI);
+  ctx.fillStyle = cor;
+  ctx.fill();
+}
+
+function desenharLosango(x, y, tamanho, cor) {
+  ctx.beginPath();
+  ctx.moveTo(x, y - tamanho);
+  ctx.lineTo(x + tamanho, y);
+  ctx.lineTo(x, y + tamanho);
+  ctx.lineTo(x - tamanho, y);
+  ctx.closePath();
+  ctx.fillStyle = cor;
+  ctx.fill();
+}
+function desenharSetaNoSegmento(x1, y1, x2, y2, cor) {
+  const ang = Math.atan2(y2 - y1, x2 - x1);
+
+  // posição da seta: 75% do segmento
+  const t = 0.75;
+  const xm = x1 + (x2 - x1) * t;
+  const ym = y1 + (y2 - y1) * t;
+
+  const tamanho = 8;
+  const abertura = Math.PI / 7;
+
+  ctx.beginPath();
+  ctx.moveTo(xm, ym);
+  ctx.lineTo(
+    xm - tamanho * Math.cos(ang - abertura),
+    ym - tamanho * Math.sin(ang - abertura)
+  );
+  ctx.moveTo(xm, ym);
+  ctx.lineTo(
+    xm - tamanho * Math.cos(ang + abertura),
+    ym - tamanho * Math.sin(ang + abertura)
+  );
+
+  ctx.strokeStyle = cor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+
+function desenharQuadrado(x, y, tamanho, cor) {
+  ctx.fillStyle = cor;
+  ctx.fillRect(x - tamanho, y - tamanho, 2 * tamanho, 2 * tamanho);
+}
+
+function plotar(pontos) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const xs = pontos.map(p => p.x);
+  const ys = pontos.map(p => p.y);
+
+  const minXReal = Math.min(...xs);
+  const maxXReal = Math.max(...xs);
+  const minYReal = Math.min(...ys);
+  const maxYReal = Math.max(...ys);
+
+  const minX = Math.floor(minXReal) - 1;
+  const maxX = Math.ceil(maxXReal) + 1;
+  const minY = Math.floor(minYReal) - 1;
+  const maxY = Math.ceil(maxYReal) + 1;
+
+  const margemEsq = 60;
+  const margemDir = 20;
+  const margemTopo = 20;
+  const margemInf = 50;
+
+  const larguraUtil = canvas.width - margemEsq - margemDir;
+  const alturaUtil = canvas.height - margemTopo - margemInf;
+
+  function escalaX(x) {
+    return margemEsq + ((x - minX) / (maxX - minX)) * larguraUtil;
+  }
+
+  function escalaY(y) {
+    return canvas.height - margemInf - ((y - minY) / (maxY - minY)) * alturaUtil;
+  }
+
+  function desenharGrade() {
+    ctx.save();
+
+    ctx.strokeStyle = "rgba(120,120,120,0.22)";
+    ctx.lineWidth = 1;
+    ctx.font = "11px Arial";
+    ctx.fillStyle = "#444";
+
+    for (let x = minX; x <= maxX; x += 1) {
+      const px = escalaX(x);
+
+      ctx.beginPath();
+      ctx.moveTo(px, margemTopo);
+      ctx.lineTo(px, canvas.height - margemInf);
+      ctx.stroke();
+
+      ctx.fillText(x.toString(), px - 6, canvas.height - margemInf + 15);
+    }
+
+    for (let y = minY; y <= maxY; y += 1) {
+      const py = escalaY(y);
+
+      ctx.beginPath();
+      ctx.moveTo(margemEsq, py);
+      ctx.lineTo(canvas.width - margemDir, py);
+      ctx.stroke();
+
+      ctx.fillText(y.toString(), 8, py + 4);
+    }
+
+    ctx.strokeStyle = "rgba(40,40,40,0.55)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(margemEsq, margemTopo, larguraUtil, alturaUtil);
+
+    ctx.restore();
+  }
+
+  desenharGrade();
+
+  // rotas
+ROTAS.forEach((rota, r) => {
+  const cor = ["blue", "orange", "purple", "brown", "teal"][r % 5];
+
+  for (let i = 0; i < rota.length - 1; i++) {
+    const p1 = pontos[rota[i]];
+    const p2 = pontos[rota[i + 1]];
+
+    if (!p1 || !p2) continue;
+
+    const x1 = escalaX(p1.x);
+    const y1 = escalaY(p1.y);
+    const x2 = escalaX(p2.x);
+    const y2 = escalaY(p2.y);
+
+    // linha do arco
+    ctx.beginPath();
+    ctx.strokeStyle = cor;
+    ctx.lineWidth = 2.5;
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+
+    // seta de direção
+    desenharSetaNoSegmento(x1, y1, x2, y2, cor);
+  }
+});
+  // pontos
+  pontos.forEach((p, idx) => {
+    const x = escalaX(p.x);
+    const y = escalaY(p.y);
+
+    if (idx === 0) {
+      desenharLosango(x, y, 8, "#14833b");   // depósito inicial
+    } else if (idx === pontos.length - 1) {
+      desenharQuadrado(x, y, 7, "#c62828");  // depósito final
+    } else {
+      desenharCirculo(x, y, 5.5, "#111111"); // clientes
+    }
+
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText(p.id, x + 8, y - 8);
+  });
+}
+
+// ===== carregar automático =====
+fetch(CAMINHO_ARQUIVO)
+  .then(res => res.text())
+  .then(texto => {
+    const pontos = parseInstancia(texto);
+    plotar(pontos);
+  })
+  .catch(err => {
+    console.error("Erro ao carregar arquivo:", err);
+  });
+
+</script>
+
+</body>
+</html>

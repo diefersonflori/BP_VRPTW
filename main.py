@@ -15,9 +15,9 @@ ARQ_CSV_FINAL = "resultados_finais.csv"
 ARQ_TXT_FINAL = "resultados_finais_legivel.txt"
 
 import os
-#import sys
+import sys
 
-sys.stdout = open(os.devnull, 'w')
+#sys.stdout = open(os.devnull, 'w')
 # =========================
 # Arquivos de saída
 # =========================
@@ -83,32 +83,41 @@ combinacao_construtivas=[10]#10 só pra testar ta ligado? quero tirar ninguem n�
 
 
 #todas_instancias = ["instancias/r110.txt"]
-#"""
-todas_instancias = ["instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
-                    "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt",
+"""
+todas_instancias = ["instancias/c107.txt",
                     "instancias/c108.txt", "instancias/c109.txt"]#,
-#"""
+"""
 """
 "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
 todas_instancias = [ "instancias/c203.txt", "instancias/c204.txt",
                     "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt"]
+                    
+                    "instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
+                    "instancias/c105.txt", "instancias/c106.txt", 
+                    
 """
 "instancias/c201.txt","instancias/c202.txt",
-"""
-
-todas_instancias = ["instancias/r101.txt","instancias/r102.txt",
-                  "instancias/r103.txt","instancias/r104.txt",
-                  "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
-                  "instancias/r108.txt"]
-
-
-"""
-"""
-#todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
-#                      "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
-#                      "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
-#                      "instancias/r111.txt","instancias/r112.txt"])
+#C25
 #"""
+
+todas_instancias = ["instancias/c101N.txt","instancias/c102.txt","instancias/c103.txt",
+                     "instancias/c104.txt","instancias/c105.txt","instancias/c106.txt", "instancias/c107.txt",
+                     "instancias/c108.txt", "instancias/c109.txt","instancias/r101.txt","instancias/r102.txt",
+                     "instancias/r103.txt","instancias/r104.txt",
+                     "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
+                     "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
+                     "instancias/r111.txt","instancias/r112.txt"]
+
+nbv=[3,3,3,3,3,3,3,3,3]#C25
+#"""
+#R25
+"""
+todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+                      "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
+                      "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
+                      "instancias/r111.txt","instancias/r112.txt"])
+nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]#R25
+"""
 #todas_instancias = (["instancias/c103.txt"])
 """    
 "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
@@ -119,39 +128,129 @@ todas_instancias = ["instancias/r101.txt","instancias/r102.txt",
 #                     "instancias/c104.txt","instancias/c105.txt","instancias/c106.txt", "instancias/c107.txt",
 #                    "instancias/c108.txt", "instancias/c109.txt"])
 
+#C50
+"""
+todas_instancias = ["instancias/c101N.txt",
+                    "instancias/c102.txt", "instancias/c103.txt","instancias/c105.txt", "instancias/c106.txt",
+                    "instancias/c107.txt", "instancias/c108.txt"]#,
+nbv=[5,5,4,5,5,5,5]#C50
+"""
+
+#R50
+#"""
+"""
+todas_instancias = (["instancias/r101.txt","instancias/r102.txt","instancias/r103.txt",
+                      "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
+                     "instancias/r110.txt"])
+"""
+#RC25
+#todas_instancias = (["instancias/rc101.txt","instancias/rc102.txt","instancias/rc103.txt",
+#                      "instancias/rc104.txt","instancias/rc105.txt","instancias/rc106.txt","instancias/rc107.txt",
+#                     "instancias/rc108.txt"])
+#nbv=[4,3,3,3,4,3,3,3]
+
+
+"""
+#TODES 50
+todas_instancias = (["instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt","instancias/c104.txt","instancias/c105.txt", "instancias/c106.txt",
+                    "instancias/c107.txt", "instancias/c108.txt", "instancias/c109.txt",
+                    "instancias/r101.txt","instancias/r102.txt","instancias/r103.txt","instancias/r104.txt",
+                    "instancias/r105.txt","instancias/r106.txt","instancias/r107.txt",
+                    "instancias/r108.txt","instancias/r109.txt","instancias/r110.txt",
+                    "instancias/r111.txt","instancias/r112.txt",
+                    "instancias/rc101.txt","instancias/rc102.txt","instancias/rc103.txt",
+                    "instancias/rc104.txt","instancias/rc105.txt","instancias/rc106.txt","instancias/rc107.txt",
+                    "instancias/rc108.txt",
+                    "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
+                     "instancias/c205.txt", "instancias/c206.txt",
+                     "instancias/c207.txt", "instancias/c208.txt", "instancias/c209.txt",
+                     "instancias/r201.txt", "instancias/r202.txt", "instancias/r203.txt", "instancias/r204.txt",
+                     "instancias/r205.txt", "instancias/r206.txt", "instancias/r207.txt",
+                     "instancias/r208.txt", "instancias/r209.txt", "instancias/r120.txt",
+                     "instancias/r211.txt", "instancias/r212.txt",
+                    "instancias/rc201.txt", "instancias/rc202.txt", "instancias/rc203.txt",
+                     "instancias/rc204.txt", "instancias/rc205.txt", "instancias/rc206.txt", "instancias/rc207.txt"])
+#nbv=[5,5,5,5,5,5,5,5,5,11,9,6,9,6,7,6,8,7,7,6,8,7,6,5,8,6,6,
+#6,3,3,3,2,3,3,3,2,6,5,5,2,4,4,2,2,4,4,3,5,5,4,3,5,5,4]
+nbv=[5,5,5,5,5,5,5,5,5,12,11,9,6,9,6,7,6,8,7,7,6,8,7,6,5,8,6,6,6,3,3,3,2,3,3,3,2,6,5,5,2,4,4,2,2,4,4,3,5,5,4,3,5,5,4,]
+
+"""
+
+#R50
+#nbv=[12,11,9,9,8,7,7]#R50
+#"""
 #"""
 #todas_instancias = ["instancias/c104.txt"]
 #nbv=[3]
 ab=1
 semMelhora=[0]#,2,4,6,8]
 #instancais grandes
-#nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]
 #nbv=[4]#25
-nbv=[3,3,3,3,3,3,3,3,3]#25
-#nbv=[5,5,4,3,5,5,5,5,3]#50
+
+#VALORES OTIMOS FO C25
+"""
+nbv=[3,3,3,3,3,3,3,3,3]#C25
+todas_instancias = (["instancias/c101N.txt","instancias/c102.txt", "instancias/c103.txt","instancias/c104.txt","instancias/c105.txt", "instancias/c106.txt",
+                    "instancias/c107.txt", "instancias/c108.txt", "instancias/c109.txt"])
+"""
+
+#FOTARGET=[191.3,190.3,190.3,186.9,191.3,191.3,191.3,191.3,191.3]
+#TIMETARGET=[18.6,79.7,134.7,223.9,25.6,20.7,31.7,43.1,585.4]
+
+
+#VALORES OTIMOS FO R25
+#FOTARGET=[617.1, 547.1, 454.6, 416.9, 530.5, 467.4, 424.3, 397.2, 441.3, 429.5, 428.8, 393]
+#TIMETARGET=[5.8, 20.3, 22.2, 46, 22.6, 205.2, 304.1, 307.4, 14.4, 64.3, 330, 623.3]
+#nbv=[8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]#R25
+
+#FOTARGET=[617.1, 547.1, 454.6, 416.9, 530.5, 467.4, 424.3, 397.2, 441.3, 429.5, 428.8, 393]
+#TIMETARGET=[18.6,79.7,134.7,223.9,25.6,20.7,31.7,43.1,585.4,5.8, 20.3, 22.2, 46, 22.6, 205.2, 304.1, 307.4, 14.4, 64.3, 330, 623.3]
+#nbv=[3,3,3,3,3,3,3,3,3,8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]#R25
+
+FOTARGET=[]
+TIMETARGET=[18.6,79.7,134.7,223.9,25.6,20.7,31.7,43.1,585.4,5.8, 20.3, 22.2, 46, 22.6, 205.2, 304.1, 307.4, 14.4, 64.3, 330, 623.3]
+#nbv=[3,3,3,3,3,3,3,3,3,8,7,5,4,6,5,4,4,5,4,4,4,3,3,3,3,3,3,3,3,3,3]#R25
+
+
+#RC25
+#nbv=[4,3,3,3]#R50
+
+ii=0
+tabu=0
 for i in range(len(tamanhos)):
     tam=tamanhos[i]
     cap=capacidades[0]
     #nbv_atual = nbvv[i]
 
 
-    for tabu in N_TABUS:
-        ii=0
-        for arquivo_instancia in (todas_instancias):
-            ninst=0
+    for tt in range(1):
+
+        for ninst in range (len(todas_instancias)):
+
+            arquivo_instancia=todas_instancias[ninst]
+
+            FOTAarg = -1
+            TIMETarg = 99999999
+            if(tt==2):#agora nao sera- quero testar só normal e time
+                FOTAarg=FOTARGET[ninst]
+
+            if(tt==1):
+                TIMETarg=TIMETARGET[ninst]
 
             print("\n==============================")
-            print(f"Teste tam={tam} cap={cap} tabu={tabu} ninst={ninst}")
+            print(f" NOVA- tam={tam} cap={cap}  VEIC = {nbv[ninst]} FOTAarg={FOTAarg} TIMETarg={TIMETarg} ninst={ninst} INSTANCIA={arquivo_instancia} FO TARGET= {FOTAarg}")
             print("==============================")
+
 
             tem_janelas=0
             inst = Instancia()
             inst.nbcd = tam
             inst.nbn = tam + 2
+            inst.nomeInst=arquivo_instancia
             #inst.nbv = nbv_atual
-            inst.nbv = nbv[ii]
-            #inst.nbv = nbv[ninst]
-            ii+=1
+            #inst.nbv = nbv[0]
+            inst.nbv = nbv[ninst]
+
             inst.ninst = ninst
 
             """
@@ -184,7 +283,7 @@ for i in range(len(tamanhos)):
 
 
             tiex = time.time()
-            #metod.metodo_exato(inst, solex)
+            metod.metodo_exato(inst, solex)
             tfex = time.time()
             #solex.exportar_json(inst, "solucao_ex.json")
             #solex.printar_sol_exata(inst)
@@ -201,7 +300,7 @@ for i in range(len(tamanhos)):
                 #inst.nbconstrutiva = construtiva
             for SM in semMelhora:
                 inst.nbconstrutiva = 10
-                inst.iteraSemMelhora=SM
+                #inst.iteraSemMelhora=
 
                 random.seed(SEED_DEBUG)
 
@@ -216,6 +315,11 @@ for i in range(len(tamanhos)):
 
                 # pool global de colunas
                 sol_pool = Solucao(inst.nbv, inst.nbcd)
+                #recebe FO TARGET
+                sol_pool.FO_TARGET=FOTAarg
+                sol_pool.time_initial=time.time()
+                sol_pool.TIME_TARGET=TIMETarg
+
                 metod.init_pool_vazio(inst, sol_pool)
                 metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
                 #metod.gera_rotas_iniciais_geometricas(inst, sol_pool, n_starts=10, max_rotas_por_k=25)
@@ -232,16 +336,24 @@ for i in range(len(tamanhos)):
                 #teste para com e sem mip
                 for j in range(1):
                     #print(f"JJJJ {j}")
-                    if j==0:
-                        inst.temmip=False
-                    else:
-                        inst.temmip=True
+
+                    #if j==0:
+                    #    inst.temmip=True
+                    #else:
+                    #    inst.temmip=False
 
                     t1 = time.time()
+                    inst.temmip = False
+
+
                     metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+                    sol_pool.exportar_convergencia_excel(inst, "convergencia_BP.xlsx")
+
+                    #metod.SearchCOl_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+
                     tempo_bp = time.time() - t1
 
-                    print(f"Tempo total BP: {tempo_bp:.4f}")
+                    print(f"Tempo total SC: {tempo_bp:.4f}")
 
                     fo_bp = metod.best_obj
                     seq_bp = sol_pool.sequencias_bp_para_texto()
@@ -294,6 +406,8 @@ for i in range(len(tamanhos)):
                         f.write(f"SCORE DAS CONSTRUTIBAS BP = {sol_pool.construtivas}\n")
                         f.write(f"SEQ_EXATO: {seq_exato}\n")
                         f.write(f"SEQ_BP: {seq_bp}\n\n")
+                        f.write(f"MOTIVO: {sol_pool.motivoConv}\n\n")
+
 
                     # =========================
                     # CSV final

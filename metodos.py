@@ -1,6 +1,5 @@
 import random
 
-
 random.seed(42)
 import copy
 import time
@@ -44,7 +43,6 @@ class NoBP:
         self.custo_mip = None
         self.custo_lp_HERDADO = None
         self.custo_mip_HERDADO = None
-
 
         self.lambdas = {}
         self.solucao_inteira = False
@@ -105,7 +103,11 @@ class Metodos:
 
         self.log_bp = None
         self.hist_bp = []  # NOVO: histórico textual da árvore
-        self.printarsol= False
+        self.printarsol = True
+        self.printarsoldual = True
+
+        #estabilizacao
+        self.pi_antigo=[]
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -903,8 +905,8 @@ class Metodos:
             return None, None, proximo_id
 
         i_sel, j_sel, k_sel = melhor_arco
-        print(
-            f" Branching no arco ({i_sel},{j_sel},{k_sel}) no nó {no_pai.id_no} (soma_lambda≈{soma_arco[melhor_arco]:.4f})")
+        # print(
+        #    f" Branching no arco ({i_sel},{j_sel},{k_sel}) no nó {no_pai.id_no} (soma_lambda≈{soma_arco[melhor_arco]:.4f})")
 
         pai_fix = set(no_pai.arcos_fixados_em_1)
         pai_proib = set(no_pai.arcos_proibidos)
@@ -916,8 +918,8 @@ class Metodos:
             arcos_proibidos=pai_proib.union({melhor_arco})
         )
         filho_esq.branching_from = {"pai": no_pai.id_no, "arco": [i_sel, j_sel, k_sel], "tipo": "proibido"}
-        filho_esq.custo_lp_HERDADO=no_pai.custo_lp
-        filho_esq.custo_mip_HERDADO=no_pai.custo_mip
+        filho_esq.custo_lp_HERDADO = no_pai.custo_lp
+        filho_esq.custo_mip_HERDADO = no_pai.custo_mip
 
         # filho direito: obriga arco
         filho_dir = NoBP(
@@ -926,14 +928,13 @@ class Metodos:
             arcos_proibidos=pai_proib
         )
         filho_dir.branching_from = {"pai": no_pai.id_no, "arco": [i_sel, j_sel, k_sel], "tipo": "obrigatorio"}
-        filho_dir.custo_lp_HERDADO=no_pai.custo_lp
-        filho_dir.custo_mip_HERDADO=no_pai.custo_mip
+        filho_dir.custo_lp_HERDADO = no_pai.custo_lp
+        filho_dir.custo_mip_HERDADO = no_pai.custo_mip
 
-
-        #self._append_hist_bp(
+        # self._append_hist_bp(
         #    f"Do nó {no_pai.id_no} gerados filhos {filho_esq.id_no} (proíbe arco {i_sel}->{j_sel}, k={k_sel}) "
         ##    f"e {filho_dir.id_no} (obriga arco {i_sel}->{j_sel}, k={k_sel})."
-        #)
+        # )
 
         return filho_esq, filho_dir, proximo_id + 2
 
@@ -966,12 +967,11 @@ class Metodos:
 
     def branch_and_price_global(self, inst, sol_pool, tipo_geracao="PD"):
 
-        #limpeza arquivo principal dos logs meus
+        # limpeza arquivo principal dos logs meus
         nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
 
-        with open(nome_arquivo_log, "w", encoding="utf-8") as f:
-            f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
-
+        # with open(nome_arquivo_log, "w", encoding="utf-8") as f:
+        #    f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
 
         raiz = True
         import time, math, json
@@ -1005,6 +1005,8 @@ class Metodos:
         ativos = [(raiz, 0, None)]  # (no, profundidade, pai)
 
         while ativos:
+            if (time.time() - sol_pool.time_initial > sol_pool.TIME_MAX):
+                break
             elapsed = time.time() - t0
             total_nos_processados += 1
             # -------------------------------------------------
@@ -1043,7 +1045,7 @@ class Metodos:
             # -------------------------------------------------
             raiz = False
             t00 = time.time()
-            #teste poda do no ja com o herdado
+            # teste poda do no ja com o herdado
             if no_atual.custo_lp_HERDADO is not None and not math.isinf(z_inc):
                 if no_atual.custo_lp_HERDADO > z_inc - 1e-6:
                     print(
@@ -1053,11 +1055,8 @@ class Metodos:
                     continue
 
             self.resolver_no_com_pool(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
-            #self.resolver_no_com_pool_semSlack(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
+            # self.resolver_no_com_pool_semSlack(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
 
-            # caso 0: LP inviável/sem solução
-            if(no_atual.id_no==50):
-                print("")
             print(f'Tempo total: {time.time() - t00:.1f}s')
             if no_atual.custo_lp is None:
                 print("Nó inviável ou sem solução LP, podado.")
@@ -1071,6 +1070,12 @@ class Metodos:
 
             lb_ok = bool(getattr(no_atual, "lb_confiavel", False))
 
+            # teste integralidade-podar os filhos
+            tol = 1e-6
+            if abs(z_lp - z_mip) <= tol:
+                no_atual.solucao_inteira = True
+                print("SOL INTEIRA")
+                no_atual.podar = True
             print(
                 f"[Nó {no_atual.id_no}] LP={z_lp:.4f} inteira={no_atual.solucao_inteira} "
                 f"lb_confiavel={lb_ok} slack_final={getattr(no_atual, 'slack_sum_final', 0.0):.6f} "
@@ -1117,7 +1122,7 @@ class Metodos:
 
                     ativos = novos_ativos
 
-                if(z_mip==z_lp): #incumbente é igual a fracionaria, logo o nó é inteiro
+                if (z_mip == z_lp):  # incumbente é igual a fracionaria, logo o nó é inteiro
                     print("PODOU por ser inteiro- fim da linha")
                     no_atual.motivo_poda = no_atual.motivo_poda or "no_inteiro_folha"
                     continue
@@ -1137,11 +1142,16 @@ class Metodos:
                 melhor_no_frac = no_atual
                 print(f"ATUALIZOU MELHOR FRAC Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
 
-            if (z_mip != z_lp):
-                print("DIVIDE")
-                filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
-            else:
-                print("INTEIROSS")
+            filho_esq = None
+            filho_dir = None
+            if ((time.time() - sol_pool.time_initial) < sol_pool.TIME_TARGET):
+                if (z_mip != z_lp):
+                    # teste do tempo max
+
+                    print("DIVIDE")
+                    filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
+                else:
+                    print("INTEIROSS")
             # filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
 
             if (filho_esq is not None) and (filho_dir is not None):
@@ -1228,13 +1238,282 @@ class Metodos:
             print("Nenhuma solução fracionária registrada (ou todos nós foram inteiros/podados).")
 
         # se você usa JSON da árvore:
-        #self._salvar_log_bp()
+        # self._salvar_log_bp()
 
+    def SearchCOl_global(self, inst, sol_pool, tipo_geracao="PD"):
+
+        # limpeza arquivo principal dos logs meus
+        nome_arquivo_log = f"SC_log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+
+        with open(nome_arquivo_log, "w", encoding="utf-8") as f:
+            f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
+
+        raiz = True
+        import time, math, json
+
+        # === parâmetros ===
+        time_limit = 3600
+        gap = 1e-4
+        total_nos_processados = 0
+
+        z_inc = float("inf")  # melhor inteiro (UB)
+        x_inc = None
+        z_li = -float("inf")  # lower bound global (de nós com LB confiável)
+
+        self.best_obj = -1
+        self.total_nos = 0
+        self.total_colunas = 0
+        sol_pool.custo = -1
+        sol_pool.rotas_escolhidas = {}
+
+        t0 = time.time()
+
+        melhor_no = None
+        melhor_no_frac = None
+        z_frac = float("inf")
+
+        # === raiz ===
+        id_no = 0
+        raiz = NoBP(id_no=id_no)
+        id_no += 1
+
+        ativos = [(raiz, 0, None)]  # (no, profundidade, pai)
+
+        while ativos:
+            elapsed = time.time() - t0
+            total_nos_processados += 1
+            # -------------------------------------------------
+            # z_li = min custo_lp entre nós abertos COM LB confiável
+            # -------------------------------------------------
+            custos_validos = [
+                no.custo_lp
+                for (no, _, _) in ativos
+                if (no.custo_lp is not None) and getattr(no, "lb_confiavel", False)
+            ]
+            z_li = min(custos_validos) if custos_validos else -float("inf")
+
+            # -------------------------------------------------
+            # critério de parada por gap (só se z_li for válido)
+            # -------------------------------------------------
+            if (not math.isinf(z_inc)) and (z_li > -float("inf")):
+                if z_inc - z_li <= gap:
+                    print(f"Parou por gap: z_inc={z_inc:.4f}, z_li={z_li:.4f}")
+                    break
+
+            # -------------------------------------------------
+            # critério de parada por tempo
+            # -------------------------------------------------
+            if elapsed >= time_limit:
+                print(f"Parou por time limit: {elapsed:.1f}s")
+                break
+
+            # -------------------------------------------------
+            # seleciona nó (DFS)
+            # -------------------------------------------------
+            no_atual, prof, pai = ativos.pop()
+            print(f"\n=========== PROCESSANDO NÓ {no_atual.id_no} (prof={prof}, pai={pai}) ===========")
+            no_atual.tabu_tenure = self.TABU_TENURE
+            # -------------------------------------------------
+            # resolve nó
+            # -------------------------------------------------
+            raiz = False
+            t00 = time.time()
+            # teste poda do no ja com o herdado
+            if no_atual.custo_lp_HERDADO is not None and not math.isinf(z_inc):
+                if no_atual.custo_lp_HERDADO > z_inc - 1e-6:
+                    print(
+                        f"Poda nó {no_atual.id_no} por bound herdado: {no_atual.custo_lp_HERDADO:.4f} >= incumbente {z_inc:.4f}")
+                    no_atual.status = "podado"
+                    no_atual.motivo_poda = "bound_herdado"
+                    continue
+
+            self.resolver_no_com_pool(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
+            # self.resolver_no_com_pool_semSlack(inst, sol_pool, no_atual, tipo_geracao=tipo_geracao)
+
+            # caso 0: LP inviável/sem solução
+            if (no_atual.id_no == 50):
+                print("")
+            print(f'Tempo total: {time.time() - t00:.1f}s')
+            if no_atual.custo_lp is None:
+                print("Nó inviável ou sem solução LP, podado.")
+                no_atual.status = "podado"
+                no_atual.motivo_poda = "LP_inviavel"
+                continue
+
+            z_lp = float(no_atual.custo_lp)
+            z_mip = float(no_atual.custo_mip) if no_atual.custo_mip is not None else float("inf")
+            no_atual.status = "resolvido"
+
+            lb_ok = bool(getattr(no_atual, "lb_confiavel", False))
+
+            print(
+                f"[Nó {no_atual.id_no}] LP={z_lp:.4f} inteira={no_atual.solucao_inteira} "
+                f"lb_confiavel={lb_ok} slack_final={getattr(no_atual, 'slack_sum_final', 0.0):.6f} "
+                f"cg_convergiu={getattr(no_atual, 'cg_convergiu', False)} max_iter={getattr(no_atual, 'parou_por_max_iter', False)}"
+            )
+
+            # -------------------------------------------------
+            # poda por bound (SÓ com LB confiável)
+            # -------------------------------------------------
+            if lb_ok and (not math.isinf(z_inc)) and (z_lp > z_inc - 1e-6):
+                print(f"Poda por bound (LB ok): LP {z_lp:.4f} >= z_inc {z_inc:.4f}")
+                no_atual.status = "podado"
+                no_atual.motivo_poda = "poda_bound"
+                continue
+
+            # -------------------------------------------------
+            # caso 1: nó tem novo inteiro
+            # -------------------------------------------------
+            if no_atual.solucao_inteira:
+                print(f"Nó {no_atual.id_no} tem inteiro com custo {z_mip:.4f}")
+
+                if z_mip < z_inc:
+                    z_inc = z_mip
+
+                    print(f"ATUALIZOU MELHOR INTEIRO Nó {no_atual.id_no} Valor INTEIRO com custo {z_mip:.4f}")
+                    x_inc = getattr(no_atual, "lambdas_inteiras", None)
+                    melhor_no = no_atual
+                    print(f"Novo incumbente: z_inc={z_inc:.4f}")
+
+                    # limpa ativos: só remove nós cujo LB confiável já prova que não melhoram
+                    novos_ativos = []
+                    for (n, p, pai_n) in ativos:
+                        n_lb_ok = bool(getattr(n, "lb_confiavel", False))
+
+                        if n.custo_lp is None:
+                            novos_ativos.append((n, p, pai_n))
+                        elif (not n_lb_ok):
+                            # LB não confiável => não remove
+                            novos_ativos.append((n, p, pai_n))
+                        elif n.custo_lp < z_inc - 1e-9:
+                            novos_ativos.append((n, p, pai_n))
+                        else:
+                            print(f"Removendo nó {n.id_no} (LB ok): custo_lp={n.custo_lp:.4f} >= z_inc={z_inc:.4f}")
+
+                    ativos = novos_ativos
+
+                if (z_mip == z_lp):  # incumbente é igual a fracionaria, logo o nó é inteiro
+                    print("PODOU por ser inteiro- fim da linha")
+                    no_atual.motivo_poda = no_atual.motivo_poda or "no_inteiro_folha"
+                    continue
+                nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+                with open(nome_arquivo_log, "a", encoding="utf-8") as f:
+                    f.write(f"{no_atual.id_no};{z_inc};{z_lp};{z_li};{self.total_colunas}\n")
+
+                print("")
+
+            # -------------------------------------------------
+            # caso 2: melhor fracionário -> branching
+            # -------------------------------------------------
+            print(f"Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
+
+            if z_lp < z_frac:
+                z_frac = z_lp
+                melhor_no_frac = no_atual
+                print(f"ATUALIZOU MELHOR FRAC Nó {no_atual.id_no} Valor fracionário com custo {z_lp:.4f}")
+
+            filho_esq = None
+            filho_dir = None
+            if ((time.time() - sol_pool.time_initial) < sol_pool.TIME_TARGET):
+                if (z_mip != z_lp):
+                    # teste do tempo max
+
+                    print("DIVIDE")
+                    filho_esq, filho_dir, id_no = self.criar_filhos_por_arco(inst, sol_pool, no_atual, id_no)
+                else:
+                    print("INTEIROSS")
+            # filho_esq, filho_dir, id_no = self.criar_filhos_por_arco075(inst, sol_pool, no_atual, id_no, melhor_no)
+
+            if (filho_esq is not None) and (filho_dir is not None):
+                # >>> IMPORTANTE: filhos NÃO herdam custo_lp do pai
+                filho_esq.custo_lp = None
+                filho_dir.custo_lp = None
+
+                filho_esq.status = "ativo"
+                filho_dir.status = "ativo"
+
+                ativos.append((filho_esq, prof + 1, no_atual.id_no))
+                ativos.append((filho_dir, prof + 1, no_atual.id_no))
+            else:
+                no_atual.status = "podado"
+                no_atual.motivo_poda = "sem_lambda_fracionario"
+
+            print(f"FIM do nó  {no_atual.id_no} ")
+
+        # =========================
+        # Fim
+        # =========================
+        print("\n==== FIM B&P ====")
+
+        if melhor_no is not None:
+            self.total_nos = total_nos_processados
+            self.best_obj = float(z_inc)
+            sol_pool.custo = float(z_inc)
+
+            #################
+            total_colunas = 0
+            for k in sol_pool.rotas.keys():
+                total_colunas += len(sol_pool.rotas[k]['sequencia_rota'])
+            self.total_colunas = total_colunas
+
+            #################
+            sol_pool.rotas_escolhidas = {}
+            for (k, p), val in melhor_no.lambdas_inteiras.items():
+                if val > 0.5:
+                    if k not in sol_pool.rotas_escolhidas:
+                        sol_pool.rotas_escolhidas[k] = {
+                            'sequencias': [],
+                            'custos': [],
+                            'indices': []
+                        }
+
+                    sol_pool.rotas_escolhidas[k]['sequencias'].append(sol_pool.rotas[k]['sequencia_rota'][p])
+                    sol_pool.rotas_escolhidas[k]['custos'].append(sol_pool.rotas[k]['custo'][p])
+                    sol_pool.rotas_escolhidas[k]['indices'].append(p)
+            #######################
+
+            print(f"Melhor solução inteira: nó {melhor_no.id_no} com custo {z_inc:.4f}")
+            self.imprimir_lambdas_no(melhor_no, sol_pool)
+
+            dados_inc = {
+                "tipo": "inteira",
+                "no_id": melhor_no.id_no,
+                "custo": float(z_inc),
+                "lambdas": {f"{k},{p}": float(v) for (k, p), v in melhor_no.lambdas.items()},
+                "rotas_ativas": self.extrair_rotas_do_no(melhor_no, sol_pool),
+                "arcos_fixados_em_1": [list(t) for t in sorted(melhor_no.arcos_fixados_em_1)],
+                "arcos_proibidos": [list(t) for t in sorted(melhor_no.arcos_proibidos)],
+            }
+            with open("melhor_inteira.json", "w", encoding="utf-8") as f:
+                json.dump(dados_inc, f, ensure_ascii=False, indent=2)
+        else:
+            print("Nenhuma solução inteira encontrada.")
+
+        if melhor_no_frac is not None:
+            print(f"Melhor solução fracionária: nó {melhor_no_frac.id_no} com custo {z_frac:.4f}")
+            self.imprimir_lambdas_no(melhor_no_frac, sol_pool)
+
+            dados_frac = {
+                "tipo": "fracionaria",
+                "no_id": melhor_no_frac.id_no,
+                "custo": float(z_frac),
+                "lambdas": {f"{k},{p}": float(v) for (k, p), v in melhor_no_frac.lambdas.items()},
+                "rotas_ativas": self.extrair_rotas_do_no(melhor_no_frac, sol_pool),
+                "arcos_fixados_em_1": [list(t) for t in sorted(melhor_no_frac.arcos_fixados_em_1)],
+                "arcos_proibidos": [list(t) for t in sorted(melhor_no_frac.arcos_proibidos)],
+            }
+            with open("melhor_fracionaria.json", "w", encoding="utf-8") as f:
+                json.dump(dados_frac, f, ensure_ascii=False, indent=2)
+        else:
+            print("Nenhuma solução fracionária registrada (ou todos nós foram inteiros/podados).")
+
+        # se você usa JSON da árvore:
+        # self._salvar_log_bp()
 
     def SUB_PROG_DIN_PW(self, inst, pi, sigma_k, k, NO_BP,
                         arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
-                        #widening_seq=(1, 2, 4, 8, "ALL"),
-                        widening_seq=(4,8,"ALL"),
+                        # widening_seq=(1, 2, 4, 8, "ALL"),
+                        widening_seq=(4, 8, "ALL"),
                         eps=1e-6):
         import math
         from collections import deque
@@ -1276,7 +1555,7 @@ class Metodos:
             return 1 << (c - 1)
 
         # print matriz custo reduzido
-        #"""
+        # """
         print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
 
         for i in range(nbn):
@@ -1312,8 +1591,8 @@ class Metodos:
             print(f"i={i:2d} | " + " ".join(linha))
 
         print("==========================================\n")
-        
-        #"""
+
+        # """
         # ------------------ FIXOS (FORÇAR) ------------------
         succ_fixo = {}
         pred_fixo = {}
@@ -3098,10 +3377,10 @@ class Metodos:
         return None, None
 
     def SUB_PROG_DIN_BIDIRECIONALSemFixos(self, inst, pi, sigma_k, k, NO_BP,
-                                  arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
-                                  max_labels_por_no=100,
-                                  max_depth=None,
-                                  eps=1e-6):
+                                          arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
+                                          max_labels_por_no=100,
+                                          max_depth=None,
+                                          eps=1e-6):
         import math
         from collections import deque, defaultdict
 
@@ -3551,11 +3830,11 @@ class Metodos:
         return None, None
 
     def escolhe_vizinho_enviesado(self, lista_ordenada, alpha=0.7):
-        pesos=[]
+        pesos = []
         for pos in range(len(lista_ordenada)):
-            pesos.append(alpha**pos)
+            pesos.append(alpha ** pos)
 
-        return(random.choices(lista_ordenada,weights=pesos,k=1)[0])
+        return (random.choices(lista_ordenada, weights=pesos, k=1)[0])
 
     def SUB_HEUR_VNS(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
                      n_starts=40, alpha=0.3, eps=1e-6):
@@ -3898,7 +4177,7 @@ class Metodos:
         return None, None
 
     def SUB_HEUR_VNSSemProibidos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
-                     n_starts=40, alpha=0.3, eps=1e-6):
+                                 n_starts=40, alpha=0.3, eps=1e-6):
 
         import random
         import math
@@ -4423,14 +4702,14 @@ class Metodos:
         return None, None
 
     def SUB_HEUR_ALLBESTINSERTIONsemfixos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
-                                  n_starts=30, eps=1e-6):
+                                          n_starts=30, eps=1e-6):
         import math
         import random
 
         if mu_arc is None:
             mu_arc = {}
 
-        #print(f"Subprob ALL BEST INSERTION veículo {k}")
+        # print(f"Subprob ALL BEST INSERTION veículo {k}")
 
         nbn = inst.nbn
         nbcd = inst.nbcd
@@ -4608,26 +4887,26 @@ class Metodos:
         melhor_custo_real = None
 
         for ii in range(n_starts):
-            #print(f"\nSTART {ii}")
+            # print(f"\nSTART {ii}")
 
             rota = [dep0, depf]
             visitados = {dep0, depf}
 
             viavel_ini, janelas_escolhidas, tempo_final, carga_final = verifica_viabilidade(rota)
             if not viavel_ini:
-                #print("Rota inicial [dep0,depf] inviável")
+                # print("Rota inicial [dep0,depf] inviável")
                 return None, None
 
             custo_red_total = custo_reduzido_rota(rota)
             custo_real_total = custo_real_rota(rota)
 
-            #print(f"rota inicial = {rota} | rc = {custo_red_total}")
+            # print(f"rota inicial = {rota} | rc = {custo_red_total}")
 
             while True:
                 insercoes = melhores_insercoes(rota, visitados, custo_red_total)
 
                 if not insercoes:
-                    #print("sem inserções viáveis")
+                    # print("sem inserções viáveis")
                     break
 
                 melhor_delta = insercoes[0][3]
@@ -4644,12 +4923,12 @@ class Metodos:
                 cliente, pos, rota_nova, delta_rc, rc_nova, custo_real_novo, janelas_novas, tempo_novo, carga_nova, score = random.choice(
                     rcl)
 
-                #print(
+                # print(
                 #    f"inserindo cliente {cliente} na posição {pos} | delta_rc = {delta_rc:.6f} | rc_novo = {rc_nova:.6f}")
 
                 # regra de parada: se piorou demais e já não está promissor, para
                 if delta_rc > 1e-6 and custo_red_total > 1e-6:
-                    #print("inserção piora a rota e rc atual já não é promissor")
+                    # print("inserção piora a rota e rc atual já não é promissor")
                     break
 
                 rota = rota_nova
@@ -4660,7 +4939,7 @@ class Metodos:
                 custo_red_total = rc_nova
                 custo_real_total = custo_real_novo
 
-                #print(f"rota atual = {rota} | rc = {custo_red_total:.6f}")
+                # print(f"rota atual = {rota} | rc = {custo_red_total:.6f}")
 
                 # se não sobrou cliente, para
                 if len(visitados) >= nbcd + 2:
@@ -4668,13 +4947,13 @@ class Metodos:
 
             # precisa ter pelo menos 1 cliente
             if len(rota) >= 3:
-                #print(f"rota construída final = {rota} | rc = {custo_red_total:.6f}")
+                # print(f"rota construída final = {rota} | rc = {custo_red_total:.6f}")
 
                 rota_melhorada, custo_red_melhorado, custo_real_melhorado, janelas_melhoradas = self.busca_local_rota(
                     rota, inst, pi, sigma_k, k, mu_arc, janelas, d
                 )
 
-                #print(f"rota BL = {rota_melhorada} | rc BL = {custo_red_melhorado}")
+                # print(f"rota BL = {rota_melhorada} | rc BL = {custo_red_melhorado}")
 
                 if rota_melhorada is not None and custo_red_melhorado < melhor_custo_red:
                     melhor_rota = rota_melhorada[:]
@@ -5133,10 +5412,8 @@ class Metodos:
 
         return None, None
 
-
-
     def SUB_VNSRANDOMant(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
-                      n_starts=30, eps=1e-6):
+                         n_starts=30, eps=1e-6):
         import math
         import random
 
@@ -5613,22 +5890,19 @@ class Metodos:
         return None, None
 
     def SUB_VNSRANDOMSemFixos(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
-                       n_starts=30, eps=1e-6):
+                              n_starts=30, eps=1e-6):
         import math
         import random
-        top_k=5
+        top_k = 5
         if mu_arc is None:
             mu_arc = {}
 
         print(f"Subprob VNS RANDOM veículo {k}")
 
-
         nbn = inst.nbn
         nbcd = inst.nbcd
         dep0 = 0
         depf = nbn - 1
-
-
 
         # =========================================================
         # DADOS DOS NÓS: múltiplas janelas por nó
@@ -5678,6 +5952,7 @@ class Metodos:
                 if 1 <= v <= nbcd:
                     bin_xij[v - 1] = 1
             return bin_xij
+
         """
         print("\n=== MATRIZ DE CUSTO REDUZIDO (delta_rc) ===")
 
@@ -5711,7 +5986,6 @@ class Metodos:
 
         print("==========================================\n")
         """
-
 
         def escolhe_janela_viavel(no_i, tempo_fim_i, j):
             """
@@ -5771,7 +6045,6 @@ class Metodos:
             )
 
             return score
-
 
         # melhor solução encontrada
         melhor_rota = None
@@ -5837,7 +6110,7 @@ class Metodos:
                     if j in visitados:
                         continue
 
-                    #aqui vou colocar o
+                    # aqui vou colocar o
 
                     if NO_BP.tabu_until[k][no_atual][j] > 0:
                         print(f"nó tabu {no_atual}-{j}")
@@ -5855,7 +6128,7 @@ class Metodos:
 
                     janela_viavel = escolhe_janela_viavel(no_atual, tempo_atual, j)
                     if janela_viavel is None:
-                        #print(f"janela inviavel para {j}")
+                        # print(f"janela inviavel para {j}")
                         continue
 
                     inicio_servico_j, fim_servico_j, idx_janela = janela_viavel
@@ -5872,18 +6145,17 @@ class Metodos:
                         score
                     ))
 
-
                 if not viaveis:
                     break
 
                 viaveis.sort(key=lambda x: x[6])
                 viaveis = viaveis[:top_k]
 
-                #escolha enviesada
+                # escolha enviesada
 
-                j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela,score =(
-                    self.escolhe_vizinho_enviesado(viaveis,alpha=0.55))
-                #j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela = random.choice(viaveis)
+                j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela, score = (
+                    self.escolhe_vizinho_enviesado(viaveis, alpha=0.55))
+                # j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela = random.choice(viaveis)
                 # j, inicio_servico_j, fim_servico_j, nova_carga, delta_rc, idx_janela = viaveis[0]
 
                 rota.append(j)
@@ -5918,13 +6190,13 @@ class Metodos:
                 }, melhor_custo_red
             else:
                 if len(rota) >= 3 and rota[-1] == depf:
-                    #print(f"melhora uma vez custo antigo red {rota}= {custo_red_total}")
-                    rota_melhorada, custo_red_melhorado, custo_real_melhorado,janelas_melhoradas  = self.busca_local_rota(
+                    # print(f"melhora uma vez custo antigo red {rota}= {custo_red_total}")
+                    rota_melhorada, custo_red_melhorado, custo_real_melhorado, janelas_melhoradas = self.busca_local_rota(
                         rota, inst, pi, sigma_k, k, mu_arc, janelas, d
                     )
-                    #print(f"melhora uma vez custo novo red {rota_melhorada}= {custo_red_melhorado}")
+                    # print(f"melhora uma vez custo novo red {rota_melhorada}= {custo_red_melhorado}")
                     if rota_melhorada is not None and custo_red_melhorado < -eps:
-                        #print(f"heuristica deu boa patrão rota {rota_melhorada}- custor= {custo_red_melhorado}")
+                        # print(f"heuristica deu boa patrão rota {rota_melhorada}- custor= {custo_red_melhorado}")
                         return {
                             "clientes": rota_melhorada,
                             "custo": custo_real_melhorado,
@@ -6006,11 +6278,11 @@ class Metodos:
                             }, custo_red
 
                             print("")
-                    
+
                     """
 
-                #print("NAO RETORNOU COLUNA-GERA NOVA")
-                #print(ii)
+                # print("NAO RETORNOU COLUNA-GERA NOVA")
+                # print(ii)
 
         return None, None
 
@@ -6447,7 +6719,6 @@ class Metodos:
 
         return melhor_rota, melhor_custo_red, melhor_custo_real, melhor_janelas
 
-
     def coluna_respeita_no(self, no_bp, seq, k):
         """
         Verifica se a rota 'seq' do veículo k é compatível com
@@ -6460,7 +6731,7 @@ class Metodos:
                 continue
             for t in range(len(seq) - 1):
                 if seq[t] == i_proib and seq[t + 1] == j_proib:
-                    #print("PROIBIDO viola arco proibido")
+                    # print("PROIBIDO viola arco proibido")
                     return False  # viola proibição
 
         # Arcos fixados em 1: todos esses arcos devem estar na rota
@@ -6472,7 +6743,7 @@ class Metodos:
                 for t in range(len(seq) - 1)
             )
             if not presente:
-                #print("PROIBIDa COlujna não respeita arco obrigatorio")
+                # print("PROIBIDa COlujna não respeita arco obrigatorio")
                 return False  # não respeita arco obrigatório
 
         return True
@@ -7188,7 +7459,6 @@ class Metodos:
                         sol_pool.construtivas[2] += 1
                         print("gerou na 3")
 
-
                 if nova_rota is None:
                     nova_rota, custo_red = self.SUB_PROG_DIN_PW(
                         inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
@@ -7772,15 +8042,15 @@ class Metodos:
                         sol_pool.construtivas[2] += 1
                         print("gerou na 3")
 
-
                 if nova_rota is None:
-                    #nova_rota, custo_red = self.SUB_PROG_DIN_PW(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
-                    nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
+                    # nova_rota, custo_red = self.SUB_PROG_DIN_PW(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc)
+                    nova_rota, custo_red = self.SUB_PROG_DIN_BIDIRECIONAL(inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp,
+                                                                          mu_arc=mu_arc)
 
                     if nova_rota is not None:
                         sol_pool.construtivas[3] += 1
                         print("gerou na 4")
-                #"""
+                # """
 
                 if iter_cg == 13:
                     print("")
@@ -8009,12 +8279,13 @@ class Metodos:
         import time
         import gurobipy as gp
         from gurobipy import GRB
-        tentativasLP=0
+        tentativasLP = 0
+        t0N = time.time()
 
-        rodadas_sem_melhoria=0
-        nmaxrodadas_sem_melhoria=inst.iteraSemMelhora
-        colunas_reais_usadas=False
-        ULTIMAFO=-1
+        rodadas_sem_melhoria = 0
+        nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
+        colunas_reais_usadas = False
+        ULTIMAFO = -1
 
         print(f"\n--- Resolve nó {no_bp.id_no} com POOL GLOBAL NORMALZITO ---")
 
@@ -8032,7 +8303,7 @@ class Metodos:
         no_bp.arc_score = {}
 
         # contadores
-        sol_pool.construtivas = [0, 0, 0, 0,0,0,0]
+        sol_pool.construtivas = [0, 0, 0, 0, 0, 0, 0]
 
         N = inst.nbn
         K = inst.nbv
@@ -8051,8 +8322,28 @@ class Metodos:
 
         EPS_RC = 1e-6
         max_iter_cg = 500
-        BIGM_ARC = 1e6
-        BIGM_VIS = 1e6
+
+        #teste alteracao BIGM
+        BIGM_ARC = 1e4
+        BIGM_VIS = 1e4
+
+        ##Ini Varteste de estabilizacao
+        usar_estabilizacao = True
+        fase_final_sem_estab=False
+
+        stab_y_low = []
+        stab_y_up = []
+        if usar_estabilizacao:
+            if not hasattr(sol_pool, "pi_bar") or sol_pool.pi_bar is None:
+                sol_pool.pi_bar = [0.0 for _ in range(inst.nbcd)]
+
+            if not hasattr(sol_pool, "gamma_pi"):
+                sol_pool.gamma_pi = 50.0
+
+            if not hasattr(sol_pool, "alpha_estab"):
+                sol_pool.alpha_estab = 0.30
+
+        ##Fim Varteste de estabilizacao
 
         # -------------------------
         # helpers
@@ -8108,10 +8399,38 @@ class Metodos:
                 for p in range(n):
                     expr += lbd[k][p] * float(sol_pool.rotas[k]["rotas_binaria"][p][i])
 
+            """
             s = model.addVar(lb=0.0, obj=BIGM_VIS, vtype=GRB.CONTINUOUS, name=f"slack_vis_{i}")
             slack_vis.append(s)
             c = model.addConstr(expr + s == 1.0, name=f"visita_{i}")
             visita_constr.append(c)
+            c = model.addConstr(expr + s == 1.0, name=f"visita_{i}")
+            visita_constr.append(c)
+            """
+            #IniEstabilizacao
+            s = model.addVar(lb=0.0, obj=BIGM_VIS, vtype=GRB.CONTINUOUS, name=f"slack_vis_{i}")
+            slack_vis.append(s)
+            if usar_estabilizacao:
+                gamma_pi=float(sol_pool.gamma_pi)
+                pi_centro=float(sol_pool.pi_bar[i])
+
+                pi_min= pi_centro - gamma_pi
+                pi_max= pi_centro + gamma_pi
+
+                y_low= model.addVar(lb=0.0,obj=-pi_min,vtype=GRB.CONTINUOUS,
+                                    name=f"stab_pi_low_{i}")
+                y_up= model.addVar(lb=0.0,obj=pi_max,vtype=GRB.CONTINUOUS,
+                                    name=f"stab_pi_up_{i}")
+                stab_y_low.append(y_low)
+                stab_y_up.append(y_up)
+                c = model.addConstr(expr + s -y_low + y_up == 1.0, name=f"visita_{i}")
+
+            else:
+                c = model.addConstr(expr + s == 1.0, name=f"visita_{i}")
+
+            visita_constr.append(c)
+
+            #FimEstabilizacao
 
         # =========================
         # 3) 1 rota por veículo
@@ -8199,25 +8518,28 @@ class Metodos:
 
         colunas_desde_ultimo_mip = 0
         nome_arquivo_mip = f"mip_periodico_no_{no_bp.id_no}.txt"
-
+        lb_iteracao = 0
         while True:
+            if (time.time() - sol_pool.time_initial > sol_pool.TIME_MAX):
+                break
             model.optimize()
+            t00 = time.time()
             no_bp.lp_status = model.Status
 
             if model.Status != GRB.OPTIMAL:
                 no_bp.custo_lp = None
                 no_bp.solucao_inteira = False
                 no_bp.lambdas = {}
+
                 return
-            if model.ObjVal<192:
-                break
-
+            lb_iteracao = float(model.ObjVal)
             print(
-                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                # f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f} |CONSTRUTIVA CANCELADA = {inst.nbconstrutiva} Colunas = {sum(len(lbd[k]) for k in lbd)}")
+                f"[Nó {no_bp.id_no}] Iter {iter_cg} - Obj = {model.ObjVal:.4f}  Colunas = {sum(len(lbd[k]) for k in lbd)} inst= {inst.nomeInst}")
 
-            print(f"[Nó {no_bp.id_no}] Colunas ativas na iteração {iter_cg}:")
+            print(f"[Nó {no_bp.id_no}] inst= {inst.nomeInst} Colunas ativas na iteração {iter_cg}: ")
 
-            #escreve no arquivo a sol do nó
+            # escreve no arquivo a sol do nó
             ##mudanca para diminuir o tempo
             nome_arquivo_logLOCAL = f"log_bounds_{inst.nbcd}_{inst.ninst}_LOCAL.csv"
             ###with open(nome_arquivo_logLOCAL, "a", encoding="utf-8") as f:
@@ -8225,6 +8547,8 @@ class Metodos:
             tem_ativa = False
             valor_recomposto = 0.0
             tol_print = 1e-6
+
+            inteirasol = True
 
             for k in sol_pool.rotas.keys():
                 n = min(len(lbd[k]), len(sol_pool.rotas[k]["sequencia_rota"]))
@@ -8239,9 +8563,25 @@ class Metodos:
                         seq = sol_pool.rotas[k]["sequencia_rota"][p]
                         custo = float(sol_pool.rotas[k]["custo"][p])
                         valor_recomposto += val * custo
+                        if (val < 1):
+                            inteirasol = False
 
-                        if(self.printarsol):
+                        if (self.printarsol):
                             print(f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}")
+
+            # Pausa por FO ENCONTRADA- forçado
+            #nao usar FO target na caixa pois a FO fica alterada
+            """
+            if model.ObjVal <= sol_pool.FO_TARGET and inteirasol:
+                print("SAIU PQ ENCONTROU FO OTIMO")
+
+                sol_pool.motivoConv = " FO TARGET "
+                break
+            if ((time.time() - sol_pool.time_initial) >= sol_pool.TIME_TARGET):
+                print("SAIU PQ TEMPO JA DEU ")
+                sol_pool.motivoConv = " TEMPO "
+                break
+            """
 
             if abs(valor_recomposto - ULTIMAFO) <= 0.001:
                 if colunas_reais_usadas:
@@ -8250,12 +8590,12 @@ class Metodos:
                 rodadas_sem_melhoria = 0
                 ULTIMAFO = valor_recomposto
 
-
             if not tem_ativa:
                 print("   nenhuma coluna ativa")
             if (self.printarsol):
                 print(f"   valor recomposto = {valor_recomposto:.6f}")
                 print("")
+            print(f"   valor recomposto = {valor_recomposto:.6f}")
 
             slack_sum_vis = sum(float(v.X) for v in slack_vis)
             slack_sum_arc = sum(float(v.X) for v in slack_arc.values()) if slack_arc else 0.0
@@ -8264,7 +8604,7 @@ class Metodos:
             if slack_sum_total > 1e-9:
                 if (self.printarsol):
                     print(
-                        f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f})")
+                        f"[Nó {no_bp.id_no}] slack_total={slack_sum_total:.6f} (vis={slack_sum_vis:.6f}, arc={slack_sum_arc:.6f}) inst= {inst.nomeInst}")
 
             """
 
@@ -8287,54 +8627,68 @@ class Metodos:
                     f"total={soma_lambda + float(slack_vis[i].X):.6f}"
                 )
             """
-            # duais
-            #subsitui por uma funcao
-            """
-            pi = [float(c.Pi) for c in visita_constr]
-            sigma = {k: float(uma_rota_constr[k].Pi) for k in sol_pool.rotas.keys()}
-
-            if no_bp.matriz_rc == {}:
-                no_bp.criaMatriRC(inst)
-
-            # mu_arc por k
-            mu_arc_por_k = {k: {} for k in sol_pool.rotas.keys()}
-            if constr_arco:
-                cons_by_k = {k: [] for k in sol_pool.rotas.keys()}
-                keys_by_k = {k: [] for k in sol_pool.rotas.keys()}
-                for (k, i, j), con in constr_arco.items():
-                    cons_by_k[k].append(con)
-                    keys_by_k[k].append((i, j))
-
-                for k in sol_pool.rotas.keys():
-                    if not cons_by_k[k]:
-                        continue
-                    try:
-                        pis = model.getAttr("Pi", cons_by_k[k])
-                        for (i, j), pi_ in zip(keys_by_k[k], pis):
-                            mu_arc_por_k[k][(i, j)] = float(pi_)
-                    except gp.GurobiError:
-                        mu_arc_por_k[k] = {}
-
-            novas_colunas = []
-            """
-
             print("")
 
             pi, sigma, mu_arc_por_k = self.extrair_duais_do_mestre(
-                model=model,sol_pool=sol_pool,visita_constr=visita_constr,
-                uma_rota_constr=uma_rota_constr,constr_arco=constr_arco
+                inst=inst, model=model, sol_pool=sol_pool, visita_constr=visita_constr,
+                uma_rota_constr=uma_rota_constr, constr_arco=constr_arco
             )
+            if usar_estabilizacao and not fase_final_sem_estab and pi is not None:
+                alpha=float(sol_pool.alpha_estab)
+                for i in range(inst.nbcd):
+                    sol_pool.pi_bar[i]= (
+                        alpha* float(pi[i])+ (1-alpha)* float(sol_pool.pi_bar[i])
+                    )
+                print(f" [ETSAB] gamma_pi = {sol_pool.gamma_pi:4f}")
 
             if no_bp.matriz_rc == {}:
                 no_bp.criaMatriRC(inst)
 
-            #"""
-            novas_colunas = self.gerar_novas_colunas_com_duais(
-                inst=inst,sol_pool=sol_pool,no_bp=no_bp,pi=pi,sigma=sigma,
-                mu_arc_por_k=mu_arc_por_k,EPS_RC=EPS_RC
+            # """
+            t00 = time.time()
+
+            # novas_colunas = self.gerar_novas_colunas_com_duais(
+            novas_colunas = self.gerar_novas_colunas_com_duais11(
+                inst=inst, sol_pool=sol_pool, no_bp=no_bp, pi=pi, sigma=sigma,
+                mu_arc_por_k=mu_arc_por_k, EPS_RC=EPS_RC
             )
-            #"""
-            # definir limiar dinâmico
+
+            ##IniUsar estabilizacao
+            if usar_estabilizacao and not fase_final_sem_estab:
+                if novas_colunas:
+                    sol_pool.gamma_pi=max(30.0, 0.99*float(sol_pool.gamma_pi))
+                else:
+                    sol_pool.gamma_pi=min(1e4, 2.0*float(sol_pool.gamma_pi))
+                if sol_pool.pi_bar is None:
+                    sol_pool.pi_bar = [0.0 for _ in range(inst.nbcd)]
+                for i in range(inst.nbcd):
+                    pi_centro=float(sol_pool.pi_bar[i])
+                    gamma_pi=float(sol_pool.gamma_pi)
+
+                    pi_min= pi_centro-gamma_pi
+                    pi_max= pi_centro+gamma_pi
+
+                    ########limites da caixa
+                    stab_y_low[i].Obj=-pi_min
+                    stab_y_up[i].Obj=pi_max
+                model.update()
+
+
+            ##fimUsar estabilizacao
+            # """
+            print(f'Tempo total nessa geracao : {time.time() - t00:.1f}s')
+            print(f'Tempo total no NO: {time.time() - t0N:.1f}s')
+            if (self.printarsol):
+                for col in novas_colunas:
+                    k, seq, bin_xij, custo, rc = col
+                    print(f"TAMANHO NOVAS COL {len(novas_colunas)}")
+                    print(f"\n--- Nova Coluna ---")
+                    print(f"Veículo: {k}")
+                    print(f"Sequência: {seq}")
+                    print(f"Custo: {custo:.2f}")
+                    print(f"Custo Reduzido: {rc:.6f}")
+                    print(f"Clientes atendidos: {[i + 1 for i, v in enumerate(bin_xij) if v == 1]}")
+
             if iter_cg < 15:
                 limiar_rc = -0.10
             elif iter_cg < 40:
@@ -8371,24 +8725,54 @@ class Metodos:
                 )
             """
 
-            tentativasLP+=1
-            #teste- alteracao para funcao
+            tentativasLP += 1
+            # teste- alteracao para funcao
             """"""
+            ##################IniESTABILIZACAO
+            # parada por estagnação da FO
+            if (
+                    rodadas_sem_melhoria >= nmaxrodadas_sem_melhoria
+                    and colunas_reais_usadas
+            ):
+                print(f"[Nó {no_bp.id_no}] PAROU POR ESTAGNAÇÃO DA FO")
 
+                if usar_estabilizacao and not fase_final_sem_estab:
+                    print("[ESTAB] Abrindo caixa para checagem final")
 
+                    fase_final_sem_estab = True
+                    sol_pool.gamma_pi = 1e4
 
-            if not novas_colunas:# or tentativasLP==60:
-                #teste de numero de iteracoes sem mudar a FO
-                if rodadas_sem_melhoria>=nmaxrodadas_sem_melhoria and colunas_reais_usadas:
+                    for i in range(inst.nbcd):
+                        pi_centro = float(sol_pool.pi_bar[i])
+
+                        pi_min = pi_centro - sol_pool.gamma_pi
+                        pi_max = pi_centro + sol_pool.gamma_pi
+
+                        stab_y_low[i].Obj = -pi_min
+                        stab_y_up[i].Obj = pi_max
+
+                    model.update()
+
+                    rodadas_sem_melhoria = 0
+                    iter_cg += 1
+                    continue
+
+                no_bp.cg_convergiu = True
+                break
+            ##################FimESTABILIZACAO
+
+            if not novas_colunas:  # or tentativasLP==60:
+                # teste de numero de iteracoes sem mudar a FO
+                if rodadas_sem_melhoria >= nmaxrodadas_sem_melhoria and colunas_reais_usadas:
                     if inst.temmip:
-                        rodadas_sem_melhoria=0
+                        rodadas_sem_melhoria = 0
                         gerou_extra = self.tenta_intensificar_com_mip(
                             inst=inst,
-                            sol_pool=sol_pool,no_bp=no_bp,model=model,lbd=lbd,
-                            visita_constr=visita_constr,uma_rota_constr=uma_rota_constr,
-                            constr_arco=constr_arco,slack_vis=slack_vis,slack_arc=slack_arc,
-                            EPS_RC=EPS_RC,add_rota_no_pool=add_rota_no_pool,add_lambda_var_model=add_lambda_var_model,
-                            rota_usa_arco=rota_usa_arco,max_tentativas=3,max_arcos_mip=5
+                            sol_pool=sol_pool, no_bp=no_bp, model=model, lbd=lbd,
+                            visita_constr=visita_constr, uma_rota_constr=uma_rota_constr,
+                            constr_arco=constr_arco, slack_vis=slack_vis, slack_arc=slack_arc,
+                            EPS_RC=EPS_RC, add_rota_no_pool=add_rota_no_pool, add_lambda_var_model=add_lambda_var_model,
+                            rota_usa_arco=rota_usa_arco, max_tentativas=3, max_arcos_mip=5
                         )
 
                         if gerou_extra:
@@ -8396,8 +8780,28 @@ class Metodos:
                             iter_cg += 1
                             continue
 
+
+                    if usar_estabilizacao and not fase_final_sem_estab:
+                        print("[ESTAB] Sem coluna negativa com box. Fazendo chegagem final com caixa aberta.")
+                        fase_final_sem_estab= True
+                        sol_pool.gamma_pi = 1e4
+
+                        for i in range(inst.nbcd):
+                            pi_centro= float(sol_pool.pi_bar[i])
+                            pi_min=pi_centro- sol_pool.gamma_pi
+                            pi_max=pi_centro+ sol_pool.gamma_pi
+
+                            stab_y_low[i].Obj=-pi_min
+                            stab_y_up[i].Obj=pi_max
+                        model.update()
+                        iter_cg+=1
+                        continue
+
+
                     no_bp.cg_convergiu = True
                     break
+
+
             """
             if not novas_colunas:
                 no_bp.cg_convergiu = True
@@ -8433,7 +8837,9 @@ class Metodos:
             model.update()
 
             """
-            # primeiro adiciona todas as novas colunas ao pool/modelo
+            # primeiro adiciona todas as novas colunas ao pool/modelo###modifiquei para
+            # adicionar uma ocluna por veiculo- só a dele
+            """
             for col in novas_colunas:
                 _, seq, binx, custo, _ = col
 
@@ -8445,10 +8851,58 @@ class Metodos:
                 # conta 1 por coluna gerada, não 1 por veículo
                 colunas_desde_ultimo_mip += 1
 
+            """
+            # """
+            # COpia as colunas só para ele###
+
+            """
+            for col in novas_colunas:
+                k, seq, binx, custo, _ = col
+
+                idx_pool = len(sol_pool.rotas[k]["sequencia_rota"])
+                add_rota_no_pool(k, seq, binx, custo)
+                add_lambda_var_model(k, idx_pool, seq, binx, custo)
+
+                colunas_desde_ultimo_mip += 1
+            """
+            #"""
+
+            print("")
+            for col in novas_colunas:
+                k_base, seq, binx, custo, rc_base = col
+
+                for kk in sol_pool.rotas.keys():
+
+                    # se a rota não respeita o nó para esse veículo, pula
+                    if not self.coluna_respeita_no(no_bp, seq, kk):
+                        continue
+
+                    # recompõe rc para o veículo kk
+                    # rc_base foi calculado com sigma[k_base]
+                    rc_kk = rc_base + sigma[k_base] - sigma[kk]
+
+                    if sigma[k_base] == sigma[kk]:
+                        if k_base!=kk:
+                            continue
+
+                    if rc_kk >= -EPS_RC:
+                        print(f'Nao adicionou no k {kk}')
+                        continue
+
+                    idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
+                    add_rota_no_pool(kk, seq, binx, custo)
+                    add_lambda_var_model(kk, idx_pool, seq, binx, custo)
+
+                    colunas_desde_ultimo_mip += 1
+
+            #"""
             model.update()
+            # """
 
             # a cada 20 colunas geradas, roda um MIP no pool atual
-            if colunas_desde_ultimo_mip >= 20:
+            if colunas_desde_ultimo_mip >= 30: #Eportar todas
+                # exportar a cada coluna- essa saida
+                # relacionar o LP com UB- ver em um gráfico
                 print(f"[Nó {no_bp.id_no}] Rodando MIP periódico após {colunas_desde_ultimo_mip} colunas...")
 
                 mip_periodico = gp.Model(f"MIP_periodico_no_{no_bp.id_no}")
@@ -8520,10 +8974,13 @@ class Metodos:
                         for p, var in z_per[k]:
                             if float(var.X) > 0.5:
                                 selecionadas.append((k, p))
+                                """
                                 if p in (0, 1):
                                     usou_coluna_inicial = True
+                                """
 
                     if not usou_coluna_inicial:
+                        """
                         with open(nome_arquivo_mip, "a", encoding="utf-8") as f:
                             f.write(f"Nó {no_bp.id_no} | iter_cg={iter_cg} | FO={mip_periodico.ObjVal:.6f}\n")
                             for k, p in selecionadas:
@@ -8531,6 +8988,7 @@ class Metodos:
                                 custop = float(sol_pool.rotas[k]["custo"][p])
                                 f.write(f"   veic={k} col={p} custo={custop:.6f} rota={seqp}\n")
                             f.write("\n")
+                        """
 
                         print(
                             f"[Nó {no_bp.id_no}] MIP periódico encontrou solução inteira válida. FO={mip_periodico.ObjVal:.6f}")
@@ -8541,7 +8999,28 @@ class Metodos:
 
                 colunas_desde_ultimo_mip = 0
 
+                ##################################chamada exportadao
+                sol_pool.iter_gc += 1
 
+                lb = lb_iteracao
+                ub = None
+                if mip_periodico.Status == GRB.OPTIMAL:
+                    ub = float(mip_periodico.ObjVal)
+
+                n_colunas = sum(
+                    len(sol_pool.rotas[kk]["sequencia_rota"])
+                    for kk in sol_pool.rotas
+                )
+
+                sol_pool.registrar_convergencia(
+                    inst=inst,
+                    iteracao=sol_pool.iter_gc,
+                    no_id=no_bp.id_no if no_bp else 0,
+                    lb=lb,
+                    ub=ub,
+                    n_colunas=n_colunas,tempo=time.time() - sol_pool.time_initial
+                )
+                ##################################chamada exportadao
             iter_cg += 1
             """
             if iter_cg >= max_iter_cg:
@@ -8567,6 +9046,7 @@ class Metodos:
 
         no_bp.lb_confiavel = (
                 no_bp.cg_convergiu and
+                fase_final_sem_estab and
                 (no_bp.slack_sum_final <= 1e-9) and
                 (not no_bp.parou_por_max_iter)
         )
@@ -8686,15 +9166,15 @@ class Metodos:
         mip.optimize()
 
         if mip.Status == GRB.OPTIMAL:
-            #preciso ver se esse mip não tem por acaso aquelas solucoes das colunas inicias
+            # preciso ver se esse mip não tem por acaso aquelas solucoes das colunas inicias
             no_bp.custo_mip = float(mip.ObjVal)
-            #no_bp.solucao_inteira = True
-
-
-
+            # no_bp.solucao_inteira = True
 
             lambdas_int = {}
             selecao = []
+
+            usou_coluna_inicial = False
+            """
             usou_coluna_inicial = False
             for k in sol_pool.rotas.keys():
                 for p, var in z[k]:
@@ -8708,6 +9188,7 @@ class Metodos:
                         })
                         if p in (0, 1):
                             usou_coluna_inicial = True
+            """
 
             no_bp.lambdas_inteiras = lambdas_int
 
@@ -8765,7 +9246,7 @@ class Metodos:
                 print(f"[Nó {no_bp.id_no}] MIP usou coluna inicial. Inteira inválida.")
             else:
                 no_bp.solucao_inteira = True
-            # exporta a solução inteira do MIP
+                # exporta a solução inteira do MIP
                 if selecao:
                     mu_arc_total = {}
                     if mu_arc_por_k is not None:
@@ -8813,7 +9294,7 @@ class Metodos:
             # self.exportar_colunas_pool_raiz_csv(sol_pool, no_bp, pool_ini_por_k)
             print("PRIMEIRO NO")
 
-    def extrair_duais_do_mestre(self, model, sol_pool, visita_constr, uma_rota_constr, constr_arco):
+    def extrair_duais_do_mestre(self, inst, model, sol_pool, visita_constr, uma_rota_constr, constr_arco):
         import gurobipy as gp
 
         pi = [float(c.Pi) for c in visita_constr]
@@ -8838,8 +9319,66 @@ class Metodos:
                 except gp.GurobiError:
                     mu_arc_por_k[k] = {}
 
-        return pi, sigma, mu_arc_por_k
+        if self.printarsoldual:
+            print("\n================ DUAIS DO MESTRE ================")
 
+            print("\nPI (clientes):")
+            for j, val in enumerate(pi, start=1):
+                print(f"  pi[{j}] = {val: .6f}")
+
+            print("\nSIGMA (veículos):")
+            for k in sol_pool.rotas.keys():
+                print(f"  sigma[{k}] = {sigma[k]: .6f}")
+
+            print("\nMU (arcos):")
+            tem_mu = False
+            for k in sol_pool.rotas.keys():
+                if mu_arc_por_k[k]:
+                    tem_mu = True
+                    print(f"  Veículo {k}:")
+                    for (i, j), val in sorted(mu_arc_por_k[k].items()):
+                        print(f"    mu[{k}][({i},{j})] = {val: .6f}")
+
+            if not tem_mu:
+                print("  sem duais de arco")
+
+            print("=================================================\n")
+
+        # ================= ESTABILIZAÇÃO DOS DUAIS =================
+        usar_estabilizacao = True
+        alpha = 0.7  # peso do dual atual
+
+        pi_estavel = []
+
+        if usar_estabilizacao:
+
+            # reseta se não existe ou se o tamanho mudou (novo nó do B&P)
+            if not hasattr(self, "pi_antigo") or self.pi_antigo is None or len(self.pi_antigo) != len(pi):
+                self.pi_antigo = pi[:]
+                pi_estavel = pi[:]
+
+            else:
+                # verifica se os duais são artificiais (big-M), se sim não estabiliza
+                tem_artificial = any(abs(p) >= 9000 for p in pi)
+
+                for i in range(len(pi)):
+                    p_atual = pi[i]
+                    p_antigo = self.pi_antigo[i]
+
+                    p_estavel = alpha * p_atual + (1 - alpha) * p_antigo
+
+                    pi_estavel.append(p_estavel)
+
+                # salva o estabilizado, não o cru
+                self.pi_antigo = pi_estavel[:]
+
+        else:
+            pi_estavel = pi[:]
+
+        # ================= FIM ESTABILIZAÇÃO DOS DUAIS =================
+
+        #return pi_estavel, sigma, mu_arc_por_k
+        return pi, sigma, mu_arc_por_k
 
     def gerar_novas_colunas_com_duaisant(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
         import time
@@ -8862,9 +9401,9 @@ class Metodos:
                     inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
 
-                #nova_rota2, custo_red2 = self.SUB_VNSRANDOMant(
+                # nova_rota2, custo_red2 = self.SUB_VNSRANDOMant(
                 #    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                #)
+                # )
 
                 if nova_rota is not None:
                     sol_pool.construtivas[0] += 1
@@ -9309,6 +9848,232 @@ class Metodos:
         return novas_colunas
 
     def gerar_novas_colunas_com_duais(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+        import random
+        import time
+
+        novas_colunas = []
+        ks = list(sol_pool.rotas.keys())
+
+        # ============================================================
+        # CONTROLE DA FROTA HOMOGÊNEA
+        # ============================================================
+        frota_homogenea = True
+
+        # Opções:
+        # "um_randomico"  -> roda pricing 1 vez e adiciona em 1 veículo aleatório
+        # "um_balanceado" -> roda pricing 1 vez e adiciona no veículo com menos colunas
+        modo_frota_homogenea = "todos"  # -> roda pricing 1 vez e replica para todos os veículos
+        # modo_frota_homogenea = "por_veiculo"#   -> comportamento antigo: roda pricing para cada veículo
+        # modo_frota_homogenea = "um_balanceado"
+
+        # ============================================================
+        # ROUND-ROBIN
+        # ============================================================
+        if not hasattr(no_bp, "prox_k_idx") or no_bp.prox_k_idx is None:
+            no_bp.prox_k_idx = 0
+
+        # ============================================================
+        # FASE INICIAL
+        # ============================================================
+        num_artificiais_iniciais = 2
+        so_artificiais = True
+
+        for kk in ks:
+            if len(sol_pool.rotas[kk]["sequencia_rota"]) > num_artificiais_iniciais:
+                so_artificiais = False
+                break
+
+        if so_artificiais:
+            lista_k_tentativa = ks[:]
+        else:
+            lista_k_tentativa = []
+            nks = len(ks)
+
+            for off in range(nks):
+                idx = (no_bp.prox_k_idx + off) % nks
+                lista_k_tentativa.append(ks[idx])
+
+        # ============================================================
+        # LIMITE DE COLUNAS ACEITAS
+        # ============================================================
+        if so_artificiais:
+            max_colunas_aceitas = len(ks)
+        else:
+            if frota_homogenea and modo_frota_homogenea == "todos":
+                max_colunas_aceitas = len(ks)
+            else:
+                max_colunas_aceitas = 1
+
+        # ============================================================
+        # DEFINE QUANTAS VEZES RODAR O PRICING
+        # ============================================================
+        if frota_homogenea and modo_frota_homogenea != "por_veiculo":
+            # Roda o pricing uma única vez
+            if modo_frota_homogenea == "um_balanceado":
+                k_ref = min(
+                    lista_k_tentativa,
+                    key=lambda kk: len(sol_pool.rotas[kk]["sequencia_rota"])
+                )
+            else:
+                k_ref = random.choice(lista_k_tentativa)
+
+            lista_k_pricing = [k_ref]
+
+        else:
+            # Comportamento antigo: roda pricing para cada veículo
+            lista_k_pricing = lista_k_tentativa
+
+        # ============================================================
+        # LOOP DE PRICING
+        # ============================================================
+        for k in lista_k_pricing:
+            mu_arc = mu_arc_por_k.get(k, {})
+
+            melhor_rota = None
+            melhor_custo_red = float("inf")
+            metodo_escolhido = -1
+
+            # ========================================================
+            # 1) ALL BEST INSERTION
+            # ========================================================
+            if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
+                rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
+                    inst,
+                    pi,
+                    sigma_k=sigma[k],
+                    k=k,
+                    NO_BP=no_bp,
+                    mu_arc=mu_arc
+                )
+
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 1
+
+            # ========================================================
+            # 3) BIDIRECIONAL CPP
+            # Só chama se ainda não encontrou coluna boa
+            # ========================================================
+            if not (melhor_rota is not None and melhor_custo_red < -EPS_RC):
+
+                if inst.nbconstrutiva != 3:
+                    t0 = time.time()
+
+                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
+                        inst,
+                        pi,
+                        sigma[k],
+                        k,
+                        arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                        arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                        mu_arc=mu_arc
+                    )
+
+                    t2 = time.time()
+                    print(f"Tempo CPP {t2 - t0}")
+
+                    if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                        melhor_rota = rota
+                        melhor_custo_red = float(rc)
+                        metodo_escolhido = 3
+
+            # ========================================================
+            # 4) VNS RANDOM
+            # Só chama se ainda não encontrou rota
+            # ========================================================
+            if melhor_rota is None:
+                rota, rc = self.SUB_VNSRANDOM(
+                    inst,
+                    pi,
+                    sigma_k=sigma[k],
+                    k=k,
+                    NO_BP=no_bp,
+                    mu_arc=mu_arc
+                )
+
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 4
+
+            if melhor_rota is None:
+                continue
+
+            if metodo_escolhido >= 0:
+                sol_pool.construtivas[metodo_escolhido] += 1
+
+            if float(melhor_custo_red) >= -EPS_RC:
+                continue
+
+            seq = melhor_rota["clientes"]
+
+            # ========================================================
+            # DEFINE EM QUAIS VEÍCULOS A COLUNA SERÁ ADICIONADA
+            # ========================================================
+            if frota_homogenea and modo_frota_homogenea == "todos":
+                ks_destino = lista_k_tentativa[:]
+
+            elif frota_homogenea and modo_frota_homogenea == "um_randomico":
+                ks_destino = [random.choice(lista_k_tentativa)]
+
+            elif frota_homogenea and modo_frota_homogenea == "um_balanceado":
+                k_destino = min(
+                    lista_k_tentativa,
+                    key=lambda kk: len(sol_pool.rotas[kk]["sequencia_rota"])
+                )
+                ks_destino = [k_destino]
+
+            else:
+                ks_destino = [k]
+
+            # ========================================================
+            # ADICIONA A COLUNA
+            # ========================================================
+            for kk in ks_destino:
+
+                if not self.coluna_respeita_no(no_bp, seq, kk):
+                    continue
+
+                melhor_rota["custo_reduzido"] = float(melhor_custo_red)
+
+                novas_colunas.append((
+                    kk,
+                    seq,
+                    melhor_rota["bin_xij"],
+                    melhor_rota["custo"],
+                    float(melhor_custo_red)
+                ))
+
+                # ====================================================
+                # TABU DO VEÍCULO kk
+                # ====================================================
+                if no_bp is not None and hasattr(no_bp, "tabu_until"):
+                    mat = no_bp.tabu_until[kk]
+
+                    for i in range(inst.nbn):
+                        for j in range(inst.nbn):
+                            if mat[i][j] > 0:
+                                mat[i][j] -= 1
+
+                    for t in range(len(seq) - 1):
+                        i, j = seq[t], seq[t + 1]
+                        no_bp.freq_arc[kk][i][j] += 1
+                        no_bp.last_arc[kk][i][j] = 0
+                        no_bp.tabu_until[kk][i][j] = no_bp.tabu_tenure
+
+                if len(novas_colunas) >= max_colunas_aceitas:
+                    break
+
+            if len(novas_colunas) >= max_colunas_aceitas:
+                pos_k = ks.index(k)
+                no_bp.prox_k_idx = (pos_k + 1) % len(ks)
+                break
+
+        return novas_colunas
+
+    def gerar_novas_colunas_com_duais11(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
+
         novas_colunas = []
         ks = list(sol_pool.rotas.keys())
 
@@ -9334,6 +10099,8 @@ class Metodos:
                 idx = (no_bp.prox_k_idx + off) % nks
                 lista_k_tentativa.append(ks[idx])
             max_colunas_aceitas = 1
+        # alteracao pois as colunas iniciais nao sao artificiais, logo eu posso so duplicar colunas
+        lista_k_tentativa = sorted(ks, key=lambda k: sigma[k], reverse=True)
 
         for k in lista_k_tentativa:
             mu_arc = mu_arc_por_k.get(k, {})
@@ -9351,6 +10118,11 @@ class Metodos:
                     melhor_rota = rota
                     melhor_custo_red = float(rc)
                     metodo_escolhido = 1
+                    print("\n[ALLBEST GEROU CANDIDATA]")
+                    print(f"k={k}")
+                    print(f"rc={melhor_custo_red:.6f}")
+                    print(f"custo={float(melhor_rota['custo']):.6f}")
+                    print(f"seq={melhor_rota['clientes']}")
 
             # early stop: achou coluna boa na heurística
             if melhor_rota is not None and melhor_custo_red < -EPS_RC:
@@ -9359,38 +10131,42 @@ class Metodos:
                 # 3) BIDIRECIONAL
                 if inst.nbconstrutiva != 3:
 
-                    #CPPP
-                    t0=time.time()
+                    # CPPP
+                    t0 = time.time()
+
                     rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
                         inst, pi, sigma[k], k,
                         arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
                         arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
                         mu_arc=mu_arc
                     )
-                    t2=time.time()
-                    print(f'Tempo CPP {t2-t0}')
-                    """
-                    print("BID CPP")
-                    print(rota)
+                    t2 = time.time()
+                    # print(f'Rota BID `{rota}')
+                    # print(f'RC {rc}')
+                    print(f'Tempo CPP {t2 - t0}')
 
+                    # """
+                    # print("BID CPP")
+                    # print(rota)
 
-                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
-                        inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
-                    )
-
-                    print(f'Tempo PYTHON {time.time()-t2}')
-                    print("BID PYTHON")
-                    print(rota)
-                    """
-
+                    #rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL(
+                    #    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    #)
 
                     if rota is not None and rc is not None and float(rc) < melhor_custo_red:
                         melhor_rota = rota
                         melhor_custo_red = float(rc)
                         metodo_escolhido = 3
 
+                        print("\n[BIDIRECIONAL_CPP GEROU CANDIDATA]")
+                        print(f"k={k}")
+                        print(f"rc={melhor_custo_red:.6f}")
+                        print(f"custo={float(melhor_rota['custo']):.6f}")
+                        print(f"seq={melhor_rota['clientes']}")
+
+            """
             if melhor_rota is None:
-                #PD COMPLETA
+                # VNS
                 rota, rc = self.SUB_VNSRANDOM(
                     inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
@@ -9398,6 +10174,49 @@ class Metodos:
                     melhor_rota = rota
                     melhor_custo_red = float(rc)
                     metodo_escolhido = 3
+            """
+
+            # agora a PD completa greedy
+            """
+            if melhor_rota is None:
+                #PD COMPLETA
+                rota, rc = self.SUB_PROG_DIN_PW_CPP_NOVA(
+                    inst, pi, sigma[k], k,
+                    arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                    arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                    mu_arc=mu_arc,
+                    widening_seq=[4, 8, -1],
+                    eps=EPS_RC
+
+                )
+
+                if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                    melhor_rota = rota
+                    melhor_custo_red = float(rc)
+                    metodo_escolhido = 3
+            """
+            if melhor_rota is None:
+                # PD COMPLETA
+                rota, rc = self.SUB_PROG_DIN_PW_CPP_NOVA(
+                    inst, pi, sigma[k], k,
+                    arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                    arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                    mu_arc=mu_arc,
+                    widening_seq=[4, 8, -1],
+                    eps=EPS_RC
+
+                )
+            if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                melhor_rota = rota
+                melhor_custo_red = float(rc)
+                metodo_escolhido = 3
+
+                print("\n[BIDIRECIONAL_CPP GEROU CANDIDATA]")
+                print(f"k={k}")
+                print(f"rc={melhor_custo_red:.6f}")
+                print(f"custo={float(melhor_rota['custo']):.6f}")
+                print(f"seq={melhor_rota['clientes']}")
+
             if melhor_rota is None:
                 continue
 
@@ -9412,6 +10231,8 @@ class Metodos:
 
                 melhor_rota["custo_reduzido"] = float(melhor_custo_red)
 
+                """
+                """
                 novas_colunas.append((
                     k,
                     seq,
@@ -9437,6 +10258,16 @@ class Metodos:
                     pos_k = ks.index(k)
                     no_bp.prox_k_idx = (pos_k + 1) % len(ks)
                     break
+
+        # agora a PD completa greedy
+        #"""
+
+
+            if rota is not None and rc is not None and float(rc) < melhor_custo_red:
+                melhor_rota = rota
+                melhor_custo_red = float(rc)
+                metodo_escolhido = 3
+        #"""
 
         return novas_colunas
 
@@ -9651,10 +10482,6 @@ class Metodos:
                 else:
                     mip.addConstr(expr == 1.0, name=f"arc_{k}_{i}_{j}")
 
-
-
-
-
         mip.optimize()
 
         import time
@@ -9709,14 +10536,12 @@ class Metodos:
             print(f"   veic={k} | col={p} | z=1 | custo={custo:.4f} | rota={seq}")
         print(f"   valor recomposto MIP = {valor_recomposto:.6f}")
 
-
         return {
             "status": mip.Status,
             "obj": float(mip.ObjVal),
             "selecao": selecao,
             "arcos_mip": list(arcos_mip)
         }
-
 
     def rankear_arcos_candidatos_mip(self, no_bp, arcos_mip):
         candidatos = []
@@ -9734,14 +10559,12 @@ class Metodos:
         candidatos.sort(key=lambda x: x[3], reverse=True)
         return candidatos
 
-
     def tenta_intensificar_com_mip(
-        self, inst, sol_pool, no_bp, model, lbd,
-        visita_constr, uma_rota_constr, constr_arco, slack_vis, slack_arc,
-        EPS_RC, add_rota_no_pool, add_lambda_var_model, rota_usa_arco, max_tentativas=3,
-        max_arcos_mip=5
+            self, inst, sol_pool, no_bp, model, lbd,
+            visita_constr, uma_rota_constr, constr_arco, slack_vis, slack_arc,
+            EPS_RC, add_rota_no_pool, add_lambda_var_model, rota_usa_arco, max_tentativas=3,
+            max_arcos_mip=5
     ):
-
 
         print(f"[Nó {no_bp.id_no}] Iniciando intensificação por MIP...")
 
@@ -9792,7 +10615,6 @@ class Metodos:
                     tentativas += 1
                     continue
 
-
                 pi, sigma, mu_arc_por_k = self.extrair_duais_do_mestre(
                     model=model,
                     sol_pool=sol_pool,
@@ -9822,7 +10644,8 @@ class Metodos:
                             idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
                             add_rota_no_pool(kk, seq, binx, custo)
                             add_lambda_var_model(kk, idx_pool, seq, binx, custo)
-                            print(f"[Nó {no_bp.id_no}] Coluna adicionada pela intensificação | kk={kk} | rc={custo_red:.6f} | rota={seq}")
+                            print(
+                                f"[Nó {no_bp.id_no}] Coluna adicionada pela intensificação | kk={kk} | rc={custo_red:.6f} | rota={seq}")
 
                     model.update()
                     return True
@@ -10481,7 +11304,6 @@ class Metodos:
                 for w in range(n_janelas):
                     y[i, k, w] = model.addVar(vtype=GRB.BINARY, name=f'y_{i}_{k}_{w}')
 
-
         # Função objetivo: minimizar tempo total percorrido
         model.setObjective(
             # gp.quicksum(inst.matriz_distancia[i][j] * inst.veiculos[k].velocidade * x[i, j, k]  # FOO alterar FO
@@ -10489,7 +11311,7 @@ class Metodos:
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
         )
-        model.Params.TimeLimit = 600
+        model.Params.TimeLimit = 12000
         """
         T_retorno = model.addVar(vtype=GRB.CONTINUOUS, name='T_retorno')
         model.addConstr(
@@ -10583,13 +11405,12 @@ class Metodos:
                             name=f'tempo_chegada_{i}_{j}_{k}'
                         )
 
-
         model.write("modelo.lp")
         model.optimize()
 
         # Extração da solução, preenche bin_visitas para compatibilidade com sua estrutura
-        #if model.status == GRB.OPTIMAL:
-        if model.SolCount >0:
+        # if model.status == GRB.OPTIMAL:
+        if model.SolCount > 0:
             # --- RESULTADOS DETALHADOS ---
             sol.custo = model.ObjVal
 
@@ -11218,7 +12039,7 @@ class Metodos:
             }
 
             # === Rota cheia (coluna artificial forte) ===
-            #random.shuffle(clientes)
+            # random.shuffle(clientes)
             rota_cheia = [0] + list(range(1, inst.nbcd + 1)) + [depf]
             rota_cheia = [0] + clientes[:] + [depf]
 
@@ -11629,7 +12450,7 @@ class Metodos:
                                         sol.rotas_escolhidas[k]['custos'].append(sol.rotas[k]['custo'][p])
                                         sol.rotas_escolhidas[k]['indices'].append(p)
 
-                            sol.exportar_json_gc(inst, "solucao_gc.json")
+                            # sol.exportar_json_gc(inst, "solucao_gc.json")
 
                         # Altera o tipo de todas as variáveis lambda para Binário
                         for k in sol.rotas.keys():  # range(inst.nbv):
@@ -13142,6 +13963,15 @@ class Metodos:
         if str(pyd_dir) not in sys.path:
             sys.path.insert(0, str(pyd_dir))
 
+        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        p_release = base / "x64" / "Release"
+        p_debug = base / "x64" / "Debug"
+
+        if p_release.exists():
+            sys.path.append(str(p_release))
+        if p_debug.exists():
+            sys.path.append(str(p_debug))
+
         import vrptw_pd
 
         if arcos_proibidos is None:
@@ -13220,6 +14050,118 @@ class Metodos:
             req_j
         )
 
+    def SUB_PROG_DIN_PW_CPP_NOVA(self, inst, pi, sigma_k, k,
+                                 arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
+                                 widening_seq=None, eps=1e-6):
+        import sys
+        import numpy as np
+        from pathlib import Path
+
+        # caminho do .pyd
+        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        p_release = base / "x64" / "Release"
+        p_debug = base / "x64" / "Debug"
+
+        if p_release.exists():
+            sys.path.insert(0, str(p_release))
+        elif p_debug.exists():
+            sys.path.insert(0, str(p_debug))
+
+        import vrptw_pd
+
+        if arcos_proibidos is None:
+            arcos_proibidos = set()
+        if arcos_fixados is None:
+            arcos_fixados = set()
+        if mu_arc is None:
+            mu_arc = {}
+        if widening_seq is None:
+            widening_seq = [4, 8, -1]  # -1 = ALL
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        cap_k = float(inst.veiculos[k].capacidade)
+        vel = float(inst.veiculos[k].velocidade)
+
+        # vetores da instância
+        a = np.zeros(nbn, dtype=np.float64)
+        b = np.zeros(nbn, dtype=np.float64)
+        s = np.zeros(nbn, dtype=np.float64)
+        d = np.zeros(nbn, dtype=np.float64)
+
+        for i in range(nbn):
+            noh = inst.noh[i]
+            a[i] = noh.READY_TIME[0] if noh.READY_TIME else 0.0
+            b[i] = noh.DUE_DATE[0] if noh.DUE_DATE else 1e18
+            s[i] = noh.SERVICE_TIME[0] if noh.SERVICE_TIME else 0.0
+            d[i] = float(getattr(noh, "DEMAND", 0.0))
+
+        dist = np.asarray(inst.matriz_distancia, dtype=np.float64)
+        tt = dist / vel
+
+        pi_list = np.asarray(pi, dtype=np.float64).tolist()
+
+        # usa versão simples se não há branch/mu
+        tem_branch = (
+                len(arcos_proibidos) > 0 or
+                len(arcos_fixados) > 0 or
+                len(mu_arc) > 0
+        )
+
+        if not tem_branch:
+            return vrptw_pd.sub_prog_din_pw_greedy(
+                tt,
+                a.tolist(),
+                b.tolist(),
+                s.tolist(),
+                d.tolist(),
+                pi_list,
+                float(sigma_k),
+                cap_k,
+                int(nbcd),
+                int(dep0),
+                int(depf),
+                list(map(int, widening_seq)),
+                float(eps)
+            )
+
+        # versão com mu, arcos proibidos e arcos fixados
+        mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+        for chave, val in mu_arc.items():
+            i, j = chave[0], chave[1]
+            mu_flat[int(i) * nbn + int(j)] = float(val)
+
+        forbid_flat = np.zeros(nbn * nbn, dtype=np.uint8)
+        for arco in arcos_proibidos:
+            i, j = arco[0], arco[1]
+            forbid_flat[int(i) * nbn + int(j)] = 1
+
+        req_i = [int(arco[0]) for arco in arcos_fixados]
+        req_j = [int(arco[1]) for arco in arcos_fixados]
+
+        return vrptw_pd.sub_prog_din_pw_branch_greedy(
+            tt,
+            a.tolist(),
+            b.tolist(),
+            s.tolist(),
+            d.tolist(),
+            pi_list,
+            float(sigma_k),
+            cap_k,
+            int(nbcd),
+            int(dep0),
+            int(depf),
+            list(map(int, widening_seq)),
+            float(eps),
+            mu_flat.tolist(),
+            forbid_flat.tolist(),
+            req_i,
+            req_j
+        )
+
     def SUB_PROG_DINCPP(self, inst, pi, sigma_k, k,
                         arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
         import sys
@@ -13286,7 +14228,8 @@ class Metodos:
         # se quiser ver o hello, precisa printar
         # print(vrptw_pd.hello())
 
-        return vrptw_pd.SUB_PROG_DIN(tt, a, b, s, d, pi_np, float(sigma_k), cap_k, F, FX, MU)
+        # return vrptw_pd.SUB_PROG_DIN(tt, a, b, s, d, pi_np, float(sigma_k), cap_k, F, FX, MU)
+        return vrptw_pd.sub_prog_din_pw_greedy(tt, a, b, s, d, pi_np, float(sigma_k), cap_k, F, FX, MU)
 
     def SUB_PROG_DINCPP0202(self, inst, pi, sigma_k, k,
                             arcos_proibidos=None, arcos_fixados=None, mu_arc=None):

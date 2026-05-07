@@ -26,7 +26,104 @@ class Solucao:
         self.rotas_escolhidas = {}
 
         self.construtivas = [0, 0, 0, 0, 0]
+        self.TIME_MAX = 360000
 
+
+        #para gerar o grafico -exportar convergencia
+        self.log_convergencia = []
+        self.melhor_ub = float("inf")
+        self.iter_gc = 5
+        #para gerar o grafico -exportar convergencia
+
+
+        self.motivoConv="GERAL"
+
+        ##IniEstabilizacao Dual
+        #centro das duais
+        self.pi_bar= None
+        #LARgura da caixa
+        self.gamma_pi = 100.0
+        #largura da caixa
+        self.alpha_estab= 0.1
+        #historico
+        self.historico_pi=[]
+        ##FimEstabilizacao Dual
+
+    time_initial = 0
+    FO_TARGET = -1
+    TIME_TARGET = 99999999
+
+    def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo):
+        if not hasattr(self, "melhor_ub"):
+            self.melhor_ub = float("inf")
+
+        if ub is not None and ub < self.melhor_ub:
+            self.melhor_ub = float(ub)
+
+        gap = None
+        if self.melhor_ub < float("inf") and lb not in [None, 0]:
+            gap = (self.melhor_ub - lb) / abs(lb)
+
+        self.log_convergencia.append({
+            "instancia": getattr(inst, "fileName", ""),
+            "iteracao": iteracao,
+            "no_id": no_id,
+            "LB_frac": lb,
+            "UB_mip_iteracao": ub,
+            "melhor_UB": self.melhor_ub if self.melhor_ub < float("inf") else None,
+            "gap": gap,
+            "n_colunas": n_colunas,
+            "tempo": tempo,
+        })
+
+    def exportar_convergencia_excel(self, inst, nome_arquivo=None):
+        import pandas as pd
+        import os
+
+        if not self.log_convergencia:
+            print("Sem dados de convergência")
+            return
+
+        nome_arquivo = f"convergencia_bp_{inst.nbcd}v.xlsx"
+
+        df = pd.DataFrame(self.log_convergencia)
+
+        if "gap" in df.columns:
+            df["gap_%"] = df["gap"] * 100
+
+        instancia = inst.nomeInst.split("/")[-1].replace(".txt", "")
+        aba = instancia[:31]
+
+        resumo = {
+            "instancia": instancia,
+            "melhor_LB": df["LB_frac"].dropna().iloc[-1] if df["LB_frac"].notna().any() else None,
+            "melhor_UB": df["melhor_UB"].dropna().min() if df["melhor_UB"].notna().any() else None,
+            "gap_final_%": df["gap_%"].dropna().iloc[-1] if "gap_%" in df and df["gap_%"].notna().any() else None,
+            "iteracoes": df["iteracao"].max(),
+            "n_colunas_final": df["n_colunas"].iloc[-1],
+        }
+
+        df_resumo = pd.DataFrame([resumo])
+
+        if os.path.exists(nome_arquivo):
+            with pd.ExcelWriter(nome_arquivo, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
+                df.to_excel(writer, sheet_name=aba, index=False)
+
+                try:
+                    antigo = pd.read_excel(nome_arquivo, sheet_name="resumo")
+                    antigo = antigo[antigo["instancia"] != instancia]
+                    novo_resumo = pd.concat([antigo, df_resumo], ignore_index=True)
+                except:
+                    novo_resumo = df_resumo
+
+                novo_resumo.to_excel(writer, sheet_name="resumo", index=False)
+
+        else:
+            with pd.ExcelWriter(nome_arquivo, engine="openpyxl") as writer:
+                df_resumo.to_excel(writer, sheet_name="resumo", index=False)
+                df.to_excel(writer, sheet_name=aba, index=False)
+
+        print(f"Exportado: {nome_arquivo} | aba: {aba}")
 
     def travel_time(self, inst, i, j,k):
         return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
@@ -239,17 +336,14 @@ class Solucao:
         with open(nome_arquivo, 'w') as f:
             json.dump(dados, f, indent=4)
 
-        print(f"✅ Solução GC exportada com sucesso para '{nome_arquivo}'")
+        print(f" Solução GC exportada com sucesso para '{nome_arquivo}'")
 
 
 
     def registrar_fo_gc(self, inst, valor_fo):
 
-        filename = f"{inst.nbcd}.csv"
 
-        with open(filename, "a", newline='', encoding='utf-8') as f:
-            writer = csv.writer(f, delimiter=';')
-            writer.writerow(["COMPACTO", f"{valor_fo:.6f}"])
+        return
 
     # INICIO para os arquivos de saida
     def sequencias_exato_para_texto(self):

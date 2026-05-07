@@ -1,4 +1,4 @@
- CUST NO.  XCOORD.   YCOORD.    DEMAND   READY TIME  DUE DATE   READY TIME1  DUE DATE2   SERVICE   TIME2
+CUST NO.  XCOORD.   YCOORD.    DEMAND   READY TIME  DUE DATE   SERVICE   TIME
  
     0      40         50          0          0       1236          0   
     1      45         68         10        912        967         90   

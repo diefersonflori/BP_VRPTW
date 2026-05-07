@@ -1,1 +1,0 @@
-=SEERRO(MÁXIMOSES(tabela_dados!$M:$M;tabela_dados!$E:$E;AW17;tabela_dados!$M:$M;">=0");"")
