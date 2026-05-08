@@ -309,9 +309,9 @@ for i in range(len(tamanhos)):
                 print("--------------------------------------------------")
 
                 # log local do BP desta rodada
-                nome_arquivo_log = f"log_bounds_{inst.nbcd}_{ninst}_C_Can_{inst.nbconstrutiva}.csv"
-                with open(nome_arquivo_log, "w", encoding="utf-8") as f:
-                    f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
+                #nome_arquivo_log = f"log_bounds_{inst.nbcd}_{ninst}_C_Can_{inst.nbconstrutiva}.csv"
+                #with open(nome_arquivo_log, "w", encoding="utf-8") as f:
+                #    f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
 
                 # pool global de colunas
                 sol_pool = Solucao(inst.nbv, inst.nbcd)

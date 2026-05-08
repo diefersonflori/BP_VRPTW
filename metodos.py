@@ -968,7 +968,7 @@ class Metodos:
     def branch_and_price_global(self, inst, sol_pool, tipo_geracao="PD"):
 
         # limpeza arquivo principal dos logs meus
-        nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+        #nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
 
         # with open(nome_arquivo_log, "w", encoding="utf-8") as f:
         #    f.write("no_id;z_inc;z_lp;z_li;total_colunas\n")
@@ -1126,9 +1126,9 @@ class Metodos:
                     print("PODOU por ser inteiro- fim da linha")
                     no_atual.motivo_poda = no_atual.motivo_poda or "no_inteiro_folha"
                     continue
-                nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
-                with open(nome_arquivo_log, "a", encoding="utf-8") as f:
-                    f.write(f"{no_atual.id_no};{z_inc};{z_lp};{z_li};{self.total_colunas}\n")
+                #nome_arquivo_log = f"log_bounds_{inst.nbcd}_{inst.ninst}.csv"
+                #with open(nome_arquivo_log, "a", encoding="utf-8") as f:
+                #    f.write(f"{no_atual.id_no};{z_inc};{z_lp};{z_li};{self.total_colunas}\n")
 
                 print("")
 
@@ -8588,6 +8588,7 @@ class Metodos:
                     rodadas_sem_melhoria += 1
             else:
                 rodadas_sem_melhoria = 0
+
                 ULTIMAFO = valor_recomposto
 
             if not tem_ativa:
@@ -8656,9 +8657,11 @@ class Metodos:
             ##IniUsar estabilizacao
             if usar_estabilizacao and not fase_final_sem_estab:
                 if novas_colunas:
-                    sol_pool.gamma_pi=max(30.0, 0.99*float(sol_pool.gamma_pi))
+                    sol_pool.gamma_pi=max(10.0, 0.95*float(sol_pool.gamma_pi))
+                    #sol_pool.gamma_pi=max(30.0, 0.99*float(sol_pool.gamma_pi))
+                    #sol_pool.gamma_pi=max(1, 0.95*float(sol_pool.gamma_pi))
                 else:
-                    sol_pool.gamma_pi=min(1e4, 2.0*float(sol_pool.gamma_pi))
+                    sol_pool.gamma_pi=min(500, 1.5*float(sol_pool.gamma_pi))
                 if sol_pool.pi_bar is None:
                     sol_pool.pi_bar = [0.0 for _ in range(inst.nbcd)]
                 for i in range(inst.nbcd):
@@ -8754,6 +8757,7 @@ class Metodos:
                     model.update()
 
                     rodadas_sem_melhoria = 0
+                    break #??
                     iter_cg += 1
                     continue
 
