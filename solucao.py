@@ -26,13 +26,14 @@ class Solucao:
         self.rotas_escolhidas = {}
 
         self.construtivas = [0, 0, 0, 0, 0]
-        self.TIME_MAX = 360000
+        self.TIME_MAX = 4200
 
 
         #para gerar o grafico -exportar convergencia
         self.log_convergencia = []
         self.melhor_ub = float("inf")
         self.iter_gc = 5
+        self.nb_iteracoes=0
         #para gerar o grafico -exportar convergencia
 
 
@@ -48,6 +49,45 @@ class Solucao:
         #historico
         self.historico_pi=[]
         ##FimEstabilizacao Dual
+        self.SemMelhora=[]#sem melhora em cada nó
+
+
+
+        ##################alteracao- salvar lp nao so o mip
+
+        ######################################################################################################&&
+        self.FO_TARGET = 362.4
+
+        # =========================
+        # Melhores valores globais
+        # =========================
+
+        self.melhor_lp_com_slack = float("inf")
+        self.iter_melhor_lp_com_slack = ""
+        self.no_melhor_lp_com_slack = ""
+
+        self.melhor_lp_valido = float("inf")
+        self.iter_melhor_lp_valido = ""
+        self.no_melhor_lp_valido = ""
+
+        self.melhor_inteiro = float("inf")
+        self.iter_melhor_inteiro = ""
+        self.no_melhor_inteiro = ""
+
+        # =========================
+        # Targets
+        # =========================
+
+        self.achou_lp_target = False
+        self.iter_lp_target = ""
+        self.tempo_lp_target = ""
+        self.no_lp_target = ""
+
+        self.achou_int_target = False
+        self.iter_int_target = ""
+        self.tempo_int_target = ""
+        self.no_int_target = ""
+        ######################################################################################################&&
 
     time_initial = 0
     FO_TARGET = -1
@@ -84,7 +124,7 @@ class Solucao:
             print("Sem dados de convergência")
             return
 
-        nome_arquivo = f"convergencia_bp_{inst.nbcd}v.xlsx"
+        nome_arquivo = f"convergencia_bp_{inst.nbcd}_GM{self.gamma_pi_inicial}v.xlsx"
 
         df = pd.DataFrame(self.log_convergencia)
 

@@ -31,7 +31,7 @@ class Instancia:
         self.ninst=0
         self.nbconstrutiva=0
         self.temmip=True
-        self.iteraSemMelhora=10
+        self.iteraSemMelhora=30
     nomeInst=""
 
     def leitura(self, argv):
