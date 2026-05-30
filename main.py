@@ -19,14 +19,12 @@ def main():
     ARQ_TXT_FINAL = "resultados_finais_legivel.txt"
     ARQ_CALIB_GAMMA = "calibracao_gamma.csv"
 
-
     def fmt(v):
         if v is None:
             return ""
         if isinstance(v, (int, float)) and math.isinf(v):
             return ""
         return v
-
 
     def round_safe(v, ndigits=4):
         if v is None:
@@ -36,7 +34,6 @@ def main():
         if v == "":
             return ""
         return round(v, ndigits)
-
 
     # ============================================================
     # CONFIGURAÇÃO FLEXÍVEL
@@ -54,12 +51,12 @@ def main():
     }
 
     semMelhora_por_tamanho = {
-        25: [10, 20, 50, 100, 300],
+        25: [20, 20, 50, 100, 300],
         50: [300, 10, 15, 20, 25],
     }
 
     gamma_ini_por_tamanho = {
-        25: 40,
+        25: 30,#40,
         50: 40,
     }
 
@@ -69,16 +66,16 @@ def main():
     }
 
     gamma_pi_max_por_tamanho = {
-        25: [100, 200, 300, 500],
+        25: [50,100,200,75, 200, 300, 500],
         50: [500, 1000, 2000],
     }
 
     # Gamma inicial da caixa. Pode separar por família.
     gamma_inicial_caixa = {
         25: {
-            "c": 40,
-            "r": 80,
-            "rc": 80,
+            "c": 10,
+        #    "r": 80,
+        #    "rc": 80,
         },
         50: {
             "c": 40,
@@ -113,13 +110,15 @@ def main():
     # Para 50 mantive os valores que já estavam no seu código.
     NBV_POR_TAM = {
         25: {
-            "c101n": 1, "c102": 1, "c103": 1, "c104": 1, "c105": 1,
-            "c106": 1, "c107": 1, "c108": 1, "c109": 1,
-            "r101": 1, "r102": 3, "r103": 1, "r104": 1, "r105": 1,
-            "r106": 7, "r107": 1, "r108": 5, "r109": 1, "r110": 25,
-            "r111": 5, "r112": 15,
-            "rc101": 321, "rc102": 1, "rc103": 1, "rc104": 1, "rc105": 3,
-            "rc106": 1, "rc107": 1, "rc108": 1,
+            "c101n": 3, "c101": 3, "c102": 3, "c103": 3, "c104": 3,
+            "c105": 3, "c106": 3, "c107": 3, "c108": 3, "c109": 3,
+
+            "r101": 8, "r102": 7, "r103": 5, "r104": 4,
+            "r105": 6, "r106": 5, "r107": 4, "r108": 4,
+            "r109": 5, "r110": 4, "r111": 4, "r112": 4,
+
+            "rc101": 4, "rc102": 3, "rc103": 3, "rc104": 3,
+            "rc105": 4, "rc106": 3, "rc107": 3, "rc108": 3,
         },
         50: {
             "c101n": 5, "c102": 5, "c103": 5, "c104": 5, "c105": 5,
@@ -200,7 +199,7 @@ def main():
                 print(f"Pulando {arquivo_instancia}: nbv não cadastrado para tam={tam}")
                 continue
 
-            for gamma_PMAX in gamma_pi_max:
+            for gamma_PMAX in gamma_pi_max[:1]:   # só o primeiro valor calibrado
 
                 print("\n############################################")
                 print(f"TESTANDO GAMMA = {gamma_PMAX}")
@@ -237,7 +236,7 @@ def main():
                 solc = Solucao(inst.nbv, inst.nbcd)
 
                 tiex = time.time()
-                # metod.metodo_exato(inst, solex)
+                #metod.metodo_exato(inst, solex)
                 tfex = time.time()
 
                 tempo_exato = tfex - tiex
@@ -248,8 +247,15 @@ def main():
 
                 tipo_geracao = "PD"
 
-                for SM in semMelhora:
+                #for SM in semMelhora:
+                for ii in range(2):
+                    if ii==0:
+                        inst.usar_estabilizacao=True
+                    else:
+                        inst.usar_estabilizacao=False
 
+                    print(f" $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO {inst.usar_estabilizacao}")
+                    SM=20
                     inst.nbconstrutiva = 10
                     inst.iteraSemMelhora = SM
                     random.seed(SEED_DEBUG)
@@ -272,6 +278,7 @@ def main():
 
                     metod.init_pool_vazio(inst, sol_pool)
                     metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
+                    #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
                     metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
 
                     for k in range(inst.nbv):
@@ -341,10 +348,12 @@ def main():
                     )
 
                     try:
-                        nome_excel = f"convergencia_BP_{nome_inst.replace('.txt', '')}_g{gamma_PMAX}.xlsx"
-                        sol_pool.exportar_convergencia_excel(inst, nome_excel)
+                        sol_pool.exportar_convergencia_excel(inst, usar_estabilizacao=inst.usar_estabilizacao)
+                        print(f"[LOG] convergencia registrada: {len(sol_pool.log_convergencia)} iteracoes")
                     except Exception as e:
-                        print(f"Erro ao exportar Excel de convergência: {e}")
+                        import traceback
+                        print(f"Erro ao exportar Excel: {e}")
+                        traceback.print_exc()
 
                     tempo_bp = time.time() - t1
 
@@ -553,7 +562,6 @@ def main():
 
                     print("")
 
-
     tfseq = time.time()
 
     try:
@@ -563,6 +571,7 @@ def main():
         print("\n tempo total exato:", tfex - tiex)
     except NameError:
         pass
+
 
 if __name__ == "__main__":
     freeze_support()

@@ -32,6 +32,8 @@ class Instancia:
         self.nbconstrutiva=0
         self.temmip=True
         self.iteraSemMelhora=30
+
+        self.usar_estabilizacao=True
     nomeInst=""
 
     def leitura(self, argv):

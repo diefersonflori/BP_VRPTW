@@ -1,0 +1,50 @@
+RESULTADOS PARCIAIS — c101n a c102, 25 clientes
+Gerado em: 2026-05-29
+Estado do código: multiprocessing BID, iteraSemMelhora=20, MIP trigger=5,
+                  fo_target_int_atingido=True, lp_inteiro_target=True
+
+================================================================================
+TABELA DE RESULTADOS
+================================================================================
+
+Instância | Modo       | FO BP    | Gap      | Tempo(s) | Iter INT | t INT(s)  | Motivo
+----------|------------|----------|----------|----------|----------|-----------|---------------------------
+c101n     | COM estab  | 191.3000 |   0.00%  |   383.25 |       67 |  383.22   | lp_inteiro_target   ✓
+c101n     | SEM estab  | 258.6000 |  35.18%  |     6.48 |      --- |     ---   | estagnacao_fo       ✗
+c102      | COM estab  | 324.1000 |  70.31%  |     8.09 |      --- |     ---   | estagnacao_fo       ✗
+c102      | SEM estab  | 190.3000 |   0.00%  |   474.56 |      457 |  474.21   | lp_inteiro_target   ✓
+
+================================================================================
+REFERÊNCIAS
+================================================================================
+c101n: FO exato = 191.3000 (0.25s)  | target = 191.3
+c102:  FO exato = 190.3000 (126s)   | target = 190.3
+
+================================================================================
+OBSERVAÇÕES
+================================================================================
+1. c101n COM estab: encontrou ótimo (383s) via lp_inteiro_target (iter 67)
+2. c101n SEM estab: parou por estagnação em 6.5s — LP ficou em 258.6 sem melhorar
+   por 20 iterações (tudo ALLBEST, sem BID chamado)
+3. c102 COM estab: parou por estagnação em 8s — LP ficou em 324.1 sem melhorar
+   (custo heurístico inicial do c102)
+4. c102 SEM estab: encontrou ótimo (474s) via lp_inteiro_target (iter 457)
+
+PADRÃO OBSERVADO:
+- COM e SEM se comportam de forma complementar por instância
+- O critério estagnacao_fo está cortando muito cedo quando ALLBEST gera colunas
+  que entram no LP mas não melhoram o valor (LP fica no custo inicial heurístico)
+- lp_inteiro_target funciona quando dispara, mas não é garantido disparar
+- O run foi interrompido no exato do c103 (Gurobi travado em >10000 iterações MIP)
+
+================================================================================
+PROBLEMAS IDENTIFICADOS NO ESTADO ATUAL DO CÓDIGO
+================================================================================
+A. estagnacao_fo precoce: ALLBEST gera colunas que ativam colunas_reais_usadas=True
+   mas não melhoram o LP, forçando parada por iteraSemMelhora=20 muito rápido.
+
+B. Complementaridade COM/SEM: sugere que a estabilização muda o caminho do LP
+   de forma que favorece certas instâncias e prejudica outras.
+
+C. c103 exato muito lento: o solver Gurobi exato para c103 com 25 clientes está
+   demorando >3h. Possivelmente a instância c103 é mais difícil para o MIP exato.

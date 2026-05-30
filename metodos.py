@@ -1312,6 +1312,15 @@ class Metodos:
 
             z_lp = float(no_atual.custo_lp)
             z_mip = float(no_atual.custo_mip) if no_atual.custo_mip is not None else float("inf")
+
+            # Saída antecipada (lp_inteiro_target / fo_target_int_atingido): melhor_int pode
+            # ser melhor que custo_mip se o post-loop LP distorceu o resultado.
+            melhor_int_direto = getattr(no_atual, "melhor_int", float("inf"))
+            if melhor_int_direto < z_mip - 1e-6:
+                z_mip = melhor_int_direto
+                no_atual.custo_mip = z_mip
+                no_atual.solucao_inteira = True
+
             no_atual.status = "resolvido"
 
             lb_ok = bool(getattr(no_atual, "lb_confiavel", False))
@@ -1588,6 +1597,14 @@ class Metodos:
 
             z_lp = float(no_atual.custo_lp)
             z_mip = float(no_atual.custo_mip) if no_atual.custo_mip is not None else float("inf")
+
+            # Saída antecipada: melhor_int pode ser melhor que custo_mip se o post-loop LP distorceu.
+            melhor_int_direto = getattr(no_atual, "melhor_int", float("inf"))
+            if melhor_int_direto < z_mip - 1e-6:
+                z_mip = melhor_int_direto
+                no_atual.custo_mip = z_mip
+                no_atual.solucao_inteira = True
+
             no_atual.status = "resolvido"
 
             lb_ok = bool(getattr(no_atual, "lb_confiavel", False))
@@ -3010,6 +3027,7 @@ class Metodos:
         import sys
 
         base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 
@@ -4615,7 +4633,7 @@ class Metodos:
 
         return None, None
 
-    def SUB_HEUR_ALLBESTINSERTION(self, inst, pi, sigma_k, k, NO_BP, mu_arc=None,
+    def SUB_HEUR_ALLBESTINSERTION(self, inst,sol_pool, pi, sigma_k, k, NO_BP, mu_arc=None,
                                   n_starts=30, eps=1e-6):
         import math
         import random
@@ -4957,17 +4975,20 @@ class Metodos:
                     elif len(fixados_k) > 0 and not contem_todos_fixados(rota_melhorada):
                         rota_melhorada = None
 
-                if rota_melhorada is not None and custo_red_melhorado < melhor_custo_red:
-                    melhor_rota = rota_melhorada[:]
-                    melhor_custo_red = custo_red_melhorado
-                    melhor_custo_real = custo_real_melhorado
+                # Escolhe a melhor rota deste start (com busca local se disponível)
+                rota_start = rota_melhorada if rota_melhorada is not None else rota
+                rc_start   = custo_red_melhorado if rota_melhorada is not None else custo_reduzido_rota(rota)
+                custo_start = custo_real_melhorado if rota_melhorada is not None else custo_real_rota(rota)
 
-                if melhor_rota is not None and melhor_custo_red < -eps:
-                    return {
-                        "clientes": melhor_rota,
-                        "custo": melhor_custo_real,
-                        "bin_xij": rota_para_binaria(melhor_rota)
-                    }, melhor_custo_red
+                if rc_start < -eps:
+                    # Rota nova (não está no pool deste veículo) → retorna imediatamente
+                    if sol_pool is None or not sol_pool.coluna_ja_existe(rota_start, k=k, globalmente=False):
+                        return {
+                            "clientes": rota_start,
+                            "custo": custo_start,
+                            "bin_xij": rota_para_binaria(rota_start)
+                        }, rc_start
+                    # Já existe → tenta próximo start (GRASP gera rota diferente)
 
         return None, None
 
@@ -8621,7 +8642,7 @@ class Metodos:
         BIGM_ARC = 1e4
         BIGM_VIS = 1e4
 
-        usar_estabilizacao = True
+        usar_estabilizacao =inst.usar_estabilizacao
         fase_final_sem_estab = False
 
         stab_y_low = []
@@ -8851,7 +8872,7 @@ class Metodos:
                 if colunas_reais_usadas:
                     rodadas_sem_melhoria += 1
                     sol_pool.SemMelhora[-1] += 1
-                    print(f"MESMA FO-  Sem melhora {rodadas_sem_melhoria} ")
+                    print(f"MESMA FO-  Sem melhora {rodadas_sem_melhoria} Recom {valor_recomposto} Ultmf {ULTIMAFO}  VALOR SUB {valor_recomposto - ULTIMAFO}")
             else:
                 rodadas_sem_melhoria = 0
                 sol_pool.SemMelhora[-1] = 0
@@ -8909,6 +8930,26 @@ class Metodos:
                 no_bp.iter_lp_target = iter_cg
                 no_bp.tempo_lp_target = time.time() - sol_pool.time_initial
                 print(f"[MARCO LP] Relaxado válido atingiu FO alvo = {valor_recomposto:.6f}")
+
+                # LP válido, inteiro e igual ao target → solução ótima provada, para imediatamente
+                if inteirasol and getattr(inst, "parar_ao_atingir_int_target", True):
+                    no_bp.achou_int_target = True
+                    no_bp.iter_int_target = iter_cg
+                    no_bp.tempo_int_target = time.time() - sol_pool.time_initial
+                    no_bp.melhor_int = valor_recomposto
+                    no_bp.melhor_int_iter = iter_cg
+                    sol_pool.motivoConv = "lp_inteiro_target"
+                    print(f"[PARADA LP INTEIRO] LP valido e inteiro = {valor_recomposto:.4f}. Encerrando.")
+                    # registra estado final antes de sair
+                    n_cols_final = sum(len(sol_pool.rotas[kk]["sequencia_rota"]) for kk in sol_pool.rotas)
+                    sol_pool.registrar_convergencia(
+                        inst=inst, iteracao=iter_cg, no_id=no_bp.id_no if no_bp else 0,
+                        lb=valor_recomposto, ub=None, n_colunas=n_cols_final,
+                        tempo=time.time() - sol_pool.time_initial,
+                        ub_mip_iter=valor_recomposto,  # LP inteiro = UB provado
+                    )
+                    sol_pool.iter_gc += 1
+                    break
 
             if slack_sum_total > 1e-9 and self.printarsol:
                 print(
@@ -9089,6 +9130,54 @@ class Metodos:
                 break
 
             # =========================
+            # MIP de logging — roda no pool ANTES de adicionar novas colunas
+            # (mesmo estado do LP → LB e UB consistentes)
+            # =========================
+            ub_mip_iter = None
+            n_cols_antes = sum(len(sol_pool.rotas[kk]["sequencia_rota"]) for kk in sol_pool.rotas)
+            n_novas = len(novas_colunas) if novas_colunas else 0
+            if n_cols_antes > 2 * inst.nbv:
+                try:
+                    _mlog = gp.Model("MIP_log")
+                    _mlog.setParam("OutputFlag", 0)
+                    _mlog.setParam("TimeLimit", 2.0)
+                    _zvars = {kk: [] for kk in sol_pool.rotas}
+                    for kk in sol_pool.rotas:
+                        for pp, seq_pp in enumerate(sol_pool.rotas[kk]["sequencia_rota"]):
+                            custo_pp = float(sol_pool.rotas[kk]["custo"][pp])
+                            v = _mlog.addVar(lb=0, ub=1, obj=custo_pp, vtype=gp.GRB.BINARY)
+                            _zvars[kk].append((pp, v))
+                    _mlog.ModelSense = gp.GRB.MINIMIZE
+                    _mlog.update()
+                    for ci in range(inst.nbcd):
+                        expr = gp.LinExpr()
+                        for kk in sol_pool.rotas:
+                            n_r = len(sol_pool.rotas[kk]["sequencia_rota"])
+                            for pp, v in _zvars[kk]:
+                                if pp < n_r:
+                                    expr += float(sol_pool.rotas[kk]["rotas_binaria"][pp][ci]) * v
+                        _mlog.addConstr(expr == 1.0)
+                    for kk in sol_pool.rotas:
+                        _mlog.addConstr(gp.quicksum(v for _, v in _zvars[kk]) == 1.0)
+                    _mlog.optimize()
+                    if _mlog.SolCount > 0:
+                        ub_mip_iter = float(_mlog.ObjVal)
+                except Exception as _e:
+                    print(f"[MIP_LOG erro] iter={iter_cg}: {_e}")
+
+            sol_pool.registrar_convergencia(
+                inst=inst,
+                iteracao=iter_cg,
+                no_id=no_bp.id_no if no_bp else 0,
+                lb=lb_iteracao,
+                ub=None,
+                n_colunas=n_cols_antes,
+                tempo=time.time() - sol_pool.time_initial,
+                ub_mip_iter=ub_mip_iter,
+            )
+            sol_pool.iter_gc += 1
+
+            # =========================
             # Adiciona colunas geradas
             # =========================
             print("")
@@ -9113,9 +9202,10 @@ class Metodos:
                     add_lambda_var_model(kk, idx_pool, seq, binx, custo)
 
             model.update()
-            colunas_desde_ultimo_mip += 1  # no caso, iteracoes
+            colunas_desde_ultimo_mip += 1
+
             # =========================
-            # MIP periódico
+            # MIP periódico (parada)
             # =========================
             if colunas_desde_ultimo_mip >= 5:
                 print(f"[Nó {no_bp.id_no}] Rodando MIP periódico após {colunas_desde_ultimo_mip} colunas...")
@@ -9203,13 +9293,29 @@ class Metodos:
                         if (
                                 getattr(sol_pool, "FO_TARGET", -1) > 0
                                 and not no_bp.achou_int_target
-                                and abs(float(mip_periodico.ObjVal) - sol_pool.FO_TARGET) > 1e-4
+                                and abs(float(mip_periodico.ObjVal) - sol_pool.FO_TARGET) <= 1e-4
                         ):
                             no_bp.achou_int_target = True
                             no_bp.iter_int_target = iter_cg
                             no_bp.tempo_int_target = time.time() - sol_pool.time_initial
                             tempo_int_target_relogio = time.time()
                             print(f"[MARCO INT] MIP periódico atingiu FO alvo = {mip_periodico.ObjVal:.6f}")
+                            if getattr(inst, "parar_ao_atingir_int_target", True):
+                                sol_pool.motivoConv = "fo_target_int_atingido"
+                                print(f"[PARADA ANTECIPADA] FO={mip_periodico.ObjVal:.4f} <= target. Encerrando GC.")
+                                # registra estado final: LB=UB=ótimo (gap=0)
+                                _fo_final = float(mip_periodico.ObjVal)
+                                _n_final = sum(len(sol_pool.rotas[_kk]["sequencia_rota"]) for _kk in sol_pool.rotas)
+                                sol_pool.registrar_convergencia(
+                                    inst=inst, iteracao=iter_cg + 1,
+                                    no_id=no_bp.id_no if no_bp else 0,
+                                    lb=_fo_final, ub=None,
+                                    n_colunas=_n_final,
+                                    tempo=time.time() - sol_pool.time_initial,
+                                    ub_mip_iter=_fo_final,
+                                )
+                                sol_pool.iter_gc += 1
+                                break
 
                         print(
                             f"[Nó {no_bp.id_no}] MIP periódico encontrou solução inteira válida. FO={mip_periodico.ObjVal:.6f}")
@@ -9219,23 +9325,6 @@ class Metodos:
                     print(f"[Nó {no_bp.id_no}] MIP periódico não foi ótimo.")
 
                 colunas_desde_ultimo_mip = 0
-
-                sol_pool.iter_gc += 1
-                lb = lb_iteracao
-                ub = None
-                if mip_periodico.Status == GRB.OPTIMAL:
-                    ub = float(mip_periodico.ObjVal)
-
-                n_colunas = sum(len(sol_pool.rotas[kk]["sequencia_rota"]) for kk in sol_pool.rotas)
-                sol_pool.registrar_convergencia(
-                    inst=inst,
-                    iteracao=sol_pool.iter_gc,
-                    no_id=no_bp.id_no if no_bp else 0,
-                    lb=lb,
-                    ub=ub,
-                    n_colunas=n_colunas,
-                    tempo=time.time() - sol_pool.time_initial
-                )
 
             iter_cg += 1
 
@@ -9568,7 +9657,7 @@ class Metodos:
         BIGM_VIS = 1e4
 
         ##Ini Varteste de estabilizacao
-        usar_estabilizacao = True
+        usar_estabilizacao = inst.usar_estabilizacao
         fase_final_sem_estab = False
 
         stab_y_low = []
@@ -10151,7 +10240,8 @@ class Metodos:
             """
             # """
 
-            print("")
+            print("") ####adiciono novas colunas
+            print("")  ####adiciono novas colunas
             for col in novas_colunas:
                 k_base, seq, binx, custo, rc_base = col
 
@@ -10162,7 +10252,6 @@ class Metodos:
                         continue
 
                     # recompõe rc para o veículo kk
-                    # rc_base foi calculado com sigma[k_base]
                     rc_kk = rc_base + sigma[k_base] - sigma[kk]
 
                     if sigma[k_base] == sigma[kk]:
@@ -10173,12 +10262,16 @@ class Metodos:
                         print(f'Nao adicionou no k {kk}')
                         continue
 
+                    # trava final: não repete no mesmo veículo
+                    if sol_pool.coluna_ja_existe(seq, k=kk, globalmente=False):
+                        print(f"[POOL REPETIDA MESMO K] não adicionou k={kk} seq={seq}")
+                        continue
+
                     idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
                     add_rota_no_pool(kk, seq, binx, custo)
                     add_lambda_var_model(kk, idx_pool, seq, binx, custo)
 
                     colunas_desde_ultimo_mip += 1
-
             # """
             model.update()
             # """
@@ -11399,7 +11492,7 @@ class Metodos:
             if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
                 print("TESTA ALLBEST")
                 rota, rc = self.SUB_HEUR_ALLBESTINSERTION(
-                    inst, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
+                    inst, sol_pool, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
                 if rota is not None and rc is not None and float(rc) < melhor_custo_red:
                     melhor_rota = rota
@@ -11427,8 +11520,6 @@ class Metodos:
                         arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
                         mu_arc=mu_arc
                     )
-
-
 
                     t2 = time.time()
                     # print(f'Rota BID `{rota}')
@@ -15386,7 +15477,6 @@ class Metodos:
 
         return None, None
 
-
     def SUB_PROG_DIN_PW_CPP_NOVA(self, inst, pi, sigma_k, k,
                                  arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
                                  widening_seq=None, eps=1e-6):
@@ -15447,6 +15537,46 @@ class Metodos:
                 len(arcos_fixados) > 0 or
                 len(mu_arc) > 0
         )
+        ###################fim das alteracoes que estavam dando bug
+
+        import numpy as np
+
+        pi_np = np.asarray(pi, dtype=np.float64)
+
+        if len(pi_np) != nbcd:
+            raise ValueError(f"pi com tamanho errado: len(pi)={len(pi_np)} | nbcd={nbcd}")
+
+            # ===== MU =====
+        if mu_arc is None:
+            mu_flat = np.zeros((0, 3), dtype=np.float64)
+        else:
+            mu_list = []
+            for (i, j), val in mu_arc.items():
+                mu_list.append([i, j, float(val)])
+            mu_flat = np.asarray(mu_list, dtype=np.float64)
+
+        # ===== ARCOS PROIBIDOS =====
+        forbid_list = []
+
+        if arcos_proibidos:
+            for (i, j, kk) in arcos_proibidos:
+                if kk == k:
+                    forbid_list.append([i, j])
+
+        forbid_flat = np.asarray(forbid_list, dtype=np.int32)
+
+        # ===== ARCOS FIXADOS =====
+        req_i = -1
+        req_j = -1
+
+        if arcos_fixados:
+            for (i, j, kk) in arcos_fixados:
+                if kk == k:
+                    req_i = int(i)
+                    req_j = int(j)
+                    break
+
+        ###################fim das alteracoes que estavam dando bug
 
         if not tem_branch:
             return self.chamar_cpp_timeout(

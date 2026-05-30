@@ -93,12 +93,16 @@ class Solucao:
     FO_TARGET = -1
     TIME_TARGET = 99999999
 
-    def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo):
+    def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo, ub_mip_iter=None):
         if not hasattr(self, "melhor_ub"):
             self.melhor_ub = float("inf")
 
-        if ub is not None and ub < self.melhor_ub:
-            self.melhor_ub = float(ub)
+        # ub_mip_iter = MIP rodado especificamente nesta iteração (pode ser None)
+        # ub = melhor UB vindo do MIP periódico (acumulado)
+        ub_efetivo = ub_mip_iter if ub_mip_iter is not None else ub
+
+        if ub_efetivo is not None and ub_efetivo < self.melhor_ub:
+            self.melhor_ub = float(ub_efetivo)
 
         gap = None
         if self.melhor_ub < float("inf") and lb not in [None, 0]:
@@ -109,38 +113,69 @@ class Solucao:
             "iteracao": iteracao,
             "no_id": no_id,
             "LB_frac": lb,
-            "UB_mip_iteracao": ub,
+            "UB_mip_iter": ub_mip_iter,
+            "UB_mip_periodico": ub,
             "melhor_UB": self.melhor_ub if self.melhor_ub < float("inf") else None,
-            "gap": gap,
-            "n_colunas": n_colunas,
+            "gap_%": round(gap * 100, 4) if gap is not None else None,
+            "n_colunas_pool": n_colunas,
             "tempo": tempo,
         })
 
-    def exportar_convergencia_excel(self, inst, nome_arquivo=None):
+    def coluna_ja_existe(self, seq, k=None, globalmente=True):
+        chave = tuple(seq)
+
+        if globalmente:
+            for kk in self.rotas.keys():
+                for seq_existente in self.rotas[kk]["sequencia_rota"]:
+                    if tuple(seq_existente) == chave:
+                        return True
+        else:
+            if k is None:
+                return False
+
+            for seq_existente in self.rotas[k]["sequencia_rota"]:
+                if tuple(seq_existente) == chave:
+                    return True
+
+        return False
+
+
+    def exportar_convergencia_excel(self, inst, usar_estabilizacao=True):
         import pandas as pd
         import os
 
         if not self.log_convergencia:
-            print("Sem dados de convergência")
+            print("Sem dados de convergencia")
             return
 
-        nome_arquivo = f"convergencia_bp_{inst.nbcd}_GM{self.gamma_pi_inicial}v.xlsx"
+        modo = "COM_estab" if usar_estabilizacao else "SEM_estab"
+        nome_arquivo = f"convergencia_{modo}_{inst.nbcd}.xlsx"
 
         df = pd.DataFrame(self.log_convergencia)
 
-        if "gap" in df.columns:
-            df["gap_%"] = df["gap"] * 100
-
         instancia = inst.nomeInst.split("/")[-1].replace(".txt", "")
-        aba = instancia[:31]
+
+        # Identificador único por run: instância + gammas + iteraSemMelhora
+        g_ini = int(getattr(self, "gamma_pi_inicial", 0))
+        g_max = int(getattr(self, "gamma_pi_max", 0))
+        sm    = int(getattr(inst, "iteraSemMelhora", 0))
+        run_id = f"{instancia}_g{g_ini}_G{g_max}_SM{sm}"
+
+        # Nome da aba limitado a 31 chars (limite do Excel)
+        aba = run_id[:31]
 
         resumo = {
-            "instancia": instancia,
-            "melhor_LB": df["LB_frac"].dropna().iloc[-1] if df["LB_frac"].notna().any() else None,
-            "melhor_UB": df["melhor_UB"].dropna().min() if df["melhor_UB"].notna().any() else None,
-            "gap_final_%": df["gap_%"].dropna().iloc[-1] if "gap_%" in df and df["gap_%"].notna().any() else None,
-            "iteracoes": df["iteracao"].max(),
-            "n_colunas_final": df["n_colunas"].iloc[-1],
+            "run_id":       run_id,
+            "instancia":    instancia,
+            "modo":         modo,
+            "gamma_ini":    g_ini,
+            "gamma_max":    g_max,
+            "sem_melhora":  sm,
+            "melhor_LB":    df["LB_frac"].dropna().iloc[-1] if df["LB_frac"].notna().any() else None,
+            "melhor_UB":    df["melhor_UB"].dropna().min()  if df["melhor_UB"].notna().any() else None,
+            "gap_final_%":  df["gap_%"].dropna().iloc[-1]   if "gap_%" in df.columns and df["gap_%"].notna().any() else None,
+            "iteracoes":    df["iteracao"].max(),
+            "n_colunas_final": df["n_colunas_pool"].iloc[-1] if "n_colunas_pool" in df.columns else None,
         }
 
         df_resumo = pd.DataFrame([resumo])
@@ -148,16 +183,17 @@ class Solucao:
         if os.path.exists(nome_arquivo):
             with pd.ExcelWriter(nome_arquivo, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
                 df.to_excel(writer, sheet_name=aba, index=False)
-
                 try:
                     antigo = pd.read_excel(nome_arquivo, sheet_name="resumo")
-                    antigo = antigo[antigo["instancia"] != instancia]
+                    # remove linha anterior do mesmo run_id, se existir
+                    if "run_id" in antigo.columns:
+                        antigo = antigo[antigo["run_id"] != run_id]
+                    else:
+                        antigo = antigo[antigo["instancia"] != instancia]
                     novo_resumo = pd.concat([antigo, df_resumo], ignore_index=True)
-                except:
+                except Exception:
                     novo_resumo = df_resumo
-
                 novo_resumo.to_excel(writer, sheet_name="resumo", index=False)
-
         else:
             with pd.ExcelWriter(nome_arquivo, engine="openpyxl") as writer:
                 df_resumo.to_excel(writer, sheet_name="resumo", index=False)
