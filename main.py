@@ -42,7 +42,7 @@ def main():
     #   [25]     -> só 25 clientes
     #   [50]     -> só 50 clientes
     #   [25, 50] -> roda os dois
-    tamanhos = [25]
+    tamanhos = [50]
 
     # Capacidade por tamanho
     capacidade_por_tamanho = {
@@ -51,7 +51,7 @@ def main():
     }
 
     semMelhora_por_tamanho = {
-        25: [20, 20, 50, 100, 300],
+        25: [20, 50, 50, 100, 300],
         50: [300, 10, 15, 20, 25],
     }
 
@@ -188,7 +188,8 @@ def main():
 
         lista_instancias = instancias_do_tamanho(tam)
 
-        for ninst, arquivo_instancia in enumerate(lista_instancias):
+        #for ninst, arquivo_instancia in enumerate(lista_instancias):
+        for ninst, arquivo_instancia in enumerate(lista_instancias[5:], start=5):
 
             nome_inst = os.path.basename(arquivo_instancia).lower()
             nome_base = normaliza_nome_instancia(arquivo_instancia)
@@ -236,7 +237,7 @@ def main():
                 solc = Solucao(inst.nbv, inst.nbcd)
 
                 tiex = time.time()
-                #metod.metodo_exato(inst, solex)
+                metod.metodo_exato(inst, solex)
                 tfex = time.time()
 
                 tempo_exato = tfex - tiex
@@ -278,8 +279,8 @@ def main():
 
                     metod.init_pool_vazio(inst, sol_pool)
                     metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
-                    #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
-                    metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
+                    metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
+                    #metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
 
                     for k in range(inst.nbv):
                         print("veic", k, "rotas iniciais =", len(sol_pool.rotas[k]["sequencia_rota"]))
