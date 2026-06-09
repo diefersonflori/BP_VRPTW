@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+
+# Visual Studio solution cache
+*.slnx
+*.vsidx
+
+# PyCharm / JetBrains
+.idea/
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

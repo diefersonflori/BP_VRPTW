@@ -1,0 +1,56 @@
+{
+  "run_id": "2025-11-24T06-47-28",
+  "instancia": {
+    "nbcd": 8,
+    "nbn": 10,
+    "nbv": 2
+  },
+  "niveis": [
+    {
+      "nivel": 0,
+      "nos": [
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 13.68718535836827,
+          "solucao_inteira": true,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {
+            "0": {
+              "sequencias": [
+                [
+                  0,
+                  3,
+                  1,
+                  7,
+                  8,
+                  5,
+                  6,
+                  9
+                ]
+              ],
+              "custos": [
+                10.525997937560435
+              ]
+            },
+            "1": {
+              "sequencias": [
+                [
+                  0,
+                  2,
+                  4,
+                  9
+                ]
+              ],
+              "custos": [
+                3.1611874208078343
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

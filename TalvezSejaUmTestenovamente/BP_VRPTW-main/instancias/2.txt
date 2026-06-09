@@ -1,0 +1,16 @@
+VEHICLE
+NUMBER= 11
+CAPACITY= 100,45,160
+VELOCITY= 10,15,5
+
+CUSTOMER
+CUST NO.   XCOORD.    YCOORD.    DEMAND    READY TIME    DUE DATE    READY TIME 2    DUE DATE 2    READY TIME 3    DUE DATE 3    SERVICE TIME
+     0         40         50         0         0           99         120            300            600            800            0
+     1         45         68         10        0           99         150            350            700            900            0
+     2         45         70         15        0           99         200            400            750            950            0
+     3         42         66         20        0           99         180            370            720            920            0
+     4         42         68         30        0           99         160            340            680            880            0
+     5         40         67         10        0           99         160            340            680            880            0
+     6         40         65         40        0           99         110            410            770            970            0
+     7         38         70         40        0           99         10            410            170            970            0
+     8         38         68         10        0           99         30            410            270            970            0

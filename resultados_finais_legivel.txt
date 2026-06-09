@@ -1654,3 +1654,2803 @@ Melhor LP válido = 284.6 | iter = 16 | no = 0
 Melhor inteiro = 324.1 | iter = 4 | no = 0
 Achou LP target = False | iter =  | tempo =  | no = 
 Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=127.6681 | FO exato=-1.0000 | FO BP=-1.0000
+Nós processados BP = 0
+Colunas geradas BP = 0
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 75, 0, 4, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: SEM_SEQUENCIA_BP
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 79
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 136.7 | iter = 0 | no = 0
+Melhor LP válido = 136.7 | iter = 0 | no = 0
+Melhor inteiro =  | iter =  | no = 
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=692.7808 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab0_gini15_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3446.4190 | FO exato=-1.0000 | FO BP=382.1000
+Nós processados BP = 1
+Colunas geradas BP = 3397
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 1101, 0, 119, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V1: [0,13,17,18,19,15,16,14,12,1,51] ; V2: [0,5,3,7,8,10,11,9,6,4,2,21,51] ; V3: [0,20,24,25,27,29,30,28,26,23,22,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 1216
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 382.1 | iter = 1185 | no = 0
+Melhor LP válido = 382.1 | iter = 1185 | no = 0
+Melhor inteiro = 382.09999999999997 | iter = 1184 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=605.0213 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab0_gini30_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3411.0352 | FO exato=-1.0000 | FO BP=382.1000
+Nós processados BP = 1
+Colunas geradas BP = 3397
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 1101, 0, 119, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V1: [0,13,17,18,19,15,16,14,12,1,51] ; V2: [0,5,3,7,8,10,11,9,6,4,2,21,51] ; V3: [0,20,24,25,27,29,30,28,26,23,22,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 1216
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 382.1 | iter = 1185 | no = 0
+Melhor LP válido = 382.1 | iter = 1185 | no = 0
+Melhor inteiro = 382.09999999999997 | iter = 1184 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1689.6806 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab0_gini60_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3375.6949 | FO exato=-1.0000 | FO BP=382.1000
+Nós processados BP = 1
+Colunas geradas BP = 3397
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 1101, 0, 119, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V1: [0,13,17,18,19,15,16,14,12,1,51] ; V2: [0,5,3,7,8,10,11,9,6,4,2,21,51] ; V3: [0,20,24,25,27,29,30,28,26,23,22,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 1216
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 382.1 | iter = 1185 | no = 0
+Melhor LP válido = 382.1 | iter = 1185 | no = 0
+Melhor inteiro = 382.09999999999997 | iter = 1184 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=673.7088 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab0_gini15_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3372.6596 | FO exato=-1.0000 | FO BP=382.1000
+Nós processados BP = 1
+Colunas geradas BP = 3397
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 1101, 0, 119, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V1: [0,13,17,18,19,15,16,14,12,1,51] ; V2: [0,5,3,7,8,10,11,9,6,4,2,21,51] ; V3: [0,20,24,25,27,29,30,28,26,23,22,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 1216
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 382.1 | iter = 1185 | no = 0
+Melhor LP válido = 382.1 | iter = 1185 | no = 0
+Melhor inteiro = 382.09999999999997 | iter = 1184 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=594.3115 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=524.1064 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=418.3636 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax100_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1258.2048 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=519.2881 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=411.2691 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax200_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1237.8099 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax500_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=511.7820 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax500_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=417.4107 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax500_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1265.6013 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax1000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=530.5368 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax1000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=423.0654 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax1000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1265.6131 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini15_gmax2000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=530.8879 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 354
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 67, 0, 37, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 359.3 | iter = 9 | no = 0
+Melhor LP válido = 359.3 | iter = 9 | no = 0
+Melhor inteiro = 386.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini30_gmax2000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=423.5901 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 641
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 180, 0, 30, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 206
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 257.3 | iter = 79 | no = 0
+Melhor LP válido = 257.3 | iter = 79 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini60_gmax2000_SM30
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1801.3044 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 634
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 134, 0, 94, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 224
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 346.8 | iter = 104 | no = 0
+Melhor LP válido = 346.8 | iter = 104 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini15_gmax100_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.2358 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 339
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 104, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 486.65 | iter = 38 | no = 0
+Melhor LP válido = 486.65 | iter = 38 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini30_gmax100_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=19.2740 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 648
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 226, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 222
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 450.79999999999995 | iter = 155 | no = 0
+Melhor LP válido = 450.79999999999995 | iter = 155 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini60_gmax100_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=32.8877 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 862
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 310, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 306
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 495.9 | iter = 0 | no = 0
+Melhor LP válido = 495.9 | iter = 0 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini15_gmax200_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=6.9040 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 339
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 104, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 486.65 | iter = 38 | no = 0
+Melhor LP válido = 486.65 | iter = 38 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini30_gmax200_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=19.0840 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 648
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 226, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 222
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 450.79999999999995 | iter = 155 | no = 0
+Melhor LP válido = 450.79999999999995 | iter = 155 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini60_gmax200_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=35.3850 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 862
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 310, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 306
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 495.9 | iter = 0 | no = 0
+Melhor LP válido = 495.9 | iter = 0 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini15_gmax500_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.2387 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 339
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 104, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 486.65 | iter = 38 | no = 0
+Melhor LP válido = 486.65 | iter = 38 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini30_gmax500_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=20.0630 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 648
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 226, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 222
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 450.79999999999995 | iter = 155 | no = 0
+Melhor LP válido = 450.79999999999995 | iter = 155 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini60_gmax500_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=33.5402 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 862
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 310, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 306
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 495.9 | iter = 0 | no = 0
+Melhor LP válido = 495.9 | iter = 0 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini15_gmax1000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.0844 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 339
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 104, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 486.65 | iter = 38 | no = 0
+Melhor LP válido = 486.65 | iter = 38 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini30_gmax1000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=19.7625 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 648
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 226, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 222
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 450.79999999999995 | iter = 155 | no = 0
+Melhor LP válido = 450.79999999999995 | iter = 155 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini60_gmax1000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=34.5114 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 862
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 310, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 306
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 495.9 | iter = 0 | no = 0
+Melhor LP válido = 495.9 | iter = 0 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini15_gmax2000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.3924 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 339
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 104, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 100
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 486.65 | iter = 38 | no = 0
+Melhor LP válido = 486.65 | iter = 38 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini30_gmax2000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=19.3460 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 648
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 226, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 222
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 450.79999999999995 | iter = 155 | no = 0
+Melhor LP válido = 450.79999999999995 | iter = 155 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini60_gmax2000_SM30
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=35.9924 | FO exato=-1.0000 | FO BP=495.9000
+Nós processados BP = 1
+Colunas geradas BP = 862
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 310, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,13,3,8,10,11,9,6,4,2,1,7,51] ; V3: [0,32,33,35,37,38,39,36,34,12,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 306
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 495.9 | iter = 0 | no = 0
+Melhor LP válido = 495.9 | iter = 0 | no = 0
+Melhor inteiro = 495.9 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini15_gmax100_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=10.6033 | FO exato=-1.0000 | FO BP=507.1000
+Nós processados BP = 1
+Colunas geradas BP = 504
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 151, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,24,25,27,29,30,28,26,23,22,21,20,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 147
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 507.09999999999997 | iter = 86 | no = 0
+Melhor LP válido = 507.09999999999997 | iter = 86 | no = 0
+Melhor inteiro = 507.1 | iter = 89 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini30_gmax100_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=27.4580 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 933
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 283, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 279
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 498.0 | iter = 189 | no = 0
+Melhor LP válido = 498.0 | iter = 189 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini60_gmax100_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.2694 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 316
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 108, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 104
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini15_gmax200_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=10.7571 | FO exato=-1.0000 | FO BP=507.1000
+Nós processados BP = 1
+Colunas geradas BP = 504
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 151, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,24,25,27,29,30,28,26,23,22,21,20,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 147
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 507.09999999999997 | iter = 86 | no = 0
+Melhor LP válido = 507.09999999999997 | iter = 86 | no = 0
+Melhor inteiro = 507.1 | iter = 89 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini30_gmax200_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=27.4680 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 933
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 283, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 279
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 498.0 | iter = 189 | no = 0
+Melhor LP válido = 498.0 | iter = 189 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini60_gmax200_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=7.9018 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 316
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 108, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 104
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini15_gmax500_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=12.0851 | FO exato=-1.0000 | FO BP=507.1000
+Nós processados BP = 1
+Colunas geradas BP = 504
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 151, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,24,25,27,29,30,28,26,23,22,21,20,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 147
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 507.09999999999997 | iter = 86 | no = 0
+Melhor LP válido = 507.09999999999997 | iter = 86 | no = 0
+Melhor inteiro = 507.1 | iter = 89 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini30_gmax500_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=43.7198 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 933
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 283, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 279
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 498.0 | iter = 189 | no = 0
+Melhor LP válido = 498.0 | iter = 189 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini60_gmax500_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=22.2501 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 316
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 108, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 500
+MOTIVO: estagnacao_fo
+ITERAC: 104
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini15_gmax1000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=41.3969 | FO exato=-1.0000 | FO BP=507.1000
+Nós processados BP = 1
+Colunas geradas BP = 504
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 151, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,24,25,27,29,30,28,26,23,22,21,20,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 147
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 507.09999999999997 | iter = 86 | no = 0
+Melhor LP válido = 507.09999999999997 | iter = 86 | no = 0
+Melhor inteiro = 507.1 | iter = 89 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini30_gmax1000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=95.6344 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 933
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 283, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 279
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 498.0 | iter = 189 | no = 0
+Melhor LP válido = 498.0 | iter = 189 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini60_gmax1000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=25.3161 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 316
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 108, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 1000
+MOTIVO: estagnacao_fo
+ITERAC: 104
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini15_gmax2000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=38.1490 | FO exato=-1.0000 | FO BP=507.1000
+Nós processados BP = 1
+Colunas geradas BP = 504
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 151, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,43,24,25,27,29,30,28,26,23,22,21,20,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 15
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 147
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 507.09999999999997 | iter = 86 | no = 0
+Melhor LP válido = 507.09999999999997 | iter = 86 | no = 0
+Melhor inteiro = 507.1 | iter = 89 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini30_gmax2000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=99.3361 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 933
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 283, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 279
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 498.0 | iter = 189 | no = 0
+Melhor LP válido = 498.0 | iter = 189 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini60_gmax2000_SM30
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=27.0286 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 316
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 30
+SCORE DAS CONSTRUTIVAS BP = [0, 108, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 60
+GAMMA MIN: 10
+GAMMA MAX: 2000
+MOTIVO: estagnacao_fo
+ITERAC: 104
+
+ITER SEM MELHORA: 30
+
+FO_TARGET = 362.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1299.5575 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 702
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 166, 0, 57, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 219
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1100.8049 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 799
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 216, 0, 57, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 269
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1184.8064 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 1002
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 264, 0, 59, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 319
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1135.6198 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 702
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 166, 0, 57, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 219
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1083.9280 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 799
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 216, 0, 57, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 269
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c101N.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1160.8347 | FO exato=-1.0000 | FO BP=386.5000
+Nós processados BP = 1
+Colunas geradas BP = 1002
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 264, 0, 59, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,32,33,31,35,37,38,39,36,34,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 319
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 360.0 | iter = 88 | no = 0
+Melhor LP válido = 360.0 | iter = 88 | no = 0
+Melhor inteiro = 386.5 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=414.5280 | FO exato=-1.0000 | FO BP=460.1000
+Nós processados BP = 1
+Colunas geradas BP = 1754
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 581, 0, 1, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,21,3,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,32,33,35,37,38,39,36,34,22,51] ; V3: [0,13,12,8,10,11,9,6,4,2,7,5,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 578
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 361.4
+Melhor LP com slack = 460.1 | iter = 435 | no = 0
+Melhor LP válido = 460.1 | iter = 435 | no = 0
+Melhor inteiro = 460.09999999999997 | iter = 434 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=478.0877 | FO exato=-1.0000 | FO BP=460.1000
+Nós processados BP = 1
+Colunas geradas BP = 1908
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 631, 0, 1, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,21,3,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,32,33,35,37,38,39,36,34,22,51] ; V3: [0,13,12,8,10,11,9,6,4,2,7,5,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 628
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 361.4
+Melhor LP com slack = 460.1 | iter = 435 | no = 0
+Melhor LP válido = 460.1 | iter = 435 | no = 0
+Melhor inteiro = 460.09999999999997 | iter = 434 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3605.6529 | FO exato=-1.0000 | FO BP=427.3000
+Nós processados BP = 1
+Colunas geradas BP = 3087
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 869, 0, 143, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,13,17,18,19,15,16,14,12,3,51] ; V2: [0,7,8,10,11,9,6,4,2,1,51] ; V3: [0,32,33,31,35,37,38,39,36,51] ; V4: [0,43,42,41,40,44,46,45,48,50,34,49,47,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: TIME_MAX
+ITERAC: 1009
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 361.4
+Melhor LP com slack = 382.0444444444444 | iter = 1002 | no = 0
+Melhor LP válido = 382.0444444444444 | iter = 1002 | no = 0
+Melhor inteiro = 427.29999999999995 | iter = 760 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=414.6937 | FO exato=-1.0000 | FO BP=460.1000
+Nós processados BP = 1
+Colunas geradas BP = 1754
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 581, 0, 1, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,21,3,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,32,33,35,37,38,39,36,34,22,51] ; V3: [0,13,12,8,10,11,9,6,4,2,7,5,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 578
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 361.4
+Melhor LP com slack = 460.1 | iter = 435 | no = 0
+Melhor LP válido = 460.1 | iter = 435 | no = 0
+Melhor inteiro = 460.09999999999997 | iter = 434 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=477.0602 | FO exato=-1.0000 | FO BP=460.1000
+Nós processados BP = 1
+Colunas geradas BP = 1908
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 631, 0, 1, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,21,3,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,31,49,47,51] ; V2: [0,32,33,35,37,38,39,36,34,22,51] ; V3: [0,13,12,8,10,11,9,6,4,2,7,5,51] ; V4: [0,17,18,19,15,16,14,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 628
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 361.4
+Melhor LP com slack = 460.1 | iter = 435 | no = 0
+Melhor LP válido = 460.1 | iter = 435 | no = 0
+Melhor inteiro = 460.09999999999997 | iter = 434 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c102.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3614.0030 | FO exato=-1.0000 | FO BP=427.3000
+Nós processados BP = 1
+Colunas geradas BP = 3092
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 869, 0, 144, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,5,51] ; V1: [0,13,17,18,19,15,16,14,12,3,51] ; V2: [0,7,8,10,11,9,6,4,2,1,51] ; V3: [0,32,33,31,35,37,38,39,36,51] ; V4: [0,43,42,41,40,44,46,45,48,50,34,49,47,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: TIME_MAX
+ITERAC: 1010
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 361.4
+Melhor LP com slack = 382.0444444444444 | iter = 1002 | no = 0
+Melhor LP válido = 382.0444444444444 | iter = 1002 | no = 0
+Melhor inteiro = 427.29999999999995 | iter = 760 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=52.8697 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 643
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 200, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 196
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=75.0288 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 817
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 250, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 246
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=215.9292 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 999
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 295, 0, 5, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 296
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=53.0187 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 643
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 200, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 196
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=75.3863 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 817
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 250, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 246
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c103_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c103.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=216.8094 | FO exato=-1.0000 | FO BP=509.5000
+Nós processados BP = 1
+Colunas geradas BP = 999
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 295, 0, 5, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,30,28,26,23,22,20,43,51] ; V1: [0,13,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,42,41,40,44,31,45,48,50,46,49,47,51] ; V3: [0,34,33,37,35,38,39,36,32,18,51] ; V4: [0,17,19,16,15,14,12,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 296
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 361.4
+Melhor LP com slack = 509.5 | iter = 0 | no = 0
+Melhor LP válido = 509.5 | iter = 0 | no = 0
+Melhor inteiro = 509.49999999999994 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3603.5442 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1148
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 140, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: TIME_MAX
+ITERAC: 343
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 358.0
+Melhor LP com slack = 376.59346743325705 | iter = 341 | no = 0
+Melhor LP válido = 376.59346743325705 | iter = 341 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3624.6928 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1153
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 141, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: TIME_MAX
+ITERAC: 344
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 358.0
+Melhor LP com slack = 376.35600535680123 | iter = 342 | no = 0
+Melhor LP válido = 376.35600535680123 | iter = 342 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3610.8016 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1148
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 140, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: TIME_MAX
+ITERAC: 343
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 358.0
+Melhor LP com slack = 376.59346743325705 | iter = 341 | no = 0
+Melhor LP válido = 376.59346743325705 | iter = 341 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3612.5500 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1148
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 140, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: TIME_MAX
+ITERAC: 343
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 358.0
+Melhor LP com slack = 376.59346743325705 | iter = 341 | no = 0
+Melhor LP válido = 376.59346743325705 | iter = 341 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3615.3933 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1133
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 136, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: TIME_MAX
+ITERAC: 339
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 358.0
+Melhor LP com slack = 377.2129563001754 | iter = 337 | no = 0
+Melhor LP válido = 377.2129563001754 | iter = 337 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c104_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c104.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3606.7957 | FO exato=-1.0000 | FO BP=496.2000
+Nós processados BP = 1
+Colunas geradas BP = 1128
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 206, 0, 135, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,21,24,25,27,29,34,30,23,26,28,22,20,51] ; V1: [0,43,7,8,10,11,9,6,4,2,1,3,5,51] ; V2: [0,49,50,48,45,44,40,41,42,46,47,33,32,51] ; V3: [0,13,15,12,14,16,19,17,18,36,51] ; V4: [0,39,37,38,35,31,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: TIME_MAX
+ITERAC: 338
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 358.0
+Melhor LP com slack = 377.5388869979578 | iter = 336 | no = 0
+Melhor LP válido = 377.5388869979578 | iter = 336 | no = 0
+Melhor inteiro = 496.20000000000005 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=37.7947 | FO exato=-1.0000 | FO BP=471.4000
+Nós processados BP = 1
+Colunas geradas BP = 455
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 147, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,34,50,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 143
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 471.4 | iter = 0 | no = 0
+Melhor LP válido = 471.4 | iter = 0 | no = 0
+Melhor inteiro = 471.40000000000003 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=57.6764 | FO exato=-1.0000 | FO BP=471.4000
+Nós processados BP = 1
+Colunas geradas BP = 635
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 197, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,34,50,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 193
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 471.4 | iter = 0 | no = 0
+Melhor LP válido = 471.4 | iter = 0 | no = 0
+Melhor inteiro = 471.40000000000003 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1813.6629 | FO exato=-1.0000 | FO BP=362.4000
+Nós processados BP = 1
+Colunas geradas BP = 1320
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 325, 0, 86, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,21,49,47,51] ; V2: [0,32,33,31,35,37,38,39,36,34,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: lp_inteiro_target
+ITERAC: 408
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 356.0 | iter = 156 | no = 0
+Melhor LP válido = 356.0 | iter = 156 | no = 0
+Melhor inteiro = 362.4 | iter = 407 | no = 0
+Achou LP target = True | iter = 407 | tempo = 1813.3476648330688 | no = 0
+Achou INT target = True | iter = 407 | tempo = 1813.3476812839508 | no = 0
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=37.8530 | FO exato=-1.0000 | FO BP=471.4000
+Nós processados BP = 1
+Colunas geradas BP = 455
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 147, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,34,50,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 143
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 471.4 | iter = 0 | no = 0
+Melhor LP válido = 471.4 | iter = 0 | no = 0
+Melhor inteiro = 471.40000000000003 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=57.9776 | FO exato=-1.0000 | FO BP=471.4000
+Nós processados BP = 1
+Colunas geradas BP = 635
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 197, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,34,50,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 193
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 471.4 | iter = 0 | no = 0
+Melhor LP válido = 471.4 | iter = 0 | no = 0
+Melhor inteiro = 471.40000000000003 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c105_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c105.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1808.7804 | FO exato=-1.0000 | FO BP=362.4000
+Nós processados BP = 1
+Colunas geradas BP = 1320
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 325, 0, 86, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V1: [0,43,42,41,40,44,46,45,48,50,21,49,47,51] ; V2: [0,32,33,31,35,37,38,39,36,34,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: lp_inteiro_target
+ITERAC: 408
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 356.0 | iter = 156 | no = 0
+Melhor LP válido = 356.0 | iter = 156 | no = 0
+Melhor inteiro = 362.4 | iter = 407 | no = 0
+Achou LP target = True | iter = 407 | tempo = 1808.4012367725372 | no = 0
+Achou INT target = True | iter = 407 | tempo = 1808.4012565612793 | no = 0
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1479.3756 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1329
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 414, 0, 65, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,49,47,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 475
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1606.6660 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1493
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 460, 0, 69, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,20,24,25,27,29,30,28,26,23,22,49,47,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,5,3,7,8,10,11,9,6,4,2,1,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 525
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=2252.4825 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1644
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 475, 0, 104, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,20,24,25,27,29,30,28,26,23,22,49,47,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,5,3,7,8,10,11,9,6,4,2,1,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 575
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1497.9839 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1329
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 414, 0, 65, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,49,47,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 475
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax200_SM75
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=1622.7344 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1493
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 460, 0, 69, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,20,24,25,27,29,30,28,26,23,22,49,47,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,5,3,7,8,10,11,9,6,4,2,1,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 525
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c106_tam50_estab1_gini40_gmax200_SM100
+Instância: instancias/c106.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=2269.4468 | FO exato=-1.0000 | FO BP=394.1000
+Nós processados BP = 1
+Colunas geradas BP = 1644
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 475, 0, 104, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,20,24,25,27,29,30,28,26,23,22,49,47,51] ; V2: [0,43,42,41,40,44,46,45,48,50,21,51] ; V3: [0,13,17,18,19,15,16,14,12,51] ; V4: [0,5,3,7,8,10,11,9,6,4,2,1,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 575
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 336.6 | iter = 113 | no = 0
+Melhor LP válido = 336.6 | iter = 113 | no = 0
+Melhor inteiro = 394.1 | iter = 334 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c107_tam50_estab1_gini40_gmax100_SM50
+Instância: instancias/c107.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=96.6602 | FO exato=-1.0000 | FO BP=465.2000
+Nós processados BP = 1
+Colunas geradas BP = 513
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 145, 0, 3, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,50,34,51] ; V3: [0,17,13,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 144
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 465.19999999999993 | iter = 0 | no = 0
+Melhor LP válido = 465.19999999999993 | iter = 0 | no = 0
+Melhor inteiro = 465.2 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c107_tam50_estab1_gini40_gmax100_SM75
+Instância: instancias/c107.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=2603.4578 | FO exato=-1.0000 | FO BP=368.9000
+Nós processados BP = 1
+Colunas geradas BP = 1916
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 75
+SCORE DAS CONSTRUTIVAS BP = [0, 474, 0, 118, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V2: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V3: [0,17,13,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,21,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 588
+
+ITER SEM MELHORA: 75
+
+FO_TARGET = 362.4
+Melhor LP com slack = 368.9 | iter = 437 | no = 0
+Melhor LP válido = 368.9 | iter = 437 | no = 0
+Melhor inteiro = 368.9 | iter = 439 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c107_tam50_estab1_gini40_gmax100_SM100
+Instância: instancias/c107.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3468.4819 | FO exato=-1.0000 | FO BP=368.9000
+Nós processados BP = 1
+Colunas geradas BP = 2085
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 100
+SCORE DAS CONSTRUTIVAS BP = [0, 473, 0, 169, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,32,33,31,35,37,38,39,36,34,51] ; V1: [0,43,42,41,40,44,46,45,48,50,49,47,51] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,51] ; V3: [0,17,13,18,19,15,16,14,12,51] ; V4: [0,20,24,25,27,29,30,28,26,23,22,21,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: estagnacao_fo
+ITERAC: 638
+
+ITER SEM MELHORA: 100
+
+FO_TARGET = 362.4
+Melhor LP com slack = 368.9 | iter = 437 | no = 0
+Melhor LP válido = 368.9 | iter = 437 | no = 0
+Melhor inteiro = 368.9 | iter = 439 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c107_tam50_estab1_gini40_gmax200_SM50
+Instância: instancias/c107.txt
+Clientes=50 | Nós_rede=52 | Veículos=5 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=96.3029 | FO exato=-1.0000 | FO BP=465.2000
+Nós processados BP = 1
+Colunas geradas BP = 513
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 50
+SCORE DAS CONSTRUTIVAS BP = [0, 145, 0, 3, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,27,29,30,28,26,23,22,21,47,51] ; V1: [0,3,5,7,8,10,11,9,6,4,2,1,49,51] ; V2: [0,43,42,41,40,44,46,45,48,50,34,51] ; V3: [0,17,13,18,19,15,16,14,12,51] ; V4: [0,33,32,31,35,37,38,39,36,51]
+
+GAMMA PI: 40
+GAMMA MIN: 10
+GAMMA MAX: 200
+MOTIVO: estagnacao_fo
+ITERAC: 144
+
+ITER SEM MELHORA: 50
+
+FO_TARGET = 362.4
+Melhor LP com slack = 465.19999999999993 | iter = 0 | no = 0
+Melhor LP válido = 465.19999999999993 | iter = 0 | no = 0
+Melhor inteiro = 465.2 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: rc101_tam25_estab1_gini30_gmax50_SM20
+Instância: instancias/rc101.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3622.2030 | FO exato=-1.0000 | FO BP=461.1000
+Nós processados BP = 10
+Colunas geradas BP = 424
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 0, 0, 7, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,5,7,6,8,3,1,4,26] ; V1: [0,11,22,20,26] ; V2: [0,14,12,15,16,9,10,13,17,26] ; V3: [0,23,21,19,18,25,24,26]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 50
+MOTIVO: TIME_MAX
+ITERAC: 227
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 406.6
+Melhor LP com slack = 289.29999999999995 | iter = 0 | no = 0
+Melhor LP válido = 289.29999999999995 | iter = 0 | no = 0
+Melhor inteiro = 461.09999999999997 | iter = 4 | no = 5
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: rc101_tam25_estab0_gini30_gmax50_SM20
+Instância: instancias/rc101.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3613.8397 | FO exato=-1.0000 | FO BP=462.5000
+Nós processados BP = 17
+Colunas geradas BP = 577
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 9, 0, 10, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,14,12,22,20,26] ; V1: [0,11,15,16,9,10,13,17,26] ; V2: [0,2,5,7,6,8,3,1,4,26] ; V3: [0,23,21,19,18,25,24,26]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 50
+MOTIVO: TIME_MAX
+ITERAC: 294
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 406.6
+Melhor LP com slack = 289.3 | iter = 0 | no = 0
+Melhor LP válido = 422.20000000000005 | iter = 108 | no = 0
+Melhor inteiro = 462.5 | iter = 4 | no = 6
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: rc101_tam25_estab1_gini30_gmax100_SM20
+Instância: instancias/rc101.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3629.6566 | FO exato=-1.0000 | FO BP=461.1000
+Nós processados BP = 10
+Colunas geradas BP = 425
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 0, 0, 8, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,2,5,7,6,8,3,1,4,26] ; V1: [0,11,22,20,26] ; V2: [0,14,12,15,16,9,10,13,17,26] ; V3: [0,23,21,19,18,25,24,26]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: convergiu_sem_coluna_negativa
+ITERAC: 229
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 406.6
+Melhor LP com slack = 289.29999999999995 | iter = 0 | no = 0
+Melhor LP válido = 289.29999999999995 | iter = 0 | no = 0
+Melhor inteiro = 461.09999999999997 | iter = 4 | no = 5
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: rc101_tam25_estab0_gini30_gmax100_SM20
+Instância: instancias/rc101.txt
+Clientes=25 | Nós_rede=27 | Veículos=4 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=3658.7627 | FO exato=-1.0000 | FO BP=462.5000
+Nós processados BP = 11
+Colunas geradas BP = 537
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 2, 0, 3, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,14,12,22,20,26] ; V1: [0,11,15,16,9,10,13,17,26] ; V2: [0,2,5,7,6,8,3,1,4,26] ; V3: [0,23,21,19,18,25,24,26]
+
+GAMMA PI: 30
+GAMMA MIN: 10
+GAMMA MAX: 100
+MOTIVO: TIME_MAX
+ITERAC: 252
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 406.6
+Melhor LP com slack = 289.3 | iter = 0 | no = 0
+Melhor LP válido = 422.20000000000005 | iter = 108 | no = 0
+Melhor inteiro = 462.5 | iter = 4 | no = 6
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c101n_tam25_estab0_gini10_gmax50_SM15
+Instância: instancias/c101N.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=227.4403 | FO exato=-1.0000 | FO BP=191.3000
+Nós processados BP = 1
+Colunas geradas BP = 462
+MIP = False
+ESTABILIZACAO = False
+SEM MELHORA = 15
+SCORE DAS CONSTRUTIVAS BP = [0, 171, 0, 9, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,23,22,21,26] ; V1: [0,13,17,18,19,15,16,14,12,26] ; V2: [0,5,3,7,8,10,11,9,6,4,2,1,26]
+
+GAMMA PI: 10
+GAMMA MIN: 10
+GAMMA MAX: 50
+MOTIVO: fo_target_int_atingido
+ITERAC: 180
+
+ITER SEM MELHORA: 15
+
+FO_TARGET = 191.3
+Melhor LP com slack = 116.3 | iter = 0 | no = 0
+Melhor LP válido = 201.37777777777782 | iter = 170 | no = 0
+Melhor inteiro = 191.3 | iter = 179 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = True | iter = 179 | tempo = 216.23474431037903 | no = 0

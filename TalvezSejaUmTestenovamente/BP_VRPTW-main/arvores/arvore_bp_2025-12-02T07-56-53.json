@@ -1,0 +1,39 @@
+{
+  "run_id": "2025-12-02T07-56-53",
+  "instancia": {
+    "nbcd": 16,
+    "nbn": 18,
+    "nbv": 2
+  },
+  "niveis": [
+    {
+      "nivel": 0,
+      "nos": [
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 28.406236561155318,
+          "solucao_inteira": false,
+          "status": "resolvido",
+          "motivo_poda": null,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {}
+        },
+        {
+          "no_id": 0,
+          "id_pai": null,
+          "profundidade": 0,
+          "custo_lp": 28.406236561155318,
+          "solucao_inteira": false,
+          "status": "resolvido",
+          "motivo_poda": null,
+          "arcos_fixados_em_1": [],
+          "arcos_proibidos": [],
+          "rotas_ativas_lp": {}
+        }
+      ]
+    }
+  ]
+}

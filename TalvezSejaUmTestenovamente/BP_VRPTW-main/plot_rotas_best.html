@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparador de Rotas</title>
+  <style>
+    :root {
+      --bg1: #f4f7fb;
+      --bg2: #e9eef8;
+      --panel: rgba(255,255,255,0.9);
+      --panel-strong: rgba(255,255,255,0.98);
+      --border: rgba(22, 35, 66, 0.10);
+      --text: #172033;
+      --muted: #667189;
+      --shadow: 0 12px 32px rgba(22, 35, 66, 0.12);
+      --real: #1f6feb;
+      --reduced: #d1242f;
+      --depot-start: #0f766e;
+      --depot-end: #7c3aed;
+      --customer: #334155;
+      --chip: #eef3ff;
+      --accent: #2563eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, #ffffff 0, var(--bg1) 34%, var(--bg2) 100%);
+    }
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 10px;
+  height: 100vh;
+  padding: 10px;
+}
+
+    .panel {
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .sidebar {
+      display: grid;
+      grid-template-rows: auto auto auto minmax(220px, 1fr) auto;
+    }
+
+    .header { padding: 1px 1px 3px 1px; }
+    .block { padding: 1px 6px 0 1px; }
+
+    .title {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2px 13px;
+    }
+
+    .card .label {
+      font-size: 8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .card .value {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .legend { display: grid; gap: 8px; }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .line-sample {
+      width: 22px;
+      height: 0;
+      border-top: 3px solid #111827;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .line-sample.real { border-color: var(--real); }
+    .line-sample.reduced { border-color: var(--reduced); }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--customer);
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    .dot.start { background: var(--depot-start); }
+    .dot.end { background: var(--depot-end); }
+
+.routes-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 18px 12px 18px;
+  min-height: 220px;
+}
+
+.route-item {
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  border-radius: 14px;
+  padding: 20px 20px 9px 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+
+    .route-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.10);
+      border-color: rgba(37, 99, 235, 0.24);
+    }
+
+    .route-item.active {
+      border-color: rgba(37, 99, 235, 0.34);
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.14);
+      background: linear-gradient(180deg, #ffffff, #f7faff);
+    }
+
+    .route-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .route-name { font-size: 14px; font-weight: 800; }
+
+    .pill {
+      background: var(--chip);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .metric-box {
+      background: #fbfcff;
+      border: 1px solid rgba(22,35,66,0.08);
+      border-radius: 12px;
+      padding: 8px 9px;
+    }
+
+    .metric-box .k { font-size: 11px; color: var(--muted); }
+    .metric-box .v { margin-top: 2px; font-size: 15px; font-weight: 800; }
+
+    .sequence {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+.footer-hint {
+  padding: 8px 18px 12px 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+    .stage {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px 10px 20px;
+      border-bottom: 1px solid rgba(22,35,66,0.08);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(12px);
+    }
+
+    .toolbar-left h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .toolbar-left div {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid rgba(22,35,66,0.10);
+      background: rgba(255,255,255,0.95);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(22,35,66,0.08);
+    }
+
+.stage-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 8px;
+  min-height: 0;
+  height: 100%;
+}
+    .canvas-wrap {
+      position: relative;
+      min-height: 0;
+      height: 100%;
+    }
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+      min-height: calc(100vh - 145px);
+      display: block;
+      background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(248,250,255,0.96));
+      border-radius: 18px;
+      border: 1px solid rgba(22,35,66,0.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+      cursor: grab;
+    }
+
+    .summary-panel {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(22,35,66,0.10);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 22px rgba(22,35,66,0.06);
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .summary-panel .row {
+      background: #fbfcff;
+      border: 1px solid rgba(22,35,66,0.08);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 14px;
+      min-height: 72px;
+    }
+
+    .summary-panel .a {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .summary-panel .b {
+      font-weight: 800;
+      font-size: 18px;
+      word-break: break-word;
+      line-height: 1.2;
+    }
+
+    .summary-panel .seq {
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.35;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    @media (max-width: 1280px) {
+      .summary-panel { grid-template-columns: 1fr 1fr; }
+      .summary-panel .row:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 1120px) {
+      .layout { grid-template-columns: 1fr; height: auto; }
+      .sidebar { max-height: 34vh; }
+      .stage { min-height: 78vh; }
+      #canvas { min-height: 62vh; }
+      .summary-panel { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="panel sidebar">
+      <div class="header">
+        <h1 class="title" id="globalTitle">Comparador de Rotas</h1>
+        <div class="subtitle" id="globalSubtitle">Troque apenas o arquivo <strong>rotas_plot_data.js</strong>. Você pode carregar uma ou várias rotas no mesmo HTML.</div>
+        <div class="summary-grid">
+          <div class="card">
+            <div class="label">Quantidade de rotas</div>
+            <div class="value" id="routeCount">0</div>
+          </div>
+          <div class="card">
+            <div class="label">Rotas visíveis</div>
+            <div class="value" id="visibleCount">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="section-title">Legenda</div>
+        <div class="legend">
+          <!--
+            <div class="legend-row"><span class="line-sample"></span><span>Arco da rota</span></div>
+            <div class="legend-row"><span class="line-sample real"></span><span>Custo real do arco</span></div>
+            <div class="legend-row"><span class="line-sample reduced"></span><span>Custo reduzido do arco</span></div>
+            <div class="legend-row"><span class="dot start"></span><span>Depósito inicial</span></div>
+            <div class="legend-row"><span class="dot"></span><span>Cliente</span></div>
+            <div class="legend-row"><span class="dot end"></span><span>Depósito final</span></div>
+            -->
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="section-title">Rotas carregadas</div>
+      </div>
+
+      <div class="routes-list" id="routesList"></div>
+
+
+    </aside>
+
+    <section class="panel stage">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <h2 id="focusTitle">Todas as rotas</h2>
+          <div id="focusSubtitle">Comparação simultânea das rotas carregadas.</div>
+        </div>
+        <div class="toolbar-actions">
+          <button id="btnShowAll">Mostrar todas</button>
+          <button id="btnHideAll">Ocultar todas</button>
+          <button id="btnFit">Ajustar na tela</button>
+          <button id="btnReset">Limpar destaque</button>
+        </div>
+      </div>
+
+      <div class="stage-body">
+        <div class="canvas-wrap">
+          <canvas id="canvas"></canvas>
+        </div>
+
+        <aside class="summary-panel">
+          <div class="row"><span class="a">Custo total real</span><span class="b" id="infoReal">-</span></div>
+          <div class="row"><span class="a">Custo total reduzido</span><span class="b" id="infoReduced">-</span></div>
+          <div class="row"><span class="a">Sequência selecionada</span><span class="seq" id="infoSeq">-</span></div>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <script src="rotas_plot_data_best.js"></script>
+  <script>
+    const COLORS = ['#2563eb', '#f59e0b', '#0f766e', '#7c3aed', '#ea580c', '#0891b2', '#65a30d', '#db2777', '#1d4ed8', '#9333ea'];
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const routeCountEl = document.getElementById('routeCount');
+    const visibleCountEl = document.getElementById('visibleCount');
+    const routesListEl = document.getElementById('routesList');
+    const globalTitleEl = document.getElementById('globalTitle');
+    const globalSubtitleEl = document.getElementById('globalSubtitle');
+    const focusTitleEl = document.getElementById('focusTitle');
+    const focusSubtitleEl = document.getElementById('focusSubtitle');
+    const infoRealEl = document.getElementById('infoReal');
+    const infoReducedEl = document.getElementById('infoReduced');
+    const infoSeqEl = document.getElementById('infoSeq');
+
+    const state = {
+      scale: 1,
+      originScreenX: 60,
+      originScreenY: 60,
+      dragging: false,
+      movedWhileDragging: false,
+      lastX: 0,
+      lastY: 0,
+      focusRouteId: null,
+      initialized: false,
+      routes: [],
+      selectedNode: null
+    };
+
+    function normalizeData(raw) {
+      if (!raw) return { title: 'Sem dados', subtitle: '', routes: [] };
+      if (Array.isArray(raw.routes)) return raw;
+      return {
+        title: raw.title || 'Visualização de Rotas',
+        subtitle: raw.subtitle || '',
+        routes: [raw]
+      };
+    }
+
+    function fmt(v) {
+      if (v == null || Number.isNaN(Number(v))) return '-';
+      return Number(v).toFixed(2);
+    }
+
+    function computeBBox(routes) {
+      const points = [];
+      for (const r of routes) {
+        if (!r.visible) continue;
+        for (const n of (r.nodes || [])) points.push(n);
+      }
+
+      if (!points.length) return { minX: 0, minY: 0, maxX: 1, maxY: 1 };
+
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (const p of points) {
+        minX = Math.min(minX, p.x);
+        minY = Math.min(minY, p.y);
+        maxX = Math.max(maxX, p.x);
+        maxY = Math.max(maxY, p.y);
+      }
+
+      if (minX === maxX) maxX += 1;
+      if (minY === maxY) maxY += 1;
+
+      return { minX, minY, maxX, maxY };
+    }
+
+    function fitToScreen() {
+      const bbox = computeBBox(state.routes);
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+
+const marginLeft = 10;
+const marginBottom = 10;
+const marginTop = 5;
+const marginRight = 5;
+
+      const usableW = w - marginLeft - marginRight;
+      const usableH = h - marginBottom - marginTop;
+
+      const maxX = Math.max(1, bbox.maxX);
+      const maxY = Math.max(1, bbox.maxY);
+
+      const sx = usableW / maxX;
+      const sy = usableH / maxY;
+
+      state.scale = Math.max(0.08, Math.min(sx, sy));
+      state.originScreenX = marginLeft;
+      state.originScreenY = marginBottom;
+
+      draw();
+    }
+
+    function worldToScreen(x, y) {
+      const h = canvas.clientHeight;
+      return {
+        x: state.originScreenX + x * state.scale,
+        y: h - (state.originScreenY + y * state.scale)
+      };
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * devicePixelRatio);
+      canvas.height = Math.floor(rect.height * devicePixelRatio);
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+
+      if (!state.initialized) {
+        state.initialized = true;
+        fitToScreen();
+      } else {
+        draw();
+      }
+    }
+
+    function roundRect(x, y, w, h, r, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function drawAxes() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+
+      const ox = state.originScreenX;
+      const oy = h - state.originScreenY;
+
+      ctx.save();
+
+      const gridPx = Math.max(35, state.scale * 10);
+
+      ctx.strokeStyle = 'rgba(100,116,139,0.12)';
+      ctx.lineWidth = 1;
+
+      for (let x = ox; x <= w; x += gridPx) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let x = ox - gridPx; x >= 0; x -= gridPx) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+
+      for (let y = oy; y <= h; y += gridPx) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+      for (let y = oy - gridPx; y >= 0; y -= gridPx) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = 'rgba(22,35,66,0.45)';
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(0, oy);
+      ctx.lineTo(w, oy);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(ox, h);
+      ctx.lineTo(ox, 0);
+      ctx.stroke();
+
+      ctx.fillStyle = '#172033';
+      ctx.font = '12px Inter, Arial';
+      ctx.fillText('0', ox + 6, oy - 6);
+      ctx.fillText('X', w - 16, oy - 8);
+      ctx.fillText('Y', ox + 8, 14);
+
+      ctx.restore();
+    }
+
+    function drawArrow(p1, p2, color, width, alpha = 1) {
+      const head = 10;
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      const ux = dx / len;
+      const uy = dy / len;
+
+      const startPad = 12;
+      const endPad = 16;
+
+      const ax1 = p1.x + ux * startPad;
+      const ay1 = p1.y + uy * startPad;
+      const ax2 = p2.x - ux * endPad;
+      const ay2 = p2.y - uy * endPad;
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+
+      ctx.beginPath();
+      ctx.moveTo(ax1, ay1);
+      ctx.lineTo(ax2, ay2);
+      ctx.stroke();
+
+      const angle = Math.atan2(ay2 - ay1, ax2 - ax1);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(ax2, ay2);
+      ctx.lineTo(ax2 - head * Math.cos(angle - Math.PI / 7), ay2 - head * Math.sin(angle - Math.PI / 7));
+      ctx.lineTo(ax2 - head * Math.cos(angle + Math.PI / 7), ay2 - head * Math.sin(angle + Math.PI / 7));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawTag(text, x, y, fill, stroke) {
+      ctx.font = '8px Inter, Arial';
+      const padX = 5;
+      const tw = ctx.measureText(text).width;
+      const w = tw + padX * 2;
+      const h = 16;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.97)';
+      roundRect(x - w / 2, y - h / 2, w, h, 10, true, false);
+
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1;
+      roundRect(x - w / 2, y - h / 2, w, h, 10, false, true);
+
+      ctx.fillStyle = fill;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, x, y + 0.5);
+    }
+
+    function drawCostLabels(route, arc, p1, p2, idx) {
+      const mx = (p1.x + p2.x) / 2;
+      const my = (p1.y + p2.y) / 2;
+
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      let nx = -dy / len;
+      let ny = dx / len;
+
+      const sign = ((route.id + idx) % 2 === 0) ? 1 : -1;
+      const base = 24 + (route.id % 3) * 8;
+
+      const ox = nx * base * sign;
+      const oy = ny * base * sign;
+
+      const rcX = mx + ox;
+      const rcY = my + oy;
+
+      const rX = mx + ox;
+      const rY = my + oy + 18;
+
+      drawTag(`RC ${fmt(arc.reduced_cost)}`, rcX, rcY, '#d1242f', '#ffb1b7');
+      drawTag(`R ${fmt(arc.real_cost)}`, rX, rY, '#1f6feb', '#9fc0ff');
+    }
+
+    function drawNode(node, routeColor, isFocused) {
+      const p = worldToScreen(node.x, node.y);
+
+      let fill = '#334155';
+      let radius = 6;
+
+      if (node.kind === 'depot_start') {
+        fill = '#0f766e';
+        radius = 9;
+      } else if (node.kind === 'depot_end') {
+        fill = '#7c3aed';
+        radius = 9;
+      } else if (routeColor) {
+        fill = routeColor;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = isFocused ? 1 : 0.85;
+      ctx.fillStyle = fill;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.98)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = isFocused ? '700 12px Inter, Arial' : '12px Inter, Arial';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#172033';
+      ctx.fillText(String(node.id), p.x + 9, p.y - 10);
+      ctx.restore();
+    }
+
+    function drawRoute(route, focusedRouteId) {
+      if (!route.visible) return;
+
+      const isFocused = focusedRouteId == null || route.id === focusedRouteId;
+      const alpha = focusedRouteId == null ? 0.84 : (route.id === focusedRouteId ? 1 : 0.16);
+      const width = route.id === focusedRouteId ? 3.4 : 2.5;
+      const color = route.color;
+
+      (route.arcs || []).forEach((arc, arcIdx) => {
+        const p1 = worldToScreen(arc.from_x, arc.from_y);
+        const p2 = worldToScreen(arc.to_x, arc.to_y);
+        drawArrow(p1, p2, color, width, alpha);
+
+        if (route.id === focusedRouteId || focusedRouteId == null) {
+          drawCostLabels(route, arc, p1, p2, arcIdx);
+        }
+      });
+
+      const seen = new Set();
+      for (const node of (route.nodes || [])) {
+        const key = `${route.id}-${node.id}-${node.x}-${node.y}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        drawNode(node, color, isFocused);
+      }
+    }
+
+    function findClickedNode(mx, my) {
+      const tolerance = 12;
+
+      for (const route of state.routes) {
+        if (!route.visible) continue;
+        for (const node of (route.nodes || [])) {
+          const p = worldToScreen(node.x, node.y);
+          const dx = mx - p.x;
+          const dy = my - p.y;
+          if (dx * dx + dy * dy <= tolerance * tolerance) {
+            return node;
+          }
+        }
+      }
+      return null;
+    }
+
+    function drawNodePopup(node) {
+      if (!node) return;
+
+      const p = worldToScreen(node.x, node.y);
+      const x = p.x + 16;
+      const y = p.y - 12;
+      const w = 320;
+      const h = 165;
+
+      ctx.save();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.98)';
+      ctx.strokeStyle = 'rgba(22,35,66,0.18)';
+      ctx.lineWidth = 1.2;
+      roundRect(x, y, w, h, 12, true, true);
+
+      ctx.fillStyle = '#172033';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+
+      ctx.font = '800 14px Inter, Arial';
+      ctx.fillText(`Nó ${node.id}`, x + 12, y + 10);
+
+      ctx.font = '12px Inter, Arial';
+      ctx.fillText(`Coordenadas: (${fmt(node.x)}, ${fmt(node.y)})`, x + 12, y + 34);
+
+      ctx.fillStyle = '#667189';
+      ctx.fillText(`Janela:`, x + 12, y + 56);
+
+      ctx.fillStyle = '#172033';
+      ctx.font = '700 12px Inter, Arial';
+      ctx.fillText(`[${fmt(node.ready_time)}, ${fmt(node.due_date)}]`, x + 68, y + 56);
+
+      ctx.font = '12px Inter, Arial';
+      ctx.fillStyle = '#667189';
+      ctx.fillText(`Chegada:`, x + 12, y + 80);
+
+      ctx.fillStyle = '#172033';
+      ctx.fillText(`${fmt(node.arrival_time)}`, x + 68, y + 80);
+
+      ctx.fillStyle = '#667189';
+      ctx.fillText(`Início atendimento:`, x + 12, y + 102);
+
+      ctx.fillStyle = '#172033';
+      ctx.font = '700 12px Inter, Arial';
+      ctx.fillText(`${fmt(node.start_service_time)}`, x + 130, y + 102);
+
+      ctx.font = '12px Inter, Arial';
+      ctx.fillStyle = '#667189';
+      ctx.fillText(`Fim atendimento:`, x + 12, y + 124);
+
+      ctx.fillStyle = '#172033';
+      ctx.font = '700 12px Inter, Arial';
+      ctx.fillText(`${fmt(node.end_service_time)}`, x + 115, y + 124);
+
+      ctx.fillStyle = '#667189';
+      ctx.font = '12px Inter, Arial';
+      ctx.fillText(`Serviço: ${fmt(node.service_time)}`, x + 12, y + 146);
+
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.58)';
+      ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      ctx.restore();
+
+      drawAxes();
+
+      for (const route of state.routes) {
+        drawRoute(route, state.focusRouteId);
+      }
+
+      if (state.selectedNode) {
+        drawNodePopup(state.selectedNode);
+      }
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const focused = state.routes.find(r => r.id === state.focusRouteId) || null;
+
+      if (!focused) {
+        infoRealEl.textContent = '-';
+        infoReducedEl.textContent = '-';
+        infoSeqEl.textContent = '-';
+        focusTitleEl.textContent = 'Todas as rotas';
+        focusSubtitleEl.textContent = 'Comparação simultânea das rotas carregadas.';
+        return;
+      }
+
+      infoRealEl.textContent = fmt(focused.total_real_cost);
+      infoReducedEl.textContent = fmt(focused.total_reduced_cost);
+      infoSeqEl.textContent = (focused.sequence || []).join(' → ');
+      focusTitleEl.textContent = focused.name || `Rota ${focused.id}`;
+      focusSubtitleEl.textContent = `Veículo ${focused.vehicle ?? '-'} · ${focused.arcs?.length || 0} arcos`;
+    }
+
+    function renderRoutesList() {
+      routesListEl.innerHTML = '';
+
+      for (const route of state.routes) {
+        const div = document.createElement('div');
+        div.className = 'route-item' + (route.id === state.focusRouteId ? ' active' : '');
+        div.innerHTML = `
+          <div class="route-top">
+            <div class="route-name">${route.name || ('Rota ' + route.id)}</div>
+            <div class="pill">${route.visible ? 'visível' : 'oculta'}</div>
+          </div>
+          <div class="metrics">
+            <div class="metric-box"><div class="k">Custo real</div><div class="v">${fmt(route.total_real_cost)}</div></div>
+            <div class="metric-box"><div class="k">Custo reduzido</div><div class="v">${fmt(route.total_reduced_cost)}</div></div>
+          </div>
+          <div class="sequence">${(route.sequence || []).join(' → ')}</div>
+        `;
+
+        div.addEventListener('click', () => {
+          state.focusRouteId = state.focusRouteId === route.id ? null : route.id;
+          renderRoutesList();
+          draw();
+        });
+
+        div.addEventListener('dblclick', () => {
+          route.visible = !route.visible;
+          updateGlobalCounts();
+          renderRoutesList();
+          fitToScreen();
+        });
+
+        routesListEl.appendChild(div);
+      }
+    }
+
+    function updateGlobalCounts() {
+      routeCountEl.textContent = String(state.routes.length);
+      visibleCountEl.textContent = String(state.routes.filter(r => r.visible).length);
+    }
+
+    function loadData() {
+      const raw = normalizeData(window.ROUTE_PLOT_DATA);
+
+      globalTitleEl.textContent = raw.title || 'Comparador de Rotas';
+      globalSubtitleEl.textContent = raw.subtitle || 'Troque apenas o arquivo rotas_plot_data.js. Você pode carregar uma ou várias rotas no mesmo HTML.';
+
+      state.routes = (raw.routes || []).map((r, idx) => ({
+        ...r,
+        id: r.id ?? idx,
+        name: r.name || r.title || `Rota ${idx + 1}`,
+        color: r.color || COLORS[idx % COLORS.length],
+        visible: r.visible !== false
+      }));
+
+      updateGlobalCounts();
+      renderRoutesList();
+      draw();
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      state.dragging = true;
+      state.movedWhileDragging = false;
+      state.lastX = e.clientX;
+      state.lastY = e.clientY;
+      canvas.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mouseup', () => {
+      state.dragging = false;
+      canvas.style.cursor = 'grab';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!state.dragging) return;
+
+      const dx = e.clientX - state.lastX;
+      const dy = e.clientY - state.lastY;
+
+      if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+        state.movedWhileDragging = true;
+      }
+
+      state.originScreenX += dx;
+      state.originScreenY -= dy;
+      state.lastX = e.clientX;
+      state.lastY = e.clientY;
+      draw();
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
+      const zoom = e.deltaY < 0 ? 1.08 : 0.92;
+      const mx = e.offsetX;
+      const my = e.offsetY;
+      const h = canvas.clientHeight;
+
+      const wx = (mx - state.originScreenX) / state.scale;
+      const wy = ((h - my) - state.originScreenY) / state.scale;
+
+      state.scale *= zoom;
+      state.originScreenX = mx - wx * state.scale;
+      state.originScreenY = (h - my) - wy * state.scale;
+
+      draw();
+    }, { passive: false });
+
+    canvas.addEventListener('click', (e) => {
+      if (state.movedWhileDragging) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      const node = findClickedNode(mx, my);
+      state.selectedNode = node || null;
+      draw();
+    });
+
+    document.getElementById('btnFit').addEventListener('click', fitToScreen);
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      state.focusRouteId = null;
+      state.selectedNode = null;
+      renderRoutesList();
+      draw();
+    });
+
+    document.getElementById('btnShowAll').addEventListener('click', () => {
+      for (const route of state.routes) route.visible = true;
+      updateGlobalCounts();
+      renderRoutesList();
+      fitToScreen();
+    });
+
+    document.getElementById('btnHideAll').addEventListener('click', () => {
+      for (const route of state.routes) route.visible = false;
+      state.selectedNode = null;
+      updateGlobalCounts();
+      renderRoutesList();
+      draw();
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+
+    loadData();
+    resizeCanvas();
+  </script>
+</body>
+</html>
