@@ -111,7 +111,9 @@ def main():
 
     tabu = 0
 
-    todas_instancias = [
+    todas_instancias = [ "instancias/c103.txt"
+    ]
+    """
         "instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
         "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt", "instancias/c108.txt",
         "instancias/c109.txt",
@@ -129,6 +131,7 @@ def main():
         "instancias/rc201.txt", "instancias/rc202.txt", "instancias/rc203.txt", "instancias/rc204.txt",
         "instancias/rc205.txt", "instancias/rc206.txt", "instancias/rc207.txt"
     ]
+    """
 
     # Veículos por tamanho e por instância.
     # Para 25 usei os valores da tabela que você mandou.
@@ -301,7 +304,7 @@ def main():
 
                         #for SM in semMelhora:
                         for ii in range(1):
-                            if ii==1:
+                            if ii==0:
                                 inst.usar_estabilizacao=True
                             else:
                                 inst.usar_estabilizacao=False
@@ -328,8 +331,8 @@ def main():
 
                             metod.init_pool_vazio(inst, sol_pool)
                             metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
-                            metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
-                            #metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
+                            #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
+                            metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
 
                             for k in range(inst.nbv):
                                 print("veic", k, "rotas iniciais =", len(sol_pool.rotas[k]["sequencia_rota"]))

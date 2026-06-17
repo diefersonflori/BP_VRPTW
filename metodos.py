@@ -8868,6 +8868,9 @@ class Metodos:
                         if self.printarsol:
                             print(f"   veic={k} | col={p} | lambda={val:.6f} | custo={custo:.4f} | rota={seq}")
 
+            if iter_cg==16:
+                print("")
+
             if abs(valor_recomposto - ULTIMAFO) <= 0.001:
                 if colunas_reais_usadas:
                     rodadas_sem_melhoria += 1

@@ -4454,3 +4454,59 @@ Melhor LP válido = 201.37777777777782 | iter = 170 | no = 0
 Melhor inteiro = 191.3 | iter = 179 | no = 0
 Achou LP target = False | iter =  | tempo =  | no = 
 Achou INT target = True | iter = 179 | tempo = 216.23474431037903 | no = 0
+========================================================================================================================
+RUN_ID: c102_tam25_estab1_gini10_gmax50_SM20
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=44.7385 | FO exato=-1.0000 | FO BP=324.1000
+Nós processados BP = 1
+Colunas geradas BP = 125
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 60, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,10,11,9,6,23,22,21,3,5,26] ; V1: [0,13,17,8,14,12,4,2,1,7,26] ; V2: [0,18,19,15,16,26]
+
+GAMMA PI: 10
+GAMMA MIN: 10
+GAMMA MAX: 50
+MOTIVO: estagnacao_fo
+ITERAC: 58
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 190.3
+Melhor LP com slack = 284.6 | iter = 16 | no = 0
+Melhor LP válido = 284.6 | iter = 16 | no = 0
+Melhor inteiro = 324.1 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
+========================================================================================================================
+RUN_ID: c102_tam25_estab1_gini10_gmax50_SM20
+Instância: instancias/c102.txt
+Clientes=25 | Nós_rede=27 | Veículos=3 | Capacidade=200 | Tabu=0 | Heurística_retirada=10
+Tempo exato=0.0000 | Tempo BP=2.6334 | FO exato=-1.0000 | FO BP=324.1000
+Nós processados BP = 1
+Colunas geradas BP = 125
+MIP = False
+ESTABILIZACAO = True
+SEM MELHORA = 20
+SCORE DAS CONSTRUTIVAS BP = [0, 60, 0, 0, 0, 0, 0]
+SEQ_EXATO: SEM_SEQUENCIA_EXATO
+SEQ_BP: V0: [0,20,24,25,10,11,9,6,23,22,21,3,5,26] ; V1: [0,13,17,8,14,12,4,2,1,7,26] ; V2: [0,18,19,15,16,26]
+
+GAMMA PI: 10
+GAMMA MIN: 10
+GAMMA MAX: 50
+MOTIVO: estagnacao_fo
+ITERAC: 58
+
+ITER SEM MELHORA: 20
+
+FO_TARGET = 190.3
+Melhor LP com slack = 284.6 | iter = 16 | no = 0
+Melhor LP válido = 284.6 | iter = 16 | no = 0
+Melhor inteiro = 324.1 | iter = 4 | no = 0
+Achou LP target = False | iter =  | tempo =  | no = 
+Achou INT target = False | iter =  | tempo =  | no = 
