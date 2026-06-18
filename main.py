@@ -43,7 +43,7 @@ def main():
     #   [25]     -> só 25 clientes
     #   [50]     -> só 50 clientes
     #   [25, 50] -> roda os dois
-    tamanhos = [25]
+    tamanhos = [25, 50]
 
     # Capacidade por tamanho
     capacidade_por_tamanho = {
@@ -111,9 +111,10 @@ def main():
 
     tabu = 0
 
-    todas_instancias = [ "instancias/c103.txt"
-    ]
-    """
+    #todas_instancias = ["instancias/r109.txt", "instancias/r110.txt",
+    #]
+    #"""
+    todas_instancias = [
         "instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
         "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt", "instancias/c108.txt",
         "instancias/c109.txt",
@@ -122,16 +123,8 @@ def main():
         "instancias/r109.txt", "instancias/r110.txt", "instancias/r111.txt", "instancias/r112.txt",
         "instancias/rc101.txt", "instancias/rc102.txt", "instancias/rc103.txt", "instancias/rc104.txt",
         "instancias/rc105.txt", "instancias/rc106.txt", "instancias/rc107.txt", "instancias/rc108.txt",
-        "instancias/c201.txt", "instancias/c202.txt", "instancias/c203.txt", "instancias/c204.txt",
-        "instancias/c205.txt", "instancias/c206.txt", "instancias/c207.txt", "instancias/c208.txt",
-        "instancias/c209.txt",
-        "instancias/r201.txt", "instancias/r202.txt", "instancias/r203.txt", "instancias/r204.txt",
-        "instancias/r205.txt", "instancias/r206.txt", "instancias/r207.txt", "instancias/r208.txt",
-        "instancias/r209.txt", "instancias/r120.txt", "instancias/r211.txt", "instancias/r212.txt",
-        "instancias/rc201.txt", "instancias/rc202.txt", "instancias/rc203.txt", "instancias/rc204.txt",
-        "instancias/rc205.txt", "instancias/rc206.txt", "instancias/rc207.txt"
     ]
-    """
+    #"""
 
     # Veículos por tamanho e por instância.
     # Para 25 usei os valores da tabela que você mandou.
@@ -251,6 +244,11 @@ def main():
                 lista_gamma_max = gamma_pi_max
                 lista_sm        = semMelhora_calib_25
 
+            # MODO CONSTRUTIVA: rodar apenas 1 iteracao (gamma/SM nao afetam a construtiva)
+            lista_gamma_max = lista_gamma_max[:1]
+            lista_sm        = lista_sm[:1]
+            lista_gamma_ini = lista_gamma_ini[:1]
+
             for gamma_PMAX in lista_gamma_max:
                 for SM in lista_sm:
                     for gamma_ini_val in lista_gamma_ini:
@@ -330,17 +328,70 @@ def main():
                             sol_pool.gamma_pi_max       = gamma_PMAX
 
                             metod.init_pool_vazio(inst, sol_pool)
-                            metod.gera_rotas_iniciaisUNICA(inst, sol_pool)
-                            #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
                             metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
+
+                            def _count_art(sp):
+                                n, c = 0, 0.0
+                                for _k in sp.rotas:
+                                    for _p, _art in enumerate(sp.rotas[_k]['artificial']):
+                                        if _art:
+                                            n += 1
+                                            c += sp.rotas[_k]['custo'][_p]
+                                return n, c
+
+                            n_art_int, cost_art_int = _count_art(sol_pool)
+
+                            if n_art_int > 0:
+                                print(f"[CONSTRUTIVA] Inteligente: {n_art_int} rota(s) artificial(is) "
+                                      f"(custo_art={cost_art_int:.2f}) — tentando Clarke-Wright")
+                                sol_cw = Solucao(inst.nbv, inst.nbcd)
+                                sol_cw.FO_TARGET        = sol_pool.FO_TARGET
+                                sol_cw.time_initial     = sol_pool.time_initial
+                                sol_cw.TIME_TARGET      = sol_pool.TIME_TARGET
+                                sol_cw.gamma_pi         = sol_pool.gamma_pi
+                                sol_cw.gamma_pi_inicial = sol_pool.gamma_pi_inicial
+                                sol_cw.gamma_pi_min     = sol_pool.gamma_pi_min
+                                sol_cw.gamma_pi_max     = sol_pool.gamma_pi_max
+                                metod.init_pool_vazio(inst, sol_cw)
+                                metod.gera_rotas_iniciais_clarke_wright(inst, sol_cw)
+                                n_art_cw, cost_art_cw = _count_art(sol_cw)
+                                if (n_art_cw < n_art_int) or (n_art_cw == n_art_int and cost_art_cw < cost_art_int):
+                                    sol_pool.rotas = sol_cw.rotas
+                                    print(f"[CONSTRUTIVA] VENCEDOR: Clarke-Wright "
+                                          f"({n_art_cw} art, custo_art={cost_art_cw:.2f}) "
+                                          f"vs Inteligente ({n_art_int} art, custo_art={cost_art_int:.2f})")
+                                else:
+                                    print(f"[CONSTRUTIVA] VENCEDOR: Inteligente "
+                                          f"({n_art_int} art, custo_art={cost_art_int:.2f}) "
+                                          f"vs Clarke-Wright ({n_art_cw} art, custo_art={cost_art_cw:.2f})")
+                            else:
+                                print("[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial")
+
+                            #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
+                            # DEBUG - verificar construtiva
+                            print("\n=== ROTAS INICIAIS ===")
+                            clientes_cobertos = set()
+                            for k in sol_pool.rotas.keys():
+                                print(f"\nVeículo {k}: {len(sol_pool.rotas[k]['sequencia_rota'])} rotas")
+                                for p, seq in enumerate(sol_pool.rotas[k]['sequencia_rota']):
+                                    custo = sol_pool.rotas[k]['custo'][p]
+                                    clientes = [c for c in seq if c != 0 and c != inst.nbn - 1]
+                                    print(f"  rota {p}: custo={custo:.1f} clientes={clientes}")
+                                    clientes_cobertos.update(clientes)
+
+                            todos = set(range(1, inst.nbcd + 1))
+                            print(f"\nClientes cobertos: {len(clientes_cobertos)}/{inst.nbcd}")
+                            print(f"Faltando: {sorted(todos - clientes_cobertos)}")
 
                             for k in range(inst.nbv):
                                 print("veic", k, "rotas iniciais =", len(sol_pool.rotas[k]["sequencia_rota"]))
 
+                            continue  # MODO CONSTRUTIVA: pula B&P e gravacao de resultados
+
                             t1 = time.time()
                             inst.temmip = False
 
-                            metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+                            #metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
 
                             melhor_lp_com_slack = sol_pool.melhor_lp_com_slack
                             melhor_lp_com_slack_iter = sol_pool.iter_melhor_lp_com_slack
