@@ -244,13 +244,7 @@ class Metodos:
             for c in range(1, nbcd + 1)
         }
         _sorted_by_angle = sorted(range(1, nbcd + 1), key=lambda c: _cli_angles[c])
-        _home_zone = {}
-        for _k in range(inst.nbv):
-            _s = round(_k * nbcd / inst.nbv)
-            _e = round((_k + 1) * nbcd / inst.nbv)
-            _home_zone[_k] = set(_sorted_by_angle[_s:_e])
-
-        def _run_pipeline(seed_key, zone_seed_key):
+        def _run_pipeline(strategy_name, seed_key, zone_seed_key, forced_seeds=None):
             rotas = {}
             for k in range(inst.nbv):
                 rotas[k] = {
@@ -261,23 +255,37 @@ class Metodos:
 
             nao = set(range(1, nbcd + 1))
 
+            # Fresh home-zone per strategy call — no shared mutable state across strategies
+            home_zone = {}
+            for _k in range(inst.nbv):
+                _s = round(_k * nbcd / inst.nbv)
+                _e = round((_k + 1) * nbcd / inst.nbv)
+                home_zone[_k] = set(_sorted_by_angle[_s:_e])
+
             # Seeding: prefer earliest-due client from each vehicle's home zone;
             #          fall back to global seed_key order if zone yields no feasible seed
             seq_ini = {k: [0, depf] for k in range(inst.nbv)}
             for k in range(inst.nbv):
                 seeded = False
-                for cli in sorted(_home_zone[k] & nao, key=zone_seed_key):
-                    if avaliar_seq(k, [0, cli, depf]):
+                if forced_seeds is not None and k in forced_seeds:
+                    cli = forced_seeds[k]
+                    if cli in nao and avaliar_seq(k, [0, cli, depf]):
                         seq_ini[k] = [0, cli, depf]
                         nao.discard(cli)
                         seeded = True
-                        break
                 if not seeded:
-                    for cli in sorted(nao, key=seed_key):
+                    for cli in sorted(home_zone[k] & nao, key=zone_seed_key):
                         if avaliar_seq(k, [0, cli, depf]):
                             seq_ini[k] = [0, cli, depf]
                             nao.discard(cli)
+                            seeded = True
                             break
+                    if not seeded:
+                        for cli in sorted(nao, key=seed_key):
+                            if avaliar_seq(k, [0, cli, depf]):
+                                seq_ini[k] = [0, cli, depf]
+                                nao.discard(cli)
+                                break
 
             # Per-vehicle insertion: phase 1 fills from home zone, phase 2 opens to all
             for k in range(inst.nbv):
@@ -285,7 +293,7 @@ class Metodos:
                 # Phase 1: home-zone clients only
                 mudou = True
                 while mudou and nao:
-                    zone_nao = _home_zone[k] & nao
+                    zone_nao = home_zone[k] & nao
                     if not zone_nao:
                         break
                     mudou = False
@@ -604,23 +612,81 @@ class Metodos:
 
         # EDF seeding: earliest deadline first, window width as tiebreak
         rotas_edf, n_art_edf, cost_art_edf = _run_pipeline(
+            "EDF",
             lambda c: (due(c), due(c) - ready(c)),
             zone_seed_key=lambda c: (due(c), due(c) - ready(c)))
         print(f"[INTEIRA] EDF: {n_art_edf} art, custo_art={cost_art_edf:.2f}")
 
         # Balanced seeding: highest demand first, earliest due as tiebreak
         rotas_bal, n_art_bal, cost_art_bal = _run_pipeline(
+            "Balanced",
             lambda c: (-demand(c), due(c)),
             zone_seed_key=lambda c: due(c) - demand(c))
         print(f"[INTEIRA] Balanced: {n_art_bal} art, custo_art={cost_art_bal:.2f}")
 
-        # Keep the better result
-        if (n_art_bal < n_art_edf) or (n_art_bal == n_art_edf and cost_art_bal < cost_art_edf):
-            sol.rotas = rotas_bal
-            print(f"[INTEIRA] VENCEDOR: Balanced (demand desc) — {n_art_bal} art")
+        # Sector seeding: one evenly-spaced seed per vehicle from the angle-sorted list
+        _sector_seeds = {
+            k: _sorted_by_angle[int(k * nbcd / inst.nbv)]
+            for k in range(inst.nbv)
+        }
+        rotas_sec, n_art_sec, cost_art_sec = _run_pipeline(
+            "Sector",
+            lambda c: (due(c), due(c) - ready(c)),
+            zone_seed_key=lambda c: (due(c), due(c) - ready(c)),
+            forced_seeds=_sector_seeds)
+        print(f"[INTEIRA] Sector: {n_art_sec} art, custo_art={cost_art_sec:.2f}")
+
+        # LateIsolated seeding: EDF order for the first K-1 seeds; K-th seed is the client
+        #   in positions [K, 2K) of the EDF ranking with the highest due * dist(depot) score
+        _K = inst.nbv
+        _edf_order = sorted(range(1, nbcd + 1), key=lambda c: (due(c), due(c) - ready(c)))
+        _late_seeds = {}
+        for k in range(_K - 1):
+            _late_seeds[k] = _edf_order[k]
+        _pool_start = _K
+        _pool_end = min(2 * _K, nbcd)
+        if _pool_start < _pool_end:
+            _last_seed = max(
+                _edf_order[_pool_start:_pool_end],
+                key=lambda c: due(c) * inst.matriz_distancia[0][c]
+            )
         else:
-            sol.rotas = rotas_edf
-            print(f"[INTEIRA] VENCEDOR: EDF (due asc) — {n_art_edf} art")
+            _last_seed = _edf_order[_K - 1] if _K - 1 < nbcd else _edf_order[-1]
+        _late_seeds[_K - 1] = _last_seed
+        rotas_lat, n_art_lat, cost_art_lat = _run_pipeline(
+            "LateIsolated",
+            lambda c: (due(c), due(c) - ready(c)),
+            zone_seed_key=lambda c: (due(c), due(c) - ready(c)),
+            forced_seeds=_late_seeds)
+        print(f"[INTEIRA] LateIsolated: {n_art_lat} art, custo_art={cost_art_lat:.2f}")
+
+        # BalancedGlobal seeding: top K clients by (due - demand, due) globally, ignoring home zones
+        _bg_order = sorted(range(1, nbcd + 1), key=lambda c: (due(c) - demand(c), due(c)))
+        _bg_seeds = {k: _bg_order[k] for k in range(inst.nbv)}
+        rotas_bg, n_art_bg, cost_art_bg = _run_pipeline(
+            "BalancedGlobal",
+            lambda c: (due(c) - demand(c), due(c)),
+            zone_seed_key=lambda c: (due(c) - demand(c), due(c)),
+            forced_seeds=_bg_seeds)
+        print(f"[INTEIRA] BalancedGlobal: {n_art_bg} art, custo_art={cost_art_bg:.2f}")
+
+        # Regret-2 seeding: greedy construction ordered by regret score
+        _sol_rg = Solucao(inst.nbv, inst.nbcd)
+        n_art_rg, cost_art_rg = self.gera_rotas_iniciais_regret(inst, _sol_rg)
+        rotas_rg = _sol_rg.rotas
+
+        # Keep the best result among all six strategies
+        _candidates = [
+            (n_art_edf, cost_art_edf, rotas_edf, "EDF (due asc)"),
+            (n_art_bal, cost_art_bal, rotas_bal, "Balanced (demand desc)"),
+            (n_art_sec, cost_art_sec, rotas_sec, "Sector (angle)"),
+            (n_art_lat, cost_art_lat, rotas_lat, "LateIsolated"),
+            (n_art_bg,  cost_art_bg,  rotas_bg,  "BalancedGlobal"),
+            (n_art_rg,  cost_art_rg,  rotas_rg,  "Regret2"),
+        ]
+        _best = min(_candidates, key=lambda x: (x[0], x[1]))
+        sol.rotas = _best[2]
+        print(f"[INTEIRA] VENCEDOR: {_best[3]} — {_best[0]} art")
 
         sol.numero_de_rotas = [len(sol.rotas[k]['sequencia_rota']) for k in range(inst.nbv)]
 
@@ -637,6 +703,240 @@ class Metodos:
         print(f"Custo inicial inteiro = {custo_total:.4f}")
 
         return sol.rotas
+
+    def gera_rotas_iniciais_regret(self, inst, sol, custo_artificial=1e6):
+        import itertools as _itr
+        nbcd = inst.nbcd
+        depf = inst.nbcd + 1  # final depot node index
+
+        def ready(i):
+            return inst.noh[i].READY_TIME[0] if inst.noh[i].READY_TIME else 0
+
+        def due(i):
+            return inst.noh[i].DUE_DATE[0] if inst.noh[i].DUE_DATE else 1e9
+
+        def demand(i):
+            return getattr(inst.noh[i], 'DEMAND', 0.0)
+
+        def service(i):
+            return inst.noh[i].SERVICE_TIME[0] if inst.noh[i].SERVICE_TIME else 0
+
+        def travel(k, i, j):
+            return inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
+
+        def custo_seq(k, seq):
+            return sum(travel(k, seq[t], seq[t + 1]) for t in range(len(seq) - 1))
+
+        def avaliar_seq(k, seq):
+            Q = inst.veiculos[k].capacidade
+            carga = 0.0
+            tempo = 0.0
+            for t in range(1, len(seq)):
+                i, j = seq[t - 1], seq[t]
+                tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
+                if tempo > due(j):
+                    return False
+                if 1 <= j <= nbcd:
+                    carga += demand(j)
+                if carga > Q:
+                    return False
+            return True
+
+        def binaria_seq(seq):
+            b = [0] * nbcd
+            for n in seq:
+                if 1 <= n <= nbcd:
+                    b[n - 1] = 1
+            return b
+
+        # STEP 1: Initialize — one empty route per vehicle, no zone clustering
+        rotas = {}
+        for k in range(inst.nbv):
+            rotas[k] = {
+                'sequencia_rota': [[0, depf]],
+                'rotas_binaria': [[0] * nbcd],
+                'custo': [0.0],
+                'vezes_usada_geral': [0],
+                'vezes_usada_otimo': [0],
+                'lbd_iteracao': [[]],
+                'artificial': [False],
+            }
+
+        assigned = set()
+
+        # STEP 2: EDF Seeds — strictly assign the k-th EDF client as seed of vehicle k
+        # No greedy first-feasible search; each vehicle gets exactly one candidate.
+        edf_order = sorted(range(1, nbcd + 1), key=lambda c: (due(c), due(c) - ready(c)))
+        for k in range(inst.nbv):
+            if k >= len(edf_order):
+                break
+            c = edf_order[k]
+            if avaliar_seq(k, [0, c, depf]):
+                rotas[k]['sequencia_rota'][0] = [0, c, depf]
+                rotas[k]['rotas_binaria'][0] = binaria_seq([0, c, depf])
+                rotas[k]['custo'][0] = custo_seq(k, [0, c, depf])
+                assigned.add(c)
+            # else: vehicle k stays with empty route [0, depf]
+
+        # STEP 3: Regret-2 insertion loop
+        remaining = [c for c in range(1, nbcd + 1) if c not in assigned]
+
+        while remaining:
+            best_c = None
+            best_regret = -float('inf')
+            best_k = None
+            best_pos = None
+
+            for c in remaining:
+                feasible = []
+                for k in range(inst.nbv):
+                    seq = rotas[k]['sequencia_rota'][0]
+                    cost_k = custo_seq(k, seq)
+                    for pos in range(1, len(seq)):
+                        nova = seq[:pos] + [c] + seq[pos:]
+                        if avaliar_seq(k, nova):
+                            delta = custo_seq(k, nova) - cost_k
+                            feasible.append((delta, k, pos))
+
+                feasible.sort(key=lambda x: x[0])
+
+                if len(feasible) == 0:
+                    regret = float('inf')
+                    c_k = None
+                    c_pos = None
+                elif len(feasible) == 1:
+                    regret = feasible[0][0] + 1000
+                    c_k = feasible[0][1]
+                    c_pos = feasible[0][2]
+                else:
+                    regret = feasible[1][0] - feasible[0][0]
+                    c_k = feasible[0][1]
+                    c_pos = feasible[0][2]
+
+                if regret > best_regret:
+                    best_regret = regret
+                    best_c = c
+                    best_k = c_k
+                    best_pos = c_pos
+
+            remaining.remove(best_c)
+
+            if best_k is None:
+                # No feasible position anywhere: create artificial route [0, c*, depf].
+                # Prefer a vehicle with an empty route to avoid displacing assigned clients.
+                kb = next(
+                    (k for k in range(inst.nbv)
+                     if len([n for n in rotas[k]['sequencia_rota'][0] if 1 <= n <= nbcd]) == 0),
+                    min(range(inst.nbv),
+                        key=lambda k: len([n for n in rotas[k]['sequencia_rota'][0] if 1 <= n <= nbcd]))
+                )
+                seq_art = [0, best_c, depf]
+                rotas[kb]['sequencia_rota'][0] = seq_art
+                rotas[kb]['rotas_binaria'][0] = binaria_seq(seq_art)
+                rotas[kb]['custo'][0] = custo_artificial + inst.matriz_distancia[0][best_c] / inst.veiculos[kb].velocidade
+                rotas[kb]['artificial'][0] = True
+            else:
+                seq = rotas[best_k]['sequencia_rota'][0]
+                nova = seq[:best_pos] + [best_c] + seq[best_pos:]
+                rotas[best_k]['sequencia_rota'][0] = nova
+                rotas[best_k]['rotas_binaria'][0] = binaria_seq(nova)
+                rotas[best_k]['custo'][0] = custo_seq(best_k, nova)
+
+        # STEP 4a: Or-opt improvement — first-improving inter-route segment relocation
+        or_improved = True
+        while or_improved:
+            or_improved = False
+            found = False
+            for seg_len in (1, 2, 3):
+                if found:
+                    break
+                for k in range(inst.nbv):
+                    if found:
+                        break
+                    seq_k = rotas[k]['sequencia_rota'][0]
+                    int_k = [n for n in seq_k if 1 <= n <= nbcd]
+                    if len(int_k) <= seg_len:
+                        continue
+                    for i in range(1, len(seq_k) - seg_len):
+                        if found:
+                            break
+                        seg = seq_k[i:i + seg_len]
+                        if not all(1 <= n <= nbcd for n in seg):
+                            continue
+                        origin_wo = seq_k[:i] + seq_k[i + seg_len:]
+                        if not avaliar_seq(k, origin_wo):
+                            continue
+                        cost_orig_k = custo_seq(k, seq_k)
+                        cost_new_k = custo_seq(k, origin_wo)
+                        for k2 in range(inst.nbv):
+                            if found or k2 == k:
+                                continue
+                            seq_k2 = rotas[k2]['sequencia_rota'][0]
+                            cost_orig_k2 = custo_seq(k2, seq_k2)
+                            for pos in range(1, len(seq_k2)):
+                                nova_k2 = seq_k2[:pos] + seg + seq_k2[pos:]
+                                if avaliar_seq(k2, nova_k2):
+                                    cost_new_k2 = custo_seq(k2, nova_k2)
+                                    delta = (cost_new_k - cost_orig_k) + (cost_new_k2 - cost_orig_k2)
+                                    if delta < -1e-9:
+                                        rotas[k]['sequencia_rota'][0] = origin_wo
+                                        rotas[k]['rotas_binaria'][0] = binaria_seq(origin_wo)
+                                        rotas[k]['custo'][0] = cost_new_k
+                                        rotas[k2]['sequencia_rota'][0] = nova_k2
+                                        rotas[k2]['rotas_binaria'][0] = binaria_seq(nova_k2)
+                                        rotas[k2]['custo'][0] = cost_new_k2
+                                        or_improved = True
+                                        found = True
+                                        break
+
+        # STEP 4b: Reorder+relocate for any remaining artificial routes
+        for k in range(inst.nbv):
+            if not rotas[k]['artificial'][0]:
+                continue
+            seq_k = rotas[k]['sequencia_rota'][0]
+            clients_k = [n for n in seq_k if 1 <= n <= nbcd]
+            if len(clients_k) > 8 or len(clients_k) < 2:
+                continue
+            fixed = False
+            for drop_idx in range(len(clients_k)):
+                if fixed:
+                    break
+                dropped = clients_k[drop_idx]
+                subset = [c for i, c in enumerate(clients_k) if i != drop_idx]
+                for perm in _itr.permutations(subset):
+                    if fixed:
+                        break
+                    new_seq_k = [0] + list(perm) + [depf]
+                    if not avaliar_seq(k, new_seq_k):
+                        continue
+                    for k2 in range(inst.nbv):
+                        if fixed or k2 == k:
+                            continue
+                        seq_k2 = rotas[k2]['sequencia_rota'][0]
+                        for pos in range(1, len(seq_k2)):
+                            nova_k2 = seq_k2[:pos] + [dropped] + seq_k2[pos:]
+                            if avaliar_seq(k2, nova_k2):
+                                rotas[k]['sequencia_rota'][0] = new_seq_k
+                                rotas[k]['rotas_binaria'][0] = binaria_seq(new_seq_k)
+                                rotas[k]['custo'][0] = custo_seq(k, new_seq_k)
+                                rotas[k]['artificial'][0] = False
+                                rotas[k2]['sequencia_rota'][0] = nova_k2
+                                rotas[k2]['rotas_binaria'][0] = binaria_seq(nova_k2)
+                                rotas[k2]['custo'][0] = custo_seq(k2, nova_k2)
+                                fixed = True
+                                break
+                        if fixed:
+                            break
+
+        sol.rotas = rotas
+        sol.numero_de_rotas = [1] * inst.nbv
+
+        # STEP 5: Count artificials by flag and print
+        n_art = sum(1 for k in range(inst.nbv) if rotas[k]['artificial'][0])
+        cost_art = sum(rotas[k]['custo'][0] for k in range(inst.nbv) if rotas[k]['artificial'][0])
+        print(f"[INTEIRA] Regret2: {n_art} art, custo_art={cost_art:.2f}")
+
+        return n_art, cost_art
 
     def gera_rotas_iniciais_clarke_wright(self, inst, sol, custo_artificial=1e6):
         nbcd = inst.nbcd
@@ -1077,6 +1377,52 @@ class Metodos:
         print(f"Custo inicial CW = {custo_total:.4f}")
 
         return sol.rotas
+
+    def _contar_artificiais(self, sol):
+        count = 0
+        for k in sol.rotas:
+            for custo in sol.rotas[k]['custo']:
+                if custo > 500000:
+                    count += 1
+        return count
+
+    def _custo_artificiais(self, sol):
+        total = 0.0
+        for k in sol.rotas:
+            for custo in sol.rotas[k]['custo']:
+                if custo > 500000:
+                    total += custo
+        return total
+
+    def gera_solucao_inicial(self, inst, sol_pool):
+        sol_int = Solucao(inst.nbv, inst.nbcd)
+        self.init_pool_vazio(inst, sol_int)
+        self.gera_rotas_iniciais_inteligente_inteira(inst, sol_int)
+
+        n_art_int = self._contar_artificiais(sol_int)
+
+        if n_art_int == 0:
+            sol_pool.rotas = sol_int.rotas
+            print("[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial")
+            return
+
+        cost_art_int = self._custo_artificiais(sol_int)
+
+        sol_cw = Solucao(inst.nbv, inst.nbcd)
+        self.init_pool_vazio(inst, sol_cw)
+        self.gera_rotas_iniciais_clarke_wright(inst, sol_cw)
+
+        n_art_cw = self._contar_artificiais(sol_cw)
+        cost_art_cw = self._custo_artificiais(sol_cw)
+
+        if (n_art_cw < n_art_int) or (n_art_cw == n_art_int and cost_art_cw < cost_art_int):
+            sol_pool.rotas = sol_cw.rotas
+            print(f"[CONSTRUTIVA] VENCEDOR: Clarke-Wright ({n_art_cw} art, custo_art={cost_art_cw:.2f}) "
+                  f"vs Inteligente ({n_art_int} art, custo_art={cost_art_int:.2f})")
+        else:
+            sol_pool.rotas = sol_int.rotas
+            print(f"[CONSTRUTIVA] VENCEDOR: Inteligente ({n_art_int} art, custo_art={cost_art_int:.2f}) "
+                  f"vs Clarke-Wright ({n_art_cw} art, custo_art={cost_art_cw:.2f})")
 
     def gera_rotas_iniciais_boas(self, inst, sol, max_rotas_por_criterio=3):
         nbcd = inst.nbcd

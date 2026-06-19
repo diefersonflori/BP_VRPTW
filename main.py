@@ -328,70 +328,34 @@ def main():
                             sol_pool.gamma_pi_max       = gamma_PMAX
 
                             metod.init_pool_vazio(inst, sol_pool)
-                            metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
-
-                            def _count_art(sp):
-                                n, c = 0, 0.0
-                                for _k in sp.rotas:
-                                    for _p, _art in enumerate(sp.rotas[_k]['artificial']):
-                                        if _art:
-                                            n += 1
-                                            c += sp.rotas[_k]['custo'][_p]
-                                return n, c
-
-                            n_art_int, cost_art_int = _count_art(sol_pool)
-
-                            if n_art_int > 0:
-                                print(f"[CONSTRUTIVA] Inteligente: {n_art_int} rota(s) artificial(is) "
-                                      f"(custo_art={cost_art_int:.2f}) — tentando Clarke-Wright")
-                                sol_cw = Solucao(inst.nbv, inst.nbcd)
-                                sol_cw.FO_TARGET        = sol_pool.FO_TARGET
-                                sol_cw.time_initial     = sol_pool.time_initial
-                                sol_cw.TIME_TARGET      = sol_pool.TIME_TARGET
-                                sol_cw.gamma_pi         = sol_pool.gamma_pi
-                                sol_cw.gamma_pi_inicial = sol_pool.gamma_pi_inicial
-                                sol_cw.gamma_pi_min     = sol_pool.gamma_pi_min
-                                sol_cw.gamma_pi_max     = sol_pool.gamma_pi_max
-                                metod.init_pool_vazio(inst, sol_cw)
-                                metod.gera_rotas_iniciais_clarke_wright(inst, sol_cw)
-                                n_art_cw, cost_art_cw = _count_art(sol_cw)
-                                if (n_art_cw < n_art_int) or (n_art_cw == n_art_int and cost_art_cw < cost_art_int):
-                                    sol_pool.rotas = sol_cw.rotas
-                                    print(f"[CONSTRUTIVA] VENCEDOR: Clarke-Wright "
-                                          f"({n_art_cw} art, custo_art={cost_art_cw:.2f}) "
-                                          f"vs Inteligente ({n_art_int} art, custo_art={cost_art_int:.2f})")
-                                else:
-                                    print(f"[CONSTRUTIVA] VENCEDOR: Inteligente "
-                                          f"({n_art_int} art, custo_art={cost_art_int:.2f}) "
-                                          f"vs Clarke-Wright ({n_art_cw} art, custo_art={cost_art_cw:.2f})")
-                            else:
-                                print("[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial")
-
-                            #metod.gera_rotas_iniciais_geometricas(inst,sol_pool)
-                            # DEBUG - verificar construtiva
-                            print("\n=== ROTAS INICIAIS ===")
-                            clientes_cobertos = set()
-                            for k in sol_pool.rotas.keys():
-                                print(f"\nVeículo {k}: {len(sol_pool.rotas[k]['sequencia_rota'])} rotas")
-                                for p, seq in enumerate(sol_pool.rotas[k]['sequencia_rota']):
-                                    custo = sol_pool.rotas[k]['custo'][p]
-                                    clientes = [c for c in seq if c != 0 and c != inst.nbn - 1]
-                                    print(f"  rota {p}: custo={custo:.1f} clientes={clientes}")
-                                    clientes_cobertos.update(clientes)
-
-                            todos = set(range(1, inst.nbcd + 1))
-                            print(f"\nClientes cobertos: {len(clientes_cobertos)}/{inst.nbcd}")
-                            print(f"Faltando: {sorted(todos - clientes_cobertos)}")
-
-                            for k in range(inst.nbv):
-                                print("veic", k, "rotas iniciais =", len(sol_pool.rotas[k]["sequencia_rota"]))
-
-                            continue  # MODO CONSTRUTIVA: pula B&P e gravacao de resultados
+                            metod.gera_solucao_inicial(inst, sol_pool)
 
                             t1 = time.time()
                             inst.temmip = False
 
                             #metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+
+                            # Modo construtiva: B&P não rodou, inicializar atributos com defaults
+                            metod.best_obj = float('inf')
+                            metod.total_nos = 0
+                            metod.total_colunas = 0
+                            sol_pool.melhor_lp_com_slack = None
+                            sol_pool.iter_melhor_lp_com_slack = None
+                            sol_pool.no_melhor_lp_com_slack = None
+                            sol_pool.melhor_lp_valido = None
+                            sol_pool.iter_melhor_lp_valido = None
+                            sol_pool.no_melhor_lp_valido = None
+                            sol_pool.melhor_inteiro = None
+                            sol_pool.iter_melhor_inteiro = None
+                            sol_pool.no_melhor_inteiro = None
+                            sol_pool.achou_lp_target = False
+                            sol_pool.iter_lp_target = None
+                            sol_pool.tempo_lp_target = None
+                            sol_pool.no_lp_target = None
+                            sol_pool.achou_int_target = False
+                            sol_pool.iter_int_target = None
+                            sol_pool.tempo_int_target = None
+                            sol_pool.no_int_target = None
 
                             melhor_lp_com_slack = sol_pool.melhor_lp_com_slack
                             melhor_lp_com_slack_iter = sol_pool.iter_melhor_lp_com_slack

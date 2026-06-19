@@ -2,222 +2,546 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Plot Instância Cartesiana</title>
+<title>Plot VRPTW</title>
+
 <style>
-  body { font-family: Arial; }
-  canvas { border: 1px solid #000; }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f6f8;
+  }
+
+  #topbar {
+    padding: 10px 16px;
+    background: #1f2937;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #e5e7eb;
+  }
+
+  button:hover {
+    background: #d1d5db;
+  }
+
+  #container {
+    position: relative;
+    padding: 12px;
+  }
+
+  canvas {
+    background: white;
+    border: 1px solid #999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: grab;
+  }
+
+  canvas:active {
+    cursor: grabbing;
+  }
+
+  #popup {
+    position: absolute;
+    display: none;
+    background: white;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    font-size: 13px;
+    pointer-events: none;
+    min-width: 180px;
+    z-index: 10;
+  }
+
+  #popup strong {
+    font-size: 15px;
+  }
 </style>
 </head>
+
 <body>
 
-<h3>Plot da Instância</h3>
-<canvas id="canvas" width="900" height="700"></canvas>
+<div id="topbar">
+  <strong>Plot da Instância VRPTW</strong>
+  <button onclick="zoomIn()">Zoom +</button>
+  <button onclick="zoomOut()">Zoom -</button>
+  <button onclick="resetView()">Reset</button>
+  <span id="info"></span>
+</div>
+
+<div id="container">
+  <canvas id="canvas" width="1100" height="750"></canvas>
+  <div id="popup"></div>
+</div>
 
 <script>
-// ====== AJUSTE AQUI ======
+// ================= CONFIGURAÇÕES =================
+
 const CAMINHO_ARQUIVO = "instancias/c102.txt";
 
-// ROTAS (edite aqui)
+// Para instância de 50 clientes, use depósito final = 51.
+// Para instância de 100 clientes, use depósito final = 101.
+// Aqui deixei automático: o depósito final é criado depois do último cliente.
 const ROTAS = [
-  [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 5, 51],
-[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 31, 49, 47, 51],
-[0, 13, 3, 8, 10, 11, 9, 6, 4, 2, 1, 7, 51],
-[0, 32, 33, 35, 37, 38, 39, 36, 34, 12, 51],
-[0, 17, 18, 19, 15, 16, 14, 51]  
-
-
+  [0, 47, 15, 16, 12, 9, 10, 13, 17, 51],
+  [0, 14, 11, 22, 49, 20, 24, 51],
+  [0, 23, 21, 19, 18, 25, 48, 51],
+  [0, 33, 28, 30, 34, 50, 51],
+  [0, 27, 29, 31, 26, 32, 51],
+  [0, 42, 39, 36, 40, 38, 41, 37, 35, 51],
+  [0, 45, 5, 8, 46, 3, 1, 4, 51],
+  [0, 2, 7, 6, 43, 44, 51]
 ];
 
-// =========================
+const CORES_ROTAS = [
+  "#2563eb", "#f97316", "#7c3aed", "#b91c1c",
+  "#0f766e", "#ca8a04", "#db2777", "#16a34a"
+];
+
+// ==================================================
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const popup = document.getElementById("popup");
+const info = document.getElementById("info");
+
+let pontos = [];
+let pontosTela = [];
+
+let escalaBase = 1;
+let zoom = 1;
+let offsetX = 0;
+let offsetY = 0;
+
+let arrastando = false;
+let ultimoMouseX = 0;
+let ultimoMouseY = 0;
+
+let bounds = null;
 
 function parseInstancia(texto) {
-  const linhas = texto.split("\n");
-  const pontos = [];
-  let start = false;
 
-  for (let i = 0; i < linhas.length; i++) {
-    if (linhas[i].includes("TIME2") || linhas[i].includes("CUST NO.")) {
-      start = true;
-      continue;
+    const linhas = texto.split(/\r?\n/);
+    const pontos = [];
+
+    let lendoClientes = false;
+
+    for (const linha of linhas) {
+
+        if (linha.includes("CUST NO.")) {
+            lendoClientes = true;
+            continue;
+        }
+
+        if (!lendoClientes) continue;
+
+        const p = linha.trim().split(/\s+/);
+
+        if (p.length < 7) continue;
+
+        const id = Number(p[0]);
+
+        if (Number.isNaN(id)) continue;
+
+        // Lê apenas depósito + clientes 1..50
+        if (id > 50) break;
+
+        pontos.push({
+            id: id,
+            x: Number(p[1]),
+            y: Number(p[2]),
+            demand: Number(p[3]),
+            ready: Number(p[4]),
+            due: Number(p[5]),
+            service: Number(p[6]),
+            tipo: id === 0 ? "Depósito inicial" : "Cliente"
+        });
     }
 
-    if (start) {
-      if (pontos.length >= 51) break; // <<< LIMITADOR
+    // cria o depósito final (51) repetindo o nó 0
+    const dep = pontos[0];
 
-      const p = linhas[i].trim().split(/\s+/);
-      if (p.length < 3) continue;
-      if (isNaN(parseInt(p[0])) || isNaN(parseFloat(p[1])) || isNaN(parseFloat(p[2]))) continue;
-
-      pontos.push({
-        id: parseInt(p[0]),
-        x: parseFloat(p[1]),
-        y: parseFloat(p[2])
-      });
-    }
-  }
-
-  // depósito final
-  if (pontos.length > 0) {
     pontos.push({
-      id: pontos.length,
-      x: pontos[0].x,
-      y: pontos[0].y
+        id: 51,
+        x: dep.x,
+        y: dep.y,
+        demand: dep.demand,
+        ready: dep.ready,
+        due: dep.due,
+        service: dep.service,
+        tipo: "Depósito final"
     });
-  }
 
-  return pontos;
-}
-function desenharCirculo(x, y, raio, cor) {
-  ctx.beginPath();
-  ctx.arc(x, y, raio, 0, 2 * Math.PI);
-  ctx.fillStyle = cor;
-  ctx.fill();
+    return pontos;
 }
 
-function desenharLosango(x, y, tamanho, cor) {
-  ctx.beginPath();
-  ctx.moveTo(x, y - tamanho);
-  ctx.lineTo(x + tamanho, y);
-  ctx.lineTo(x, y + tamanho);
-  ctx.lineTo(x - tamanho, y);
-  ctx.closePath();
-  ctx.fillStyle = cor;
-  ctx.fill();
-}
 
-function desenharQuadrado(x, y, tamanho, cor) {
-  ctx.fillStyle = cor;
-  ctx.fillRect(x - tamanho, y - tamanho, 2 * tamanho, 2 * tamanho);
-}
-
-function plotar(pontos) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+function calcularBounds() {
   const xs = pontos.map(p => p.x);
   const ys = pontos.map(p => p.y);
 
-  const minXReal = Math.min(...xs);
-  const maxXReal = Math.max(...xs);
-  const minYReal = Math.min(...ys);
-  const maxYReal = Math.max(...ys);
+  bounds = {
+    minX: Math.min(...xs) - 5,
+    maxX: Math.max(...xs) + 5,
+    minY: Math.min(...ys) - 5,
+    maxY: Math.max(...ys) + 5
+  };
 
-  const minX = Math.floor(minXReal) - 1;
-  const maxX = Math.ceil(maxXReal) + 1;
-  const minY = Math.floor(minYReal) - 1;
-  const maxY = Math.ceil(maxYReal) + 1;
+  const largura = bounds.maxX - bounds.minX;
+  const altura = bounds.maxY - bounds.minY;
 
-  const margemEsq = 60;
-  const margemDir = 20;
-  const margemTopo = 20;
-  const margemInf = 50;
+  const margem = 70;
 
-  const larguraUtil = canvas.width - margemEsq - margemDir;
-  const alturaUtil = canvas.height - margemTopo - margemInf;
+  const escalaX = (canvas.width - 2 * margem) / largura;
+  const escalaY = (canvas.height - 2 * margem) / altura;
 
-  function escalaX(x) {
-    return margemEsq + ((x - minX) / (maxX - minX)) * larguraUtil;
+  escalaBase = Math.min(escalaX, escalaY);
+}
+
+function mundoParaTela(x, y) {
+  const margem = 70;
+
+  const px = margem + (x - bounds.minX) * escalaBase * zoom + offsetX;
+  const py = canvas.height - margem - (y - bounds.minY) * escalaBase * zoom + offsetY;
+
+  return { x: px, y: py };
+}
+
+function telaParaMundo(px, py) {
+  const margem = 70;
+
+  const x = ((px - margem - offsetX) / (escalaBase * zoom)) + bounds.minX;
+  const y = ((canvas.height - margem + offsetY - py) / (escalaBase * zoom)) + bounds.minY;
+
+  return { x, y };
+}
+
+function desenharGrade() {
+  ctx.save();
+
+  ctx.strokeStyle = "rgba(120,120,120,0.20)";
+  ctx.lineWidth = 1;
+  ctx.font = "11px Arial";
+  ctx.fillStyle = "#555";
+
+  const passo = zoom >= 2 ? 1 : zoom >= 1 ? 2 : 5;
+
+  for (let x = Math.floor(bounds.minX); x <= bounds.maxX; x += passo) {
+    const p1 = mundoParaTela(x, bounds.minY);
+    const p2 = mundoParaTela(x, bounds.maxY);
+
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+
+    ctx.fillText(x.toString(), p1.x - 6, canvas.height - 18);
   }
 
-  function escalaY(y) {
-    return canvas.height - margemInf - ((y - minY) / (maxY - minY)) * alturaUtil;
+  for (let y = Math.floor(bounds.minY); y <= bounds.maxY; y += passo) {
+    const p1 = mundoParaTela(bounds.minX, y);
+    const p2 = mundoParaTela(bounds.maxX, y);
+
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+
+    ctx.fillText(y.toString(), 10, p1.y + 4);
   }
 
-  function desenharGrade() {
+  ctx.restore();
+}
+
+function desenharRotas() {
+  ROTAS.forEach((rota, r) => {
     ctx.save();
 
-    ctx.strokeStyle = "rgba(120,120,120,0.22)";
-    ctx.lineWidth = 1;
-    ctx.font = "11px Arial";
-    ctx.fillStyle = "#444";
+    ctx.strokeStyle = CORES_ROTAS[r % CORES_ROTAS.length];
+    ctx.lineWidth = 2.8;
+    ctx.globalAlpha = 0.95;
 
-    for (let x = minX; x <= maxX; x += 1) {
-      const px = escalaX(x);
-
-      ctx.beginPath();
-      ctx.moveTo(px, margemTopo);
-      ctx.lineTo(px, canvas.height - margemInf);
-      ctx.stroke();
-
-      ctx.fillText(x.toString(), px - 6, canvas.height - margemInf + 15);
-    }
-
-    for (let y = minY; y <= maxY; y += 1) {
-      const py = escalaY(y);
-
-      ctx.beginPath();
-      ctx.moveTo(margemEsq, py);
-      ctx.lineTo(canvas.width - margemDir, py);
-      ctx.stroke();
-
-      ctx.fillText(y.toString(), 8, py + 4);
-    }
-
-    ctx.strokeStyle = "rgba(40,40,40,0.55)";
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(margemEsq, margemTopo, larguraUtil, alturaUtil);
-
-    ctx.restore();
-  }
-
-  desenharGrade();
-
-  // rotas
-  ROTAS.forEach((rota, r) => {
     ctx.beginPath();
-    ctx.strokeStyle = ["blue", "orange", "purple", "brown", "teal"][r % 5];
-    ctx.lineWidth = 2.5;
 
     for (let i = 0; i < rota.length - 1; i++) {
-      const p1 = pontos[rota[i]];
-      const p2 = pontos[rota[i + 1]];
+      const p1 = pontos.find(p => p.id === rota[i]);
+      const p2 = pontos.find(p => p.id === rota[i + 1]);
 
       if (!p1 || !p2) continue;
 
-      const x1 = escalaX(p1.x);
-      const y1 = escalaY(p1.y);
-      const x2 = escalaX(p2.x);
-      const y2 = escalaY(p2.y);
+      const a = mundoParaTela(p1.x, p1.y);
+      const b = mundoParaTela(p2.x, p2.y);
 
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
     }
 
     ctx.stroke();
-  });
-
-  // pontos
-  pontos.forEach((p, idx) => {
-    const x = escalaX(p.x);
-    const y = escalaY(p.y);
-
-    if (idx === 0) {
-      desenharLosango(x, y, 8, "#14833b");   // depósito inicial
-    } else if (idx === pontos.length - 1) {
-      desenharQuadrado(x, y, 7, "#c62828");  // depósito final
-    } else {
-      desenharCirculo(x, y, 5.5, "#111111"); // clientes
-    }
-
-    ctx.font = "12px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText(p.id, x + 8, y - 8);
+    ctx.restore();
   });
 }
 
-// ===== carregar automático =====
+function desenharPontos() {
+  pontosTela = [];
+
+  pontos.forEach(p => {
+    const t = mundoParaTela(p.x, p.y);
+
+    let raio = 7;
+
+    ctx.save();
+
+    if (p.id === 0) {
+      ctx.fillStyle = "#16a34a";
+      ctx.strokeStyle = "#064e3b";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(t.x, t.y - 10);
+      ctx.lineTo(t.x + 10, t.y);
+      ctx.lineTo(t.x, t.y + 10);
+      ctx.lineTo(t.x - 10, t.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      raio = 12;
+
+    } else if (p.tipo === "Depósito final") {
+      ctx.fillStyle = "#dc2626";
+      ctx.strokeStyle = "#7f1d1d";
+      ctx.lineWidth = 2;
+      ctx.fillRect(t.x - 8, t.y - 8, 16, 16);
+      ctx.strokeRect(t.x - 8, t.y - 8, 16, 16);
+
+      raio = 12;
+
+    } else {
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = "#111827";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, raio, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = "#111827";
+    ctx.font = "bold 12px Arial";
+    ctx.fillText(p.id.toString(), t.x + 9, t.y - 9);
+
+    ctx.restore();
+
+    pontosTela.push({
+      ponto: p,
+      x: t.x,
+      y: t.y,
+      raio: raio + 4
+    });
+  });
+}
+
+function desenharLegenda() {
+  ctx.save();
+
+  const x = canvas.width - 220;
+  let y = 25;
+
+  ctx.fillStyle = "rgba(255,255,255,0.90)";
+  ctx.strokeStyle = "#999";
+  ctx.lineWidth = 1;
+
+  ctx.fillRect(x - 10, y - 15, 200, 95);
+  ctx.strokeRect(x - 10, y - 15, 200, 95);
+
+  ctx.fillStyle = "#111";
+  ctx.font = "bold 13px Arial";
+  ctx.fillText("Legenda", x, y);
+
+  y += 22;
+  ctx.fillStyle = "#16a34a";
+  ctx.beginPath();
+  ctx.arc(x + 6, y - 4, 6, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.fillStyle = "#111";
+  ctx.font = "12px Arial";
+  ctx.fillText("Depósito inicial", x + 20, y);
+
+  y += 22;
+  ctx.fillStyle = "#dc2626";
+  ctx.fillRect(x, y - 10, 12, 12);
+  ctx.fillStyle = "#111";
+  ctx.fillText("Depósito final", x + 20, y);
+
+  y += 22;
+  ctx.fillStyle = "white";
+  ctx.strokeStyle = "#111";
+  ctx.beginPath();
+  ctx.arc(x + 6, y - 4, 6, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#111";
+  ctx.fillText("Cliente", x + 20, y);
+
+  ctx.restore();
+}
+
+function desenhar() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  desenharGrade();
+  desenharRotas();
+  desenharPontos();
+  desenharLegenda();
+
+  info.textContent = `Nós: ${pontos.length} | Zoom: ${zoom.toFixed(2)}x`;
+}
+
+function encontrarNo(mouseX, mouseY) {
+  for (let i = pontosTela.length - 1; i >= 0; i--) {
+    const pt = pontosTela[i];
+    const dx = mouseX - pt.x;
+    const dy = mouseY - pt.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist <= pt.raio) {
+      return pt.ponto;
+    }
+  }
+
+  return null;
+}
+
+function mostrarPopup(p, clientX, clientY) {
+  popup.innerHTML = `
+    <strong>Nó ${p.id}</strong><br>
+    Tipo: ${p.tipo}<br>
+    X: ${p.x}<br>
+    Y: ${p.y}<br>
+    Demanda: ${p.demand}<br>
+    Ready time: ${p.ready}<br>
+    Due date: ${p.due}<br>
+    Serviço: ${p.service}
+  `;
+
+  popup.style.left = `${clientX + 15}px`;
+  popup.style.top = `${clientY + 15}px`;
+  popup.style.display = "block";
+}
+
+function esconderPopup() {
+  popup.style.display = "none";
+}
+
+canvas.addEventListener("click", e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const no = encontrarNo(mx, my);
+
+  if (no) {
+    mostrarPopup(no, e.clientX, e.clientY);
+  } else {
+    esconderPopup();
+  }
+});
+
+canvas.addEventListener("mousedown", e => {
+  arrastando = true;
+  ultimoMouseX = e.clientX;
+  ultimoMouseY = e.clientY;
+});
+
+window.addEventListener("mouseup", () => {
+  arrastando = false;
+});
+
+window.addEventListener("mousemove", e => {
+  if (!arrastando) return;
+
+  const dx = e.clientX - ultimoMouseX;
+  const dy = e.clientY - ultimoMouseY;
+
+  offsetX += dx;
+  offsetY += dy;
+
+  ultimoMouseX = e.clientX;
+  ultimoMouseY = e.clientY;
+
+  esconderPopup();
+  desenhar();
+});
+
+canvas.addEventListener("wheel", e => {
+  e.preventDefault();
+
+  const fator = e.deltaY < 0 ? 1.15 : 0.85;
+
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const antes = telaParaMundo(mx, my);
+
+  zoom *= fator;
+  zoom = Math.max(0.35, Math.min(zoom, 8));
+
+  const depois = mundoParaTela(antes.x, antes.y);
+
+  offsetX += mx - depois.x;
+  offsetY += my - depois.y;
+
+  esconderPopup();
+  desenhar();
+});
+
+function zoomIn() {
+  zoom = Math.min(zoom * 1.25, 8);
+  esconderPopup();
+  desenhar();
+}
+
+function zoomOut() {
+  zoom = Math.max(zoom / 1.25, 0.35);
+  esconderPopup();
+  desenhar();
+}
+
+function resetView() {
+  zoom = 1;
+  offsetX = 0;
+  offsetY = 0;
+  esconderPopup();
+  desenhar();
+}
+
 fetch(CAMINHO_ARQUIVO)
-  .then(res => res.text())
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Arquivo não encontrado: " + CAMINHO_ARQUIVO);
+    }
+    return res.text();
+  })
   .then(texto => {
-    const pontos = parseInstancia(texto);
-    plotar(pontos);
+    pontos = parseInstancia(texto);
+    calcularBounds();
+    desenhar();
   })
   .catch(err => {
-    console.error("Erro ao carregar arquivo:", err);
+    console.error(err);
+    alert("Erro ao carregar a instância. Verifique o caminho do arquivo.");
   });
-
 </script>
 
 </body>
