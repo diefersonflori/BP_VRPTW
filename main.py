@@ -7,10 +7,432 @@ import random
 import math
 from datetime import datetime
 
-from instancia import Instancia
-from solucao import Solucao
-from metodos import Metodos, NoBP
 from multiprocessing import freeze_support
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+MAX_WORKERS = 18
+
+
+def rodar_caso(args):
+    import os
+    import sys
+    import time
+    import csv
+    import random
+    import math
+    from datetime import datetime
+    from instancia import Instancia
+    from solucao import Solucao
+    from metodos import Metodos, NoBP
+
+    (
+        arquivo_instancia, tam, cap, nbv_inst, ninst,
+        nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
+        gamma_pi_min, fo_target_inst, tabu, SEED_DEBUG
+    ) = args
+
+    ARQ_CSV_FINAL = "resultados_finais.csv"
+    ARQ_TXT_FINAL = "resultados_finais_legivel.txt"
+    ARQ_CALIB_GAMMA = "calibracao_gamma.csv"
+
+    def fmt(v):
+        if v is None:
+            return ""
+        if isinstance(v, (int, float)) and math.isinf(v):
+            return ""
+        return v
+
+    def round_safe(v, ndigits=4):
+        if v is None:
+            return ""
+        if isinstance(v, (int, float)) and math.isinf(v):
+            return ""
+        if v == "":
+            return ""
+        return round(v, ndigits)
+
+    os.makedirs("logs_paralelos", exist_ok=True)
+    log_path = f"logs_paralelos/{nome_base}_SM{SM}_g{gamma_ini_val}_G{gamma_PMAX}.txt"
+    log_file = open(log_path, "w", encoding="utf-8")
+    sys.stdout = log_file
+    sys.stderr = log_file
+
+    print("\n############################################")
+    print(f"TESTANDO GAMMA_MAX={gamma_PMAX} | GAMMA_INI={gamma_ini_val} | SM={SM}")
+    print("############################################")
+
+    FOTAarg = fo_target_inst
+    TIMETarg = 5000
+
+    print("\n==============================")
+    print(
+        f"NOVA - tam={tam} cap={cap} VEIC={nbv_inst} "
+        f"gamma_max={gamma_PMAX} gamma_ini={gamma_ini_val} SM={SM} "
+        f"ninst={ninst} INSTANCIA={arquivo_instancia}"
+    )
+    print("==============================")
+
+    tem_janelas = 0
+
+    inst = Instancia()
+    inst.nbcd = tam
+    inst.nbn = tam + 2
+    inst.nomeInst = arquivo_instancia
+    inst.nbv = nbv_inst
+    inst.ninst = ninst
+    inst.leitura(arquivo_instancia)
+
+    for v in inst.veiculos:
+        v.capacidade = cap
+        v.velocidade = 10
+
+    metod = Metodos(inst)
+    metod.TABU_TENURE = tabu
+
+    solex = Solucao(inst.nbv, inst.nbn)
+    solc = Solucao(inst.nbv, inst.nbcd)
+
+    tiex = time.time()
+    #metod.metodo_exato(inst, solex)
+    tfex = time.time()
+
+    tempo_exato = tfex - tiex
+    fo_exato = solex.custo
+    seq_exato = solex.sequencias_exato_para_texto()
+
+    print("tempo total exato:", tempo_exato)
+
+    tipo_geracao = "PD"
+
+    #for SM in semMelhora:
+    for ii in range(1):
+        inst.usar_estabilizacao = False
+
+        print(f" $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO {inst.usar_estabilizacao}")
+        inst.nbconstrutiva = 10
+        inst.iteraSemMelhora = SM
+        random.seed(SEED_DEBUG)
+
+        print("\n--------------------------------------------------")
+        print(f"Heurística retirada = {inst.nbconstrutiva}")
+        print("--------------------------------------------------")
+
+        sol_pool = Solucao(inst.nbv, inst.nbcd)
+
+        sol_pool.FO_TARGET = FOTAarg
+        sol_pool.time_initial = time.time()
+        sol_pool.TIME_TARGET = TIMETarg
+
+        sol_pool.gamma_pi          = gamma_ini_val
+        sol_pool.gamma_pi_inicial   = gamma_ini_val
+        sol_pool.gamma_pi_min       = gamma_pi_min
+        sol_pool.gamma_pi_max       = gamma_PMAX
+
+        metod.init_pool_vazio(inst, sol_pool)
+        metod.gera_solucao_inicial(inst, sol_pool)
+
+        t1 = time.time()
+        inst.temmip = False
+
+        metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
+
+        melhor_lp_com_slack = sol_pool.melhor_lp_com_slack
+        melhor_lp_com_slack_iter = sol_pool.iter_melhor_lp_com_slack
+        no_melhor_lp_com_slack = sol_pool.no_melhor_lp_com_slack
+
+        melhor_lp_valido = sol_pool.melhor_lp_valido
+        melhor_lp_valido_iter = sol_pool.iter_melhor_lp_valido
+        no_melhor_lp_valido = sol_pool.no_melhor_lp_valido
+
+        melhor_int = sol_pool.melhor_inteiro
+        melhor_int_iter = sol_pool.iter_melhor_inteiro
+        no_melhor_inteiro = sol_pool.no_melhor_inteiro
+
+        achou_lp_target = sol_pool.achou_lp_target
+        achou_int_target = sol_pool.achou_int_target
+
+        iter_lp_target = sol_pool.iter_lp_target
+        iter_int_target = sol_pool.iter_int_target
+
+        tempo_lp_target = sol_pool.tempo_lp_target
+        tempo_int_target = sol_pool.tempo_int_target
+
+        no_lp_target = sol_pool.no_lp_target
+        no_int_target = sol_pool.no_int_target
+
+        print(f"FO_TARGET = {sol_pool.FO_TARGET}")
+
+        print(
+            f"Melhor LP com slack = {fmt(melhor_lp_com_slack)} "
+            f"| iter = {melhor_lp_com_slack_iter} "
+            f"| no = {no_melhor_lp_com_slack}"
+        )
+
+        print(
+            f"Melhor LP válido = {fmt(melhor_lp_valido)} "
+            f"| iter = {melhor_lp_valido_iter} "
+            f"| no = {no_melhor_lp_valido}"
+        )
+
+        print(
+            f"Melhor inteiro = {fmt(melhor_int)} "
+            f"| iter = {melhor_int_iter} "
+            f"| no = {no_melhor_inteiro}"
+        )
+
+        print(
+            f"Achou LP target = {achou_lp_target} "
+            f"| iter = {iter_lp_target} "
+            f"| tempo = {tempo_lp_target} "
+            f"| no = {no_lp_target}"
+        )
+
+        print(
+            f"Achou INT target = {achou_int_target} "
+            f"| iter = {iter_int_target} "
+            f"| tempo = {tempo_int_target} "
+            f"| no = {no_int_target}"
+        )
+
+        try:
+            sol_pool.exportar_convergencia_excel(inst, usar_estabilizacao=inst.usar_estabilizacao)
+            print(f"[LOG] convergencia registrada: {len(sol_pool.log_convergencia)} iteracoes")
+        except Exception as e:
+            import traceback
+            print(f"Erro ao exportar Excel: {e}")
+            traceback.print_exc()
+
+        tempo_bp = time.time() - t1
+
+        print(f"Tempo total BP: {tempo_bp:.4f}")
+
+        fo_bp = metod.best_obj
+        seq_bp = sol_pool.sequencias_bp_para_texto()
+        nos_bp = metod.total_nos
+        colunas_bp = metod.total_colunas
+
+        run_id = (
+            f"{nome_inst.replace('.txt', '')}_"
+            f"tam{tam}_"
+            f"estab{int(inst.usar_estabilizacao)}_"
+            f"gini{gamma_ini_val}_"
+            f"gmax{gamma_PMAX}_"
+            f"SM{inst.iteraSemMelhora}"
+        )
+
+        gap = ""
+        if fo_exato not in (None, 0, -1) and fo_bp not in (None, -1):
+            gap = ((fo_bp - fo_exato) / fo_exato) * 100.0
+
+        igual_exato = ""
+        if fo_exato not in (None, -1) and fo_bp not in (None, -1):
+            igual_exato = 1 if abs(fo_bp - fo_exato) <= 1e-6 else 0
+
+        if not seq_bp:
+            seq_bp = "SEM_SOLUCAO_BP"
+
+        with open(ARQ_TXT_FINAL, "a", encoding="utf-8") as f:
+            f.write("=" * 120 + "\n")
+            f.write(f"RUN_ID: {run_id}\n")
+            f.write(f"Instância: {arquivo_instancia}\n")
+            f.write(
+                f"Clientes={inst.nbcd} | Nós_rede={inst.nbn} | Veículos={inst.nbv} | "
+                f"Capacidade={cap} | Tabu={tabu} | Heurística_retirada={inst.nbconstrutiva}\n"
+            )
+            f.write(
+                f"Tempo exato={tempo_exato:.4f} | Tempo BP={tempo_bp:.4f} | "
+                f"FO exato={fo_exato:.4f} | FO BP={fo_bp:.4f}\n"
+            )
+
+            if gap != "":
+                f.write(f"GAP (%) = {gap:.4f}\n")
+
+            if igual_exato != "":
+                f.write(f"Igual ao exato = {igual_exato}\n")
+
+            f.write(f"Nós processados BP = {nos_bp}\n")
+            f.write(f"Colunas geradas BP = {colunas_bp}\n")
+            f.write(f"MIP = {inst.temmip}\n")
+            f.write(f"ESTABILIZACAO = {inst.usar_estabilizacao}\n")
+            f.write(f"SEM MELHORA = {getattr(inst, 'iteraSemMelhora', '')}\n")
+            f.write(f"SCORE DAS CONSTRUTIVAS BP = {getattr(sol_pool, 'construtivas', '')}\n")
+            f.write(f"SEQ_EXATO: {seq_exato}\n")
+            f.write(f"SEQ_BP: {seq_bp}\n\n")
+            f.write(f"GAMMA PI: {gamma_ini_val}\n")
+            f.write(f"GAMMA MIN: {gamma_pi_min}\n")
+            f.write(f"GAMMA MAX: {gamma_PMAX}\n")
+            f.write(f"MOTIVO: {getattr(sol_pool, 'motivoConv', '')}\n")
+            f.write(f"ITERAC: {getattr(sol_pool, 'nb_iteracoes', '')}\n\n")
+            f.write(f"ITER SEM MELHORA: {inst.iteraSemMelhora}\n\n")
+
+            f.write(f"FO_TARGET = {sol_pool.FO_TARGET}\n")
+            f.write(
+                f"Melhor LP com slack = {fmt(melhor_lp_com_slack)} "
+                f"| iter = {melhor_lp_com_slack_iter} "
+                f"| no = {no_melhor_lp_com_slack}\n"
+            )
+            f.write(
+                f"Melhor LP válido = {fmt(melhor_lp_valido)} "
+                f"| iter = {melhor_lp_valido_iter} "
+                f"| no = {no_melhor_lp_valido}\n"
+            )
+            f.write(
+                f"Melhor inteiro = {fmt(melhor_int)} "
+                f"| iter = {melhor_int_iter} "
+                f"| no = {no_melhor_inteiro}\n"
+            )
+            f.write(
+                f"Achou LP target = {achou_lp_target} "
+                f"| iter = {iter_lp_target} "
+                f"| tempo = {tempo_lp_target} "
+                f"| no = {no_lp_target}\n"
+            )
+            f.write(
+                f"Achou INT target = {achou_int_target} "
+                f"| iter = {iter_int_target} "
+                f"| tempo = {tempo_int_target} "
+                f"| no = {no_int_target}\n"
+            )
+
+        with open(ARQ_CSV_FINAL, "a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f, delimiter=";")
+
+            w.writerow([
+                run_id,
+                arquivo_instancia,
+                ninst,
+                tem_janelas,
+                inst.nbconstrutiva,
+                inst.nbcd,
+                inst.nbn,
+                inst.nbv,
+                cap,
+                tabu,
+                tipo_geracao,
+
+                round(tempo_exato, 4),
+                round(tempo_bp, 4),
+
+                sol_pool.FO_TARGET,
+                round_safe(fo_exato),
+                round_safe(fo_bp),
+
+                round_safe(melhor_lp_com_slack),
+                melhor_lp_com_slack_iter,
+                no_melhor_lp_com_slack,
+
+                round_safe(melhor_lp_valido),
+                melhor_lp_valido_iter,
+                no_melhor_lp_valido,
+
+                round_safe(melhor_int),
+                melhor_int_iter,
+                no_melhor_inteiro,
+
+                achou_lp_target,
+                iter_lp_target,
+                round_safe(tempo_lp_target),
+                no_lp_target,
+
+                achou_int_target,
+                iter_int_target,
+                round_safe(tempo_int_target),
+                no_int_target,
+
+                round_safe(gap),
+                igual_exato,
+
+                nos_bp,
+                colunas_bp,
+
+                inst.temmip,
+                inst.usar_estabilizacao,
+                getattr(inst, "iteraSemMelhora", ""),
+
+                gamma_ini_val,
+                gamma_pi_min,
+                gamma_PMAX,
+
+                getattr(sol_pool, "motivoConv", ""),
+                getattr(sol_pool, "nb_iteracoes", ""),
+
+                seq_exato,
+                seq_bp,
+
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            ])
+
+        existe_calib = os.path.exists(ARQ_CALIB_GAMMA)
+        """
+        with open(ARQ_CALIB_GAMMA, "a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f, delimiter=";")
+
+            if not existe_calib:
+                w.writerow([
+                    "run_id",
+                    "instancia",
+                    "familia",
+                    "clientes",
+                    "veiculos",
+                    "capacidade",
+                    "usar_estabilizacao",
+                    "gamma_ini",
+                    "gamma_min",
+                    "gamma_max",
+                    "sem_melhora",
+                    "tempo_bp",
+                    "fo_bp",
+                    "nos_bp",
+                    "colunas_bp",
+                    "iteracoes",
+                    "motivo",
+                    "score_construtivas",
+                    "timestamp"
+                ])
+
+            w.writerow([
+                run_id,
+                arquivo_instancia,
+                familia_instancia(nome_base).upper(),
+                inst.nbcd,
+                inst.nbv,
+                cap,
+                inst.usar_estabilizacao,
+                gamma_ini_val,
+                gamma_pi_min,
+                gamma_PMAX,
+                inst.iteraSemMelhora,
+                round_safe(tempo_bp),
+                round_safe(fo_bp),
+                nos_bp,
+                colunas_bp,
+                getattr(sol_pool, "nb_iteracoes", ""),
+                getattr(sol_pool, "motivoConv", ""),
+                getattr(sol_pool, "construtivas", ""),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            ])
+
+        """
+        print("")
+
+        log_file.flush()
+        log_file.close()
+        return {
+            "run_id": run_id,
+            "SM": SM,
+            "fo_bp": fo_bp,
+            "melhor_int": melhor_int,
+            "melhor_lp_valido": melhor_lp_valido,
+            "melhor_lp_com_slack": melhor_lp_com_slack,
+            "achou_int_target": achou_int_target,
+            "achou_lp_target": achou_lp_target,
+            "tempo_bp": tempo_bp,
+            "motivo": getattr(sol_pool, "motivoConv", ""),
+            "iteracoes": getattr(sol_pool, "nb_iteracoes", ""),
+            "nos": nos_bp,
+            "colunas": colunas_bp,
+            "log_convergencia": getattr(sol_pool, "log_convergencia", None),
+        }
 
 
 def main():
@@ -43,7 +465,7 @@ def main():
     #   [25]     -> só 25 clientes
     #   [50]     -> só 50 clientes
     #   [25, 50] -> roda os dois
-    tamanhos = [25, 50]
+    tamanhos = [50]
 
     # Capacidade por tamanho
     capacidade_por_tamanho = {
@@ -104,7 +526,7 @@ def main():
     # SM=20 mostrou-se insuficiente: espaço de colunas 2x maior exige mais iterações
     # para confirmar estagnação real vs. oscilação transitória
     #semMelhora_calib_50 = [30]#, 50, 100]
-    semMelhora_calib_50 = [50, 75, 100]
+    semMelhora_calib_50 = [20, 30, 40, 50]
     #semMelhora_calib_25=[10,15,20,25,30,40,50]
     #semMelhora_calib_25=[15,20,25,30,40,50]
     semMelhora_calib_25=[20]
@@ -209,6 +631,8 @@ def main():
         nomes_validos = set(FO_TARGET.get(tam, {}).keys())
         return [arq for arq in todas_instancias if normaliza_nome_instancia(arq) in nomes_validos]
 
+    tarefas = []
+
     for tam in tamanhos:
         cap = capacidade_por_tamanho[tam]
         #semMelhora = semMelhora_por_tamanho[tam]
@@ -246,405 +670,30 @@ def main():
 
             # MODO CONSTRUTIVA: rodar apenas 1 iteracao (gamma/SM nao afetam a construtiva)
             lista_gamma_max = lista_gamma_max[:1]
-            lista_sm        = lista_sm[:1]
             lista_gamma_ini = lista_gamma_ini[:1]
+            # lista_sm not truncated: sweep all SM values
 
             for gamma_PMAX in lista_gamma_max:
                 for SM in lista_sm:
                     for gamma_ini_val in lista_gamma_ini:
-
-                        print("\n############################################")
-                        print(f"TESTANDO GAMMA_MAX={gamma_PMAX} | GAMMA_INI={gamma_ini_val} | SM={SM}")
-                        print("############################################")
-
-                        FOTAarg = fo_target_inst
-                        TIMETarg = 5000
-
-                        print("\n==============================")
-                        print(
-                            f"NOVA - tam={tam} cap={cap} VEIC={nbv_inst} "
-                            f"gamma_max={gamma_PMAX} gamma_ini={gamma_ini_val} SM={SM} "
-                            f"ninst={ninst} INSTANCIA={arquivo_instancia}"
+                        tarefa = (
+                            arquivo_instancia, tam, cap, nbv_inst, ninst,
+                            nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
+                            gamma_pi_min, fo_target_inst, tabu, SEED_DEBUG
                         )
-                        print("==============================")
-
-                        tem_janelas = 0
-
-                        inst = Instancia()
-                        inst.nbcd = tam
-                        inst.nbn = tam + 2
-                        inst.nomeInst = arquivo_instancia
-                        inst.nbv = nbv_inst
-                        inst.ninst = ninst
-                        inst.leitura(arquivo_instancia)
-
-                        for v in inst.veiculos:
-                            v.capacidade = cap
-                            v.velocidade = 10
-
-                        metod = Metodos(inst)
-                        metod.TABU_TENURE = tabu
-
-                        solex = Solucao(inst.nbv, inst.nbn)
-                        solc = Solucao(inst.nbv, inst.nbcd)
-
-                        tiex = time.time()
-                        #metod.metodo_exato(inst, solex)
-                        tfex = time.time()
-
-                        tempo_exato = tfex - tiex
-                        fo_exato = solex.custo
-                        seq_exato = solex.sequencias_exato_para_texto()
-
-                        print("tempo total exato:", tempo_exato)
-
-                        tipo_geracao = "PD"
-
-                        #for SM in semMelhora:
-                        for ii in range(1):
-                            if ii==0:
-                                inst.usar_estabilizacao=True
-                            else:
-                                inst.usar_estabilizacao=False
-
-                            print(f" $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO {inst.usar_estabilizacao}")
-                            inst.nbconstrutiva = 10
-                            inst.iteraSemMelhora = SM
-                            random.seed(SEED_DEBUG)
-
-                            print("\n--------------------------------------------------")
-                            print(f"Heurística retirada = {inst.nbconstrutiva}")
-                            print("--------------------------------------------------")
-
-                            sol_pool = Solucao(inst.nbv, inst.nbcd)
-
-                            sol_pool.FO_TARGET = FOTAarg
-                            sol_pool.time_initial = time.time()
-                            sol_pool.TIME_TARGET = TIMETarg
-
-                            sol_pool.gamma_pi          = gamma_ini_val
-                            sol_pool.gamma_pi_inicial   = gamma_ini_val
-                            sol_pool.gamma_pi_min       = gamma_pi_min
-                            sol_pool.gamma_pi_max       = gamma_PMAX
-
-                            metod.init_pool_vazio(inst, sol_pool)
-                            metod.gera_solucao_inicial(inst, sol_pool)
-
-                            t1 = time.time()
-                            inst.temmip = False
-
-                            #metod.branch_and_price_global(inst, sol_pool, tipo_geracao=tipo_geracao)
-
-                            # Modo construtiva: B&P não rodou, inicializar atributos com defaults
-                            metod.best_obj = float('inf')
-                            metod.total_nos = 0
-                            metod.total_colunas = 0
-                            sol_pool.melhor_lp_com_slack = None
-                            sol_pool.iter_melhor_lp_com_slack = None
-                            sol_pool.no_melhor_lp_com_slack = None
-                            sol_pool.melhor_lp_valido = None
-                            sol_pool.iter_melhor_lp_valido = None
-                            sol_pool.no_melhor_lp_valido = None
-                            sol_pool.melhor_inteiro = None
-                            sol_pool.iter_melhor_inteiro = None
-                            sol_pool.no_melhor_inteiro = None
-                            sol_pool.achou_lp_target = False
-                            sol_pool.iter_lp_target = None
-                            sol_pool.tempo_lp_target = None
-                            sol_pool.no_lp_target = None
-                            sol_pool.achou_int_target = False
-                            sol_pool.iter_int_target = None
-                            sol_pool.tempo_int_target = None
-                            sol_pool.no_int_target = None
-
-                            melhor_lp_com_slack = sol_pool.melhor_lp_com_slack
-                            melhor_lp_com_slack_iter = sol_pool.iter_melhor_lp_com_slack
-                            no_melhor_lp_com_slack = sol_pool.no_melhor_lp_com_slack
-
-                            melhor_lp_valido = sol_pool.melhor_lp_valido
-                            melhor_lp_valido_iter = sol_pool.iter_melhor_lp_valido
-                            no_melhor_lp_valido = sol_pool.no_melhor_lp_valido
-
-                            melhor_int = sol_pool.melhor_inteiro
-                            melhor_int_iter = sol_pool.iter_melhor_inteiro
-                            no_melhor_inteiro = sol_pool.no_melhor_inteiro
-
-                            achou_lp_target = sol_pool.achou_lp_target
-                            achou_int_target = sol_pool.achou_int_target
-
-                            iter_lp_target = sol_pool.iter_lp_target
-                            iter_int_target = sol_pool.iter_int_target
-
-                            tempo_lp_target = sol_pool.tempo_lp_target
-                            tempo_int_target = sol_pool.tempo_int_target
-
-                            no_lp_target = sol_pool.no_lp_target
-                            no_int_target = sol_pool.no_int_target
-
-                            print(f"FO_TARGET = {sol_pool.FO_TARGET}")
-
-                            print(
-                                f"Melhor LP com slack = {fmt(melhor_lp_com_slack)} "
-                                f"| iter = {melhor_lp_com_slack_iter} "
-                                f"| no = {no_melhor_lp_com_slack}"
-                            )
-
-                            print(
-                                f"Melhor LP válido = {fmt(melhor_lp_valido)} "
-                                f"| iter = {melhor_lp_valido_iter} "
-                                f"| no = {no_melhor_lp_valido}"
-                            )
-
-                            print(
-                                f"Melhor inteiro = {fmt(melhor_int)} "
-                                f"| iter = {melhor_int_iter} "
-                                f"| no = {no_melhor_inteiro}"
-                            )
-
-                            print(
-                                f"Achou LP target = {achou_lp_target} "
-                                f"| iter = {iter_lp_target} "
-                                f"| tempo = {tempo_lp_target} "
-                                f"| no = {no_lp_target}"
-                            )
-
-                            print(
-                                f"Achou INT target = {achou_int_target} "
-                                f"| iter = {iter_int_target} "
-                                f"| tempo = {tempo_int_target} "
-                                f"| no = {no_int_target}"
-                            )
-
-                            try:
-                                sol_pool.exportar_convergencia_excel(inst, usar_estabilizacao=inst.usar_estabilizacao)
-                                print(f"[LOG] convergencia registrada: {len(sol_pool.log_convergencia)} iteracoes")
-                            except Exception as e:
-                                import traceback
-                                print(f"Erro ao exportar Excel: {e}")
-                                traceback.print_exc()
-
-                            tempo_bp = time.time() - t1
-
-                            print(f"Tempo total BP: {tempo_bp:.4f}")
-
-                            fo_bp = metod.best_obj
-                            seq_bp = sol_pool.sequencias_bp_para_texto()
-                            nos_bp = metod.total_nos
-                            colunas_bp = metod.total_colunas
-
-                            run_id = (
-                                f"{nome_inst.replace('.txt', '')}_"
-                                f"tam{tam}_"
-                                f"estab{int(inst.usar_estabilizacao)}_"
-                                f"gini{gamma_ini_val}_"
-                                f"gmax{gamma_PMAX}_"
-                                f"SM{inst.iteraSemMelhora}"
-                            )
-
-                            gap = ""
-                            if fo_exato not in (None, 0, -1) and fo_bp not in (None, -1):
-                                gap = ((fo_bp - fo_exato) / fo_exato) * 100.0
-
-                            igual_exato = ""
-                            if fo_exato not in (None, -1) and fo_bp not in (None, -1):
-                                igual_exato = 1 if abs(fo_bp - fo_exato) <= 1e-6 else 0
-
-                            if not seq_bp:
-                                seq_bp = "SEM_SOLUCAO_BP"
-
-                            with open(ARQ_TXT_FINAL, "a", encoding="utf-8") as f:
-                                f.write("=" * 120 + "\n")
-                                f.write(f"RUN_ID: {run_id}\n")
-                                f.write(f"Instância: {arquivo_instancia}\n")
-                                f.write(
-                                    f"Clientes={inst.nbcd} | Nós_rede={inst.nbn} | Veículos={inst.nbv} | "
-                                    f"Capacidade={cap} | Tabu={tabu} | Heurística_retirada={inst.nbconstrutiva}\n"
-                                )
-                                f.write(
-                                    f"Tempo exato={tempo_exato:.4f} | Tempo BP={tempo_bp:.4f} | "
-                                    f"FO exato={fo_exato:.4f} | FO BP={fo_bp:.4f}\n"
-                                )
-
-                                if gap != "":
-                                    f.write(f"GAP (%) = {gap:.4f}\n")
-
-                                if igual_exato != "":
-                                    f.write(f"Igual ao exato = {igual_exato}\n")
-
-                                f.write(f"Nós processados BP = {nos_bp}\n")
-                                f.write(f"Colunas geradas BP = {colunas_bp}\n")
-                                f.write(f"MIP = {inst.temmip}\n")
-                                f.write(f"ESTABILIZACAO = {inst.usar_estabilizacao}\n")
-                                f.write(f"SEM MELHORA = {getattr(inst, 'iteraSemMelhora', '')}\n")
-                                f.write(f"SCORE DAS CONSTRUTIVAS BP = {getattr(sol_pool, 'construtivas', '')}\n")
-                                f.write(f"SEQ_EXATO: {seq_exato}\n")
-                                f.write(f"SEQ_BP: {seq_bp}\n\n")
-                                f.write(f"GAMMA PI: {gamma_ini_val}\n")
-                                f.write(f"GAMMA MIN: {gamma_pi_min}\n")
-                                f.write(f"GAMMA MAX: {gamma_PMAX}\n")
-                                f.write(f"MOTIVO: {getattr(sol_pool, 'motivoConv', '')}\n")
-                                f.write(f"ITERAC: {getattr(sol_pool, 'nb_iteracoes', '')}\n\n")
-                                f.write(f"ITER SEM MELHORA: {inst.iteraSemMelhora}\n\n")
-
-                                f.write(f"FO_TARGET = {sol_pool.FO_TARGET}\n")
-                                f.write(
-                                    f"Melhor LP com slack = {fmt(melhor_lp_com_slack)} "
-                                    f"| iter = {melhor_lp_com_slack_iter} "
-                                    f"| no = {no_melhor_lp_com_slack}\n"
-                                )
-                                f.write(
-                                    f"Melhor LP válido = {fmt(melhor_lp_valido)} "
-                                    f"| iter = {melhor_lp_valido_iter} "
-                                    f"| no = {no_melhor_lp_valido}\n"
-                                )
-                                f.write(
-                                    f"Melhor inteiro = {fmt(melhor_int)} "
-                                    f"| iter = {melhor_int_iter} "
-                                    f"| no = {no_melhor_inteiro}\n"
-                                )
-                                f.write(
-                                    f"Achou LP target = {achou_lp_target} "
-                                    f"| iter = {iter_lp_target} "
-                                    f"| tempo = {tempo_lp_target} "
-                                    f"| no = {no_lp_target}\n"
-                                )
-                                f.write(
-                                    f"Achou INT target = {achou_int_target} "
-                                    f"| iter = {iter_int_target} "
-                                    f"| tempo = {tempo_int_target} "
-                                    f"| no = {no_int_target}\n"
-                                )
-
-                            with open(ARQ_CSV_FINAL, "a", newline="", encoding="utf-8") as f:
-                                w = csv.writer(f, delimiter=";")
-
-                                w.writerow([
-                                    run_id,
-                                    arquivo_instancia,
-                                    ninst,
-                                    tem_janelas,
-                                    inst.nbconstrutiva,
-                                    inst.nbcd,
-                                    inst.nbn,
-                                    inst.nbv,
-                                    cap,
-                                    tabu,
-                                    tipo_geracao,
-
-                                    round(tempo_exato, 4),
-                                    round(tempo_bp, 4),
-
-                                    sol_pool.FO_TARGET,
-                                    round_safe(fo_exato),
-                                    round_safe(fo_bp),
-
-                                    round_safe(melhor_lp_com_slack),
-                                    melhor_lp_com_slack_iter,
-                                    no_melhor_lp_com_slack,
-
-                                    round_safe(melhor_lp_valido),
-                                    melhor_lp_valido_iter,
-                                    no_melhor_lp_valido,
-
-                                    round_safe(melhor_int),
-                                    melhor_int_iter,
-                                    no_melhor_inteiro,
-
-                                    achou_lp_target,
-                                    iter_lp_target,
-                                    round_safe(tempo_lp_target),
-                                    no_lp_target,
-
-                                    achou_int_target,
-                                    iter_int_target,
-                                    round_safe(tempo_int_target),
-                                    no_int_target,
-
-                                    round_safe(gap),
-                                    igual_exato,
-
-                                    nos_bp,
-                                    colunas_bp,
-
-                                    inst.temmip,
-                                    inst.usar_estabilizacao,
-                                    getattr(inst, "iteraSemMelhora", ""),
-
-                                    gamma_ini_val,
-                                    gamma_pi_min,
-                                    gamma_PMAX,
-
-                                    getattr(sol_pool, "motivoConv", ""),
-                                    getattr(sol_pool, "nb_iteracoes", ""),
-
-                                    seq_exato,
-                                    seq_bp,
-
-                                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                ])
-
-                            existe_calib = os.path.exists(ARQ_CALIB_GAMMA)
-                            """
-                            with open(ARQ_CALIB_GAMMA, "a", newline="", encoding="utf-8") as f:
-                                w = csv.writer(f, delimiter=";")
-
-                                if not existe_calib:
-                                    w.writerow([
-                                        "run_id",
-                                        "instancia",
-                                        "familia",
-                                        "clientes",
-                                        "veiculos",
-                                        "capacidade",
-                                        "usar_estabilizacao",
-                                        "gamma_ini",
-                                        "gamma_min",
-                                        "gamma_max",
-                                        "sem_melhora",
-                                        "tempo_bp",
-                                        "fo_bp",
-                                        "nos_bp",
-                                        "colunas_bp",
-                                        "iteracoes",
-                                        "motivo",
-                                        "score_construtivas",
-                                        "timestamp"
-                                    ])
-
-                                w.writerow([
-                                    run_id,
-                                    arquivo_instancia,
-                                    familia_instancia(nome_base).upper(),
-                                    inst.nbcd,
-                                    inst.nbv,
-                                    cap,
-                                    inst.usar_estabilizacao,
-                                    gamma_ini_val,
-                                    gamma_pi_min,
-                                    gamma_PMAX,
-                                    inst.iteraSemMelhora,
-                                    round_safe(tempo_bp),
-                                    round_safe(fo_bp),
-                                    nos_bp,
-                                    colunas_bp,
-                                    getattr(sol_pool, "nb_iteracoes", ""),
-                                    getattr(sol_pool, "motivoConv", ""),
-                                    getattr(sol_pool, "construtivas", ""),
-                                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                ])
-
-                            """
-                            print("")
-
-    tfseq = time.time()
-
-    try:
-        solex.printar_sol_exata(inst)
-        solex.registrar_fo_gc(inst, solex.custo)
-        solc.exportar_json_gc(inst, "solucao_gcm.json")
-        print("\n tempo total exato:", tfex - tiex)
-    except NameError:
-        pass
+                        tarefas.append(tarefa)
+
+    sys.stdout = sys.__stdout__
+
+    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futuros = {executor.submit(rodar_caso, t): t for t in tarefas}
+        for futuro in as_completed(futuros):
+            resultado = futuro.result()
+            print(
+                f"[CONCLUIDO] run_id={resultado['run_id']} | SM={resultado['SM']} | "
+                f"fo_bp={resultado['fo_bp']} | tempo_bp={resultado['tempo_bp']} | "
+                f"motivo={resultado['motivo']}"
+            )
 
 
 if __name__ == "__main__":

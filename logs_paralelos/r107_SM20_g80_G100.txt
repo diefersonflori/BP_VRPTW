@@ -1,0 +1,54 @@
+
+############################################
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=7 gamma_max=100 gamma_ini=80 SM=20 ninst=15 INSTANCIA=instancias/r107.txt
+==============================
+tempo total exato: 2.384185791015625e-07
+ $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
+
+--------------------------------------------------
+Heurística retirada = 10
+--------------------------------------------------
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] EDF: 1 art, custo_art=1000136.30
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] Balanced: 1 art, custo_art=1000136.30
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] Sector: 1 art, custo_art=1000146.20
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [11, 23]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000219.90
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000177.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: Regret2 — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 42, 43, 44, 38, 14, 16, 37, 13, 51]
+  custo = 115.8000 | artificial = False
+Veículo 1: [0, 27, 20, 6, 18, 32, 51]
+  custo = 149.9000 | artificial = False
+Veículo 2: [0, 50, 33, 31, 30, 9, 35, 34, 29, 12, 51]
+  custo = 136.8000 | artificial = False
+Veículo 3: [0, 7, 45, 46, 8, 17, 5, 51]
+  custo = 104.2000 | artificial = False
+Veículo 4: [0, 26, 39, 23, 40, 4, 25, 24, 51]
+  custo = 138.9000 | artificial = False
+Veículo 5: [0, 48, 36, 11, 49, 10, 19, 47, 51]
+  custo = 156.7000 | artificial = False
+Veículo 6: [0, 2, 15, 41, 22, 21, 3, 1, 28, 51]
+  custo = 117.0000 | artificial = False
+Custo inicial inteiro = 919.3000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
