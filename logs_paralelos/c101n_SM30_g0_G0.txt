@@ -1,0 +1,167 @@
+==================== Iniciando a resolução do modelo exato
+Set parameter Username
+Set parameter LicenseID to value 2833603
+Academic license - for non-commercial use only - expires 2027-06-09
+Set parameter TimeLimit to value 12000
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: AMD Ryzen 9 9950X3D 16-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 16 physical cores, 32 logical processors, using up to 32 threads
+
+Non-default parameters:
+TimeLimit  12000
+
+Optimize a model with 27400 rows, 14290 columns and 143820 nonzeros (Min)
+Model fingerprint: 0xaa6584cd
+Model has 13250 linear objective coefficients
+Variable types: 520 continuous, 13770 integer (13770 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 6e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+
+Presolve removed 4396 rows and 7162 columns
+Presolve time: 3.25s
+Presolved: 23004 rows, 7128 columns, 136893 nonzeros
+Variable types: 505 continuous, 6623 integer (6622 binary)
+
+Root relaxation: objective 3.611075e+02, 1394 iterations, 0.58 seconds (0.14 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  361.10750    0   94          -  361.10750      -     -    5s
+     0     0  361.20000    0  154          -  361.20000      -     -    5s
+     0     0  361.20000    0  131          -  361.20000      -     -    6s
+H    0     0                     362.4000000  361.20000  0.33%     -    7s
+     0     0  361.20000    0  131  362.40000  361.20000  0.33%     -    7s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 37
+  MIR: 36
+  RLT: 2
+  Relax-and-lift: 17
+
+Explored 1 nodes (1825 simplex iterations) in 8.14 seconds (2.07 work units)
+Thread count was 32 (of 32 available processors)
+
+Solution count 1: 362.4 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.624000000000e+02, best bound 3.624000000000e+02, gap 0.0000%
+
+== Veículo 0 ==
+Rota: 0 -> 5 -> 3 -> 7 -> 8 -> 10 -> 11 -> 9 -> 6 -> 4 -> 2 -> 1 -> 51
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      10.0
+   5 |    15.10 |   105.10 |     10.00 |      20.0
+   3 |   106.10 |   196.10 |     20.00 |      40.0
+   7 |   198.10 |   288.10 |     40.00 |      60.0
+   8 |   290.90 |   380.90 |     60.00 |      70.0
+  10 |   384.50 |   474.50 |     70.00 |      80.0
+  11 |   477.50 |   567.50 |     80.00 |      90.0
+   9 |   570.60 |   660.60 |     90.00 |     110.0
+   6 |   662.80 |   752.80 |    110.00 |     120.0
+   4 |   755.00 |   845.00 |    120.00 |     150.0
+   2 |   848.60 |   938.60 |    150.00 |     160.0
+   1 |   940.60 |  1030.60 |    160.00 |       0.0
+  51 |  1049.20 |  1049.20 |      0.00 |         -
+
+== Veículo 1 ==
+Rota: 0 -> 20 -> 24 -> 25 -> 27 -> 29 -> 30 -> 28 -> 26 -> 23 -> 22 -> 21 -> 51
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      10.0
+  20 |    10.00 |   100.00 |     10.00 |      20.0
+  24 |   105.00 |   195.00 |     20.00 |      60.0
+  25 |   197.00 |   287.00 |     60.00 |      70.0
+  27 |   289.00 |   379.00 |     70.00 |      80.0
+  29 |   382.60 |   472.60 |     80.00 |      90.0
+  30 |   477.60 |   567.60 |     90.00 |     110.0
+  28 |   570.60 |   660.60 |    110.00 |     120.0
+  26 |   662.60 |   752.60 |    120.00 |     130.0
+  23 |   755.60 |   845.60 |    130.00 |     150.0
+  22 |   848.60 |   938.60 |    150.00 |     170.0
+  21 |   940.60 |  1030.60 |    170.00 |       0.0
+  51 |  1040.70 |  1040.70 |      0.00 |         -
+
+== Veículo 2 ==
+Rota: 0 -> 13 -> 17 -> 18 -> 19 -> 15 -> 16 -> 14 -> 12 -> 51
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      30.0
+  13 |    30.80 |   120.80 |     30.00 |      50.0
+  17 |   124.80 |   214.80 |     50.00 |      70.0
+  18 |   217.80 |   307.80 |     70.00 |      90.0
+  19 |   312.80 |   402.80 |     90.00 |     130.0
+  15 |   407.80 |   497.80 |    130.00 |     170.0
+  16 |   502.80 |   592.80 |    170.00 |     180.0
+  14 |   594.80 |   684.80 |    180.00 |     200.0
+  12 |   687.80 |   777.80 |    200.00 |       0.0
+  51 |   815.80 |   815.80 |      0.00 |         -
+
+== Veículo 3 ==
+Rota: 0 -> 32 -> 33 -> 31 -> 35 -> 37 -> 38 -> 39 -> 36 -> 34 -> 51
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      30.0
+  32 |    31.60 |   121.60 |     30.00 |      70.0
+  33 |   123.60 |   213.60 |     70.00 |      90.0
+  31 |   237.00 |   327.00 |     90.00 |     100.0
+  35 |   332.00 |   422.00 |    100.00 |     120.0
+  37 |   427.80 |   517.80 |    120.00 |     150.0
+  38 |   519.80 |   609.80 |    150.00 |     170.0
+  39 |   614.80 |   704.80 |    170.00 |     180.0
+  36 |   709.80 |   799.80 |    180.00 |     200.0
+  34 |   802.80 |   892.80 |    200.00 |       0.0
+  51 |   925.10 |   925.10 |      0.00 |         -
+
+== Veículo 4 ==
+Rota: 0 -> 43 -> 42 -> 41 -> 40 -> 44 -> 46 -> 45 -> 48 -> 50 -> 49 -> 47 -> 51
+  Nó |  Chegada |    Saída |  Carga_in | Carga_out
+   0 |     0.00 |     0.00 |      0.00 |      10.0
+  43 |    16.50 |   106.50 |     10.00 |      30.0
+  42 |   109.50 |   199.50 |     30.00 |      40.0
+  41 |   201.50 |   291.50 |     40.00 |      50.0
+  40 |   293.50 |   383.50 |     50.00 |      60.0
+  44 |   386.50 |   476.50 |     60.00 |      90.0
+  46 |   479.30 |   569.30 |     90.00 |     100.0
+  45 |   571.30 |   661.30 |    100.00 |     110.0
+  48 |   663.30 |   753.30 |    110.00 |     120.0
+  50 |   815.00 |   905.00 |    120.00 |     130.0
+  49 |  1001.00 |  1091.00 |    130.00 |     140.0
+  47 |  1093.00 |  1183.00 |    140.00 |       0.0
+  51 |  1201.00 |  1201.00 |      0.00 |         -
+Solução encontrada com sucesso!
+tempo total exato: 9.224704504013062
+ $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
+
+--------------------------------------------------
+Heurística retirada = 10
+--------------------------------------------------
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+  custo = 75.6000 | artificial = False
+Veículo 1: [0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+  custo = 59.2000 | artificial = False
+Veículo 2: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 51]
+  custo = 58.9000 | artificial = False
+Veículo 3: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+  custo = 95.8000 | artificial = False
+Veículo 4: [0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+  custo = 97.0000 | artificial = False
+Custo inicial inteiro = 386.5000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+
+=== CONSTRUTIVA instancias/c101N.txt | SM=30 ===
+  CUSTO TOTAL = -1.0000 | TARGET = 362.4
+  VENCEDOR = ?
+[INICIO] pid=21472 | instancias/c104.txt | t=1781936765.68
+
+############################################
+TESTANDO GAMMA_MAX=0 | GAMMA_INI=0 | SM=50
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=0 gamma_ini=0 SM=50 ninst=3 INSTANCIA=instancias/c104.txt
+==============================

@@ -1,0 +1,20 @@
+
+############################################
+TESTANDO GAMMA_MAX=200 | GAMMA_INI=40 | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=200 gamma_ini=40 SM=20 ninst=4 INSTANCIA=instancias/c105.txt
+==============================
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [17, 25, 33, 42]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000182.80
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+tempo total exato: 2.384185791015625e-07
+ $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO True
+
+--------------------------------------------------
+Heurística retirada = 10
+--------------------------------------------------
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00

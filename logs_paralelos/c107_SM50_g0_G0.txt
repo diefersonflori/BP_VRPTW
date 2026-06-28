@@ -1,0 +1,41 @@
+==================== Iniciando a resolução do modelo exato
+Set parameter TimeLimit to value 12000
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: AMD Ryzen 9 9950X3D 16-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 16 physical cores, 32 logical processors, using up to 32 threads
+
+Non-default parameters:
+TimeLimit  12000
+
+Optimize a model with 27400 rows, 14290 columns and 143820 nonzeros (Min)
+Model fingerprint: 0xd513bd82
+Model has 13250 linear objective coefficients
+Variable types: 520 continuous, 13770 integer (13770 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 6e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+
+Presolve removed 840 rows and 530 columns
+Presolve time: 0.33s
+Presolved: 26560 rows, 13760 columns, 103760 nonzeros
+Variable types: 505 continuous, 13255 integer (13255 binary)
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing primal log only...
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Use crossover to convert LP symmetric solution to basic solution...
+Crossover time: 0.14 seconds (0.02 work units)
+
+Root relaxation: objective 1.446000e+02, 644 iterations, 0.29 seconds (0.08 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  144.60000    0  252          -  144.60000      -     -    1s
+     0     0  146.40000    0  264          -  146.40000      -     -    1s

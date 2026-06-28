@@ -1,0 +1,14 @@
+
+############################################
+TESTANDO GAMMA_MAX=500 | GAMMA_INI=40 | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=500 gamma_ini=40 SM=20 ninst=4 INSTANCIA=instancias/c105.txt
+==============================
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00

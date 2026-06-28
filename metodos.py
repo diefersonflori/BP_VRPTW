@@ -675,7 +675,148 @@ class Metodos:
         n_art_rg, cost_art_rg = self.gera_rotas_iniciais_regret(inst, _sol_rg)
         rotas_rg = _sol_rg.rotas
 
-        # Keep the best result among all six strategies
+        # SolomonI1: Solomon (1987) sequential insertion heuristic I1.
+        # Builds one route at a time. Seeds with the unassigned client
+        # farthest from the depot. Inserts clients minimizing
+        # c1(i,u,j) = alpha1*c11 + alpha2*c12, where:
+        #   c11 = d(i,u) + d(u,j) - mu*d(i,j)   (distance increase)
+        #   c12 = b_ju - b_j                      (time push-forward at j)
+        # Parameters: alpha1=0.5, alpha2=0.5, mu=1.0
+        import math as _math
+
+        _si1_alpha1 = 0.5
+        _si1_alpha2 = 0.5
+        _si1_mu     = 1.0
+
+        def _si1_dist(a, b):
+            ax = inst.noh[a].XCOORD if a != 0 else inst.noh[0].XCOORD
+            ay = inst.noh[a].YCOORD if a != 0 else inst.noh[0].YCOORD
+            bx = inst.noh[b].XCOORD if b != 0 else inst.noh[0].XCOORD
+            by = inst.noh[b].YCOORD if b != 0 else inst.noh[0].YCOORD
+            return _math.sqrt((ax-bx)**2+(ay-by)**2)
+
+        def _si1_dist0(c):
+            return _math.sqrt(
+                (inst.noh[c].XCOORD - inst.noh[0].XCOORD)**2 +
+                (inst.noh[c].YCOORD - inst.noh[0].YCOORD)**2
+            )
+
+        def _si1_avaliar(seq):
+            """seq = list of client ids (no depots). Returns (feasible, list_of_arrival_times)."""
+            tempo = 0.0; carga = 0.0; prev = 0; tempos = []
+            for c in seq:
+                t = _si1_dist(prev, c) / inst.veiculos[0].velocidade
+                s_prev = service(prev) if prev != 0 else 0
+                tempo = max(ready(c), tempo + s_prev + t)
+                if tempo > due(c): return False, []
+                carga += inst.noh[c].DEMAND
+                if carga > inst.veiculos[0].capacidade: return False, []
+                tempos.append(tempo)
+                prev = c
+            return True, tempos
+
+        _si1_nao = set(range(1, nbcd + 1))
+        _si1_rotas_list = []   # list of client sequences
+        _si1_cargas = []
+
+        while _si1_nao and len(_si1_rotas_list) < inst.nbv:
+            # seed: farthest unassigned client from depot
+            _seed = max(_si1_nao, key=_si1_dist0)
+            ok, _ = _si1_avaliar([_seed])
+            if not ok:
+                # fallback: most urgent
+                _seed = min(_si1_nao, key=lambda c: due(c))
+            _si1_nao.discard(_seed)
+            _rota = [_seed]
+            _carga = inst.noh[_seed].DEMAND
+
+            # grow route by I1 insertion
+            _changed = True
+            while _changed and _si1_nao:
+                _changed = False
+                _best_c1 = float('inf')
+                _best_u = None
+                _best_pos = None
+
+                for _u in _si1_nao:
+                    if _carga + inst.noh[_u].DEMAND > inst.veiculos[0].capacidade:
+                        continue
+                    for _pos in range(len(_rota) + 1):
+                        _nova = _rota[:_pos] + [_u] + _rota[_pos:]
+                        _ok, _tempos_nova = _si1_avaliar(_nova)
+                        if not _ok:
+                            continue
+                        # c11: distance increase
+                        _i = _rota[_pos - 1] if _pos > 0 else 0
+                        _j = _rota[_pos] if _pos < len(_rota) else 0
+                        _c11 = (_si1_dist(_i, _u) + _si1_dist(_u, _j)
+                                - _si1_mu * _si1_dist(_i, _j))
+                        # c12: time push-forward at j
+                        if _pos < len(_rota):
+                            _ok_orig, _tempos_orig = _si1_avaliar(_rota)
+                            _b_j_orig = _tempos_orig[_pos] if _ok_orig and _pos < len(_tempos_orig) else 0
+                            _b_j_nova = _tempos_nova[_pos + 1] if _pos + 1 < len(_tempos_nova) else 0
+                            _c12 = max(0.0, _b_j_nova - _b_j_orig)
+                        else:
+                            _c12 = 0.0
+                        _c1 = _si1_alpha1 * _c11 + _si1_alpha2 * _c12
+                        if _c1 < _best_c1:
+                            _best_c1 = _c1
+                            _best_u = _u
+                            _best_pos = _pos
+
+                if _best_u is not None:
+                    _rota.insert(_best_pos, _best_u)
+                    _carga += inst.noh[_best_u].DEMAND
+                    _si1_nao.discard(_best_u)
+                    _changed = True
+
+            _si1_rotas_list.append(_rota)
+            _si1_cargas.append(_carga)
+
+        # Build rotas dict in the standard format
+        _si1_rotas = {}
+        for _k in range(inst.nbv):
+            _si1_rotas[_k] = {
+                'sequencia_rota': [], 'rotas_binaria': [], 'custo': [],
+                'vezes_usada_geral': [], 'vezes_usada_otimo': [],
+                'lbd_iteracao': [], 'artificial': [],
+            }
+            if _k < len(_si1_rotas_list):
+                _seq = [0] + _si1_rotas_list[_k] + [depf]
+                _si1_rotas[_k]['sequencia_rota'].append(_seq)
+                _si1_rotas[_k]['rotas_binaria'].append(binaria_seq(_seq))
+                _si1_rotas[_k]['custo'].append(custo_seq(_k, _seq))
+                _si1_rotas[_k]['vezes_usada_geral'].append(0)
+                _si1_rotas[_k]['vezes_usada_otimo'].append(0)
+                _si1_rotas[_k]['lbd_iteracao'].append([])
+                _si1_rotas[_k]['artificial'].append(False)
+            else:
+                _seq = [0, depf]
+                _si1_rotas[_k]['sequencia_rota'].append(_seq)
+                _si1_rotas[_k]['rotas_binaria'].append(binaria_seq(_seq))
+                _si1_rotas[_k]['custo'].append(0.0)
+                _si1_rotas[_k]['vezes_usada_geral'].append(0)
+                _si1_rotas[_k]['vezes_usada_otimo'].append(0)
+                _si1_rotas[_k]['lbd_iteracao'].append([])
+                _si1_rotas[_k]['artificial'].append(False)
+
+        # Handle unassigned clients
+        for _c in sorted(_si1_nao):
+            _kb = min(range(inst.nbv), key=lambda k: _si1_cargas[k] if k < len(_si1_cargas) else 0)
+            _seq = _si1_rotas[_kb]['sequencia_rota'][0]
+            _clients = [n for n in _seq if 1 <= n <= nbcd]
+            _seq_art = [0] + _clients + [_c] + [depf]
+            _si1_rotas[_kb]['sequencia_rota'][0] = _seq_art
+            _si1_rotas[_kb]['rotas_binaria'][0] = binaria_seq(_seq_art)
+            _si1_rotas[_kb]['custo'][0] = custo_seq(_kb, _seq_art) + 1e6
+            _si1_rotas[_kb]['artificial'][0] = True
+
+        _n_art_si1 = sum(1 for k in range(inst.nbv) if _si1_rotas[k]['artificial'][0])
+        _cost_art_si1 = sum(_si1_rotas[k]['custo'][0] for k in range(inst.nbv) if _si1_rotas[k]['artificial'][0])
+        print(f"[INTEIRA] SolomonI1: {_n_art_si1} art, custo_art={_cost_art_si1:.2f}")
+
+        # Keep the best result among all seven strategies
         _candidates = [
             (n_art_edf, cost_art_edf, rotas_edf, "EDF (due asc)"),
             (n_art_bal, cost_art_bal, rotas_bal, "Balanced (demand desc)"),
@@ -683,6 +824,7 @@ class Metodos:
             (n_art_lat, cost_art_lat, rotas_lat, "LateIsolated"),
             (n_art_bg,  cost_art_bg,  rotas_bg,  "BalancedGlobal"),
             (n_art_rg,  cost_art_rg,  rotas_rg,  "Regret2"),
+            (_n_art_si1, _cost_art_si1, _si1_rotas, "SolomonI1"),
         ]
         _best = min(_candidates, key=lambda x: (x[0], x[1]))
         sol.rotas = _best[2]
@@ -2584,8 +2726,10 @@ class Metodos:
         print("\n==== FIM B&P ====")
 
         if diag_list:
-            import csv
-            diag_path = f"diag_{inst.nomeInst}.csv"
+            import csv, os
+            nome_base = os.path.basename(inst.nomeInst).replace(".txt", "")
+            os.makedirs("diag_instancias", exist_ok=True)
+            diag_path = f"diag_instancias/{nome_base}.csv"
             with open(diag_path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=list(diag_list[0].keys()))
                 writer.writeheader()
@@ -4188,7 +4332,7 @@ class Metodos:
         from pathlib import Path
         import sys
 
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        base = Path(r"C:\Users\Proprietario\Documents\TalvezSejaUmTestenovamente\BP_VRPTW-main\PD_PARA_PYTHON\PD_PARA_PYTHON")
 
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
@@ -16549,7 +16693,7 @@ class Metodos:
         if str(pyd_dir) not in sys.path:
             sys.path.insert(0, str(pyd_dir))
 
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        base = Path(r"C:\Users\Proprietario\Documents\TalvezSejaUmTestenovamente\BP_VRPTW-main\PD_PARA_PYTHON\PD_PARA_PYTHON")
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 
@@ -16688,7 +16832,7 @@ class Metodos:
         from pathlib import Path
 
         # caminho do .pyd
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        base = Path(r"C:\Users\Proprietario\Documents\TalvezSejaUmTestenovamente\BP_VRPTW-main\PD_PARA_PYTHON\PD_PARA_PYTHON")
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 

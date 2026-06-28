@@ -1,0 +1,108 @@
+
+############################################
+TESTANDO GAMMA_MAX=500 | GAMMA_INI=40 | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=500 gamma_ini=40 SM=20 ninst=6 INSTANCIA=instancias/c107.txt
+==============================
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -130.431254
+  pi[2] = -120.232385
+  pi[3] = -119.925916
+  pi[4] = -95.480120
+  pi[5] = -100.518930
+  pi[6] = -88.474459
+  pi[7] = -100.643225
+  pi[8] = -88.646583
+  pi[9] = -79.667444
+  pi[10] = -38.403033
+  pi[11] = -55.245619
+  pi[12] = -102.698904
+  pi[13] = -80.348128
+  pi[14] = -85.595786
+  pi[15] = -55.354687
+  pi[16] = -103.717172
+  pi[17] = -149.661732
+  pi[18] = -87.006898
+  pi[19] = -138.883823
+  pi[20] = -87.853945
+  pi[21] = -129.387819
+  pi[22] = -122.286064
+  pi[23] = -112.553576
+  pi[24] = -100.152250
+  pi[25] = -113.662489
+  pi[26] = -170.001838
+  pi[27] = -130.587954
+  pi[28] = -106.743230
+  pi[29] = -49.872921
+  pi[30] = -66.868720
+  pi[31] = -107.677108
+  pi[32] = -63.120216
+  pi[33] = -115.666116
+  pi[34] = -77.225022
+  pi[35] = -73.099361
+  pi[36] = -138.013773
+  pi[37] = -221.090068
+  pi[38] = -45.051555
+  pi[39] = -120.611040
+  pi[40] = -112.226375
+  pi[41] = -101.294677
+  pi[42] = -88.328097
+  pi[43] = -57.425307
+  pi[44] = -43.998203
+  pi[45] = -100.726778
+  pi[46] = -48.948001
+  pi[47] = -107.567763
+  pi[48] = -118.546872
+  pi[49] = -117.600205
+  pi[50] = -120.506691
+
+SIGMA (veículos):
+  sigma[0] =  1058.554259
+  sigma[1] =  1076.868968
+  sigma[2] =  1076.868968
+  sigma[3] =  1076.868968
+  sigma[4] =  1076.868968
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+ [ETSAB] gamma_pi = 10.000000
+TESTA ALLBEST
+[Nó 0] MIP periódico encontrou solução inteira válida. FO=376.400000

@@ -6,7 +6,7 @@ TESTANDO GAMMA_MAX=100 | GAMMA_INI=40 | SM=20
 ==============================
 NOVA - tam=50 cap=200 VEIC=5 gamma_max=100 gamma_ini=40 SM=20 ninst=3 INSTANCIA=instancias/c104.txt
 ==============================
-tempo total exato: 2.384185791015625e-07
+tempo total exato: 0.0
  $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
 
 --------------------------------------------------

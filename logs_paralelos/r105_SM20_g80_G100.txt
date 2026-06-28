@@ -1,17 +1,6 @@
 
-############################################
 TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=20
-############################################
-
-==============================
-NOVA - tam=50 cap=200 VEIC=9 gamma_max=100 gamma_ini=80 SM=20 ninst=13 INSTANCIA=instancias/r105.txt
-==============================
-tempo total exato: 2.384185791015625e-07
- $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
-
---------------------------------------------------
-Heurística retirada = 10
---------------------------------------------------
+INSTANCIA=instancias/r105.txt | tam=50 | VEIC=9
 [INTEIRA] EDF: 0 art, custo_art=0.00
 [INTEIRA] Balanced: 0 art, custo_art=0.00
 [INTEIRA] Sector: 0 art, custo_art=0.00
@@ -44,3 +33,15 @@ Veículo 8: [0, 45, 47, 8, 18, 46, 17, 51]
   custo = 138.9000 | artificial = False
 Custo inicial inteiro = 1016.8000
 [CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=1016.8 | art=0 | 
+
+=== ROTAS INICIAIS ===
+  v0: [0, 5, 16, 44, 6, 51] custo=70.0 art=False
+  v1: [0, 14, 15, 38, 43, 37, 13, 51] custo=130.3 art=False
+  v2: [0, 42, 2, 21, 40, 26, 1, 51] custo=96.4 art=False
+  v3: [0, 39, 23, 22, 41, 4, 25, 51] custo=119.6 art=False
+  v4: [0, 28, 12, 29, 34, 3, 24, 51] custo=102.3 art=False
+  v5: [0, 33, 30, 9, 50, 35, 51] custo=135.1 art=False
+  v6: [0, 27, 31, 7, 10, 20, 32, 51] custo=103.3 art=False
+  v7: [0, 36, 19, 11, 49, 48, 51] custo=120.9 art=False
+  v8: [0, 45, 47, 8, 18, 46, 17, 51] custo=138.9 art=False

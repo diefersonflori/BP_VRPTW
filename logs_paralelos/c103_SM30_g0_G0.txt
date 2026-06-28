@@ -1,0 +1,146 @@
+==================== Iniciando a resolução do modelo exato
+Set parameter Username
+Set parameter LicenseID to value 2833603
+Academic license - for non-commercial use only - expires 2027-06-09
+Set parameter TimeLimit to value 12000
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: AMD Ryzen 9 9950X3D 16-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 16 physical cores, 32 logical processors, using up to 32 threads
+
+Non-default parameters:
+TimeLimit  12000
+
+Optimize a model with 27400 rows, 14290 columns and 143820 nonzeros (Min)
+Model fingerprint: 0xcf04b8c0
+Model has 13250 linear objective coefficients
+Variable types: 520 continuous, 13770 integer (13770 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 6e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+
+Presolve removed 1165 rows and 1146 columns
+Presolve time: 0.44s
+Presolved: 26235 rows, 13144 columns, 100641 nonzeros
+Variable types: 505 continuous, 12639 integer (12639 binary)
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing primal log only...
+
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.953000e+02, 838 iterations, 0.29 seconds (0.13 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  195.30000    0  153          -  195.30000      -     -    1s
+     0     0  195.30000    0  155          -  195.30000      -     -    1s
+     0     0  195.83500    0  168          -  195.83500      -     -    2s
+     0     0  198.40000    0  173          -  198.40000      -     -    2s
+     0     0  198.41714    0  166          -  198.41714      -     -    2s
+     0     0  198.80000    0  166          -  198.80000      -     -    2s
+     0     0  198.80000    0  161          -  198.80000      -     -    2s
+     0     0  198.80000    0  162          -  198.80000      -     -    2s
+     0     0  198.80000    0  162          -  198.80000      -     -    2s
+     0     0  198.80000    0  162          -  198.80000      -     -    5s
+     0     0  198.80000    0  170          -  198.80000      -     -    5s
+     0     0  198.95833    0  181          -  198.95833      -     -    6s
+     0     0  198.95833    0  176          -  198.95833      -     -    6s
+     0     0  198.95833    0  172          -  198.95833      -     -    7s
+     0     0  199.43333    0  176          -  199.43333      -     -   13s
+     0     0  204.94250    0  278          -  204.94250      -     -   15s
+     0     0  204.94250    0  263          -  204.94250      -     -   15s
+     0     0  207.85000    0  244          -  207.85000      -     -   17s
+     0     0  207.85000    0  237          -  207.85000      -     -   17s
+     0     0  211.70000    0  217          -  211.70000      -     -   20s
+     0     0  211.70000    0  204          -  211.70000      -     -   20s
+     0     0  211.70000    0  204          -  211.70000      -     -   21s
+     0     0  211.70000    0  199          -  211.70000      -     -   23s
+     0     0  211.70000    0  199          -  211.70000      -     -   24s
+     0     0  212.00197    0  240          -  212.00197      -     -   26s
+     0     0  212.00197    0  158          -  212.00197      -     -   27s
+     0     0  212.00254    0  152          -  212.00254      -     -   29s
+     0     0  212.00254    0  157          -  212.00254      -     -   29s
+     0     0  212.35000    0  175          -  212.35000      -     -   31s
+     0     0  212.35000    0  179          -  212.35000      -     -   32s
+     0     0  212.70000    0  156          -  212.70000      -     -   34s
+     0     0  212.70000    0  156          -  212.70000      -     -   34s
+     0     0  212.70000    0  154          -  212.70000      -     -   35s
+     0     0  212.70000    0  175          -  212.70000      -     -   36s
+     0     0  212.70000    0  154          -  212.70000      -     -   36s
+     0     0  212.73000    0  178          -  212.73000      -     -   39s
+     0     0  212.73000    0  178          -  212.73000      -     -   39s
+     0     0  213.00000    0  164          -  213.00000      -     -   41s
+     0     0  213.00000    0  128          -  213.00000      -     -   42s
+     0     0  213.00000    0  138          -  213.00000      -     -   44s
+     0     0  213.30000    0  154          -  213.30000      -     -   45s
+     0     0  213.30000    0  154          -  213.30000      -     -   47s
+     0     0  213.30000    0  154          -  213.30000      -     -   49s
+     0     0  213.30000    0  154          -  213.30000      -     -   49s
+     0     0  213.30000    0  154          -  213.30000      -     -   51s
+     0     0  213.30000    0  132          -  213.30000      -     -   53s
+     0     0  213.30000    0  132          -  213.30000      -     -   54s
+     0     0  213.30000    0  166          -  213.30000      -     -   56s
+     0     0  213.30000    0  166          -  213.30000      -     -   57s
+     0     0  213.30000    0  166          -  213.30000      -     -   58s
+     0     0  213.30000    0  154          -  213.30000      -     -   60s
+     0     0  213.30000    0  152          -  213.30000      -     -   60s
+     0     0  213.30000    0  152          -  213.30000      -     -   62s
+     0     0  213.30000    0  152          -  213.30000      -     -   63s
+
+Cutting planes:
+  Gomory: 2
+  Cover: 12
+  Implied bound: 99
+  Clique: 75
+  MIR: 84
+  Zero half: 25
+  RLT: 17
+  Relax-and-lift: 40
+  PSD: 4
+
+Explored 1 nodes (7950 simplex iterations) in 64.68 seconds (6.54 work units)
+Thread count was 32 (of 32 available processors)
+
+Solution count 0
+
+Solve interrupted
+Best objective -, best bound 2.133000000000e+02, gap -
+Nenhuma solução ótima encontrada
+tempo total exato: 65.5621018409729
+ $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
+
+--------------------------------------------------
+Heurística retirada = 10
+--------------------------------------------------
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 21, 24, 25, 27, 29, 30, 28, 26, 23, 22, 20, 43, 51]
+  custo = 73.5000 | artificial = False
+Veículo 1: [0, 13, 7, 8, 10, 11, 9, 6, 4, 2, 1, 3, 5, 51]
+  custo = 93.1000 | artificial = False
+Veículo 2: [0, 42, 41, 40, 44, 31, 45, 48, 50, 46, 49, 47, 51]
+  custo = 101.8000 | artificial = False
+Veículo 3: [0, 34, 33, 37, 35, 38, 39, 36, 32, 18, 51]
+  custo = 143.7000 | artificial = False
+Veículo 4: [0, 17, 19, 16, 15, 14, 12, 51]
+  custo = 97.4000 | artificial = False
+Custo inicial inteiro = 509.5000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+
+=== CONSTRUTIVA instancias/c103.txt | SM=30 ===
+  CUSTO TOTAL = -1.0000 | TARGET = 361.4
+  VENCEDOR = ?
+[INICIO] pid=8300 | instancias/c106.txt | t=1781936821.91
+
+############################################
+TESTANDO GAMMA_MAX=0 | GAMMA_INI=0 | SM=30
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=0 gamma_ini=0 SM=30 ninst=5 INSTANCIA=instancias/c106.txt
+==============================

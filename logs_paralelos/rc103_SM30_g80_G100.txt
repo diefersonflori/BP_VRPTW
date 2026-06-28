@@ -1,0 +1,50 @@
+
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=30
+INSTANCIA=instancias/rc103.txt | tam=50 | VEIC=6
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [36]
+[INTEIRA] EDF: 1 art, custo_art=1000160.60
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] Balanced: 1 art, custo_art=1000151.50
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [30, 35, 36]
+[INTEIRA] Sector: 1 art, custo_art=1000287.20
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [8, 18, 19, 20, 21, 22, 23, 25, 26, 27, 48, 49]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000520.50
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [18, 22, 25, 26, 27, 33, 48, 49]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000393.00
+[INTEIRA] Regret2: 1 art, custo_art=125.40
+[INTEIRA] VENCEDOR: Regret2 — 1 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 20, 23, 48, 19, 49, 22, 18, 21, 25, 24, 51]
+  custo = 125.4000 | artificial = True
+Veículo 1: [0, 43, 44, 41, 26, 28, 51]
+  custo = 165.5000 | artificial = False
+Veículo 2: [0, 1, 3, 45, 5, 8, 7, 6, 46, 4, 2, 51]
+  custo = 105.7000 | artificial = False
+Veículo 3: [0, 39, 36, 40, 38, 35, 37, 51]
+  custo = 104.5000 | artificial = False
+Veículo 4: [0, 33, 27, 30, 32, 29, 31, 34, 50, 51]
+  custo = 134.2000 | artificial = False
+Veículo 5: [0, 12, 14, 15, 11, 9, 10, 13, 16, 17, 47, 51]
+  custo = 116.7000 | artificial = False
+Custo inicial inteiro = 752.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=752.0 | art=1
+
+=== ROTAS INICIAIS ===
+  v0: [0, 20, 23, 48, 19, 49, 22, 18, 21, 25, 24, 51] custo=125.4 art=True
+  v1: [0, 43, 44, 41, 26, 28, 51] custo=165.5 art=False
+  v2: [0, 1, 3, 45, 5, 8, 7, 6, 46, 4, 2, 51] custo=105.7 art=False
+  v3: [0, 39, 36, 40, 38, 35, 37, 51] custo=104.5 art=False
+  v4: [0, 33, 27, 30, 32, 29, 31, 34, 50, 51] custo=134.2 art=False
+  v5: [0, 12, 14, 15, 11, 9, 10, 13, 16, 17, 47, 51] custo=116.7 art=False

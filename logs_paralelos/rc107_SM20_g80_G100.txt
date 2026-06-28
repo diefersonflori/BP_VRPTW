@@ -1,17 +1,6 @@
 
-############################################
 TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=20
-############################################
-
-==============================
-NOVA - tam=50 cap=200 VEIC=6 gamma_max=100 gamma_ini=80 SM=20 ninst=27 INSTANCIA=instancias/rc107.txt
-==============================
-tempo total exato: 4.76837158203125e-07
- $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
-
---------------------------------------------------
-Heurística retirada = 10
---------------------------------------------------
+INSTANCIA=instancias/rc107.txt | tam=50 | VEIC=6
 ATENÇÃO: clientes não couberam em rotas reais.
 Criando rota artificial para garantir solução inteira inicial.
 Clientes artificiais: [20, 37, 40]
@@ -44,3 +33,12 @@ Veículo 5: [0, 5, 7, 6, 2, 8, 46, 3, 1, 45, 4, 51]
   custo = 123.2000 | artificial = False
 Custo inicial inteiro = 774.8000
 [CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=774.8 | art=0 | 
+
+=== ROTAS INICIAIS ===
+  v0: [0, 14, 47, 16, 15, 11, 12, 17, 9, 10, 13, 51] custo=128.7 art=False
+  v1: [0, 49, 19, 20, 48, 23, 25, 24, 51] custo=107.4 art=False
+  v2: [0, 22, 21, 18, 50, 32, 51] custo=156.8 art=False
+  v3: [0, 27, 29, 31, 26, 28, 30, 34, 33, 51] custo=146.8 art=False
+  v4: [0, 41, 42, 44, 40, 38, 37, 35, 36, 43, 39, 51] custo=111.9 art=False
+  v5: [0, 5, 7, 6, 2, 8, 46, 3, 1, 45, 4, 51] custo=123.2 art=False

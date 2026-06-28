@@ -1,0 +1,38 @@
+
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=15 | SM=30
+INSTANCIA=instancias/c105.txt | tam=50 | VEIC=5
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [25]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000145.60
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [12, 40]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000216.30
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+  custo = 98.6000 | artificial = False
+Veículo 1: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+  custo = 59.7000 | artificial = False
+Veículo 2: [0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+  custo = 60.4000 | artificial = False
+Veículo 3: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+  custo = 95.8000 | artificial = False
+Veículo 4: [0, 24, 20, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+  custo = 59.0000 | artificial = False
+Custo inicial inteiro = 373.5000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=373.5 | art=0
+
+=== ROTAS INICIAIS ===
+  v0: [0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51] custo=98.6 art=False
+  v1: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51] custo=59.7 art=False
+  v2: [0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51] custo=60.4 art=False
+  v3: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51] custo=95.8 art=False
+  v4: [0, 24, 20, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51] custo=59.0 art=False

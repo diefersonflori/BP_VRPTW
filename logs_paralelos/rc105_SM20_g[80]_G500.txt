@@ -1,0 +1,44 @@
+
+############################################
+TESTANDO GAMMA_MAX=500 | GAMMA_INI=[80] | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=8 gamma_max=500 gamma_ini=[80] SM=20 ninst=25 INSTANCIA=instancias/rc105.txt
+==============================
+
+[ALLBEST GEROU CANDIDATA]
+k=2
+rc=-3.178779
+custo=211.000000
+seq=[0, 20, 42, 41, 29, 46, 45, 48, 36, 2, 21, 47, 51]
+GAMMA PI 10.0
+GAMMA PI atualizado 10.0
+Tempo total nessa geracao : 0.0s
+Tempo total no NO: 95.1s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 20, 42, 41, 29, 46, 45, 48, 36, 2, 21, 47, 51]
+Custo: 211.00
+Custo Reduzido: -3.178779
+Clientes atendidos: [2, 20, 21, 29, 36, 41, 42, 45, 46, 47, 48]
+
+[ALLBEST GEROU CANDIDATA]
+k=4
+rc=-8.185896
+custo=130.900000
+seq=[0, 20, 25, 27, 12, 28, 6, 2, 1, 3, 7, 51]
+GAMMA PI 10.0
+GAMMA PI atualizado 10.0
+Tempo total nessa geracao : 1.5s
+Tempo total no NO: 221.3s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 4
+Sequência: [0, 20, 25, 27, 12, 28, 6, 2, 1, 3, 7, 51]
+Custo: 130.90
+Custo Reduzido: -8.185896
+Clientes atendidos: [1, 2, 3, 6, 7, 12, 20, 25, 27, 28]

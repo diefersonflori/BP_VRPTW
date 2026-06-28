@@ -1,0 +1,192 @@
+
+############################################
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=[80] | SM=20
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=7 gamma_max=100 gamma_ini=[80] SM=20 ninst=22 INSTANCIA=instancias/rc102.txt
+==============================
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -50.812441
+  pi[2] = -46.937328
+  pi[3] = -74.311288
+  pi[4] = -96.946526
+  pi[5] = -73.863270
+  pi[6] = -24.116135
+  pi[7] = -77.141074
+  pi[8] = -24.472541
+  pi[9] = -68.463181
+  pi[10] = -39.036577
+  pi[11] = -31.841955
+  pi[12] = -51.577771
+  pi[13] = -53.417540
+  pi[14] = -23.689310
+  pi[15] = -43.882766
+  pi[16] = -46.660570
+  pi[17] = -116.223441
+  pi[18] = -71.009830
+  pi[19] = -78.271051
+  pi[20] = -72.881188
+  pi[21] = -91.377975
+  pi[22] = -47.719553
+  pi[23] = -72.590517
+  pi[24] = -63.716405
+  pi[25] = -66.663526
+  pi[26] = -79.081188
+  pi[27] = -19.026649
+  pi[28] = -31.897990
+  pi[29] = -50.840026
+  pi[30] = -96.914043
+  pi[31] = -56.193477
+  pi[32] = -53.631423
+  pi[33] = -77.468890
+  pi[34] = -98.153728
+  pi[35] = -80.283715
+  pi[36] = -41.171276
+  pi[37] = -59.697702
+  pi[38] = -24.282205
+  pi[39] = -8.948256
+  pi[40] = -41.108199
+  pi[41] = -83.548178
+  pi[42] = -85.170756
+  pi[43] = -45.575496
+  pi[44] = -65.766916
+  pi[45] =  2.373248
+  pi[46] = -42.347349
+  pi[47] = -60.490517
+  pi[48] = -73.064852
+  pi[49] = -57.225620
+  pi[50] = -55.517678
+
+SIGMA (veículos):
+  sigma[0] =  636.135381
+  sigma[1] =  667.142315
+  sigma[2] =  667.142315
+  sigma[3] =  667.413467
+  sigma[4] =  670.527872
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+ [ETSAB] gamma_pi = 10.000000
+TESTA ALLBEST
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -56.789148
+  pi[2] = -82.390118
+  pi[3] = -48.029456
+  pi[4] = -31.091110
+  pi[5] = -17.341059
+  pi[6] = -49.225185
+  pi[7] = -31.608351
+  pi[8] = -6.459822
+  pi[9] = -20.620057
+  pi[10] = -62.486386
+  pi[11] = -10.656498
+  pi[12] = -26.442696
+  pi[13] =  1.211209
+  pi[14] = -30.796157
+  pi[15] = -27.960224
+  pi[16] = -50.003663
+  pi[17] = -105.973849
+  pi[18] = -104.753156
+  pi[19] = -31.472823
+  pi[20] = -13.614841
+  pi[21] = -75.316703
+  pi[22] = -65.315885
+  pi[23] = -18.644190
+  pi[24] = -16.590308
+  pi[25] = -47.711230
+  pi[26] = -101.584476
+  pi[27] = -29.055604
+  pi[28] = -31.839616
+  pi[29] = -35.889143
+  pi[30] = -27.896205
+  pi[31] = -12.193610
+  pi[32] = -2.375904
+  pi[33] = -29.957345
+  pi[34] = -49.019058
+  pi[35] = -52.904789
+  pi[36] = -77.732180
+  pi[37] = -34.257440
+  pi[38] = -14.766556
+  pi[39] = -7.325445
+  pi[40] = -48.947360
+  pi[41] = -25.439915
+  pi[42] = -23.687073
+  pi[43] = -24.743160
+  pi[44] = -20.710603
+  pi[45] = -37.254734
+  pi[46] = -10.592522
+  pi[47] = -70.597044
+  pi[48] = -45.225566
+  pi[49] = -56.655023
+  pi[50] = -41.138357
+
+SIGMA (veículos):
+  sigma[0] =  471.991358
+  sigma[1] =  471.991358
+  sigma[2] =  477.097192
+  sigma[3] =  471.991358
+  sigma[4] =  480.099169
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+ [ETSAB] gamma_pi = 10.000000
+TESTA ALLBEST
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [44]
+[INTEIRA] EDF: 1 art, custo_art=1000117.40
+
+[ALLBEST GEROU CANDIDATA]
+k=1
+rc=-7.486750
+custo=137.200000
+seq=[0, 5, 3, 18, 10, 21, 28, 6, 4, 2, 1, 51]
+GAMMA PI 10.0
+GAMMA PI atualizado 10.0
+Tempo total nessa geracao : 3.3s
+Tempo total no NO: 207.6s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 5, 3, 18, 10, 21, 28, 6, 4, 2, 1, 51]
+Custo: 137.20
+Custo Reduzido: -7.486750
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 10, 18, 21, 28]

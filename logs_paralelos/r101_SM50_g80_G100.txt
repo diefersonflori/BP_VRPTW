@@ -1,0 +1,65 @@
+
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=50
+INSTANCIA=instancias/r101.txt | tam=50 | VEIC=12
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [34]
+[INTEIRA] EDF: 1 art, custo_art=1000132.80
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [34]
+[INTEIRA] Balanced: 1 art, custo_art=1000132.80
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [8]
+[INTEIRA] Sector: 1 art, custo_art=1000118.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [49]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000129.10
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: BalancedGlobal — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 5, 16, 6, 51]
+  custo = 60.8000 | artificial = False
+Veículo 1: [0, 14, 44, 38, 43, 13, 51]
+  custo = 100.6000 | artificial = False
+Veículo 2: [0, 2, 21, 40, 26, 51]
+  custo = 53.5000 | artificial = False
+Veículo 3: [0, 42, 15, 22, 4, 25, 51]
+  custo = 108.0000 | artificial = False
+Veículo 4: [0, 33, 12, 50, 51]
+  custo = 71.1000 | artificial = False
+Veículo 5: [0, 28, 29, 3, 35, 51]
+  custo = 101.7000 | artificial = False
+Veículo 6: [0, 31, 30, 9, 34, 24, 51]
+  custo = 105.5000 | artificial = False
+Veículo 7: [0, 36, 47, 19, 8, 46, 48, 51]
+  custo = 123.2000 | artificial = False
+Veículo 8: [0, 18, 10, 32, 51]
+  custo = 82.3000 | artificial = False
+Veículo 9: [0, 27, 7, 49, 17, 51]
+  custo = 114.2000 | artificial = False
+Veículo 10: [0, 45, 11, 20, 1, 51]
+  custo = 116.1000 | artificial = False
+Veículo 11: [0, 39, 23, 41, 37, 51]
+  custo = 102.3000 | artificial = False
+Custo inicial inteiro = 1139.3000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=1139.3 | art=0
+
+=== ROTAS INICIAIS ===
+  v0: [0, 5, 16, 6, 51] custo=60.8 art=False
+  v1: [0, 14, 44, 38, 43, 13, 51] custo=100.6 art=False
+  v2: [0, 2, 21, 40, 26, 51] custo=53.5 art=False
+  v3: [0, 42, 15, 22, 4, 25, 51] custo=108.0 art=False
+  v4: [0, 33, 12, 50, 51] custo=71.1 art=False
+  v5: [0, 28, 29, 3, 35, 51] custo=101.7 art=False
+  v6: [0, 31, 30, 9, 34, 24, 51] custo=105.5 art=False
+  v7: [0, 36, 47, 19, 8, 46, 48, 51] custo=123.2 art=False
+  v8: [0, 18, 10, 32, 51] custo=82.3 art=False
+  v9: [0, 27, 7, 49, 17, 51] custo=114.2 art=False
+  v10: [0, 45, 11, 20, 1, 51] custo=116.1 art=False
+  v11: [0, 39, 23, 41, 37, 51] custo=102.3 art=False

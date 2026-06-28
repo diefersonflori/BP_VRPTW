@@ -1,0 +1,20 @@
+==================== Iniciando a resolução do modelo exato
+Set parameter TimeLimit to value 12000
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: AMD Ryzen 9 9950X3D 16-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 16 physical cores, 32 logical processors, using up to 32 threads
+
+Non-default parameters:
+TimeLimit  12000
+
+Optimize a model with 27400 rows, 14290 columns and 143820 nonzeros (Min)
+Model fingerprint: 0xb235bb74
+Model has 13250 linear objective coefficients
+Variable types: 520 continuous, 13770 integer (13770 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 6e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+

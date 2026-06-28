@@ -1,0 +1,44 @@
+
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=30
+INSTANCIA=instancias/rc108.txt | tam=50 | VEIC=6
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [26, 27, 28, 29, 31, 34]
+[INTEIRA] EDF: 1 art, custo_art=1000188.50
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [26, 27, 28, 29, 31, 34]
+[INTEIRA] Balanced: 1 art, custo_art=1000188.50
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [5, 15, 16, 26, 27, 28, 33]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000397.70
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: Sector (angle) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 12, 14, 47, 17, 16, 15, 11, 10, 9, 13, 51]
+  custo = 103.3000 | artificial = False
+Veículo 1: [0, 24, 22, 49, 19, 18, 48, 21, 23, 25, 51]
+  custo = 102.1000 | artificial = False
+Veículo 2: [0, 20, 50, 51]
+  custo = 106.3000 | artificial = False
+Veículo 3: [0, 33, 32, 30, 28, 26, 27, 29, 31, 34, 51]
+  custo = 127.1000 | artificial = False
+Veículo 4: [0, 38, 35, 36, 40, 37, 43, 44, 42, 41, 39, 51]
+  custo = 119.5000 | artificial = False
+Veículo 5: [0, 2, 6, 7, 8, 46, 4, 45, 5, 3, 1, 51]
+  custo = 95.8000 | artificial = False
+Custo inicial inteiro = 654.1000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=654.1 | art=0
+
+=== ROTAS INICIAIS ===
+  v0: [0, 12, 14, 47, 17, 16, 15, 11, 10, 9, 13, 51] custo=103.3 art=False
+  v1: [0, 24, 22, 49, 19, 18, 48, 21, 23, 25, 51] custo=102.1 art=False
+  v2: [0, 20, 50, 51] custo=106.3 art=False
+  v3: [0, 33, 32, 30, 28, 26, 27, 29, 31, 34, 51] custo=127.1 art=False
+  v4: [0, 38, 35, 36, 40, 37, 43, 44, 42, 41, 39, 51] custo=119.5 art=False
+  v5: [0, 2, 6, 7, 8, 46, 4, 45, 5, 3, 1, 51] custo=95.8 art=False

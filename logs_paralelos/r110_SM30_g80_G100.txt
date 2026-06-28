@@ -1,0 +1,47 @@
+
+TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=30
+INSTANCIA=instancias/r110.txt | tam=50 | VEIC=7
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [38]
+[INTEIRA] EDF: 1 art, custo_art=1000192.60
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [49]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000162.90
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [47, 49]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000237.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: Balanced (demand desc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 5, 16, 44, 38, 14, 37, 17, 45, 51]
+  custo = 125.8000 | artificial = False
+Veículo 1: [0, 40, 2, 22, 41, 15, 43, 42, 13, 51]
+  custo = 90.6000 | artificial = False
+Veículo 2: [0, 39, 25, 4, 21, 26, 23, 51]
+  custo = 136.2000 | artificial = False
+Veículo 3: [0, 28, 33, 29, 12, 3, 34, 24, 1, 51]
+  custo = 144.0000 | artificial = False
+Veículo 4: [0, 27, 30, 9, 35, 20, 50, 32, 51]
+  custo = 145.1000 | artificial = False
+Veículo 5: [0, 31, 19, 7, 49, 11, 10, 48, 51]
+  custo = 141.0000 | artificial = False
+Veículo 6: [0, 6, 18, 47, 8, 46, 36, 51]
+  custo = 118.1000 | artificial = False
+Custo inicial inteiro = 900.8000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=900.8 | art=0
+
+=== ROTAS INICIAIS ===
+  v0: [0, 5, 16, 44, 38, 14, 37, 17, 45, 51] custo=125.8 art=False
+  v1: [0, 40, 2, 22, 41, 15, 43, 42, 13, 51] custo=90.6 art=False
+  v2: [0, 39, 25, 4, 21, 26, 23, 51] custo=136.2 art=False
+  v3: [0, 28, 33, 29, 12, 3, 34, 24, 1, 51] custo=144.0 art=False
+  v4: [0, 27, 30, 9, 35, 20, 50, 32, 51] custo=145.1 art=False
+  v5: [0, 31, 19, 7, 49, 11, 10, 48, 51] custo=141.0 art=False
+  v6: [0, 6, 18, 47, 8, 46, 36, 51] custo=118.1 art=False

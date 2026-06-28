@@ -1,17 +1,6 @@
 
-############################################
 TESTANDO GAMMA_MAX=100 | GAMMA_INI=80 | SM=20
-############################################
-
-==============================
-NOVA - tam=50 cap=200 VEIC=7 gamma_max=100 gamma_ini=80 SM=20 ninst=19 INSTANCIA=instancias/r111.txt
-==============================
-tempo total exato: 2.384185791015625e-07
- $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
-
---------------------------------------------------
-Heurística retirada = 10
---------------------------------------------------
+INSTANCIA=instancias/r111.txt | tam=50 | VEIC=7
 [INTEIRA] EDF: 0 art, custo_art=0.00
 [INTEIRA] Balanced: 0 art, custo_art=0.00
 ATENÇÃO: clientes não couberam em rotas reais.
@@ -46,3 +35,13 @@ Veículo 6: [0, 45, 46, 8, 18, 6, 13, 51]
   custo = 88.8000 | artificial = False
 Custo inicial inteiro = 784.8000
 [CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUTIVA] custo=784.8 | art=0 | 
+
+=== ROTAS INICIAIS ===
+  v0: [0, 37, 14, 44, 38, 16, 17, 5, 51] custo=106.2 art=False
+  v1: [0, 2, 42, 15, 43, 41, 22, 21, 26, 51] custo=101.1 art=False
+  v2: [0, 28, 39, 23, 40, 4, 25, 24, 51] custo=142.1 art=False
+  v3: [0, 29, 3, 33, 34, 9, 35, 50, 12, 51] custo=130.5 art=False
+  v4: [0, 27, 20, 30, 10, 32, 1, 51] custo=95.1 art=False
+  v5: [0, 31, 19, 11, 49, 36, 47, 7, 48, 51] custo=121.0 art=False
+  v6: [0, 45, 46, 8, 18, 6, 13, 51] custo=88.8 art=False

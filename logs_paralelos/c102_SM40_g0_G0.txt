@@ -1,0 +1,111 @@
+==================== Iniciando a resolução do modelo exato
+Set parameter Username
+Set parameter LicenseID to value 2833603
+Academic license - for non-commercial use only - expires 2027-06-09
+Set parameter TimeLimit to value 12000
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: AMD Ryzen 9 9950X3D 16-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 16 physical cores, 32 logical processors, using up to 32 threads
+
+Non-default parameters:
+TimeLimit  12000
+
+Optimize a model with 27400 rows, 14290 columns and 143820 nonzeros (Min)
+Model fingerprint: 0x199b2c31
+Model has 13250 linear objective coefficients
+Variable types: 520 continuous, 13770 integer (13770 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+05]
+  Objective range  [1e+00, 6e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+05]
+
+Presolve removed 2040 rows and 3230 columns
+Presolve time: 0.61s
+Presolved: 25360 rows, 11060 columns, 90545 nonzeros
+Variable types: 505 continuous, 10555 integer (10555 binary)
+
+Root relaxation: objective 2.434300e+02, 1465 iterations, 0.21 seconds (0.13 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  243.43000    0  155          -  243.43000      -     -    1s
+     0     0  246.83500    0  207          -  246.83500      -     -    2s
+     0     0  255.24667    0  222          -  255.24667      -     -    4s
+     0     0  312.90000    0  183          -  312.90000      -     -    8s
+     0     0  312.90000    0  208          -  312.90000      -     -   11s
+     0     0  312.90000    0  208          -  312.90000      -     -   11s
+     0     0  312.96638    0  255          -  312.96638      -     -   12s
+     0     0  312.96638    0  195          -  312.96638      -     -   14s
+     0     0  315.75000    0  166          -  315.75000      -     -   15s
+     0     0  315.75000    0  164          -  315.75000      -     -   16s
+     0     0  316.20000    0  148          -  316.20000      -     -   18s
+     0     0  316.70000    0  156          -  316.70000      -     -   19s
+     0     0  316.70000    0  156          -  316.70000      -     -   19s
+     0     0  316.70000    0  156          -  316.70000      -     -   21s
+     0     0  316.70000    0  156          -  316.70000      -     -   22s
+     0     0  316.70000    0  156          -  316.70000      -     -   23s
+     0     0  316.70000    0  156          -  316.70000      -     -   25s
+     0     0  316.70000    0  156          -  316.70000      -     -   27s
+     0     0  316.70000    0  156          -  316.70000      -     -   28s
+     0     0  316.70000    0  156          -  316.70000      -     -   29s
+     0     0  316.70000    0  156          -  316.70000      -     -   32s
+     0     0  316.70000    0  156          -  316.70000      -     -   33s
+     0     0  316.70000    0  156          -  316.70000      -     -   35s
+     0     0  316.70000    0  156          -  316.70000      -     -   37s
+     0     0  316.70000    0  156          -  316.70000      -     -   37s
+     0     0  316.70000    0  156          -  316.70000      -     -   39s
+
+Cutting planes:
+  Gomory: 6
+  Cover: 9
+  Implied bound: 11
+  Clique: 16
+  MIR: 141
+  Zero half: 1
+  RLT: 4
+  Relax-and-lift: 10
+
+Explored 1 nodes (8609 simplex iterations) in 64.82 seconds (9.04 work units)
+Thread count was 32 (of 32 available processors)
+
+Solution count 0
+
+Solve interrupted
+Best objective -, best bound 3.168000000000e+02, gap -
+Nenhuma solução ótima encontrada
+tempo total exato: 65.650217294693
+ $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO False
+
+--------------------------------------------------
+Heurística retirada = 10
+--------------------------------------------------
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 5, 51]
+  custo = 73.3000 | artificial = False
+Veículo 1: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 31, 49, 47, 51]
+  custo = 90.3000 | artificial = False
+Veículo 2: [0, 13, 3, 8, 10, 11, 9, 6, 4, 2, 1, 7, 51]
+  custo = 98.1000 | artificial = False
+Veículo 3: [0, 32, 33, 35, 37, 38, 39, 36, 34, 12, 51]
+  custo = 141.6000 | artificial = False
+Veículo 4: [0, 17, 18, 19, 15, 16, 14, 51]
+  custo = 92.6000 | artificial = False
+Custo inicial inteiro = 495.9000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+
+=== CONSTRUTIVA instancias/c102.txt | SM=40 ===
+  CUSTO TOTAL = -1.0000 | TARGET = 361.4
+  VENCEDOR = ?
+[INICIO] pid=35520 | instancias/c107.txt | t=1781936821.94
+
+############################################
+TESTANDO GAMMA_MAX=0 | GAMMA_INI=0 | SM=100
+############################################
+
+==============================
+NOVA - tam=50 cap=200 VEIC=5 gamma_max=0 gamma_ini=0 SM=100 ninst=6 INSTANCIA=instancias/c107.txt
+==============================
