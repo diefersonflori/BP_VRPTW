@@ -12,8 +12,6 @@ import multiprocessing
 multiprocessing.set_start_method('spawn', force=True)
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-MAX_WORKERS = 1
-
 
 def rodar_caso(args):
     import os, sys, time, random, math
@@ -25,12 +23,14 @@ def rodar_caso(args):
      nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
      gamma_pi_min, fo_target_inst, tabu, SEED_DEBUG) = args
 
-    os.makedirs("logs_paralelos", exist_ok=True)
-    log_path = f"logs_paralelos/{nome_base}_SM{SM}.txt"
+    os.makedirs("SMParalelo50", exist_ok=True)
+    log_path = f"SMParalelo50/{nome_base}_SM{SM}.txt"
     _stdout = sys.__stdout__
     log_file = open(log_path, "w", encoding="utf-8")
-    sys.stdout = log_file
-    sys.stderr = log_file
+
+    msg_inicio = f"[INICIO]   {nome_base} | SM={SM}"
+    print(msg_inicio, flush=True, file=_stdout)
+    print(msg_inicio, flush=True, file=log_file)
 
     try:
         inst = Instancia()
@@ -46,7 +46,7 @@ def rodar_caso(args):
 
         metod = Metodos(inst)
         metod.TABU_TENURE = tabu
-        inst.usar_estabilizacao = False          # SEM estabilizacao
+        inst.usar_estabilizacao = False   # SEM estabilizacao
         inst.nbconstrutiva = 10
         inst.iteraSemMelhora = SM
         random.seed(SEED_DEBUG)
@@ -62,6 +62,7 @@ def rodar_caso(args):
         sol_pool.gamma_pi_max = gamma_PMAX
 
         metod.init_pool_vazio(inst, sol_pool)
+        metod._log_file = log_file  # redireciona _print da construtiva para o log antes de B&P setar
         metod.gera_solucao_inicial(inst, sol_pool)
 
         # --- custo e sequências da construtiva ---
@@ -83,12 +84,18 @@ def rodar_caso(args):
             seqs_construt.append(f"V{k}{tag}:{clientes}")
         seq_str_construt = " | ".join(seqs_construt)
 
-        print(f"[CONSTRUT] {nome_base} | SM={SM} | custo={custo_construt:.1f} | art={n_art} | {seq_str_construt}",
-              flush=True, file=_stdout)
+        if n_art > 0:
+            msg_aviso = f"[AVISO]    {nome_base} | SM={SM} | heuristica vencedora precisou de rota artificial ({n_art} cliente(s))"
+            print(msg_aviso, flush=True, file=_stdout)
+            print(msg_aviso, flush=True, file=log_file)
+
+        msg_construt = f"[CONSTRUT] {nome_base} | SM={SM} | custo={custo_construt:.1f} | art={n_art} | {seq_str_construt}"
+        print(msg_construt, flush=True, file=_stdout)
+        print(msg_construt, flush=True, file=log_file)
 
         # --- B&P ---
         t0 = time.time()
-        metod.branch_and_price_global(inst, sol_pool, tipo_geracao="PD")
+        metod.branch_and_price_global(inst, sol_pool, tipo_geracao="PD", log_file=log_file)
         tempo_bp = time.time() - t0
 
         ub = metod.best_obj if metod.best_obj > 0 else float("inf")
@@ -107,13 +114,17 @@ def rodar_caso(args):
                     clientes = [c for c in seq if 1 <= c <= inst.nbcd]
                     seqs_bp.append(f"V{k}:{clientes}")
         seq_str_bp = " | ".join(seqs_bp) if seqs_bp else "sem_solucao_inteira"
+        seq_str_bp = seq_str_bp.replace('\n', ' | ')
 
         gap_str = f"{gap:.2f}%" if not math.isinf(gap) else "inf"
         flag = " ***" if (not math.isinf(gap) and gap > 0.01) else ""
-        print(f"[BP_FIM]  {nome_base} | SM={SM} | LB={lb:.2f} | UB={ub:.2f} | gap={gap_str} | nos={n_nos} | cols={n_cols} | t={tempo_bp:.1f}s{flag}",
-              flush=True, file=_stdout)
-        print(f"[SEQ_BP]  {nome_base} | SM={SM} | {seq_str_bp}",
-              flush=True, file=_stdout)
+
+        msg_bp_fim = f"[BP_FIM]  {nome_base} | SM={SM} | LB={lb:.2f} | UB={ub:.2f} | gap={gap_str} | nos={n_nos} | cols={n_cols} | t={tempo_bp:.1f}s{flag}"
+        msg_seq_bp = f"[SEQ_BP]  {nome_base} | SM={SM} | {seq_str_bp}"
+        print(msg_bp_fim, flush=True, file=_stdout)
+        print(msg_bp_fim, flush=True, file=log_file)
+        print(msg_seq_bp, flush=True, file=_stdout)
+        print(msg_seq_bp, flush=True, file=log_file)
 
         log_file.flush(); log_file.close()
 
@@ -128,7 +139,7 @@ def rodar_caso(args):
     except Exception as e:
         import traceback
         msg = traceback.format_exc()
-        print(f"[ERRO] {nome_base} SM={SM}: {e}\n{msg}", flush=True, file=_stdout)
+        print(f"[ERRO] {nome_base} SM={SM}: {e}\n{msg}", flush=True, file=log_file)
         try: log_file.flush(); log_file.close()
         except: pass
         return None
@@ -150,7 +161,7 @@ def main():
     SM_LIST = [5, 10, 15, 20, 30, 50]
 
     tabu = 0
-    MAX_WORKERS = 18
+    MAX_WORKERS = 8
 
     todas_instancias = [
         "instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",

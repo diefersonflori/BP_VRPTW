@@ -31,8 +31,8 @@ Custo inicial inteiro = 362.4000
 
 --- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
 Set parameter Username
-Set parameter LicenseID to value 2833603
-Academic license - for non-commercial use only - expires 2027-06-09
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
 [Nó 0] Iter 0 - Obj = 362.4000  Colunas = 5 inst= instancias/c101N.txt
 [Nó 0] inst= instancias/c101N.txt Colunas ativas na iteração 0: 
    veic=0 | col=0 | lambda=1.000000 | custo=97.0000 | rota=[0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
@@ -76,8 +76,8 @@ Nó 0 finalizado: LP=362.4000, MIP_pool=362.4, tem_inteira=True, cg_convergiu=Fa
 Melhor LP com slack = 362.4 iter=0
 Melhor LP válido    = 362.4 iter=0
 Melhor inteiro      = 362.4 iter=0
-Achou LP target     = True iter=0 tempo=0.4921259880065918
-Achou INT target    = True iter=0 tempo=0.4921300411224365
+Achou LP target     = True iter=0 tempo=0.9786982536315918
+Achou INT target    = True iter=0 tempo=0.9787030220031738
 SALDOS
 [0, 0, 0, 0, 0, 0, 0]
 PRIMEIRO NO
