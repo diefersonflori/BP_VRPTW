@@ -23,12 +23,12 @@ def rodar_caso(args):
      nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
      gamma_pi_min, fo_target_inst, tabu, SEED_DEBUG) = args
 
-    os.makedirs("SMParalelo50", exist_ok=True)
-    log_path = f"SMParalelo50/{nome_base}_SM{SM}.txt"
+    os.makedirs("GammaParalelo50", exist_ok=True)
+    log_path = f"GammaParalelo50/{nome_base}_SM{SM}_gmax{gamma_PMAX}.txt"
     _stdout = sys.__stdout__
     log_file = open(log_path, "w", encoding="utf-8")
 
-    msg_inicio = f"[INICIO]   {nome_base} | SM={SM}"
+    msg_inicio = f"[INICIO]   {nome_base} | SM={SM} | gmax={gamma_PMAX}"
     print(msg_inicio, flush=True, file=_stdout)
     print(msg_inicio, flush=True, file=log_file)
 
@@ -46,7 +46,7 @@ def rodar_caso(args):
 
         metod = Metodos(inst)
         metod.TABU_TENURE = tabu
-        inst.usar_estabilizacao = False   # SEM estabilizacao
+        inst.usar_estabilizacao = True    # COM estabilizacao -- calibracao de gamma_max
         inst.nbconstrutiva = 10
         inst.iteraSemMelhora = SM
         random.seed(SEED_DEBUG)
@@ -85,11 +85,11 @@ def rodar_caso(args):
         seq_str_construt = " | ".join(seqs_construt)
 
         if n_art > 0:
-            msg_aviso = f"[AVISO]    {nome_base} | SM={SM} | heuristica vencedora precisou de rota artificial ({n_art} cliente(s))"
+            msg_aviso = f"[AVISO]    {nome_base} | SM={SM} | gmax={gamma_PMAX} | heuristica vencedora precisou de rota artificial ({n_art} cliente(s))"
             print(msg_aviso, flush=True, file=_stdout)
             print(msg_aviso, flush=True, file=log_file)
 
-        msg_construt = f"[CONSTRUT] {nome_base} | SM={SM} | custo={custo_construt:.1f} | art={n_art} | {seq_str_construt}"
+        msg_construt = f"[CONSTRUT] {nome_base} | SM={SM} | gmax={gamma_PMAX} | custo={custo_construt:.1f} | art={n_art} | {seq_str_construt}"
         print(msg_construt, flush=True, file=_stdout)
         print(msg_construt, flush=True, file=log_file)
 
@@ -99,9 +99,22 @@ def rodar_caso(args):
         tempo_bp = time.time() - t0
 
         ub = metod.best_obj if metod.best_obj > 0 else float("inf")
-        lb = getattr(sol_pool, "melhor_lp_valido", float("inf"))
-        if lb == float("inf") or lb <= 0:
-            lb = ub
+
+        # LB CONFIÁVEL: só considera nós que provaram convergência do CG
+        # (cg_convergiu=True, sem timeout, slack~0). Ver branch_and_price_global.
+        lb_confiavel_val = getattr(sol_pool, "lb_global_confiavel", None)
+        # LB HEURÍSTICA (legado): mínimo histórico entre TODOS os nós já
+        # resolvidos, confiáveis ou não -- mantida só para referência/diagnóstico,
+        # NÃO deve ser usada para afirmar otimalidade.
+        lb_heuristica = getattr(sol_pool, "melhor_lp_valido", float("inf"))
+
+        if lb_confiavel_val is not None:
+            lb = lb_confiavel_val
+            lb_certificado = True
+        else:
+            lb = lb_heuristica if (lb_heuristica != float("inf") and lb_heuristica > 0) else ub
+            lb_certificado = False
+
         gap = abs(ub - lb) / max(abs(ub), 1e-9) * 100 if not math.isinf(ub) else float("inf")
         n_nos = metod.total_nos
         n_cols = metod.total_colunas
@@ -118,9 +131,10 @@ def rodar_caso(args):
 
         gap_str = f"{gap:.2f}%" if not math.isinf(gap) else "inf"
         flag = " ***" if (not math.isinf(gap) and gap > 0.01) else ""
+        tag_cert = "" if lb_certificado else " [LB NAO CERTIFICADA]"
 
-        msg_bp_fim = f"[BP_FIM]  {nome_base} | SM={SM} | LB={lb:.2f} | UB={ub:.2f} | gap={gap_str} | nos={n_nos} | cols={n_cols} | t={tempo_bp:.1f}s{flag}"
-        msg_seq_bp = f"[SEQ_BP]  {nome_base} | SM={SM} | {seq_str_bp}"
+        msg_bp_fim = f"[BP_FIM]  {nome_base} | SM={SM} | gmax={gamma_PMAX} | LB={lb:.2f} | UB={ub:.2f} | gap={gap_str} | nos={n_nos} | cols={n_cols} | t={tempo_bp:.1f}s{flag}{tag_cert}"
+        msg_seq_bp = f"[SEQ_BP]  {nome_base} | SM={SM} | gmax={gamma_PMAX} | {seq_str_bp}"
         print(msg_bp_fim, flush=True, file=_stdout)
         print(msg_bp_fim, flush=True, file=log_file)
         print(msg_seq_bp, flush=True, file=_stdout)
@@ -129,9 +143,9 @@ def rodar_caso(args):
         log_file.flush(); log_file.close()
 
         return {
-            "nome_base": nome_base, "SM": SM,
+            "nome_base": nome_base, "SM": SM, "gamma_max": gamma_PMAX,
             "custo_construt": custo_construt, "n_art": n_art,
-            "lb": lb, "ub": ub, "gap": gap,
+            "lb": lb, "ub": ub, "gap": gap, "lb_certificado": lb_certificado,
             "n_nos": n_nos, "n_cols": n_cols, "tempo_bp": tempo_bp,
             "seq_bp": seq_str_bp,
         }
@@ -139,7 +153,7 @@ def rodar_caso(args):
     except Exception as e:
         import traceback
         msg = traceback.format_exc()
-        print(f"[ERRO] {nome_base} SM={SM}: {e}\n{msg}", flush=True, file=log_file)
+        print(f"[ERRO] {nome_base} SM={SM} gmax={gamma_PMAX}: {e}\n{msg}", flush=True, file=log_file)
         try: log_file.flush(); log_file.close()
         except: pass
         return None
@@ -158,7 +172,10 @@ def main():
         50: {"c": [15], "r": [80], "rc": [80]},
     }
 
-    SM_LIST = [5, 10, 15, 20, 30, 50]
+    SM_FIXO = 20  # fixado com base na calibracao anterior (indice balanceado gap x tempo)
+    GAMMA_MAX_LIST = [20, 50, 100, 200, 400]  # 20 = perto da escala natural de arco (~7-17);
+                                                # 50 = ancora da calibracao de 25 clientes;
+                                                # 100/200 = grid original; 400 = quase irrestrito
 
     tabu = 0
     MAX_WORKERS = 8
@@ -243,9 +260,9 @@ def main():
 
             _gini_raw = gamma_inicial_caixa[tam].get(fam, [gamma_ini_por_tamanho[tam]])
             gamma_ini_val = (_gini_raw[0] if isinstance(_gini_raw, list) else _gini_raw)
-            gamma_PMAX = 100
+            SM = SM_FIXO
 
-            for SM in SM_LIST:
+            for gamma_PMAX in GAMMA_MAX_LIST:
                 tarefas.append((
                     arquivo, tam, cap, nbv_inst, ninst,
                     nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
@@ -253,7 +270,7 @@ def main():
                 ))
 
     sys.stdout = sys.__stdout__
-    print(f"Total de tarefas: {len(tarefas)} | SM_LIST={SM_LIST} | estabilizacao=False")
+    print(f"Total de tarefas: {len(tarefas)} | SM_FIXO={SM_FIXO} | GAMMA_MAX_LIST={GAMMA_MAX_LIST} | estabilizacao=True")
 
     resumo = {}
 
@@ -266,26 +283,32 @@ def main():
                     print("[ERRO] resultado None")
                     continue
                 nome = resultado['nome_base']
-                sm = resultado['SM']
+                gmax = resultado['gamma_max']
                 if nome not in resumo:
                     resumo[nome] = {}
-                resumo[nome][sm] = resultado
+                resumo[nome][gmax] = resultado
             except Exception as e:
                 print(f"[ERRO futuro] {e}")
 
     print("\n" + "="*100)
-    for sm in SM_LIST:
-        print(f"\n=== SM={sm} ===")
+    for gmax in GAMMA_MAX_LIST:
+        print(f"\n=== SM={SM_FIXO} | gamma_max={gmax} ===")
         n_ok = 0
+        n_ok_certificado = 0
         for nome in sorted(resumo.keys()):
-            r = resumo[nome].get(sm)
+            r = resumo[nome].get(gmax)
             if r is None:
                 continue
             flag = " ***" if r['gap'] > 0.01 else ""
-            print(f"  {nome:12s} | LB={r['lb']:.2f} | UB={r['ub']:.2f} | gap={r['gap']:.2f}% | nos={r['n_nos']} | cols={r['n_cols']} | t={r['tempo_bp']:.1f}s{flag}")
+            cert = r.get('lb_certificado', False)
+            tag_cert = "" if cert else " [nao certificado]"
+            print(f"  {nome:12s} | LB={r['lb']:.2f} | UB={r['ub']:.2f} | gap={r['gap']:.2f}% | nos={r['n_nos']} | cols={r['n_cols']} | t={r['tempo_bp']:.1f}s{flag}{tag_cert}")
             if r['gap'] <= 0.01:
                 n_ok += 1
-        print(f"  Ótimos: {n_ok}/29")
+                if cert:
+                    n_ok_certificado += 1
+        print(f"  Ótimos (gap<=0.01%, inclui não-certificados): {n_ok}/29")
+        print(f"  Ótimos CERTIFICADOS (LB confiável de fato): {n_ok_certificado}/29")
 
 
 if __name__ == "__main__":

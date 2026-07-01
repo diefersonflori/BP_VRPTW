@@ -2139,20 +2139,25 @@ class Metodos:
 
         return rotas_no
 
-    def imprimir_lambdas_no(self, no_bp: NoBP, sol, tol=1e-6):
+    def imprimir_lambdas_no(self, no_bp: NoBP, sol, tol=1e-6, usar_inteiras=False):
         """
-        Imprime os lambdas do nó (LP do nó do B&P),
-        parecido com o que você fazia na GC.
+        Imprime os lambdas do nó (LP do nó do B&P) por padrão.
+        Se usar_inteiras=True, imprime no_bp.lambdas_inteiras (a solução
+        MIP-no-pool inteira) em vez da fracionária -- use isso ao reportar
+        o "melhor_no" no final do B&P, para não exibir lambdas fracionários
+        rotulados como solução inteira.
         """
-        self._print("\n=== LAMBDAS DO NÓ", no_bp.id_no, "===")
-        for (k, p), val in no_bp.lambdas.items():
+        fonte = no_bp.lambdas_inteiras if usar_inteiras else no_bp.lambdas
+        rotulo = "INTEIROS" if usar_inteiras else ""
+        self._print("\n=== LAMBDAS DO NÓ", no_bp.id_no, rotulo, "===")
+        for (k, p), val in fonte.items():
             if abs(val) > tol:  # só imprime os relevantes
                 seq = sol.rotas[k]['sequencia_rota'][p]
                 custo = sol.rotas[k]['custo'][p]
                 self._print(f"Veículo {k}, rota {p}: lambda = {val:.4f}")
                 self._print(f"   Sequência: {seq}")
                 self._print(f"   Custo:     {custo:.2f}")
-        self._print("=== FIM LAMBDAS NÓ", no_bp.id_no, "===\n")
+        self._print("=== FIM LAMBDAS NÓ", no_bp.id_no, rotulo, "===\n")
 
     def exportar_colunas_pool_raiz_csv(self, sol_pool, no_bp, pool_ini_por_k, nome_arquivo=None):
         if nome_arquivo is None:
@@ -2746,13 +2751,34 @@ class Metodos:
         # =========================
         # Fim
         # =========================
+        # -------------------------------------------------
+        # Exporta a LB global CONFIÁVEL (z_li) para fora da função.
+        # z_li = min custo_lp entre nós que ainda estavam ABERTOS e tinham
+        # lb_confiavel=True no momento da parada. Diferente de
+        # sol_pool.melhor_lp_valido (que é o mínimo histórico entre TODOS os
+        # nós já resolvidos, confiáveis ou não), este valor é seguro para
+        # certificar otimalidade/gap.
+        # -------------------------------------------------
+        sol_pool.lb_global_confiavel = None if math.isinf(z_li) else z_li
+
         self._print("\n==== FIM B&P ====")
+        self._print(f"LB global confiável (z_li) = {sol_pool.lb_global_confiavel}")
 
         if diag_list:
             import csv, os
             nome_base = os.path.basename(inst.nomeInst).replace(".txt", "")
+            sm_val = getattr(inst, "iteraSemMelhora", "NA")
+            gmax_val = getattr(sol_pool, "gamma_pi_max", "NA")
+            gini_val = getattr(sol_pool, "gamma_pi_inicial", "NA")
+            gmin_val = getattr(sol_pool, "gamma_pi_min", "NA")
             os.makedirs("diag_instancias", exist_ok=True)
-            diag_path = f"diag_instancias/{nome_base}.csv"
+            diag_path = f"diag_instancias/{nome_base}_SM{sm_val}_gini{gini_val}_gmax{gmax_val}.csv"
+            for _row in diag_list:
+                _row["instancia"] = nome_base
+                _row["sm"] = sm_val
+                _row["gamma_ini"] = gini_val
+                _row["gamma_min"] = gmin_val
+                _row["gamma_max"] = gmax_val
             with open(diag_path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=list(diag_list[0].keys()))
                 writer.writeheader()
@@ -2787,7 +2813,7 @@ class Metodos:
             #######################
 
             self._print(f"Melhor solução inteira: nó {melhor_no.id_no} com custo {z_inc:.4f}")
-            self.imprimir_lambdas_no(melhor_no, sol_pool)
+            self.imprimir_lambdas_no(melhor_no, sol_pool, usar_inteiras=True)
 
             dados_inc = {
                 "tipo": "inteira",
