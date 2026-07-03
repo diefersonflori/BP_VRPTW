@@ -1,0 +1,1047 @@
+[INICIO]   c107 | SM=5
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 1 art, custo_art=1000033.50
+[INTEIRA] SolomonI1: 1 art, custo_art=1000190.60
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+  custo = 98.6000 | artificial = False
+Veículo 1: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+  custo = 59.7000 | artificial = False
+Veículo 2: [0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+  custo = 60.4000 | artificial = False
+Veículo 3: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+  custo = 95.8000 | artificial = False
+Veículo 4: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+  custo = 50.7000 | artificial = False
+Custo inicial inteiro = 365.2000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUT] c107 | SM=5 | custo=365.2 | art=0 | V0:[33, 32, 31, 35, 37, 38, 39, 36, 34] | V1:[43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47] | V2:[3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1] | V3:[13, 17, 18, 19, 15, 16, 14, 12] | V4:[20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+[Nó 0] Iter 0 - Obj = 365.2000  Colunas = 5 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] =  10000.000000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  10000.000000
+  pi[30] =  10000.000000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  10000.000000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  10000.000000
+  pi[48] =  10000.000000
+  pi[49] =  10000.000000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -89901.400000
+  sigma[1] = -109940.300000
+  sigma[2] = -109939.600000
+  sigma[3] = -79904.200000
+  sigma[4] = -109949.300000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-40020.200000
+custo=75.600000
+seq=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=0
+rc=-30023.000000
+custo=75.600000
+seq=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=2
+rc=-9984.800000
+custo=75.600000
+seq=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=1
+rc=-9963.000000
+custo=96.700000
+seq=[0, 5, 3, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=4
+rc=-9975.100000
+custo=75.600000
+seq=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 0.4s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Custo: 75.60
+Custo Reduzido: -40020.200000
+Clientes atendidos: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 47]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Custo: 75.60
+Custo Reduzido: -30023.000000
+Clientes atendidos: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 47]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Custo: 75.60
+Custo Reduzido: -9984.800000
+Clientes atendidos: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 47]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 5, 3, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Custo: 96.70
+Custo Reduzido: -9963.000000
+Clientes atendidos: [3, 5, 21, 22, 23, 25, 26, 27, 28, 29, 30, 47]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 4
+Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 47, 51]
+Custo: 75.60
+Custo Reduzido: -9975.100000
+Clientes atendidos: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 47]
+
+[Nó 0] Iter 1 - Obj = 365.2000  Colunas = 30 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 1: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+MESMA FO-  Sem melhora 1 Recom 365.2 Ultmf 365.2  VALOR SUB 0.0
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] =  10000.000000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  10000.000000
+  pi[30] = -20045.100000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  10000.000000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  24.900000
+  pi[48] =  10000.000000
+  pi[49] =  10000.000000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -89901.400000
+  sigma[1] = -99965.200000
+  sigma[2] = -109939.600000
+  sigma[3] = -79904.200000
+  sigma[4] = -79904.200000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-9886.600000
+custo=209.200000
+seq=[0, 32, 41, 8, 29, 46, 45, 50, 2, 1, 51]
+Tempo total nessa geracao : 0.0s
+Tempo total no NO: 0.4s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 32, 41, 8, 29, 46, 45, 50, 2, 1, 51]
+Custo: 209.20
+Custo Reduzido: -9886.600000
+Clientes atendidos: [1, 2, 8, 29, 32, 41, 45, 46, 50]
+
+Nao adicionou no k 0
+Nao adicionou no k 1
+Nao adicionou no k 2
+[Nó 0] Iter 2 - Obj = 365.2000  Colunas = 31 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 2: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+MESMA FO-  Sem melhora 2 Recom 365.2 Ultmf 365.2  VALOR SUB 0.0
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] =  10000.000000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  113.400000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  10000.000000
+  pi[30] = -20045.100000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  10000.000000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  24.900000
+  pi[48] =  10000.000000
+  pi[49] =  10000.000000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -89901.400000
+  sigma[1] = -99965.200000
+  sigma[2] = -100053.000000
+  sigma[3] = -79904.200000
+  sigma[4] = -79904.200000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-29877.900000
+custo=217.900000
+seq=[0, 5, 42, 35, 29, 28, 39, 34, 50, 22, 21, 49, 51]
+Tempo total nessa geracao : 0.1s
+Tempo total no NO: 0.5s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 5, 42, 35, 29, 28, 39, 34, 50, 22, 21, 49, 51]
+Custo: 217.90
+Custo Reduzido: -29877.900000
+Clientes atendidos: [5, 21, 22, 28, 29, 34, 35, 39, 42, 49, 50]
+
+[Nó 0] Iter 3 - Obj = 365.2000  Colunas = 35 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 3: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+MESMA FO-  Sem melhora 3 Recom 365.2 Ultmf 365.2  VALOR SUB 0.0
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] = -9991.300000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  113.400000
+  pi[30] = -10158.500000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  10000.000000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  24.900000
+  pi[48] =  10000.000000
+  pi[49] =  10000.000000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -89901.400000
+  sigma[1] = -99965.200000
+  sigma[2] = -89948.300000
+  sigma[3] = -79904.200000
+  sigma[4] = -79904.200000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-19844.800000
+custo=251.000000
+seq=[0, 20, 24, 40, 37, 38, 16, 2, 50, 21, 49, 51]
+Tempo total nessa geracao : 0.1s
+Tempo total no NO: 0.6s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 20, 24, 40, 37, 38, 16, 2, 50, 21, 49, 51]
+Custo: 251.00
+Custo Reduzido: -19844.800000
+Clientes atendidos: [2, 16, 20, 21, 24, 37, 38, 40, 49, 50]
+
+Nao adicionou no k 1
+[Nó 0] Iter 4 - Obj = 365.2000  Colunas = 38 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 4: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+MESMA FO-  Sem melhora 4 Recom 365.2 Ultmf 365.2  VALOR SUB 0.0
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] =  9853.500000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  113.400000
+  pi[30] = -10158.500000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  10000.000000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  24.900000
+  pi[48] =  10000.000000
+  pi[49] = -9844.800000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -89901.400000
+  sigma[1] = -80120.400000
+  sigma[2] = -109793.100000
+  sigma[3] = -79904.200000
+  sigma[4] = -79904.200000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-9870.200000
+custo=225.600000
+seq=[0, 33, 40, 37, 11, 16, 14, 4, 1, 21, 51]
+Tempo total nessa geracao : 0.1s
+Tempo total no NO: 0.7s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 33, 40, 37, 11, 16, 14, 4, 1, 21, 51]
+Custo: 225.60
+Custo Reduzido: -9870.200000
+Clientes atendidos: [1, 4, 11, 14, 16, 21, 33, 37, 40]
+
+Nao adicionou no k 0
+Nao adicionou no k 2
+[Nó 0] Rodando MIP periódico após 5 colunas...
+[Nó 0] MIP periódico encontrou solução inteira válida. FO=365.200000
+[Nó 0] Iter 5 - Obj = 365.2000  Colunas = 40 inst= instancias/c107.txt
+[Nó 0] inst= instancias/c107.txt Colunas ativas na iteração 5: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+MESMA FO-  Sem melhora 5 Recom 365.2 Ultmf 365.2  VALOR SUB 0.0
+   valor recomposto = 365.200000
+
+   valor recomposto = 365.200000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] = -16.700000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+  pi[11] =  10000.000000
+  pi[12] =  10000.000000
+  pi[13] =  10000.000000
+  pi[14] =  10000.000000
+  pi[15] =  10000.000000
+  pi[16] =  10000.000000
+  pi[17] =  10000.000000
+  pi[18] =  10000.000000
+  pi[19] =  10000.000000
+  pi[20] =  10000.000000
+  pi[21] =  10000.000000
+  pi[22] =  10000.000000
+  pi[23] =  10000.000000
+  pi[24] =  10000.000000
+  pi[25] =  10000.000000
+  pi[26] =  10000.000000
+  pi[27] =  10000.000000
+  pi[28] =  10000.000000
+  pi[29] =  113.400000
+  pi[30] = -10158.500000
+  pi[31] =  10000.000000
+  pi[32] =  10000.000000
+  pi[33] =  10000.000000
+  pi[34] =  10000.000000
+  pi[35] =  10000.000000
+  pi[36] =  10000.000000
+  pi[37] =  129.800000
+  pi[38] =  10000.000000
+  pi[39] =  10000.000000
+  pi[40] =  10000.000000
+  pi[41] =  10000.000000
+  pi[42] =  10000.000000
+  pi[43] =  10000.000000
+  pi[44] =  10000.000000
+  pi[45] =  10000.000000
+  pi[46] =  10000.000000
+  pi[47] =  24.900000
+  pi[48] =  10000.000000
+  pi[49] =  25.400000
+  pi[50] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] = -80031.200000
+  sigma[1] = -89990.600000
+  sigma[2] = -99922.900000
+  sigma[3] = -79904.200000
+  sigma[4] = -79904.200000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-9855.500000
+custo=265.200000
+seq=[0, 42, 7, 27, 10, 39, 14, 4, 22, 21, 47, 51]
+Tempo total nessa geracao : 0.0s
+Tempo total no NO: 0.8s
+TAMANHO NOVAS COL 1
+
+--- Nova Coluna ---
+Veículo: 3
+Sequência: [0, 42, 7, 27, 10, 39, 14, 4, 22, 21, 47, 51]
+Custo: 265.20
+Custo Reduzido: -9855.500000
+Clientes atendidos: [4, 7, 10, 14, 21, 22, 27, 39, 42, 47]
+MELHORA SEM MELHORA 5
+[Nó 0] PAROU POR ESTAGNAÇÃO DA FO
+[Nó 0] Melhor solução fracionada final (LP com slack):
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   valor LP recomposto = 365.200000
+   slack_final = 0.000000
+
+[Nó 0] Lambdas da melhor solução inteira:
+   lambda_int[0,0] = 1
+   lambda_int[1,0] = 1
+   lambda_int[2,0] = 1
+   lambda_int[3,0] = 1
+   lambda_int[4,0] = 1
+[Nó 0] Melhor solução inteira final (MIP no pool):
+   veic=0 | col=0 | z=1 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | z=1 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | z=1 | custo=60.4000 | rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | z=1 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | z=1 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   valor inteiro recomposto = 365.200000
+
+[Nó 0] Exportando solução inteira do MIP para JS...
+   colunas ativas no MIP: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
+Nó 0 finalizado: LP=365.2000, MIP_pool=365.2, tem_inteira=True, cg_convergiu=False, max_iter=False, slack_final=0.000000, lb_confiavel=False
+Melhor LP com slack = 365.2 iter=0
+Melhor LP válido    = 365.2 iter=0
+Melhor inteiro      = 365.2 iter=4
+Achou LP target     = False iter=None tempo=None
+Achou INT target    = False iter=None tempo=None
+SALDOS
+[0, 10, 0, 0, 0, 0, 0]
+PRIMEIRO NO
+Tempo total: 0.8s
+SOL INTEIRA
+[Nó 0] LP=365.2000 inteira=True lb_confiavel=False slack_final=0.000000 cg_convergiu=False max_iter=False
+Nó 0 tem inteiro com custo 365.2000
+ATUALIZOU MELHOR INTEIRO Nó 0 Valor INTEIRO com custo 365.2000
+Novo incumbente: z_inc=365.2000
+PODOU por ser inteiro- fim da linha
+
+==== FIM B&P ====
+LB global confiável (z_li) = None
+Diagnóstico salvo em diag_instancias/c107_SM5_gini15_gmax100.csv
+Melhor solução inteira: nó 0 com custo 365.2000
+
+=== LAMBDAS DO NÓ 0 INTEIROS ===
+Veículo 0, rota 0: lambda = 1.0000
+   Sequência: [0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   Custo:     98.60
+Veículo 1, rota 0: lambda = 1.0000
+   Sequência: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   Custo:     59.70
+Veículo 2, rota 0: lambda = 1.0000
+   Sequência: [0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   Custo:     60.40
+Veículo 3, rota 0: lambda = 1.0000
+   Sequência: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   Custo:     95.80
+Veículo 4, rota 0: lambda = 1.0000
+   Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   Custo:     50.70
+=== FIM LAMBDAS NÓ 0 INTEIROS ===
+
+Nenhuma solução fracionária registrada (ou todos nós foram inteiros/podados).
+[BP_FIM]  c107 | SM=5 | LB=365.20 | UB=365.20 | gap=0.00% | nos=1 | cols=40 | t=0.8s [LB NAO CERTIFICADA]
+[SEQ_BP]  c107 | SM=5 | V0:[33, 32, 31, 35, 37, 38, 39, 36, 34] | V1:[43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47] | V2:[3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1] | V3:[13, 17, 18, 19, 15, 16, 14, 12] | V4:[20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]

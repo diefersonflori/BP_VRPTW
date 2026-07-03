@@ -1,0 +1,23 @@
+[c105 | G500 | gini10 | SM200] FO_TARGET = 191.3
+[c105 | G500 | gini10 | SM200] Melhor LP com slack = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Melhor LP válido = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Melhor inteiro = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Achou LP target = True | iter = 1 | tempo = 0.2309246063232422 | no = 0
+[c105 | G500 | gini10 | SM200] Achou INT target = True | iter = 1 | tempo = 0.23093104362487793 | no = 0
+[c105 | G500 | gini10 | SM200] FO_TARGET = 191.3
+[c105 | G500 | gini10 | SM200] Melhor LP com slack = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Melhor LP válido = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Melhor inteiro = 191.3 | iter = 1 | no = 0
+[c105 | G500 | gini10 | SM200] Achou LP target = True | iter = 1 | tempo = 0.2846817970275879 | no = 0
+[c105 | G500 | gini10 | SM200] Achou INT target = True | iter = 1 | tempo = 0.2846965789794922 | no = 0
+[c105 | G500 | gini10 | SM200] Construtiva inicial:
+   V0 C0: custo=60.4 rota=[0, 3, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]
+   V0 C1: custo=59.2 rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]
+   V1 C0: custo=95.8 rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 26]
+   V1 C1: custo=83.0 rota=[0, 20, 24, 25, 8, 10, 11, 9, 6, 23, 22, 21, 26]
+   V1 C2: custo=72.5 rota=[0, 20, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]
+   V1 C3: custo=59.2 rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]
+   V2 C0: custo=36.3 rota=[0, 20, 24, 25, 23, 22, 21, 26]
+   V2 C1: custo=83.0 rota=[0, 20, 24, 25, 8, 10, 11, 9, 6, 23, 22, 21, 26]
+   V2 C2: custo=72.5 rota=[0, 20, 5, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]
+   V2 C3: custo=59.2 rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 26]

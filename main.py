@@ -10,7 +10,7 @@ from datetime import datetime
 from multiprocessing import freeze_support
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-MAX_WORKERS = 18
+MAX_WORKERS = 1
 
 
 def rodar_caso(args):
@@ -50,12 +50,13 @@ def rodar_caso(args):
         if v == "":
             return ""
         return round(v, ndigits)
-
+    """
     os.makedirs("logs_paralelos", exist_ok=True)
     log_path = f"logs_paralelos/{nome_base}_SM{SM}_g{gamma_ini_val}_G{gamma_PMAX}.txt"
     log_file = open(log_path, "w", encoding="utf-8")
     sys.stdout = log_file
     sys.stderr = log_file
+    """
 
     print("\n############################################")
     print(f"TESTANDO GAMMA_MAX={gamma_PMAX} | GAMMA_INI={gamma_ini_val} | SM={SM}")
@@ -101,12 +102,23 @@ def rodar_caso(args):
     seq_exato = solex.sequencias_exato_para_texto()
 
     print("tempo total exato:", tempo_exato)
+    ###############
+
+    os.makedirs("logs_paralelos", exist_ok=True)
+    log_resumo_path = f"logs_paralelos/{nome_base}_SM{SM}_g{gamma_ini_val}_G{gamma_PMAX}.txt"
+
+    def log_resumo(msg):
+        print(msg)
+        with open(log_resumo_path, "a", encoding="utf-8") as lf:
+            lf.write(msg + "\n")
+    ###############
+
 
     tipo_geracao = "PD"
 
     #for SM in semMelhora:
     for ii in range(1):
-        inst.usar_estabilizacao = False
+        inst.usar_estabilizacao = True
 
         print(f" $$$$$$$$$$$$$$$$$ USOU ESTABILIZACAO {inst.usar_estabilizacao}")
         inst.nbconstrutiva = 10
@@ -130,6 +142,8 @@ def rodar_caso(args):
 
         metod.init_pool_vazio(inst, sol_pool)
         metod.gera_solucao_inicial(inst, sol_pool)
+        #metod.gera_rotas_iniciais_geometricas(inst, sol_pool)
+        #metod.gera_rotas_iniciais_inteligente_inteira(inst, sol_pool)
 
         t1 = time.time()
         inst.temmip = False
@@ -159,6 +173,57 @@ def rodar_caso(args):
 
         no_lp_target = sol_pool.no_lp_target
         no_int_target = sol_pool.no_int_target
+        #######################################################################################
+        prefixo = f"[{nome_base} | G{gamma_PMAX} | gini{gamma_ini_val} | SM{SM}]"
+
+        log_resumo(f"{prefixo} FO_TARGET = {sol_pool.FO_TARGET}")
+
+        log_resumo(
+            f"{prefixo} Melhor LP com slack = {fmt(melhor_lp_com_slack)} "
+            f"| iter = {melhor_lp_com_slack_iter} "
+            f"| no = {no_melhor_lp_com_slack}"
+        )
+
+        log_resumo(
+            f"{prefixo} Melhor LP válido = {fmt(melhor_lp_valido)} "
+            f"| iter = {melhor_lp_valido_iter} "
+            f"| no = {no_melhor_lp_valido}"
+        )
+
+        log_resumo(
+            f"{prefixo} Melhor inteiro = {fmt(melhor_int)} "
+            f"| iter = {melhor_int_iter} "
+            f"| no = {no_melhor_inteiro}"
+        )
+
+        log_resumo(
+            f"{prefixo} Achou LP target = {achou_lp_target} "
+            f"| iter = {iter_lp_target} "
+            f"| tempo = {tempo_lp_target} "
+            f"| no = {no_lp_target}"
+        )
+
+        log_resumo(
+            f"{prefixo} Achou INT target = {achou_int_target} "
+            f"| iter = {iter_int_target} "
+            f"| tempo = {tempo_int_target} "
+            f"| no = {no_int_target}"
+        )
+        rotas_iniciais = []
+
+        for k in sorted(sol_pool.rotas.keys()):
+            seqs = sol_pool.rotas[k]["sequencia_rota"]
+
+            # As rotas iniciais normalmente são as primeiras do pool.
+            for p, seq in enumerate(seqs):
+                rotas_iniciais.append(
+                    f"V{k} C{p}: custo={sol_pool.rotas[k]['custo'][p]:.1f} rota={seq}"
+                )
+        log_resumo(f"{prefixo} Construtiva inicial:")
+
+        for linha in rotas_iniciais:
+            log_resumo("   " + linha)
+        #######################################################################################
 
         print(f"FO_TARGET = {sol_pool.FO_TARGET}")
 
@@ -415,8 +480,8 @@ def rodar_caso(args):
         """
         print("")
 
-        log_file.flush()
-        log_file.close()
+        #log_file.flush()
+        #log_file.close()
         return {
             "run_id": run_id,
             "SM": SM,
@@ -490,8 +555,8 @@ def main():
     }
 
     gamma_pi_max_por_tamanho = {
-        #25: [50,100,200,75, 200, 300, 500],
-        25: [50],
+        25: [50,100,200,75, 200, 300, 500],
+        #25: [50],
         # Calibração 50 clientes: do fechado ao aberto
         # Rodada 1 (rápida): [100, 200, 500]
         # Rodada 2 (completa): [100, 200, 500, 1000, 2000]
@@ -529,7 +594,7 @@ def main():
     semMelhora_calib_50 = [20, 30, 40, 50]
     #semMelhora_calib_25=[10,15,20,25,30,40,50]
     #semMelhora_calib_25=[15,20,25,30,40,50]
-    semMelhora_calib_25=[20]
+    semMelhora_calib_25=[200]
 
     tabu = 0
 
@@ -537,7 +602,10 @@ def main():
     #]
     #"""
     todas_instancias = [
-        "instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
+        "instancias/c107.txt"
+    ]
+    """
+        "instancias/c102.txt", "instancias/c103.txt", "instancias/c104.txt",
         "instancias/c105.txt", "instancias/c106.txt", "instancias/c107.txt", "instancias/c108.txt",
         "instancias/c109.txt",
         "instancias/r101.txt", "instancias/r102.txt", "instancias/r103.txt", "instancias/r104.txt",
@@ -546,6 +614,7 @@ def main():
         "instancias/rc101.txt", "instancias/rc102.txt", "instancias/rc103.txt", "instancias/rc104.txt",
         "instancias/rc105.txt", "instancias/rc106.txt", "instancias/rc107.txt", "instancias/rc108.txt",
     ]
+    """
     #"""
 
     # Veículos por tamanho e por instância.
@@ -669,7 +738,7 @@ def main():
                 lista_sm        = semMelhora_calib_25
 
             # MODO CONSTRUTIVA: rodar apenas 1 iteracao (gamma/SM nao afetam a construtiva)
-            lista_gamma_max = lista_gamma_max[:1]
+            #lista_gamma_max = lista_gamma_max[:1]
             lista_gamma_ini = lista_gamma_ini[:1]
             # lista_sm not truncated: sweep all SM values
 

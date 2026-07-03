@@ -1,0 +1,12 @@
+no_id,profundidade,lb_confiavel,cg_convergiu,motivo_conv,custo_lp,melhor_lp_valido,custo_mip,slack_sum_final,solucao_inteira,abriu_filhos,z_inc,z_li,n_colunas_pool,instancia,sm
+0,0,False,False,estagnacao_fo,1131.9,1131.8999999999999,1139.3,0.0,True,True,1139.3,,1279,r101,5
+2,1,False,False,estagnacao_fo,1154.8999999999999,1154.8999999999999,1154.8999999999999,0.0,True,False,1139.3,,1284,r101,5
+1,1,False,False,estagnacao_fo,1134.3666666666668,1134.3666666666666,1139.3000000000002,0.0,True,True,1139.3,,1331,r101,5
+4,2,False,False,estagnacao_fo,1134.9333333333336,1134.9333333333334,1139.3000000000002,0.0,True,True,1139.3,,1361,r101,5
+6,3,False,False,estagnacao_fo,1128.8666666666668,1128.8666666666666,,0.0,False,True,1139.3,,1433,r101,5
+8,4,False,False,estagnacao_fo,1140.0500000000004,1140.0499999999997,,0.0,False,True,1139.3,,1654,r101,5
+10,5,,,estagnacao_fo,,inf,,,False,False,1139.3,,1654,r101,5
+9,5,,,estagnacao_fo,,inf,,,False,False,1139.3,,1654,r101,5
+7,4,False,False,estagnacao_fo,1108.0,1108.0,1108.0,0.0,True,False,1108.0,,1734,r101,5
+5,3,,,estagnacao_fo,,inf,,,False,False,1108.0,,1734,r101,5
+3,2,,,estagnacao_fo,,inf,,,False,False,1108.0,,1734,r101,5

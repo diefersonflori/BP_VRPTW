@@ -1,0 +1,115 @@
+[INICIO]   c101n | SM=5
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [3, 24, 32]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000156.10
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [17, 25, 33, 42]
+[INTEIRA] BalancedGlobal: 1 art, custo_art=1000182.80
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] SolomonI1: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+  custo = 97.0000 | artificial = False
+Veículo 1: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+  custo = 59.7000 | artificial = False
+Veículo 2: [0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+  custo = 59.2000 | artificial = False
+Veículo 3: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+  custo = 95.8000 | artificial = False
+Veículo 4: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+  custo = 50.7000 | artificial = False
+Custo inicial inteiro = 362.4000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[CONSTRUT] c101n | SM=5 | custo=362.4 | art=0 | V0:[32, 33, 31, 35, 37, 38, 39, 36, 34] | V1:[43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47] | V2:[5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1] | V3:[13, 17, 18, 19, 15, 16, 14, 12] | V4:[20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+[Nó 0] Iter 0 - Obj = 362.4000  Colunas = 5 inst= instancias/c101N.txt
+[Nó 0] inst= instancias/c101N.txt Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=97.0000 | rota=[0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=59.2000 | rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 362.400000
+
+   valor recomposto = 362.400000
+[MARCO LP] Relaxado válido atingiu FO alvo = 362.400000
+[PARADA LP INTEIRO] LP valido e inteiro = 362.4000. Encerrando.
+[Nó 0] Melhor solução fracionada final (LP com slack):
+   veic=0 | col=0 | lambda=1.000000 | custo=97.0000 | rota=[0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=59.2000 | rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   valor LP recomposto = 362.400000
+   slack_final = 0.000000
+
+[Nó 0] Lambdas da melhor solução inteira:
+   lambda_int[0,0] = 1
+   lambda_int[1,0] = 1
+   lambda_int[2,0] = 1
+   lambda_int[3,0] = 1
+   lambda_int[4,0] = 1
+[Nó 0] Melhor solução inteira final (MIP no pool):
+   veic=0 | col=0 | z=1 | custo=97.0000 | rota=[0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | z=1 | custo=59.7000 | rota=[0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | z=1 | custo=59.2000 | rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | z=1 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | z=1 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   valor inteiro recomposto = 362.400000
+
+[Nó 0] Exportando solução inteira do MIP para JS...
+   colunas ativas no MIP: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
+Nó 0 finalizado: LP=362.4000, MIP_pool=362.4, tem_inteira=True, cg_convergiu=False, max_iter=False, slack_final=0.000000, lb_confiavel=False
+Melhor LP com slack = 362.4 iter=0
+Melhor LP válido    = 362.4 iter=0
+Melhor inteiro      = 362.4 iter=0
+Achou LP target     = True iter=0 tempo=1.385711669921875
+Achou INT target    = True iter=0 tempo=1.3857197761535645
+SALDOS
+[0, 0, 0, 0, 0, 0, 0]
+PRIMEIRO NO
+Tempo total: 0.0s
+SOL INTEIRA
+[Nó 0] LP=362.4000 inteira=True lb_confiavel=False slack_final=0.000000 cg_convergiu=False max_iter=False
+Nó 0 tem inteiro com custo 362.4000
+ATUALIZOU MELHOR INTEIRO Nó 0 Valor INTEIRO com custo 362.4000
+Novo incumbente: z_inc=362.4000
+PODOU por ser inteiro- fim da linha
+
+==== FIM B&P ====
+LB global confiável (z_li) = None
+Diagnóstico salvo em diag_instancias/c101N_SM5_gini15_gmax100.csv
+Melhor solução inteira: nó 0 com custo 362.4000
+
+=== LAMBDAS DO NÓ 0 INTEIROS ===
+Veículo 0, rota 0: lambda = 1.0000
+   Sequência: [0, 32, 33, 31, 35, 37, 38, 39, 36, 34, 51]
+   Custo:     97.00
+Veículo 1, rota 0: lambda = 1.0000
+   Sequência: [0, 43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   Custo:     59.70
+Veículo 2, rota 0: lambda = 1.0000
+   Sequência: [0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   Custo:     59.20
+Veículo 3, rota 0: lambda = 1.0000
+   Sequência: [0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   Custo:     95.80
+Veículo 4, rota 0: lambda = 1.0000
+   Sequência: [0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+   Custo:     50.70
+=== FIM LAMBDAS NÓ 0 INTEIROS ===
+
+Nenhuma solução fracionária registrada (ou todos nós foram inteiros/podados).
+[BP_FIM]  c101n | SM=5 | LB=362.40 | UB=362.40 | gap=0.00% | nos=1 | cols=5 | t=0.0s [LB NAO CERTIFICADA]
+[SEQ_BP]  c101n | SM=5 | V0:[32, 33, 31, 35, 37, 38, 39, 36, 34] | V1:[43, 42, 41, 40, 44, 46, 45, 48, 50, 49, 47] | V2:[5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1] | V3:[13, 17, 18, 19, 15, 16, 14, 12] | V4:[20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]

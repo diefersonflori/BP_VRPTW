@@ -1,0 +1,7 @@
+no_id,profundidade,lb_confiavel,cg_convergiu,motivo_conv,custo_lp,melhor_lp_valido,custo_mip,slack_sum_final,solucao_inteira,abriu_filhos,z_inc,z_li,n_colunas_pool,instancia,sm
+0,0,False,False,fo_target_int_atingido,896.8791666666667,897.0471074380165,899.3,0.0,True,True,899.3,,2460,r105,30
+2,1,False,False,fo_target_int_atingido,897.1374999999998,897.1375,899.3,0.0,True,True,899.3,,2482,r105,30
+4,2,False,False,lp_inteiro_target,899.3,899.3,899.3,0.0,True,False,899.3,,2482,r105,30
+3,2,False,False,fo_target_int_atingido,896.3648148148146,896.4907407407408,899.3000000000001,0.0,True,True,899.3,,2504,r105,30
+6,3,False,False,fo_target_int_atingido,896.2880000000001,896.2879999999999,899.3000000000001,0.0,True,True,899.3,,2509,r105,30
+8,4,False,False,TIME_MAX,895.5,895.4999999999999,,0.0,False,False,899.3,,2567,r105,30

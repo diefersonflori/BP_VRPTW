@@ -1,0 +1,2 @@
+no_id,profundidade,lb_confiavel,cg_convergiu,motivo_conv,custo_lp,melhor_lp_valido,custo_mip,slack_sum_final,solucao_inteira,abriu_filhos,z_inc,z_li,n_colunas_pool,instancia,sm
+0,0,False,False,TIME_MAX,391.09999999999997,391.09999999999997,391.1,0.0,True,False,391.1,,3760,c109,5

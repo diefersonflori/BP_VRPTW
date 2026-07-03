@@ -9737,7 +9737,7 @@ class Metodos:
         tentativasLP = 0
         rodadas_sem_melhoria = 0
         nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
-        colunas_reais_usadas = False
+        colunas_reais_usadas = True
         ULTIMAFO = -1
 
         # Tempo extra depois de achar FO alvo inteira.

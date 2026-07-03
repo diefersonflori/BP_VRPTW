@@ -1,0 +1,1 @@
+[INICIO]   c105 | SM=20 | gmax=50

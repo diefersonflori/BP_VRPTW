@@ -1,0 +1,8 @@
+[INICIO]   c105 | SM=30
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [25]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000145.60

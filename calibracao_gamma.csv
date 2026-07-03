@@ -200,3 +200,5 @@ rc101_tam25_estab1_gini30_gmax50_SM20;instancias/rc101.txt;RC;25;4;200;True;30;1
 rc101_tam25_estab0_gini30_gmax50_SM20;instancias/rc101.txt;RC;25;4;200;False;30;10;50;20;3613.8397;462.5;17;577;294;TIME_MAX;[0, 9, 0, 10, 0, 0, 0];2026-06-03 12:34:15
 rc101_tam25_estab1_gini30_gmax100_SM20;instancias/rc101.txt;RC;25;4;200;True;30;10;100;20;3629.6566;461.1;10;425;229;convergiu_sem_coluna_negativa;[0, 0, 0, 8, 0, 0, 0];2026-06-03 13:34:45
 rc101_tam25_estab0_gini30_gmax100_SM20;instancias/rc101.txt;RC;25;4;200;False;30;10;100;20;3658.7627;462.5;11;537;252;TIME_MAX;[0, 2, 0, 3, 0, 0, 0];2026-06-03 14:35:44
+c107_tam50_estab1_gini15_gmax100_SM30;instancias/c107.txt;C;50;5;200;True;15;10;100;30;25.9074;365.2;362.4;0.7726;0;1;228;61;estagnacao_fo;[0, 64, 0, 1, 0, 0, 0];2026-07-02 11:13:56
+c107_tam50_estab1_gini30_gmax100_SM30;instancias/c107.txt;C;50;5;200;True;30;10;100;30;53.3479;365.2;362.4;0.7726;0;1;197;61;estagnacao_fo;[0, 63, 0, 2, 0, 0, 0];2026-07-02 11:14:50

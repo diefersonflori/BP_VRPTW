@@ -1,0 +1,2 @@
+no_id,profundidade,lb_confiavel,cg_convergiu,motivo_conv,custo_lp,melhor_lp_valido,custo_mip,slack_sum_final,solucao_inteira,abriu_filhos,z_inc,z_li,n_colunas_pool,instancia,sm,gamma_ini,gamma_min,gamma_max
+0,0,False,False,estagnacao_fo,410.4,410.4,410.4,0.0,True,False,410.4,,54,c103,10,15,10,100
