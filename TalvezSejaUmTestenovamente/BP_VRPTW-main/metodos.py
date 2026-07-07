@@ -8574,7 +8574,13 @@ class Metodos:
         t0N = time.time()
         tentativasLP = 0
         rodadas_sem_melhoria = 0
-        nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
+        #nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
+        # >>> AJUSTE v5: SM bifasico — limite de estagnacao por fase.
+        # Na caixa: plato de FO e comportamento previsto da CG estabilizada.
+        # Fora da caixa: mesma semantica do metodo sem estabilizacao.
+        SM_FORA  = inst.iteraSemMelhora
+        SM_CAIXA = getattr(inst, "iteraSemMelhora_estab", inst.iteraSemMelhora)
+        nmaxrodadas_sem_melhoria = SM_CAIXA if inst.usar_estabilizacao else SM_FORA
         colunas_reais_usadas = False
         ULTIMAFO = -1
 
@@ -8655,6 +8661,12 @@ class Metodos:
                 sol_pool.gamma_pi = 50.0
             if not hasattr(sol_pool, "alpha_estab"):
                 sol_pool.alpha_estab = 0.30
+
+            # >>> AJUSTE v5b: re-estabilizacao por no (warm start): centro pi_bar herdado
+            # do pai, caixa REATIVADA na largura inicial. Sem isso, nos filhos herdam
+            # gamma=1e4 da fase final do no anterior e rodam sem estabilizacao de fato.
+            sol_pool.gamma_pi = float(getattr(sol_pool, "gamma_pi_inicial", sol_pool.gamma_pi))
+            print(f"[ESTAB] No {no_bp.id_no}: caixa reativada com gamma_pi = {sol_pool.gamma_pi}")
 
         def rota_usa_arco(seq, i, j):
             for t in range(len(seq) - 1):
@@ -9047,6 +9059,12 @@ class Metodos:
                     print(f"Clientes atendidos: {[i + 1 for i, v in enumerate(bin_xij) if v == 1]}")
 
             tentativasLP += 1
+
+            # >>> AJUSTE v5: SM bifasico — limite da fase corrente
+            if usar_estabilizacao and not fase_final_sem_estab:
+                nmaxrodadas_sem_melhoria = SM_CAIXA
+            else:
+                nmaxrodadas_sem_melhoria = SM_FORA
 
             # =========================
             # Parada por estagnação da FO

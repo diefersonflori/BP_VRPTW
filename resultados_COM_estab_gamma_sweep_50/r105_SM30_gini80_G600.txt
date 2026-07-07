@@ -1,0 +1,170 @@
+[INICIO]   r105 | SM=30 | gmax=600
+[CONSTRUT] r105 | SM=30 | gmax=600 | custo=1016.8 | art=0 | V0:[5, 16, 44, 6] | V1:[14, 15, 38, 43, 37, 13] | V2:[42, 2, 21, 40, 26, 1] | V3:[39, 23, 22, 41, 4, 25] | V4:[28, 12, 29, 34, 3, 24] | V5:[33, 30, 9, 50, 35] | V6:[27, 31, 7, 10, 20, 32] | V7:[36, 19, 11, 49, 48] | V8:[45, 47, 8, 18, 46, 17]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+[ESTAB] No 0: caixa reativada com gamma_pi = 80.0 (centro pi_bar herdado do pai)
+[Nó 0] Iter 0 - Obj = 1016.8000  Colunas = 9 inst= instancias/r105.txt
+[Nó 0] inst= instancias/r105.txt Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70.0000 | rota=[0, 5, 16, 44, 6, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=130.3000 | rota=[0, 14, 15, 38, 43, 37, 13, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=96.4000 | rota=[0, 42, 2, 21, 40, 26, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=119.6000 | rota=[0, 39, 23, 22, 41, 4, 25, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=102.3000 | rota=[0, 28, 12, 29, 34, 3, 24, 51]
+   veic=5 | col=0 | lambda=1.000000 | custo=135.1000 | rota=[0, 33, 30, 9, 50, 35, 51]
+   veic=6 | col=0 | lambda=1.000000 | custo=103.3000 | rota=[0, 27, 31, 7, 10, 20, 32, 51]
+   veic=7 | col=0 | lambda=1.000000 | custo=120.9000 | rota=[0, 36, 19, 11, 49, 48, 51]
+   veic=8 | col=0 | lambda=1.000000 | custo=138.9000 | rota=[0, 45, 47, 8, 18, 46, 17, 51]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 1016.800000
+
+   valor recomposto = 1016.800000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 36 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 37 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 38 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 39 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 40 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 41 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 42 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 43 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 44 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 45 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 46 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 47 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 48 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 49 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 50 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -80.000000
+  pi[2] = -80.000000
+  pi[3] = -80.000000
+  pi[4] = -80.000000
+  pi[5] = -80.000000
+  pi[6] = -80.000000
+  pi[7] = -80.000000
+  pi[8] = -80.000000
+  pi[9] = -80.000000
+  pi[10] = -80.000000
+  pi[11] = -80.000000
+  pi[12] = -80.000000
+  pi[13] = -80.000000
+  pi[14] = -80.000000
+  pi[15] = -80.000000
+  pi[16] = -80.000000
+  pi[17] = -80.000000
+  pi[18] = -80.000000
+  pi[19] = -80.000000
+  pi[20] = -80.000000
+  pi[21] = -80.000000
+  pi[22] = -80.000000
+  pi[23] = -80.000000
+  pi[24] = -80.000000
+  pi[25] = -80.000000
+  pi[26] = -80.000000
+  pi[27] = -80.000000
+  pi[28] = -80.000000
+  pi[29] = -80.000000
+  pi[30] = -80.000000
+  pi[31] = -80.000000
+  pi[32] = -80.000000
+  pi[33] = -80.000000
+  pi[34] = -80.000000
+  pi[35] = -80.000000
+  pi[36] = -80.000000
+  pi[37] = -80.000000
+  pi[38] = -80.000000
+  pi[39] = -80.000000
+  pi[40] = -80.000000
+  pi[41] = -80.000000
+  pi[42] = -80.000000
+  pi[43] = -80.000000
+  pi[44] = -80.000000
+  pi[45] = -80.000000
+  pi[46] = -80.000000
+  pi[47] = -80.000000
+  pi[48] = -80.000000
+  pi[49] = -80.000000
+  pi[50] = -80.000000
+
+SIGMA (veículos):
+  sigma[0] =  390.000000
+  sigma[1] =  610.300000
+  sigma[2] =  576.400000
+  sigma[3] =  599.600000
+  sigma[4] =  582.300000
+  sigma[5] =  535.100000
+  sigma[6] =  583.300000
+  sigma[7] =  520.900000
+  sigma[8] =  618.900000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+ [ETSAB] gamma_pi = 80.000000
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=8
+rc=-66.700000
+custo=72.200000
+seq=[0, 28, 12, 21, 40, 26, 13, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=1
+rc=-29.600000
+custo=100.700000
+seq=[0, 27, 31, 40, 3, 50, 1, 51]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=3
+rc=-23.600000
+custo=96.000000
+seq=[0, 28, 31, 30, 9, 3, 1, 51]

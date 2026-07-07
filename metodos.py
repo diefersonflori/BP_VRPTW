@@ -4187,9 +4187,11 @@ class Metodos:
 
         from pathlib import Path
         import sys
-
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
-
+        # base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        # >>> AJUSTE v5c: caminho relativo ao proprio metodos.py — funciona em
+        # qualquer maquina, desde que a pasta PD_PARA_PYTHON esteja dentro da
+        # pasta do projeto (ao lado deste arquivo).
+        base = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON"
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 
@@ -9736,7 +9738,11 @@ class Metodos:
         t0N = time.time()
         tentativasLP = 0
         rodadas_sem_melhoria = 0
-        nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
+        # nmaxrodadas_sem_melhoria = inst.iteraSemMelhora
+        # >>> AJUSTE v5: SM bifasico - limite de estagnacao depende da fase (caixa ativa vs fora da caixa)
+        SM_FORA  = inst.iteraSemMelhora
+        SM_CAIXA = getattr(inst, "iteraSemMelhora_estab", inst.iteraSemMelhora)
+        nmaxrodadas_sem_melhoria = SM_CAIXA if inst.usar_estabilizacao else SM_FORA
         colunas_reais_usadas = True
         ULTIMAFO = -1
 
@@ -9817,6 +9823,12 @@ class Metodos:
                 sol_pool.gamma_pi = 50.0
             if not hasattr(sol_pool, "alpha_estab"):
                 sol_pool.alpha_estab = 0.30
+
+            # >>> AJUSTE v5b: warm start (Ben Amor et al. 2006) - centro pi_bar herdado do pai,
+            # mas a caixa e reativada na largura inicial; sem isso, todo no filho herda gamma=1e4
+            # deixado pela fase final do pai/no anterior e roda sem estabilizacao de fato
+            sol_pool.gamma_pi = float(getattr(sol_pool, "gamma_pi_inicial", sol_pool.gamma_pi))
+            print(f"[ESTAB] No {no_bp.id_no}: caixa reativada com gamma_pi = {sol_pool.gamma_pi} (centro pi_bar herdado do pai)")
 
         def rota_usa_arco(seq, i, j):
             for t in range(len(seq) - 1):
@@ -10240,6 +10252,13 @@ class Metodos:
                     print(f"Clientes atendidos: {[i + 1 for i, v in enumerate(bin_xij) if v == 1]}")
 
             tentativasLP += 1
+
+            # >>> AJUSTE v5: SM bifasico - platos de FO sao esperados na fase de caixa ativa,
+            # entao o limite de estagnacao usado neste ponto do loop deve refletir a fase atual
+            if usar_estabilizacao and not fase_final_sem_estab:
+                nmaxrodadas_sem_melhoria = SM_CAIXA
+            else:
+                nmaxrodadas_sem_melhoria = SM_FORA
 
             # =========================
             # Parada por estagnação da FO
@@ -16549,7 +16568,13 @@ class Metodos:
         if str(pyd_dir) not in sys.path:
             sys.path.insert(0, str(pyd_dir))
 
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        from pathlib import Path
+        import sys
+        # base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        # >>> AJUSTE v5c: caminho relativo ao proprio metodos.py — funciona em
+        # qualquer maquina, desde que a pasta PD_PARA_PYTHON esteja dentro da
+        # pasta do projeto (ao lado deste arquivo).
+        base = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON"
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 
@@ -16688,7 +16713,13 @@ class Metodos:
         from pathlib import Path
 
         # caminho do .pyd
-        base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        from pathlib import Path
+        import sys
+        # base = Path(r"C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON")
+        # >>> AJUSTE v5c: caminho relativo ao proprio metodos.py — funciona em
+        # qualquer maquina, desde que a pasta PD_PARA_PYTHON esteja dentro da
+        # pasta do projeto (ao lado deste arquivo).
+        base = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON"
         p_release = base / "x64" / "Release"
         p_debug = base / "x64" / "Debug"
 

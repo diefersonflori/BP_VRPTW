@@ -1,0 +1,1 @@
+[INICIO]   c107 | SM=30 | gmax=600

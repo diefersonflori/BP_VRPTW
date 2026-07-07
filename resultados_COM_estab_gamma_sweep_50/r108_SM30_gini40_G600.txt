@@ -1,0 +1,1 @@
+[INICIO]   r108 | SM=30 | gmax=600

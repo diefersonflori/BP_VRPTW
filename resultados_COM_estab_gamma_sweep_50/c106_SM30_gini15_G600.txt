@@ -1,0 +1,61 @@
+[INICIO]   c106 | SM=30 | gmax=600
+[CONSTRUT] c106 | SM=30 | gmax=600 | custo=365.4 | art=0 | V0:[33, 32, 31, 35, 37, 38, 39, 36, 34] | V1:[43, 41, 42, 40, 44, 46, 45, 48, 50, 49, 47] | V2:[5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1] | V3:[13, 17, 18, 19, 15, 16, 14, 12] | V4:[20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+[ESTAB] No 0: caixa reativada com gamma_pi = 15.0 (centro pi_bar herdado do pai)
+[Nó 0] Iter 0 - Obj = 365.4000  Colunas = 5 inst= instancias/c106.txt
+[Nó 0] inst= instancias/c106.txt Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=98.6000 | rota=[0, 33, 32, 31, 35, 37, 38, 39, 36, 34, 51]
+   veic=1 | col=0 | lambda=1.000000 | custo=61.1000 | rota=[0, 43, 41, 42, 40, 44, 46, 45, 48, 50, 49, 47, 51]
+   veic=2 | col=0 | lambda=1.000000 | custo=59.2000 | rota=[0, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 51]
+   veic=3 | col=0 | lambda=1.000000 | custo=95.8000 | rota=[0, 13, 17, 18, 19, 15, 16, 14, 12, 51]
+   veic=4 | col=0 | lambda=1.000000 | custo=50.7000 | rota=[0, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21, 51]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 365.400000
+
+   valor recomposto = 365.400000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+ATENÇÃO: clientes não couberam em rotas reais.
+Criando rota artificial para garantir solução inteira inicial.
+Clientes artificiais: [8, 49]
+[INTEIRA] LateIsolated: 1 art, custo_art=1000100.10
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 12, 29, 24, 51]
+  custo = 67.6000 | artificial = False
+Veículo 1: [0, 14, 44, 38, 43, 37, 51]
+  custo = 104.9000 | artificial = False
+Veículo 2: [0, 2, 42, 15, 41, 13, 51]
+  custo = 84.0000 | artificial = False
+Veículo 3: [0, 21, 39, 23, 22, 4, 25, 26, 51]
+  custo = 112.2000 | artificial = False
+Veículo 4: [0, 28, 40, 51]
+  custo = 29.4000 | artificial = False
+Veículo 5: [0, 18, 10, 31, 51]
+  custo = 63.5000 | artificial = False
+Veículo 6: [0, 50, 33, 9, 35, 34, 3, 51]
+  custo = 88.8000 | artificial = False
+Veículo 7: [0, 27, 1, 30, 20, 32, 51]
+  custo = 78.5000 | artificial = False
+Veículo 8: [0, 36, 11, 8, 46, 17, 5, 51]
+  custo = 142.3000 | artificial = False
+Veículo 9: [0, 7, 48, 47, 19, 49, 51]
+  custo = 98.7000 | artificial = False
+Veículo 10: [0, 45, 16, 6, 51]
+  custo = 76.6000 | artificial = False
+Custo inicial inteiro = 946.5000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
