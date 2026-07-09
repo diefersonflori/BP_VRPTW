@@ -1,9 +1,1 @@
 [INICIO]   r107 | SM=30 | gmax=600
-[CONSTRUT] r107 | SM=30 | gmax=600 | custo=919.3 | art=0 | V0:[42, 43, 44, 38, 14, 16, 37, 13] | V1:[27, 20, 6, 18, 32] | V2:[50, 33, 31, 30, 9, 35, 34, 29, 12] | V3:[7, 45, 46, 8, 17, 5] | V4:[26, 39, 23, 40, 4, 25, 24] | V5:[48, 36, 11, 49, 10, 19, 47] | V6:[2, 15, 41, 22, 21, 3, 1, 28]
-
-=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
-
---- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
-Set parameter Username
-Set parameter LicenseID to value 2792355
-Academic license - for non-commercial use only - expires 2027-03-13

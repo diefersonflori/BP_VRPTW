@@ -17043,3 +17043,205 @@ class Metodos:
                 f"{datetime.now():%Y-%m-%d %H:%M:%S}\n"
             )
             f.write(linha)
+
+
+
+    #petrobras
+
+    def menor_inicio_viavel_mtw(self, no, chegada, exige_termino_janela=False):
+        """
+        Retorna o menor instante viável dentro de alguma janela do nó.
+        Unidade: segundos.
+        """
+        serv = no.SERVICE_TIME[0] if no.SERVICE_TIME else 0
+
+        for ini, fim in zip(no.READY_TIME, no.DUE_DATE):
+            inicio_servico = max(chegada, ini)
+
+            if exige_termino_janela:
+                if inicio_servico + serv <= fim:
+                    return inicio_servico
+            else:
+                if inicio_servico <= fim:
+                    return inicio_servico
+
+        return None
+
+    def avaliar_rota_petro(self, inst, k, seq, exige_termino_janela=False):
+        """
+        Avalia uma rota Petro.
+        seq exemplo: [0, 1, 5, 8, depf]
+
+        Unidade:
+          matriz_distancia = segundos
+          SERVICE_TIME = segundos
+          READY/DUE = segundos
+        """
+        depf = inst.nbn - 1
+
+        if not seq or seq[0] != 0 or seq[-1] != depf:
+            return {"factivel": False, "motivo": "rota_sem_deposito"}
+
+        veic = inst.veiculos[k]
+
+        cap_deck = getattr(veic, "cap_deck", veic.capacidade)
+        cap_diesel = getattr(veic, "cap_diesel", 10 ** 18)
+        cap_agua = getattr(veic, "cap_agua", 10 ** 18)
+
+        deck = 0
+        diesel = 0
+        agua = 0
+
+        tempo = inst.noh[0].READY_TIME[0] if inst.noh[0].READY_TIME else 0
+        chegadas = [tempo]
+        custo = 0
+
+        for pos in range(1, len(seq)):
+            i = seq[pos - 1]
+            j = seq[pos]
+
+            serv_i = inst.noh[i].SERVICE_TIME[0] if inst.noh[i].SERVICE_TIME else 0
+            viagem = inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade
+
+            if viagem < 0:
+                return {"factivel": False, "motivo": "arco_invalido", "arco": (i, j)}
+
+            custo += viagem
+
+            chegada_bruta = tempo + serv_i + viagem
+            inicio_j = self.menor_inicio_viavel_mtw(
+                inst.noh[j],
+                chegada_bruta,
+                exige_termino_janela=exige_termino_janela
+            )
+
+            if inicio_j is None:
+                return {
+                    "factivel": False,
+                    "motivo": "janela",
+                    "no": j,
+                    "chegada_bruta": chegada_bruta,
+                }
+
+            tempo = inicio_j
+            chegadas.append(tempo)
+
+            if 1 <= j <= inst.nbcd:
+                no_j = inst.noh[j]
+
+                deck += getattr(no_j, "DEMAND_DECK_LOAD", 0)
+                deck += getattr(no_j, "DEMAND_DECK_BACKLOAD", 0)
+                diesel += getattr(no_j, "DEMAND_DIESEL", 0)
+                agua += getattr(no_j, "DEMAND_AGUA", 0)
+
+                if deck > cap_deck:
+                    return {"factivel": False, "motivo": "cap_deck", "deck": deck}
+
+                if diesel > cap_diesel:
+                    return {"factivel": False, "motivo": "cap_diesel", "diesel": diesel}
+
+                if agua > cap_agua:
+                    return {"factivel": False, "motivo": "cap_agua", "agua": agua}
+
+        return {
+            "factivel": True,
+            "custo": custo,
+            "chegadas": chegadas,
+            "deck": deck,
+            "diesel": diesel,
+            "agua": agua,
+        }
+
+    def custo_reduzido_rota_petro(self, inst, seq, custo, pi, sigma_k):
+        """
+        Custo reduzido da coluna.
+        """
+        soma_pi = 0.0
+
+        for no in seq:
+            if 1 <= no <= inst.nbcd:
+                soma_pi += pi[no - 1]
+
+        return custo - soma_pi - sigma_k
+
+    def SUB_HEUR_INSERCAO_PETRO(self, inst, pi, sigma_k, k, exige_termino_janela=False):
+        """
+        Pricing heurístico inicial para Petro.
+        Monta rota por melhor inserção.
+        Retorna coluna se achar custo reduzido negativo.
+        """
+        depf = inst.nbn - 1
+        clientes = list(range(1, inst.nbcd + 1))
+
+        rota = [0, depf]
+        nao_visitados = set(clientes)
+
+        melhor_global = None
+        melhor_rc_global = float("inf")
+
+        while True:
+            melhor_candidato = None
+            melhor_rc_candidato = float("inf")
+
+            for cli in list(nao_visitados):
+                for pos in range(1, len(rota)):
+                    nova_seq = rota[:pos] + [cli] + rota[pos:]
+
+                    aval = self.avaliar_rota_petro(
+                        inst,
+                        k,
+                        nova_seq,
+                        exige_termino_janela=exige_termino_janela
+                    )
+
+                    if not aval["factivel"]:
+                        continue
+
+                    rc = self.custo_reduzido_rota_petro(
+                        inst,
+                        nova_seq,
+                        aval["custo"],
+                        pi,
+                        sigma_k
+                    )
+
+                    if rc < melhor_rc_candidato:
+                        melhor_rc_candidato = rc
+                        melhor_candidato = {
+                            "seq": nova_seq,
+                            "cli": cli,
+                            "aval": aval,
+                            "rc": rc,
+                        }
+
+            if melhor_candidato is None:
+                break
+
+            rota = melhor_candidato["seq"]
+            nao_visitados.remove(melhor_candidato["cli"])
+
+            if melhor_candidato["rc"] < melhor_rc_global:
+                melhor_rc_global = melhor_candidato["rc"]
+                melhor_global = melhor_candidato
+
+        if melhor_global is None:
+            return None, None
+
+        if melhor_rc_global >= -1e-6:
+            return None, melhor_rc_global
+
+        seq = melhor_global["seq"]
+        custo = melhor_global["aval"]["custo"]
+
+        bin_xij = [0] * inst.nbcd
+        for no in seq:
+            if 1 <= no <= inst.nbcd:
+                bin_xij[no - 1] = 1
+
+        nova_rota = {
+            "clientes": seq,
+            "custo": custo,
+            "bin_xij": bin_xij,
+        }
+
+        return nova_rota, melhor_rc_global

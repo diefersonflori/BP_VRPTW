@@ -13,7 +13,7 @@ multiprocessing.set_start_method('spawn', force=True)
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # Bateria COM estabilizacao dual: sweep de gamma_ini nas 29 instancias Solomon de 50 clientes.
-MAX_WORKERS = 24
+MAX_WORKERS = 1
 
 
 def rodar_caso(args):
@@ -42,7 +42,51 @@ def rodar_caso(args):
         inst.nomeInst = arquivo_instancia
         inst.nbv = nbv_inst
         inst.ninst = ninst
-        inst.leitura(arquivo_instancia)
+        #inst.leitura(arquivo_instancia)
+
+        inst.leitura_petro(r"instancias\Petro_instancias\10n-1k-3c-1r_testeUSP_v33.json", escala=3600)
+
+        print("nbcd=%d nbn=%d nbv=%d cap=%d cap_deck=%d cap_diesel=%d cap_agua=%d" %
+              (
+                  inst.nbcd,
+                  inst.nbn,
+                  inst.nbv,
+                  inst.veiculos[0].capacidade,
+                  inst.veiculos[0].cap_deck,
+                  inst.veiculos[0].cap_diesel,
+                  inst.veiculos[0].cap_agua,
+              ))
+
+        for no in inst.noh:
+            print(
+                "no %2d | lat=%10.6f | lon=%10.6f | dem=%4d | deckL=%4d | deckB=%4d | diesel=%4d | agua=%4d | serv=%s | READY=%s | DUE=%s" %
+                (
+                    no.id,
+                    no.YCOORD, no.XCOORD,
+                    no.DEMAND, no.DEMAND_DECK_LOAD,
+                    no.DEMAND_DECK_BACKLOAD, no.DEMAND_DIESEL,
+                    no.DEMAND_AGUA, no.SERVICE_TIME,
+                    no.READY_TIME, no.DUE_DATE,
+                )
+            )
+
+        print("\n--- CONFERENCIA DA ESTRUTURA (unidade: segundos) ---")
+
+        # cabeçalho
+        print("%8s" % "", end="")
+        for j in range(inst.nbn):
+            print("%8d" % j, end="")
+        print()
+
+        # linhas
+        for i in range(inst.nbn):
+            print("%8d" % i, end="")
+            for j in range(inst.nbn):
+                print("%8d" % inst.matriz_distancia[i][j], end="")
+            print()
+
+
+
         for v in inst.veiculos:
             v.capacidade = cap
             v.velocidade = 10
@@ -66,7 +110,10 @@ def rodar_caso(args):
 
         metod.init_pool_vazio(inst, sol_pool)
         metod._log_file = log_file  # redireciona _print da construtiva para o log antes de B&P setar
+
         metod.gera_solucao_inicial(inst, sol_pool)
+
+        #metod.gera_solucao_inicial(inst, sol_pool)
 
         # --- custo e sequências da construtiva ---
         custo_construt = sum(
