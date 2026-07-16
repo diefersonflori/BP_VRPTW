@@ -25,6 +25,9 @@ class Solucao:
         #GC
         self.rotas_escolhidas = {}
 
+        # formato canonico: {"construtiva"|"bp"|"exato": {k: {"sequencias": [...], "custos": [...]}}}
+        self.solucoes = {}
+
         self.construtivas = [0, 0, 0, 0, 0]
         self.TIME_MAX = 3600
 
@@ -92,6 +95,147 @@ class Solucao:
     time_initial = 0
     FO_TARGET = -1
     TIME_TARGET = 99999999
+
+    def registrar_solucao(self, nome, rotas):
+        """Normaliza `rotas` para o formato canonico {k: {"sequencias": [...], "custos": [...]}}
+        e grava em self.solucoes[nome]. Aceita como entrada: dict k->{"sequencias":[...], ...},
+        dict k->sequencia unica, ou dict k->lista de sequencias. Sequencias copiadas com list()."""
+        canonico = {}
+        for k, ent in rotas.items():
+            if isinstance(ent, dict):
+                seqs = [list(s) for s in ent.get("sequencias", [])]
+                custos = list(ent.get("custos", []))
+            elif ent and isinstance(ent[0], (list, tuple)):
+                seqs = [list(s) for s in ent]
+                custos = []
+            else:
+                seqs = [list(ent)] if ent else []
+                custos = []
+            canonico[k] = {"sequencias": seqs, "custos": custos}
+        self.solucoes[nome] = canonico
+
+    def exportar_visualizacao(self, inst, nome_solucao, caminho_js):
+        """Exporta self.solucoes[nome_solucao] (formato canonico) para caminho_js
+        (window.DADOS = {...}), consumido pelos gantt_petro*.html. Tempos em HORAS.
+        Mesma propagacao de relatorio_cronograma_petro (mais cedo possivel, servico
+        comeca na janela)."""
+        if nome_solucao not in self.solucoes:
+            print(f"[GANTT] solucao '{nome_solucao}' nao registrada "
+                  f"(chame registrar_solucao antes de exportar_visualizacao)")
+            return None
+        rotas_escolhidas = self.solucoes[nome_solucao]
+        if not hasattr(inst, "dados_petro"):
+            return None
+        H = 3600.0
+        dp = inst.dados_petro
+        nomes = dp["nomes"]
+        depf = inst.nbn - 1
+
+        def plataforma(nome):
+            return "BASE" if nome.startswith("BASE") else nome.split("_order")[0]
+
+        nos_js = []
+        for i in range(inst.nbcd + 1):
+            nos_js.append({
+                "id": i, "nome": nomes[i], "plataforma": plataforma(nomes[i]),
+                "lat": dp["lat"][i], "lon": dp["lon"][i],
+                "janelas": [[a / H, b / H] for a, b in
+                            zip(inst.noh[i].READY_TIME, inst.noh[i].DUE_DATE)],
+                "servico_h": (inst.noh[i].SERVICE_TIME[0] / H) if inst.noh[i].SERVICE_TIME else 0.0,
+                "deck": dp["dem_deck_load"][i] + dp["dem_deck_backload"][i],
+                "diesel": dp["dem_diesel"][i],
+                "agua": dp["dem_agua"][i],
+            })
+
+        navios_js = []
+        fo_total = 0.0
+        for k in sorted(rotas_escolhidas.keys()):
+            ent = rotas_escolhidas[k]
+            seqs = list(ent.get("sequencias", []))
+            veic = inst.veiculos[k]
+            seq = list(seqs[0]) if seqs else [0, depf]
+
+            nav = {"k": k, "nome": getattr(veic, "nome", ""), "ocioso": len(seq) <= 2,
+                   "segmentos": [], "visitas": [],
+                   "navegacao_h": 0.0, "servico_h": 0.0, "espera_h": 0.0, "retorno_h": 0.0}
+            if nav["ocioso"]:
+                navios_js.append(nav)
+                continue
+
+            tempo = float(inst.noh[0].READY_TIME[0])
+            for a in range(len(seq) - 1):
+                i, j = seq[a], seq[a + 1]
+                arco = inst.matriz_distancia[i][j] / veic.velocidade
+                partida_i = tempo + (inst.noh[i].SERVICE_TIME[0] if a > 0 else 0.0)
+                chegada = partida_i + arco
+                nav["segmentos"].append({"tipo": "nav", "ini": partida_i / H, "fim": chegada / H})
+                nav["navegacao_h"] += arco / H
+                if j == depf:
+                    nav["retorno_h"] = chegada / H
+                    tempo = chegada
+                    continue
+                no_j = inst.noh[j]
+                ini, jidx, janela = None, None, None
+                servico_j = no_j.SERVICE_TIME[0] if no_j.SERVICE_TIME else 0.0
+                for r in range(len(no_j.DUE_DATE)):
+                    ini_cand = max(chegada, float(no_j.READY_TIME[r]))
+                    if ini_cand + servico_j <= no_j.DUE_DATE[r] + 1e-6:
+                        ini = ini_cand
+                        jidx, janela = r, [no_j.READY_TIME[r] / H, no_j.DUE_DATE[r] / H]
+                        break
+                if ini is None:
+                    ini, jidx, janela = chegada, -1, None
+                fim = ini + (no_j.SERVICE_TIME[0] if no_j.SERVICE_TIME else 0.0)
+                if ini > chegada + 1e-6:
+                    nav["segmentos"].append({"tipo": "espera", "ini": chegada / H, "fim": ini / H})
+                    nav["espera_h"] += (ini - chegada) / H
+                nav["segmentos"].append({"tipo": "servico", "ini": ini / H, "fim": fim / H,
+                                         "plataforma": plataforma(nomes[j])})
+                nav["servico_h"] += (fim - ini) / H
+                nav["visitas"].append({
+                    "no": j, "nome": nomes[j], "plataforma": plataforma(nomes[j]),
+                    "chegada": chegada / H, "ini": ini / H, "fim": fim / H,
+                    "espera": (ini - chegada) / H, "janela": janela, "jidx": jidx,
+                    "janelas": [[x / H, y / H] for x, y in
+                                zip(no_j.READY_TIME, no_j.DUE_DATE)],
+                })
+                tempo = ini
+            fo_total += nav["navegacao_h"] * H
+            navios_js.append(nav)
+
+        dados = {"instancia": getattr(inst, "fileName", ""),
+                 "horizonte_h": inst.noh[0].DUE_DATE[0] / H if inst.noh[0].DUE_DATE else 168.0,
+                 "fo_total_s": fo_total, "nos": nos_js, "navios": navios_js}
+        with open(caminho_js, "w", encoding="utf-8") as f:
+            f.write("window.DADOS = ")
+            json.dump(dados, f, ensure_ascii=False, indent=1)
+            f.write(";\n")
+        print(f"[GANTT] dados exportados em {caminho_js}")
+        return dados
+
+    def viavel_cargas_petro(self, inst, k, seq):
+
+        dp = getattr(inst, "dados_petro", None)
+        if dp is None:
+            return True
+        veic = inst.veiculos[k]
+        nbcd = inst.nbcd
+        deck = 0.0
+        diesel = 0.0
+        agua = 0.0
+        for no in seq:
+            if 1 <= no <= nbcd:
+                deck += dp["dem_deck_load"][no] + dp["dem_deck_backload"][no]
+                diesel += dp["dem_diesel"][no]
+                agua += dp["dem_agua"][no]
+        eps = 1e-9
+        if deck > getattr(veic, "cap_deck", veic.capacidade) + eps:
+            return False
+        if diesel > getattr(veic, "cap_diesel", float("inf")) + eps:
+            return False
+        if agua > getattr(veic, "cap_agua", float("inf")) + eps:
+            return False
+        return True
 
     def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo, ub_mip_iter=None):
         if not hasattr(self, "melhor_ub"):

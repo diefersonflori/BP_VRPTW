@@ -186,7 +186,7 @@ class Metodos:
 
                 tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
 
-                if tempo > due(j):
+                if tempo + service(j) > due(j):
                     return False
 
                 if 1 <= j <= nbcd:
@@ -195,7 +195,7 @@ class Metodos:
                 if carga > Q:
                     return False
 
-            return True
+            return sol.viavel_cargas_petro(inst, k, seq)
 
         def binaria_seq(seq):
             binaria = [0] * nbcd
@@ -734,13 +734,13 @@ class Metodos:
             for t in range(1, len(seq)):
                 i, j = seq[t - 1], seq[t]
                 tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
-                if tempo > due(j):
+                if tempo + service(j) > due(j):
                     return False
                 if 1 <= j <= nbcd:
                     carga += demand(j)
                 if carga > Q:
                     return False
-            return True
+            return sol.viavel_cargas_petro(inst, k, seq)
 
         def binaria_seq(seq):
             b = [0] * nbcd
@@ -971,13 +971,13 @@ class Metodos:
                 i_prev = seq[t - 1]
                 j_next = seq[t]
                 tempo = max(ready(j_next), tempo + service(i_prev) + travel(k, i_prev, j_next))
-                if tempo > due(j_next):
+                if tempo + service(j_next) > due(j_next):
                     return False
                 if 1 <= j_next <= nbcd:
                     carga += demand(j_next)
                 if carga > Q:
                     return False
-            return True
+            return sol.viavel_cargas_petro(inst, k, seq)
 
         def binaria_seq(seq):
             binaria = [0] * nbcd
@@ -1424,6 +1424,36 @@ class Metodos:
             print(f"[CONSTRUTIVA] VENCEDOR: Inteligente ({n_art_int} art, custo_art={cost_art_int:.2f}) "
                   f"vs Clarke-Wright ({n_art_cw} art, custo_art={cost_art_cw:.2f})")
 
+    def adiciona_colunas_ociosas(self, inst, sol_pool):
+        """
+        Petro: acrescenta ao pool, para cada navio k, a coluna ociosa
+        [0, depf] (navio fica atracado na base), caso ainda não exista.
+        A coluna é real e viável -- artificial=False.
+        """
+        depf = inst.nbn - 1
+        nbcd = inst.nbcd
+        n_adicionadas = 0
+
+        for k in sol_pool.rotas.keys():
+            ja_existe = any(
+                seq == [0, depf]
+                for seq in sol_pool.rotas[k]['sequencia_rota']
+            )
+            if ja_existe:
+                continue
+
+            sol_pool.rotas[k]['sequencia_rota'].append([0, depf])
+            sol_pool.rotas[k]['rotas_binaria'].append([0] * nbcd)
+            sol_pool.rotas[k]['custo'].append(0.0)
+            sol_pool.rotas[k]['vezes_usada_geral'].append(0)
+            sol_pool.rotas[k]['vezes_usada_otimo'].append(0)
+            sol_pool.rotas[k]['lbd_iteracao'].append([])
+            sol_pool.rotas[k]['artificial'].append(False)
+            n_adicionadas += 1
+
+        print(f"[POOL] Coluna ociosa adicionada para {n_adicionadas} navios (navio pode ficar na base)")
+        return n_adicionadas
+
     def gera_rotas_iniciais_boas(self, inst, sol, max_rotas_por_criterio=3):
         nbcd = inst.nbcd
         depf = inst.nbn - 1
@@ -1456,12 +1486,15 @@ class Metodos:
                 j = seq[t]
 
                 tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
-                if tempo > due(j):
+                if tempo + service(j) > due(j):
                     return False, None, None
 
                 carga += demand(j)
                 if carga > Q:
                     return False, None, None
+
+            if not sol.viavel_cargas_petro(inst, k, seq):
+                return False, None, None
 
             return True, tempo, carga
 
@@ -1644,13 +1677,16 @@ class Metodos:
                 j = seq[t]
 
                 tempo = max(ready(j), tempo + service(i) + travel(k, i, j))
-                if tempo > due(j):
+                if tempo + service(j) > due(j):
                     return False, None, None
 
                 if 1 <= j <= nbcd:
                     carga += demand(j)
                     if carga > Q:
                         return False, None, None
+
+            if not sol.viavel_cargas_petro(inst, k, seq):
+                return False, None, None
 
             return True, tempo, carga
 
@@ -2258,6 +2294,94 @@ class Metodos:
             return False
         return True
 
+    # exporta_visualizacao_petro foi movido para Solucao.exportar_visualizacao (solucao.py).
+    # Use: sol.registrar_solucao(nome, rotas); sol.exportar_visualizacao(inst, nome, caminho_js)
+
+    def relatorio_cronograma_petro(self, inst, rotas_escolhidas):
+        """
+        Imprime o cronograma detalhado da solucao final (instancias Petro).
+        rotas_escolhidas: {k: sequencia} ou {k: {"sequencias": [seq, ...], ...}}
+        Mostra por visita: chegada, janela usada, inicio/fim de servico;
+        e por navio: navegacao (=FO), servico, espera, retorno.
+        """
+        if not hasattr(inst, "dados_petro"):
+            return
+        H = 3600.0
+        nomes = inst.dados_petro["nomes"]
+        depf = inst.nbn - 1
+        fo_total = 0.0
+        print("=" * 78)
+        print("CRONOGRAMA DA SOLUCAO (tempos em horas)")
+        for k in sorted(rotas_escolhidas.keys()):
+            ent = rotas_escolhidas[k]
+            if isinstance(ent, dict):
+                seqs = list(ent.get("sequencias", []))
+            elif ent and isinstance(ent[0], (list, tuple)):
+                seqs = list(ent)
+            else:
+                seqs = [ent]
+            veic = inst.veiculos[k]
+
+            if not seqs:
+                print("-" * 78)
+                print("Navio %d (%s): sem rota escolhida" % (k, getattr(veic, "nome", "")))
+                continue
+
+            for seq in seqs:
+                seq = list(seq)
+                if len(seq) <= 2:  # [0, depf] = ocioso
+                    print("-" * 78)
+                    print("Navio %d (%s): OCIOSO (fica na base)" % (k, getattr(veic, "nome", "")))
+                    continue
+                print("-" * 78)
+                print("Navio %d (%s) | rota: %s" % (k, getattr(veic, "nome", ""), seq))
+                print("%-16s %9s %9s %9s %9s  %s" %
+                      ("no", "chegada", "ini_serv", "fim_serv", "espera", "janela usada"))
+                tempo = float(inst.noh[0].READY_TIME[0])
+                navegacao = 0.0
+                servico_tot = 0.0
+                espera_tot = 0.0
+                for a in range(len(seq) - 1):
+                    i, j = seq[a], seq[a + 1]
+                    arco = inst.matriz_distancia[i][j] / veic.velocidade
+                    navegacao += arco
+                    chegada = tempo + (inst.noh[i].SERVICE_TIME[0] if a > 0 else 0.0) + arco
+                    if a > 0:
+                        servico_tot += inst.noh[i].SERVICE_TIME[0]
+                    if j == depf:
+                        print("%-16s %9.2f %9s %9s %9s  retorno a base" %
+                              ("BASE(retorno)", chegada / H, "-", "-", "-"))
+                        tempo = chegada
+                        continue
+                    no_j = inst.noh[j]
+                    ini = None
+                    jan_txt = "SEM JANELA VIAVEL!"
+                    for r in range(len(no_j.DUE_DATE)):
+                        ini_cand = max(chegada, float(no_j.READY_TIME[r]))
+                        if ini_cand + no_j.SERVICE_TIME[0] <= no_j.DUE_DATE[r] + 1e-6:
+                            ini = ini_cand
+                            jan_txt = "[%.1f, %.1f] (janela %d)" % (
+                                no_j.READY_TIME[r] / H, no_j.DUE_DATE[r] / H, r + 1)
+                            break
+                    if ini is None:
+                        print("%-16s %9.2f  *** VIOLACAO DE JANELA ***" % (nomes[j], chegada / H))
+                        ini = chegada
+                    fim = ini + no_j.SERVICE_TIME[0]
+                    espera = ini - chegada
+                    espera_tot += espera
+                    print("%-16s %9.2f %9.2f %9.2f %9.2f  %s" %
+                          (nomes[j], chegada / H, ini / H, fim / H, espera / H, jan_txt))
+                    tempo = ini
+                fo_navio = navegacao
+                fo_total += fo_navio
+                print("Navio %d: navegacao+manobras=%.2f h (FO) | servico=%.2f h | "
+                      "espera=%.2f h | retorno em t=%.2f h (limite %.1f h)" %
+                      (k, navegacao / H, servico_tot / H, espera_tot / H,
+                       tempo / H, veic.trip_duration_limit / H))
+        print("-" * 78)
+        print("FO TOTAL (soma da navegacao+manobras) = %.0f s = %.2f h" % (fo_total, fo_total / H))
+        print("=" * 78)
+
     def branch_and_price_global(self, inst, sol_pool, tipo_geracao="PD"):
 
         # limpeza arquivo principal dos logs meus
@@ -2298,6 +2422,7 @@ class Metodos:
         ativos = [(raiz, 0, None)]  # (no, profundidade, pai)
         diag_list = []
 
+        todos_nos_confiaveis = True  # AND do lb_confiavel de todos os nos processados
         while ativos:
             if (time.time() - sol_pool.time_initial > sol_pool.TIME_MAX):
                 break
@@ -2577,15 +2702,36 @@ class Metodos:
                 "n_colunas_pool": sum(len(v["sequencia_rota"]) for v in sol_pool.rotas.values()),
             })
             print(f"FIM do nó  {no_atual.id_no} ")
+            todos_nos_confiaveis = todos_nos_confiaveis and bool(
+                getattr(no_atual, "lb_confiavel", False))
 
         # =========================
         # Fim
         # =========================
+        # ----- LB GLOBAL CERTIFICADA (lida pela main no [BP_FIM]) -----
+        # Caso 1: arvore explorada por completo e todos os nos com CG convergido
+        #         -> otimalidade provada: LB = melhor inteira (z_inc).
+        # Caso 2: parada por gap/tempo com nos abertos, todos com LB confiavel
+        #         -> LB = min entre os custos_lp confiaveis dos abertos e z_inc.
+        custos_conf_abertos = [
+            no.custo_lp for (no, _, _) in ativos
+            if (no.custo_lp is not None) and getattr(no, "lb_confiavel", False)
+        ]
+        abertos_nao_conf = [
+            no for (no, _, _) in ativos
+            if (no.custo_lp is None) or not getattr(no, "lb_confiavel", False)
+        ]
+        if (not ativos) and todos_nos_confiaveis and (not math.isinf(z_inc)):
+            sol_pool.lb_global_confiavel = z_inc
+        elif ativos and (not abertos_nao_conf) and custos_conf_abertos:
+            sol_pool.lb_global_confiavel = min(min(custos_conf_abertos), z_inc)
+
         print("\n==== FIM B&P ====")
 
         if diag_list:
             import csv
-            diag_path = f"diag_{inst.nomeInst}.csv"
+            nome_diag = os.path.splitext(os.path.basename(inst.nomeInst))[0]
+            diag_path = f"diag_{nome_diag}.csv"
             with open(diag_path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=list(diag_list[0].keys()))
                 writer.writeheader()
@@ -4315,6 +4461,153 @@ class Metodos:
 
         return rota, rc
 
+    def _get_vrptw_pd_module(self):
+        """Importa (e cacheia em self) o modulo pybind11 vrptw_pd, reaproveitando
+        o mesmo caminho relativo usado em SUB_PROG_DIN_BIDIRECIONAL_CPP. Retorna
+        None se o .pyd nao existir/nao carregar (fallback Python continua valido)."""
+        if not hasattr(self, "_vrptw_pd_mod_cache"):
+            import sys
+            from pathlib import Path
+
+            base = Path(__file__).resolve().parent / "PD_PARA_PYTHON" / "PD_PARA_PYTHON"
+            p_release = base / "x64" / "Release"
+            p_debug = base / "x64" / "Debug"
+
+            if p_release.exists():
+                sys.path.append(str(p_release))
+            if p_debug.exists():
+                sys.path.append(str(p_debug))
+
+            try:
+                import vrptw_pd
+                self._vrptw_pd_mod_cache = vrptw_pd
+            except ImportError:
+                self._vrptw_pd_mod_cache = None
+
+        return self._vrptw_pd_mod_cache
+
+    def SUB_PROG_DIN_PETRO_CPP(self, inst, pi, sigma_k, k, NO_BP=None, mu_arc=None, eps=1e-6):
+        """Porta C++ (pybind11, vrptw_pd.sub_prog_din_petro) do SUB_PROG_DIN_PETRO:
+        mesma montagem de dados (tt/mu_flat/forbid_flat/req_i/req_j) que
+        SUB_PROG_DIN_BIDIRECIONAL_CPP usa hoje, com multi-janela (READY_TIME/DUE_DATE
+        completos) e os 3 recursos do Petro (deck/diesel/agua)."""
+        import numpy as np
+
+        vrptw_pd = self._get_vrptw_pd_module()
+        if vrptw_pd is None or not hasattr(vrptw_pd, "sub_prog_din_petro"):
+            raise RuntimeError("vrptw_pd.sub_prog_din_petro indisponivel (modulo C++ nao recompilado)")
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = inst.nbn - 1
+
+        tt = np.array([
+            [inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade for j in range(nbn)]
+            for i in range(nbn)
+        ], dtype=np.float64)
+
+        aw, bw, s, d, d_diesel, d_agua = [], [], [], [], [], []
+        for i in range(nbn):
+            noh = inst.noh[i]
+            aw.append(list(noh.READY_TIME) if hasattr(noh, "READY_TIME") and noh.READY_TIME else [0.0])
+            bw.append(list(noh.DUE_DATE) if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else [1e9])
+            s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
+            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+            d_diesel.append(getattr(noh, "DEMAND_DIESEL", 0.0))
+            d_agua.append(getattr(noh, "DEMAND_AGUA", 0.0))
+
+        cap_deck = float(inst.veiculos[k].capacidade)
+        cap_diesel = float(inst.veiculos[k].cap_diesel)
+        cap_agua = float(inst.veiculos[k].cap_agua)
+
+        if mu_arc is None:
+            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+        else:
+            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+            for key, val in mu_arc.items():
+                if len(key) == 3:
+                    i, j, kk = key
+                    if kk != k:
+                        continue
+                else:
+                    i, j = key
+                mu_flat[i * nbn + j] = float(val)
+
+        arcos_proibidos = NO_BP.arcos_proibidos if NO_BP else None
+        arcos_fixados = NO_BP.arcos_fixados_em_1 if NO_BP else None
+
+        forbid_flat = np.zeros(nbn * nbn, dtype=np.uint8)
+        if arcos_proibidos:
+            for arco in arcos_proibidos:
+                if len(arco) == 3:
+                    i, j, kk = arco
+                    if kk != k:
+                        continue
+                else:
+                    i, j = arco
+                forbid_flat[i * nbn + j] = 1
+
+        req_i, req_j = [], []
+        if arcos_fixados:
+            for arco in arcos_fixados:
+                if len(arco) == 3:
+                    i, j, kk = arco
+                    if kk != k:
+                        continue
+                else:
+                    i, j = arco
+                req_i.append(i)
+                req_j.append(j)
+
+        rota, rc = vrptw_pd.sub_prog_din_petro(
+            tt=tt,
+            aw=aw,
+            bw=bw,
+            s=s,
+            d=d,
+            d_diesel=d_diesel,
+            d_agua=d_agua,
+            pi=list(map(float, pi)),
+            sigma_k=float(sigma_k),
+            cap_deck=cap_deck,
+            cap_diesel=cap_diesel,
+            cap_agua=cap_agua,
+            nbcd=nbcd,
+            dep0=dep0,
+            depf=depf,
+            mu_flat=mu_flat.tolist(),
+            forbid_flat=forbid_flat.tolist(),
+            req_i=req_i,
+            req_j=req_j,
+            max_labels_por_no=1000000000,
+            eps=float(eps),
+        )
+
+        if rota is None:
+            return None, None
+
+        return rota, rc
+
+    def _petro_pricing_exato(self, inst, pi, sigma_k, k, no_bp=None, mu_arc=None):
+        """Ponto unico de despacho do pricing exato Petro: usa a porta C++
+        (vrptw_pd.sub_prog_din_petro) se o modulo compilado ja tiver essa funcao,
+        senao cai para o SUB_PROG_DIN_PETRO em Python (fronteira multi-janela +
+        deck/diesel/agua, mesma logica)."""
+        vrptw_pd = self._get_vrptw_pd_module()
+        usa_cpp = vrptw_pd is not None and hasattr(vrptw_pd, "sub_prog_din_petro")
+        print(f"[PETRO] pricing exato via {'C++ (sub_prog_din_petro)' if usa_cpp else 'Python (SUB_PROG_DIN_PETRO)'}")
+
+        if usa_cpp:
+            return self.SUB_PROG_DIN_PETRO_CPP(inst, pi, sigma_k, k, NO_BP=no_bp, mu_arc=mu_arc)
+
+        return self.SUB_PROG_DIN_PETRO(
+            inst, pi, sigma_k, k,
+            arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+            arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+            mu_arc=mu_arc
+        )
+
     def SUB_PROG_DIN_BIDIRECIONAL(self, inst, pi, sigma_k, k, NO_BP,
                                   arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
                                   max_labels_por_no=100,
@@ -5962,7 +6255,7 @@ class Metodos:
                     inicio_servico_j = max(chegada_j, aj)
                     fim_servico_j = inicio_servico_j + sj
 
-                    if inicio_servico_j <= bj + 1e-9:
+                    if fim_servico_j <= bj + 1e-9:
                         tempo = fim_servico_j
                         janelas_escolhidas.append(idx_janela)
                         achou = True
@@ -12717,14 +13010,18 @@ class Metodos:
                     inst, sol_pool, pi, sigma_k=sigma[k], k=k, NO_BP=no_bp, mu_arc=mu_arc
                 )
                 if rota is not None and rc is not None and float(rc) < melhor_custo_red:
-                    melhor_rota = rota
-                    melhor_custo_red = float(rc)
-                    metodo_escolhido = 1
-                    print("\n[ALLBEST GEROU CANDIDATA]")
-                    print(f"k={k}")
-                    print(f"rc={melhor_custo_red:.6f}")
-                    print(f"custo={float(melhor_rota['custo']):.6f}")
-                    print(f"seq={melhor_rota['clientes']}")
+                    if hasattr(inst, "dados_petro") and not sol_pool.viavel_cargas_petro(inst, k, rota["clientes"]):
+                        # candidata Petro inviavel (deck/diesel/agua): descarta e segue para o exato
+                        pass
+                    else:
+                        melhor_rota = rota
+                        melhor_custo_red = float(rc)
+                        metodo_escolhido = 1
+                        print("\n[ALLBEST GEROU CANDIDATA]")
+                        print(f"k={k}")
+                        print(f"rc={melhor_custo_red:.6f}")
+                        print(f"custo={float(melhor_rota['custo']):.6f}")
+                        print(f"seq={melhor_rota['clientes']}")
 
             # early stop: achou coluna boa na heurística
             if melhor_rota is not None and melhor_custo_red < -EPS_RC:
@@ -12735,13 +13032,18 @@ class Metodos:
 
                     # CPPP
                     t0 = time.time()
-                    print("TESTA BID")
-                    rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
-                        inst, pi, sigma[k], k,
-                        arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
-                        arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
-                        mu_arc=mu_arc
-                    )
+                    if hasattr(inst, "dados_petro"):
+                        rota, rc = self._petro_pricing_exato(
+                            inst, pi, sigma[k], k, no_bp=no_bp, mu_arc=mu_arc
+                        )
+                    else:
+                        print("TESTA BID")
+                        rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
+                            inst, pi, sigma[k], k,
+                            arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                            arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                            mu_arc=mu_arc
+                        )
 
                     t2 = time.time()
                     # print(f'Rota BID `{rota}')
@@ -12800,16 +13102,21 @@ class Metodos:
             """
             if melhor_rota is None:
                 # PD COMPLETA
-                print("TESTa completo")
-                rota, rc = self.SUB_PROG_DIN_PW_CPP_NOVA(
-                    inst, pi, sigma[k], k,
-                    arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
-                    arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
-                    mu_arc=mu_arc,
-                    widening_seq=[4, 8, -1],
-                    eps=EPS_RC
+                if hasattr(inst, "dados_petro"):
+                    rota, rc = self._petro_pricing_exato(
+                        inst, pi, sigma[k], k, no_bp=no_bp, mu_arc=mu_arc
+                    )
+                else:
+                    print("TESTa completo")
+                    rota, rc = self.SUB_PROG_DIN_PW_CPP_NOVA(
+                        inst, pi, sigma[k], k,
+                        arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
+                        arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
+                        mu_arc=mu_arc,
+                        widening_seq=[4, 8, -1],
+                        eps=EPS_RC
 
-                )
+                    )
 
             if rota is not None and rc is not None and float(rc) < melhor_custo_red:
                 melhor_rota = rota
@@ -13959,12 +14266,32 @@ class Metodos:
                             name=f'fluxo_carga_{i}_{j}_{k}'
                         )
 
+        # recursos por compartimento (Petro): diesel e agua por navio
+        if hasattr(inst, "dados_petro"):
+            dp = inst.dados_petro
+            for k in K:
+                veic = inst.veiculos[k]
+                model.addConstr(
+                    gp.quicksum(dp["dem_diesel"][i] * gp.quicksum(x[j, i, k] for j in V if j != i)
+                                for i in clientes) <= veic.cap_diesel,
+                    name=f'cap_diesel_{k}')
+                model.addConstr(
+                    gp.quicksum(dp["dem_agua"][i] * gp.quicksum(x[j, i, k] for j in V if j != i)
+                                for i in clientes) <= veic.cap_agua,
+                    name=f'cap_agua_{k}')
+
         # janelas de tempo múltiplas
-        BIG_M = 1e5
+        # BIG_M dinamico: maior due + maior servico + maior viagem (escala-agnostico)
+        vel_min = min(v.velocidade for v in inst.veiculos)
+        max_due = max(max(no.DUE_DATE) for no in inst.noh if no.DUE_DATE)
+        max_serv = max((no.SERVICE_TIME[0] if no.SERVICE_TIME else 0.0) for no in inst.noh)
+        max_trav = max(max(l) for l in inst.matriz_distancia) / vel_min
+        BIG_M = float(max_due + max_serv + max_trav + 1.0)
 
         for k in K:
             # depósito inicial
-            model.addConstr(s[0, k] == 0, f'inicio_zero_{k}')
+            partida0 = inst.noh[0].READY_TIME[0] if inst.noh[0].READY_TIME else 0.0
+            model.addConstr(s[0, k] == partida0, f'inicio_zero_{k}')
 
             for i in V:
                 # clientes: escolhe exatamente uma janela se o veículo visitar
@@ -13978,6 +14305,9 @@ class Metodos:
                         name=f'escolha_janela_{i}_{k}'
                     )
 
+                    service_i = inst.noh[i].SERVICE_TIME[0] if hasattr(inst.noh[i], 'SERVICE_TIME') and inst.noh[
+                        i].SERVICE_TIME else 0
+
                     for w in range(n_janelas):
                         ready_w = inst.noh[i].READY_TIME[w]
                         due_w = inst.noh[i].DUE_DATE[w]
@@ -13987,7 +14317,7 @@ class Metodos:
                             name=f'tw_inicio_{i}_{k}_{w}'
                         )
                         model.addConstr(
-                            s[i, k] <= due_w + BIG_M * (1 - y[i, k, w]),
+                            s[i, k] + service_i <= due_w + BIG_M * (1 - y[i, k, w]),
                             name=f'tw_fim_{i}_{k}_{w}'
                         )
 
@@ -15851,6 +16181,313 @@ class Metodos:
                                     "no": depf,
                                     "tempo": tempo_close,
                                     "carga": nova_carga,
+                                    "custo_mod": custo_close,
+                                    "mask": nova_mask,
+                                    "pai": idx_novo,
+                                    "ativo": True
+                                })
+
+                                idx_final = len(rotulos) - 1
+
+                                # reconstrói rota
+                                rota_reversa = []
+                                idx_tmp = idx_final
+                                while idx_tmp is not None:
+                                    rota_reversa.append(rotulos[idx_tmp]["no"])
+                                    idx_tmp = rotulos[idx_tmp]["pai"]
+
+                                rota = list(reversed(rota_reversa))
+
+                                custo_real = 0.0
+                                for t in range(len(rota) - 1):
+                                    custo_real += travel_time(rota[t], rota[t + 1])
+
+                                bin_xij = [0 for _ in range(nbcd)]
+                                for v in rota:
+                                    if 1 <= v <= nbcd:
+                                        bin_xij[v - 1] = 1
+
+                                return {
+                                    "clientes": rota,
+                                    "custo": custo_real,
+                                    "bin_xij": bin_xij
+                                }, custo_close
+
+        # ------------------ pós ------------------
+        if melhor_indice is None:
+            return None, None
+
+        if melhor_custo_reduzido >= -1e-6:
+            return None, None
+
+        # reconstrói rota
+        rota_reversa = []
+        idx = melhor_indice
+        while idx is not None:
+            rota_reversa.append(rotulos[idx]["no"])
+            idx = rotulos[idx]["pai"]
+        rota = list(reversed(rota_reversa))
+
+        # custo real (sem duais)
+        custo_real = 0.0
+        for t in range(len(rota) - 1):
+            custo_real += travel_time(rota[t], rota[t + 1])
+
+        bin_xij = [0 for _ in range(nbcd)]
+        for v in rota:
+            if 1 <= v <= nbcd:
+                bin_xij[v - 1] = 1
+
+        rota_dict = {"clientes": rota, "custo": custo_real, "bin_xij": bin_xij}
+        return rota_dict, melhor_custo_reduzido
+
+    def SUB_PROG_DIN_PETRO(self, inst, pi, sigma_k, k,
+                     arcos_proibidos=None, arcos_fixados=None, mu_arc=None):
+        """Variante Petro de SUB_PROG_DIN: multi-janela (READY_TIME/DUE_DATE completos)
+        e recursos extras diesel/agua, por navio k."""
+        import math
+        from collections import deque
+
+        if arcos_proibidos is None:
+            arcos_proibidos = set()
+        if arcos_fixados is None:
+            arcos_fixados = set()
+        if mu_arc is None:
+            mu_arc = {}  # (i,j)->dual arco
+
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+
+        # ------------------ dados ------------------
+        a, b, s, d, dd, da = [], [], [], [], [], []
+        for i in range(nbn):
+            noh = inst.noh[i]
+            a.append(noh.READY_TIME[0] if hasattr(noh, "READY_TIME") and noh.READY_TIME else 0.0)
+            b.append(noh.DUE_DATE[0] if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else float("inf"))
+            s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
+            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+            dd.append(getattr(noh, "DEMAND_DIESEL", 0.0))
+            da.append(getattr(noh, "DEMAND_AGUA", 0.0))
+
+        cap_k = inst.veiculos[k].capacidade
+        cap_diesel_k = inst.veiculos[k].cap_diesel
+        cap_agua_k = inst.veiculos[k].cap_agua
+        velocidade = inst.veiculos[k].velocidade
+
+        def travel_time(i, j):
+            return inst.matriz_distancia[i][j] / velocidade
+
+        def cliente_mask(c):
+            return 1 << (c - 1)
+
+        def extensao_janela(tempo_bruto, no_dest):
+            # multi-janela: acha a primeira janela r com max(tempo_bruto, aj_list[r]) + s[no_dest] <= bj_list[r] + 1e-6;
+            # servico comeca em max(tempo_bruto, aj_list[r]). Sem janela viavel -> poda (None).
+            aj_list = inst.noh[no_dest].READY_TIME
+            bj_list = inst.noh[no_dest].DUE_DATE
+            servico = s[no_dest]
+            for r in range(len(bj_list)):
+                inicio = max(tempo_bruto, aj_list[r])
+                if inicio + servico <= bj_list[r] + 1e-6:
+                    return inicio
+            return None
+
+        # ------------------ FIXOS (FORÇAR) ------------------
+        # succ_fixo[i] = j  e pred_fixo[j] = i
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        tol = 1e-6
+
+        def domina(cA, tA, qA, cB, tB, qB):
+            return (
+                    cA <= cB + tol and
+                    tA <= tB + tol and
+                    qA <= qB + tol and
+                    (cA < cB - tol or tA < tB - tol or qA < qB - tol)
+            )
+
+        # fronteira por estado (no, mask_clientes) com lista de labels não dominados
+        fronteira = {}
+
+        rotulos = []
+        abertos = deque()
+
+        tempo_inicial = max(a[dep0], 0.0)
+        rotulos.append({
+            "no": dep0,
+            "tempo": tempo_inicial,
+            "carga": 0.0,
+            "diesel": 0.0,
+            "agua": 0.0,
+            "custo_mod": 0.0,
+            "mask": 0,
+            "pai": None,
+            "ativo": True
+        })
+        abertos.append(0)
+        fronteira[(dep0, 0)] = [0]
+
+        melhor_indice = None
+        melhor_custo_reduzido = math.inf
+
+        while abertos:
+            idx_atual = abertos.popleft()
+            r_atual = rotulos[idx_atual]
+            if not r_atual.get("ativo", True):
+                continue
+
+            no_i = r_atual["no"]
+            tempo_i = r_atual["tempo"]
+            carga_i = r_atual["carga"]
+            diesel_i = r_atual.get("diesel", 0.0)
+            agua_i = r_atual.get("agua", 0.0)
+            custo_mod_i = r_atual["custo_mod"]
+            mask_i = r_atual["mask"]
+
+            if no_i == depf:
+                if custo_mod_i < melhor_custo_reduzido:
+                    melhor_custo_reduzido = custo_mod_i
+                    melhor_indice = idx_atual
+                continue
+
+            # ------------------ candidatos (FORÇA succ fixo) ------------------
+            if no_i in succ_fixo:
+                candidatos = [succ_fixo[no_i]]
+            else:
+                candidatos = []
+                for c in range(1, nbcd + 1):
+                    if (mask_i & cliente_mask(c)) == 0:
+                        candidatos.append(c)
+                candidatos.append(depf)
+
+            for j in candidatos:
+                # proibido
+                if (no_i, j) in arcos_proibidos:
+                    continue
+
+                # FORÇA pred fixo: só pode entrar em j vindo do predecessor fixo
+                if j in pred_fixo and pred_fixo[j] != no_i:
+                    continue
+
+                # clientes visitados
+                nova_mask = mask_i
+                if 1 <= j <= nbcd:
+                    bit = cliente_mask(j)
+                    if (mask_i & bit) != 0:
+                        continue
+                    nova_mask = mask_i | bit
+
+                # capacidade (deck)
+                nova_carga = carga_i
+                if 1 <= j <= nbcd:
+                    nova_carga += d[j]
+                if nova_carga > cap_k:
+                    continue
+
+                # capacidade (diesel/agua)
+                novo_diesel = diesel_i
+                nova_agua = agua_i
+                if 1 <= j <= nbcd:
+                    novo_diesel += dd[j]
+                    nova_agua += da[j]
+                if novo_diesel > cap_diesel_k + 1e-9:
+                    continue
+                if nova_agua > cap_agua_k + 1e-9:
+                    continue
+
+                # janela de tempo (multi-janela)
+                tempo_bruto = tempo_i + s[no_i] + travel_time(no_i, j)
+                tempo_chegada = extensao_janela(tempo_bruto, j)
+                if tempo_chegada is None:
+                    continue
+
+                # custo reduzido: c_ij - mu_ij - pi(cliente) - sigma
+                custo_mod_novo = custo_mod_i + travel_time(no_i, j)
+
+                # dual do arco (se existir)
+                custo_mod_novo -= float(mu_arc.get((no_i, j), 0.0))
+
+                if 1 <= j <= nbcd:
+                    custo_mod_novo -= float(pi[j - 1])
+                if j == depf:
+                    custo_mod_novo -= float(sigma_k)
+
+                chave = (j, nova_mask)
+                lista = fronteira.get(chave, [])
+
+                dominado = False
+                for idx_old in lista:
+                    r_old = rotulos[idx_old]
+                    if not r_old.get("ativo", True):
+                        continue
+                    if domina(r_old["custo_mod"], r_old["tempo"], r_old["carga"],
+                              custo_mod_novo, tempo_chegada, nova_carga):
+                        dominado = True
+                        break
+                if dominado:
+                    continue
+
+                nova_lista = []
+                for idx_old in lista:
+                    r_old = rotulos[idx_old]
+                    if not r_old.get("ativo", True):
+                        continue
+                    if domina(custo_mod_novo, tempo_chegada, nova_carga,
+                              r_old["custo_mod"], r_old["tempo"], r_old["carga"]):
+                        rotulos[idx_old]["ativo"] = False
+                    else:
+                        nova_lista.append(idx_old)
+
+                novo_rotulo = {
+                    "no": j,
+                    "tempo": tempo_chegada,
+                    "carga": nova_carga,
+                    "diesel": novo_diesel,
+                    "agua": nova_agua,
+                    "custo_mod": custo_mod_novo,
+                    "mask": nova_mask,
+                    "pai": idx_atual,
+                    "ativo": True
+                }
+                idx_novo = len(rotulos)
+                rotulos.append(novo_rotulo)
+                abertos.append(idx_novo)
+
+                nova_lista.append(idx_novo)
+                fronteira[chave] = nova_lista
+
+                # =========================
+                # EARLY TEST: fechar no depósito final
+                # =========================
+                if j != depf:
+
+                    # 1) arco proibido?
+                    if (j, depf) not in arcos_proibidos:
+
+                        tempo_close_bruto = tempo_chegada + s[j] + travel_time(j, depf)
+                        tempo_close = extensao_janela(tempo_close_bruto, depf)
+
+                        # 2) respeita (multi-)janela do depósito?
+                        if tempo_close is not None:
+
+                            # custo reduzido ao fechar
+                            custo_close = custo_mod_novo + travel_time(j, depf)
+                            custo_close -= float(mu_arc.get((j, depf), 0.0))
+                            custo_close -= float(sigma_k)
+
+                            if custo_close < -1e-6:
+
+                                # cria rótulo final temporário
+                                rotulos.append({
+                                    "no": depf,
+                                    "tempo": tempo_close,
+                                    "carga": nova_carga,
+                                    "diesel": novo_diesel,
+                                    "agua": nova_agua,
                                     "custo_mod": custo_close,
                                     "mask": nova_mask,
                                     "pai": idx_novo,

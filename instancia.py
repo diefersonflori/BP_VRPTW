@@ -9,11 +9,11 @@ class Veiculo:
         self.nome = ""                 # vesselName
         self.classe = ""               # vesselClass
         self.vessel_id = None          # vesselId
-        self.setup_arrival = 0.0       # h
-        self.setup_departure = 0.0     # h
-        self.trip_duration_limit = 0.0 # h
-        self.max_departure = 0.0       # h (maximumDepartureTime)
-        self.readiness = 0.0           # h (estimatedTimeOfReadiness)
+        self.setup_arrival = 0.0  # s
+        self.setup_departure = 0.0  # s
+        self.trip_duration_limit = 0.0  # s
+        self.max_departure = 0.0  # s
+        self.readiness = 0.0  # s
         ##capacidades
         self.cap_deck = capacidade
         self.cap_diesel = 0
@@ -90,7 +90,7 @@ class Instancia:
             and v["velocities"] == navio0["velocities"]
             for v in frota
         )
-
+        SEGUNDOS_POR_HORA = 3600.0
         if not homogenea:
             print("[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.")
             navio0 = min(frota, key=lambda v: v["capacity"]["deckSpace"])
@@ -105,11 +105,11 @@ class Instancia:
                 "cap_agua": v["capacity"]["waterTanks"],
                 "stock_diesel": v.get("initialStock", {}).get("dieselLoad", 0.0),
                 "stock_agua": v.get("initialStock", {}).get("waterLoad", 0.0),
-                "setup_arrival": v["setupArrival"],
-                "setup_departure": v["setupDeparture"],
-                "trip_duration_limit": v["tripDurationLimit"],
-                "max_departure": v["maximumDepartureTime"],
-                "readiness": v["estimatedTimeOfReadiness"],
+                "setup_arrival": v["setupArrival"] * SEGUNDOS_POR_HORA,
+                "setup_departure": v["setupDeparture"] * SEGUNDOS_POR_HORA,
+                "trip_duration_limit": v["tripDurationLimit"] * SEGUNDOS_POR_HORA,
+                "max_departure": v["maximumDepartureTime"] * SEGUNDOS_POR_HORA,
+                "readiness": v["estimatedTimeOfReadiness"] * SEGUNDOS_POR_HORA,
                 "velocities": v["velocities"],
             })
 
@@ -120,9 +120,9 @@ class Instancia:
         setup_total = navio0["setupArrival"] + navio0["setupDeparture"]
         velocities = navio0["velocities"]
 
-        T_max = navio0["tripDurationLimit"]
-        readiness = navio0["estimatedTimeOfReadiness"]
-        max_partida = navio0["maximumDepartureTime"]
+        T_max = navio0["tripDurationLimit"] * SEGUNDOS_POR_HORA
+        readiness = navio0["estimatedTimeOfReadiness"] * SEGUNDOS_POR_HORA
+        max_partida = navio0["maximumDepartureTime"] * SEGUNDOS_POR_HORA
 
         stock_diesel = navio0.get("initialStock", {}).get("dieselLoad", 0.0)
         stock_agua = navio0.get("initialStock", {}).get("waterLoad", 0.0)
@@ -184,7 +184,9 @@ class Instancia:
             if comm == "deckCargoLoad":
                 dl = q
                 demanda_vrp = q
-                carreg_deck = q / eff_base["deckCargoLoad"]
+                carreg_deck = (
+                                      q / eff_base["deckCargoLoad"]
+                              ) * SEGUNDOS_POR_HORA
 
             elif comm == "deckCargoBackload":
                 db = q
@@ -207,10 +209,19 @@ class Instancia:
             dem_ag.append(ag)
             dem_v1.append(demanda_vrp)
 
-            tempo_servico = q / od["efficiency"] + od.get("serviceSetup", 0.0)
-            servico.append(tempo_servico + setup_total)
+            tempo_servico = (
+                                    q / od["efficiency"]
+                                    + od.get("serviceSetup", 0.0)
+                            ) * SEGUNDOS_POR_HORA
+            servico.append(tempo_servico)  # setup movido para os arcos
 
-            janelas_mtw.append([list(tw) for tw in od["timeWindows"]])
+            janelas_mtw.append([
+                [
+                    ini * SEGUNDOS_POR_HORA,
+                    fim * SEGUNDOS_POR_HORA
+                ]
+                for ini, fim in od["timeWindows"]
+            ])
             tempo_carreg_deck.append(carreg_deck)
 
             avisar_relacoes = False
@@ -232,13 +243,31 @@ class Instancia:
         dist = [[0.0] * N for _ in range(N)]
         tempo = [[0.0] * N for _ in range(N)]
 
+        setup_arr = navio0["setupArrival"] * SEGUNDOS_POR_HORA
+        setup_dep = navio0["setupDeparture"] * SEGUNDOS_POR_HORA
         for i in range(N):
             for j in range(N):
                 if i == j:
                     continue
+                # mesma plataforma (mesmo clientId): navio ja atracado -> arco 0
+                if client_ids[i] is not None and client_ids[i] == client_ids[j]:
+                    dist[i][j] = 0.0
+                    tempo[i][j] = 0.0
+                    continue
                 d = self.haversine_km(lats[i], lons[i], lats[j], lons[j])
                 dist[i][j] = d
-                tempo[i][j] = d / self.velocidade_kmh(d, velocities)
+                velocidade_arco = self.velocidade_kmh(d, velocities)
+
+                t = (
+                            d / velocidade_arco
+                    ) * SEGUNDOS_POR_HORA
+                if i == 0:  # base -> order: atracacao na chegada
+                    t += setup_arr
+                elif j == 0:  # order -> base: desatracacao na saida
+                    t += setup_dep
+                else:  # plataforma -> plataforma: sai de i e atraca em j
+                    t += setup_dep + setup_arr
+                tempo[i][j] = t
 
         dados = {
             "arquivo": arquivo_instancia,
@@ -294,12 +323,12 @@ class Instancia:
         print("Clientes: %d | Navios: %d | deckSpace=%.0f dieselTanks=%.0f waterTanks=%.0f"
               % (d["n_clientes"], d["num_veiculos"],
                  d["capacidade"], d["cap_diesel"], d["cap_agua"]))
-        print("initialStock: diesel=%.0f agua=%.0f | janela base=[%.1f, %.1f] | max_partida=%.1f"
+        print("initialStock: diesel=%.0f agua=%.0f | janela base=[%.0f, %.0f] s | max_partida=%.0f s"
               % (d["stock_diesel"], d["stock_agua"],
                  d["readiness"], d["T_max"], d["max_partida"]))
         print("-" * 70)
         print("%-12s %8s %8s %8s %8s %8s %8s %5s" %
-              ("no", "dem_v1", "deck_L", "deck_B", "diesel", "agua", "serv(h)", "#jan"))
+              ("no", "dem_v1", "deck_L", "deck_B", "diesel", "agua", "serv(s)", "#jan"))
         for i in range(len(d["nomes"])):
             print("%-12s %8.1f %8.1f %8.1f %8.1f %8.1f %8.2f %5d" %
                   (d["nomes"][i], d["demanda"][i], d["dem_deck_load"][i],
@@ -312,7 +341,7 @@ class Instancia:
               % (sum(d["dem_diesel"]), d["stock_diesel"],
                  sum(d["dem_agua"]), d["stock_agua"]))
         for j in range(1, d["n_clientes"] + 1):
-            print("base -> %-8s: %6.1f km  %5.2f h"
+            print("base -> %-8s: %6.1f km  %8.0f s"
                   % (d["nomes"][j], d["dist"][0][j], d["tempo"][0][j]))
         if d["descartes"]:
             print("-" * 70)
@@ -321,14 +350,8 @@ class Instancia:
                 print("  - " + s)
         print("=" * 70)
 
-    def leitura_petro(self, argv, escala=10):
-        """
-        Preenche a MESMA estrutura de leitura() a partir do JSON Petro:
-        noh (0=base, 1..n=clientes, nbn-1=copia da base), matriz_distancia,
-        veiculos, nbcd/nbn/nbv.
-        Unidade interna: decimos de hora (janelas/servico x10).
-        Matriz: tempo(h) x escala x 10 (pricing divide por 10 -> decimos de hora).
-        """
+    def leitura_petro(self, argv):
+
         self.fileName = argv
         dados = self.leitura_petro_dados(argv, verboso=True)
 
@@ -351,9 +374,9 @@ class Instancia:
             no_aux.DEMAND_AGUA = int(round(dados["dem_agua"][i]))
 
             for (ini, fim) in dados["janelas_mtw"][i]:
-                no_aux.READY_TIME.append(int(round(ini * escala)))
-                no_aux.DUE_DATE.append(int(round(fim * escala)))
-            no_aux.SERVICE_TIME.append(int(round(dados["servico"][i] * escala)))
+                no_aux.READY_TIME.append(int(round(ini)))
+                no_aux.DUE_DATE.append(int(round(fim)))
+            no_aux.SERVICE_TIME.append(int(round(dados["servico"][i])))
             self.noh[i] = no_aux
 
         # copia da base no ultimo no
@@ -383,13 +406,13 @@ class Instancia:
                     self.matriz_distancia[i][j] = 0
                 else:
                     self.matriz_distancia[i][j] = int(
-                        round(dados["tempo"][ii][jj] * escala))
+                        round(dados["tempo"][ii][jj]))
 
         # ---------- veiculos (dados individuais; pricing usa o mais restritivo) ----------
         cap_pricing = int(round(min(fi["cap_deck"] for fi in dados["frota_info"])))
         self.veiculos = []
         for fi in dados["frota_info"]:
-            veic = Veiculo(capacidade=cap_pricing, velocidade=10)
+            veic = Veiculo(capacidade=int(round(fi["cap_deck"])), velocidade=1.0)
             veic.nome = fi["nome"]
             veic.classe = fi["classe"]
             veic.vessel_id = fi["vessel_id"]

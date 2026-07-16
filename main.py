@@ -14,6 +14,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # Bateria COM estabilizacao dual: sweep de gamma_ini nas 29 instancias Solomon de 50 clientes.
 MAX_WORKERS = 1
+RODAR_EXATO_PETRO = True   # roda o modelo compacto apos o B&P (instancias Petro) e exporta o gantt do exato
 
 
 def rodar_caso(args):
@@ -44,56 +45,62 @@ def rodar_caso(args):
         inst.ninst = ninst
         #inst.leitura(arquivo_instancia)
 
-        inst.leitura_petro(r"instancias\Petro_instancias\10n-1k-3c-1r_testeUSP_v33.json", escala=3600)
+        #inst.leitura_petro(r"instancias\Petro_instancias\10n-1k-3c-1r_testeUSP_v33.json", escala=3600)
 
-        print("nbcd=%d nbn=%d nbv=%d cap=%d cap_deck=%d cap_diesel=%d cap_agua=%d" %
-              (
-                  inst.nbcd,
-                  inst.nbn,
-                  inst.nbv,
-                  inst.veiculos[0].capacidade,
-                  inst.veiculos[0].cap_deck,
-                  inst.veiculos[0].cap_diesel,
-                  inst.veiculos[0].cap_agua,
-              ))
+        if arquivo_instancia.endswith(".json"):
+            inst.leitura_petro(arquivo_instancia)
+        else:
+            inst.leitura(arquivo_instancia)
+            for v in inst.veiculos:
+                v.capacidade = cap
+                v.velocidade = 10
 
-        for no in inst.noh:
-            print(
-                "no %2d | lat=%10.6f | lon=%10.6f | dem=%4d | deckL=%4d | deckB=%4d | diesel=%4d | agua=%4d | serv=%s | READY=%s | DUE=%s" %
-                (
-                    no.id,
-                    no.YCOORD, no.XCOORD,
-                    no.DEMAND, no.DEMAND_DECK_LOAD,
-                    no.DEMAND_DECK_BACKLOAD, no.DEMAND_DIESEL,
-                    no.DEMAND_AGUA, no.SERVICE_TIME,
-                    no.READY_TIME, no.DUE_DATE,
-                )
-            )
+        #print("nbcd=%d nbn=%d nbv=%d cap=%d cap_deck=%d cap_diesel=%d cap_agua=%d" %
+        #      (
+        #          inst.nbcd,
+        #          inst.nbn,
+        #          inst.nbv,
+        #          inst.veiculos[0].capacidade,
+        #          inst.veiculos[0].cap_deck,
+        #          inst.veiculos[0].cap_diesel,
+        #          inst.veiculos[0].cap_agua,
+        #      ))
+        #
+        #for no in inst.noh:
+        #    print(
+        #        "no %2d | lat=%10.6f | lon=%10.6f | dem=%4d | deckL=%4d | deckB=%4d | diesel=%4d | agua=%4d | serv=%s | READY=%s | DUE=%s" %
+        #        (
+        #            no.id,
+        #            no.YCOORD, no.XCOORD,
+        #            no.DEMAND, no.DEMAND_DECK_LOAD,
+        #            no.DEMAND_DECK_BACKLOAD, no.DEMAND_DIESEL,
+        #            no.DEMAND_AGUA, no.SERVICE_TIME,
+        #            no.READY_TIME, no.DUE_DATE,
+        #        )
+        #    )
+        #
+        #print("\n--- CONFERENCIA DA ESTRUTURA (unidade: segundos) ---")
+        #
+        ## cabeçalho
+        #print("%8s" % "", end="")
+        #for j in range(inst.nbn):
+        #    print("%8d" % j, end="")
+        #print()
+        #
+        ## linhas
+        #for i in range(inst.nbn):
+        #    print("%8d" % i, end="")
+        #    for j in range(inst.nbn):
+        #        print("%8d" % inst.matriz_distancia[i][j], end="")
+        #    print()
 
-        print("\n--- CONFERENCIA DA ESTRUTURA (unidade: segundos) ---")
-
-        # cabeçalho
-        print("%8s" % "", end="")
-        for j in range(inst.nbn):
-            print("%8d" % j, end="")
-        print()
-
-        # linhas
-        for i in range(inst.nbn):
-            print("%8d" % i, end="")
-            for j in range(inst.nbn):
-                print("%8d" % inst.matriz_distancia[i][j], end="")
-            print()
-
-
-
-        for v in inst.veiculos:
-            v.capacidade = cap
-            v.velocidade = 10
+        #for v in inst.veiculos:
+        #    v.capacidade = cap
+        #    v.velocidade = 10
 
         metod = Metodos(inst)
         metod.TABU_TENURE = tabu
-        inst.usar_estabilizacao = True    # COM estabilizacao dual
+        inst.usar_estabilizacao = not arquivo_instancia.endswith(".json")    # Petro: 1a rodada SEM estabilizacao (gamma calibrado p/ escala Solomon)
         inst.nbconstrutiva = 10
         inst.iteraSemMelhora = SM
         random.seed(SEED_DEBUG)
@@ -112,8 +119,10 @@ def rodar_caso(args):
         metod._log_file = log_file  # redireciona _print da construtiva para o log antes de B&P setar
 
         metod.gera_solucao_inicial(inst, sol_pool)
-
         #metod.gera_solucao_inicial(inst, sol_pool)
+
+        if hasattr(inst, "dados_petro"):
+            metod.adiciona_colunas_ociosas(inst, sol_pool)   # Petro: navio pode ficar na base; Solomon inalterado
 
         # --- custo e sequências da construtiva ---
         custo_construt = sum(
@@ -142,6 +151,17 @@ def rodar_caso(args):
         msg_construt = f"[CONSTRUT] {nome_base} | SM={SM} | gmax={gamma_PMAX} | custo={custo_construt:.1f} | art={n_art} | {seq_str_construt}"
         print(msg_construt, flush=True, file=_stdout)
         print(msg_construt, flush=True, file=log_file)
+
+        try:
+            if arquivo_instancia.endswith(".json"):
+                rotas_construt = {k: {"sequencias": [list(sol_pool.rotas[k]["sequencia_rota"][0])],
+                                      "custos": [float(sol_pool.rotas[k]["custo"][0])]}
+                                  for k in sol_pool.rotas
+                                  if sol_pool.rotas[k]["sequencia_rota"] and not sol_pool.rotas[k]["artificial"][0]}
+                sol_pool.registrar_solucao("construtiva", rotas_construt)
+                sol_pool.exportar_visualizacao(inst, "construtiva", "visualizacao_dados_construtiva.js")
+        except Exception as e:
+            print(f"[GANTT-CONSTRUT] indisponivel: {e}")
 
         # --- B&P ---
         t0 = time.time()
@@ -194,6 +214,32 @@ def rodar_caso(args):
         print(msg_seq_bp, flush=True, file=_stdout)
         print(msg_seq_bp, flush=True, file=log_file)
 
+        try:
+            metod.relatorio_cronograma_petro(inst, sol_pool.rotas_escolhidas)
+            sol_pool.registrar_solucao("bp", sol_pool.rotas_escolhidas)
+            sol_pool.exportar_visualizacao(inst, "bp", "visualizacao_dados.js")
+
+            if RODAR_EXATO_PETRO and arquivo_instancia.endswith(".json"):
+                print("[EXATO] resolvendo modelo compacto (log no arquivo)...", flush=True)
+                sol_exato = Solucao(inst.nbv, inst.nbn)
+                t0e = time.time()
+                sys.stdout = log_file; sys.stderr = log_file
+                try:
+                    metod.metodo_exato(inst, sol_exato)
+                finally:
+                    sys.stdout = _stdout; sys.stderr = _stdout
+                tempo_exato = time.time() - t0e
+                rotas_exato = {k: {"sequencias": list(sol_exato.rotas[k]["sequencia_rota"])}
+                               for k in sol_exato.rotas}
+                fo_exato = sum(c for k in sol_exato.rotas for c in sol_exato.rotas[k]["custo"])
+                print(f"[EXATO] FO={fo_exato:.1f} | t={tempo_exato:.1f}s "
+                      f"(B&P: FO={ub} | t={tempo_bp:.1f}s)", flush=True)
+                metod.relatorio_cronograma_petro(inst, rotas_exato)
+                sol_pool.registrar_solucao("exato", rotas_exato)
+                sol_pool.exportar_visualizacao(inst, "exato", "visualizacao_dados_exato.js")
+        except Exception as _e:
+            print(f"[CRONOGRAMA] indisponivel: {_e}")
+
         log_file.flush(); log_file.close()
 
         # gap contra a BKS (FO_TARGET), para o CSV de calibracao de gamma_max
@@ -242,16 +288,36 @@ def main():
     tabu = 0
 
     todas_instancias = [
-        "instancias/c101N.txt", "instancias/c102.txt", "instancias/c103.txt",
-        "instancias/c104.txt", "instancias/c105.txt", "instancias/c106.txt",
-        "instancias/c107.txt", "instancias/c108.txt", "instancias/c109.txt",
-        "instancias/r101.txt", "instancias/r102.txt", "instancias/r103.txt",
-        "instancias/r104.txt", "instancias/r105.txt", "instancias/r106.txt",
-        "instancias/r107.txt", "instancias/r108.txt", "instancias/r109.txt",
-        "instancias/r110.txt", "instancias/r111.txt", "instancias/r112.txt",
-        "instancias/rc101.txt", "instancias/rc102.txt", "instancias/rc103.txt",
-        "instancias/rc104.txt", "instancias/rc105.txt", "instancias/rc106.txt",
-        "instancias/rc107.txt", "instancias/rc108.txt",
+        "instancias/Petro_instancias/10n-1k-3c-1r_testeUSP_v33.json",
+        #"instancias/c101N.txt",
+        #"instancias/c102.txt",
+        #"instancias/c103.txt",
+        #"instancias/c104.txt",
+        #"instancias/c105.txt",
+        #"instancias/c106.txt",
+        #"instancias/c107.txt",
+        #"instancias/c108.txt",
+        #"instancias/c109.txt",
+        #"instancias/r101.txt",
+        #"instancias/r102.txt",
+        #"instancias/r103.txt",
+        #"instancias/r104.txt",
+        #"instancias/r105.txt",
+        #"instancias/r106.txt",
+        #"instancias/r107.txt",
+        #"instancias/r108.txt",
+        #"instancias/r109.txt",
+        #"instancias/r110.txt",
+        #"instancias/r111.txt",
+        #"instancias/r112.txt",
+        #"instancias/rc101.txt",
+        #"instancias/rc102.txt",
+        #"instancias/rc103.txt",
+        #"instancias/rc104.txt",
+        #"instancias/rc105.txt",
+        #"instancias/rc106.txt",
+        #"instancias/rc107.txt",
+        #"instancias/rc108.txt",
     ]
 
     NBV_POR_TAM = {
@@ -292,26 +358,34 @@ def main():
     for tam in tamanhos:
         cap = capacidade_por_tamanho[tam]
         nomes_validos = set(FO_TARGET.get(tam, {}).keys())
-        lista_inst = [a for a in todas_instancias if normaliza(a) in nomes_validos]
+        #lista_inst = [a for a in todas_instancias if normaliza(a) in nomes_validos]
+        lista_inst = todas_instancias
 
         for ninst, arquivo in enumerate(lista_inst):
             nome_base = normaliza(arquivo)
             nome_inst = os.path.basename(arquivo).lower()
             nbv_inst = NBV_POR_TAM.get(tam, {}).get(nome_base)
             if nbv_inst is None:
-                continue
+                #continue
+                nbv_inst = 0  # Petro: leitura_petro define nbv
             fo_target = FO_TARGET.get(tam, {}).get(nome_base, -1)
             gamma_pi_min = gamma_pi_min_por_tamanho[tam]
             fam = familia(nome_base)
             SM = SM_FIXO
             gamma_PMAX = GAMMA_MAX_FIXO
 
-            for gamma_ini_val in GAMMA_INI_POR_FAMILIA[fam]:
-                tarefas.append((
-                    arquivo, tam, cap, nbv_inst, ninst,
-                    nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
-                    gamma_pi_min, fo_target, tabu, SEED_DEBUG
-                ))
+            #for gamma_ini_val in GAMMA_INI_POR_FAMILIA[fam]:
+            #    tarefas.append((
+            #        arquivo, tam, cap, nbv_inst, ninst,
+            #        nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
+            #        gamma_pi_min, fo_target, tabu, SEED_DEBUG
+            #    ))
+            gamma_ini_val = GAMMA_INI_POR_FAMILIA[fam][0]
+            tarefas.append((
+                arquivo, tam, cap, nbv_inst, ninst,
+                nome_base, nome_inst, gamma_PMAX, SM, gamma_ini_val,
+                gamma_pi_min, fo_target, tabu, SEED_DEBUG
+            ))
 
     sys.stdout = sys.__stdout__
 
