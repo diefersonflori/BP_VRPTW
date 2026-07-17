@@ -1,0 +1,13 @@
+﻿codigo;regiao;pedidos;clientes_plataformas;plataformas;base;dist_media_base_km;dist_max_entre_plataformas_km;arquivo
+campos_C1_nucleo_atual;CAMPOS;10;3;P-09, P-38, P-43;PACU;107.78;41.61;petro_campos_C1_nucleo_atual_10ped.json
+campos_C1_nucleo_atual;CAMPOS;15;5;P-09, P-38, P-43, P-40, P-48;PACU;113.31;47.38;petro_campos_C1_nucleo_atual_15ped.json
+campos_C2_leste_compacto;CAMPOS;10;3;P-38, P-40, P-51;PACU;123.77;10.04;petro_campos_C2_leste_compacto_10ped.json
+campos_C2_leste_compacto;CAMPOS;15;5;P-38, P-40, P-51, FPANE, P-56;PACU;125.01;19.32;petro_campos_C2_leste_compacto_15ped.json
+campos_C3_misto;CAMPOS;10;3;P-09, PGP-1, P-43;PACU;95.68;27.69;petro_campos_C3_misto_10ped.json
+campos_C3_misto;CAMPOS;15;5;P-09, PGP-1, P-43, P-48, FPAGA;PACU;103.38;47.41;petro_campos_C3_misto_15ped.json
+santos_S1_buzios;SANTOS;10;3;P-74, P-76, P-77;SANTOS;398.81;11.13;petro_santos_S1_buzios_10ped.json
+santos_S1_buzios;SANTOS;15;5;P-74, P-76, P-77, P-75, P-78;SANTOS;400.74;19.62;petro_santos_S1_buzios_15ped.json
+santos_S2_tupi;SANTOS;10;3;P-66, FPCSQ, FPCMC;SANTOS;397.58;18.41;petro_santos_S2_tupi_10ped.json
+santos_S2_tupi;SANTOS;15;5;P-66, FPCSQ, FPCMC, FPCP, FPCAR;SANTOS;396.19;23.92;petro_santos_S2_tupi_15ped.json
+santos_S3_sapinhoa;SANTOS;10;3;FPSTB, FPGNB, FPMDC;SANTOS;419.04;12.0;petro_santos_S3_sapinhoa_10ped.json
+santos_S3_sapinhoa;SANTOS;15;5;FPSTB, FPGNB, FPMDC, FPADG, FPPL;SANTOS;422.95;23.03;petro_santos_S3_sapinhoa_15ped.json

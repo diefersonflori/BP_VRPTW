@@ -1,0 +1,783 @@
+{
+  "instanceInformation": {
+    "omarGatewayJobId": 999999999,
+    "referenceDateTime": "2021-01-01T04:00:00-0300",
+    "userComments": [
+      "Instância sintética multiveículo derivada da instância Petrobras correspondente.",
+      "Arquivo-base: petro_campos_C3_misto_15ped.json",
+      "Demanda total de convés original: 883.0",
+      "Demanda total de convés ajustada: 2000.0",
+      "Capacidade de convés por navio: 900.0",
+      "Limite inferior por capacidade: ceil(2000.0/900.0) = 3 navios.",
+      "Somente as quantidades de deckCargoLoad e deckCargoBackload foram escaladas; localizações, janelas, produtos, eficiências e frota foram preservados."
+    ],
+    "instanceDatetimeGeneration": "2021-08-26T00:23:24+0000",
+    "instanceId": {
+      "basicData": "3LTPK5Y0Q7SKX",
+      "capacityCommodityAssignmentData": "50X3NY4DEBUK1",
+      "fleetData": "4BO6192QF3CR9",
+      "supplyBasesData": "3TW73IB1RSVSZ",
+      "ordersData": "4YNRXATDERZLJ"
+    }
+  },
+  "input": {
+    "basicData": {
+      "alphaWeight": 0.1,
+      "etaConversion": 1.4,
+      "mipRelativeGapTolerance": 0.001,
+      "numberOfThreads": 1,
+      "runTimeLimit": 600,
+      "useCostMeasureInFuelVolume": true,
+      "useMipStarts": false,
+      "useRoundedCapacityInequalities": false,
+      "useSolverCuts": false,
+      "useSubtourEliminationConstraints": false,
+      "conversionTonDieselTonCO2Eq": 3.595,
+      "dieselDensity": 0.852,
+      "numberOfOrders": 15,
+      "numberOfVessels": 3,
+      "numberOfClients": 5,
+      "numberOfBackloadCommodities": 1,
+      "numberOfCompartments": 3,
+      "numberOfLoadCommodities": 3,
+      "tripClass": "cronograma"
+    },
+    "capacityCommodityAssignmentData": [
+      {
+        "compartment": "deckSpace",
+        "deckCargoBackload": 1,
+        "deckCargoLoad": 1,
+        "dieselLoad": 0,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "dieselTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 1,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "waterTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 0,
+        "waterLoad": 1
+      }
+    ],
+    "fleetData": [
+      {
+        "vesselId": 2,
+        "vesselName": "STARNAV TAURUS2",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -21.845602,
+        "longitude": -40.996652,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      },
+      {
+        "vesselId": 1,
+        "vesselName": "STARNAV TAURUS3",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -21.845602,
+        "longitude": -40.996652,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      },
+      {
+        "vesselId": 3,
+        "vesselName": "STARNAV TAURUS",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -21.845602,
+        "longitude": -40.996652,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1001.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      }
+    ],
+    "supplyBasesData": [
+      {
+        "baseName": "PACU",
+        "baseId": 0,
+        "region": "SE",
+        "efficiency": {
+          "deckCargoBackload": 73.0,
+          "deckCargoLoad": 73.0,
+          "dieselLoad": 90.0,
+          "waterLoad": 102.0
+        },
+        "successor": null,
+        "navigationTimeToMoor": 3.0,
+        "latitude": -21.845602,
+        "longitude": -40.996652
+      }
+    ],
+    "ordersData": [
+      {
+        "orderId": 1,
+        "clientId": 1,
+        "clientName": "P-09",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.573,
+        "longitude": -40.528,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 68.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 2,
+        "clientId": 1,
+        "clientName": "P-09",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.573,
+        "longitude": -40.528,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 34.0,
+        "successor": 1,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 3,
+        "clientId": 1,
+        "clientName": "P-09",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "waterLoad",
+        "efficiency": 56.3,
+        "serviceSetup": 0.0,
+        "latitude": -22.573,
+        "longitude": -40.528,
+        "orderPriorityClient": 1,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 300.0,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 4,
+        "clientId": 1,
+        "clientName": "P-09",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.573,
+        "longitude": -40.528,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 22.7,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 5,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 22.7,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 6,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 124.6,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 7,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 167.6,
+        "successor": 6,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 8,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "dieselLoad",
+        "efficiency": 66.7,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 1,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 299.2957746478873,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 9,
+        "clientId": 3,
+        "clientName": "P-43",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.55011,
+        "longitude": -40.25944889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 453.0,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 10,
+        "clientId": 3,
+        "clientName": "P-43",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.55011,
+        "longitude": -40.25944889,
+        "orderPriorityClient": 2,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 181.2,
+        "successor": 0,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 11,
+        "clientId": 4,
+        "clientName": "P-48",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.66388389,
+        "longitude": -40.24018889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 124.6,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 12,
+        "clientId": 4,
+        "clientName": "P-48",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.66388389,
+        "longitude": -40.24018889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 167.6,
+        "successor": 11,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 13,
+        "clientId": 4,
+        "clientName": "P-48",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "dieselLoad",
+        "efficiency": 66.7,
+        "serviceSetup": 0.0,
+        "latitude": -22.66388389,
+        "longitude": -40.24018889,
+        "orderPriorityClient": 1,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 299.2957746478873,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            126.0
+          ],
+          [
+            127.0,
+            150.0
+          ],
+          [
+            151.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 14,
+        "clientId": 5,
+        "clientName": "FPAGA",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.39583639,
+        "longitude": -40.10831417,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 453.0,
+        "successor": null,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      },
+      {
+        "orderId": 15,
+        "clientId": 5,
+        "clientName": "FPAGA",
+        "clusterName": "CAMPOS_campos_C3_misto",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.39583639,
+        "longitude": -40.10831417,
+        "orderPriorityClient": 2,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 181.0,
+        "successor": 0,
+        "fix_successor_seq": true,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            60.0,
+            87.0
+          ],
+          [
+            99.0,
+            111.0
+          ],
+          [
+            123.0,
+            126.0
+          ],
+          [
+            127.0,
+            135.0
+          ],
+          [
+            147.0,
+            150.0
+          ],
+          [
+            151.0,
+            159.0
+          ]
+        ]
+      }
+    ]
+  },
+  "output": {
+    "instanceStatus": "unsolved"
+  }
+}

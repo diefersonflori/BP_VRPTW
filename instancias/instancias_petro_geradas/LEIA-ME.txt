@@ -1,0 +1,16 @@
+Pacote de instâncias Petrobras
+==============================
+
+Foram criados 3 cenários em Campos e 3 em Santos.
+Cada cenário possui uma versão com 10 e outra com 15 pedidos, totalizando 12 JSONs.
+
+Estrutura dos pedidos:
+- 10 pedidos: 3 plataformas, distribuídos em grupos 4 + 4 + 2.
+- 15 pedidos: 5 plataformas, distribuídos em grupos 4 + 4 + 2 + 3 + 2.
+- Pedidos da mesma plataforma compartilham clientId, clientName e coordenadas.
+- Janelas, commodities, quantidades, eficiências e prioridades são copiadas da instância-base.
+- Referências successor só são mantidas quando o pedido relacionado existe no mesmo grupo.
+- Referências externas de transshipment são removidas para não apontarem para pedidos inexistentes.
+
+Base Campos: PACU, mantida da instância original.
+Base Santos: ponto de referência do fundeadouro do Porto de Santos.

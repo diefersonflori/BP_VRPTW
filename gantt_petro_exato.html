@@ -413,7 +413,7 @@ function carregarDados(){
   const script = document.createElement("script");
 
   // Date.now() evita que o navegador reaproveite a solucao anterior do cache.
-  script.src = "visualizacao_dados_exato.js?v=" + Date.now();
+  script.src = "PlotJS/visualizacao_dados_exato.js?v=" + Date.now();
 
   script.onload = ()=>{
     if (typeof DADOS !== "undefined" && !window.DADOS) window.DADOS = DADOS;

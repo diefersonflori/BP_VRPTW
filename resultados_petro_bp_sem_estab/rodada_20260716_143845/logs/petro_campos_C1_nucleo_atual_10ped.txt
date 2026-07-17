@@ -1,0 +1,118 @@
+==========================================================================================
+INSTANCIA: petro_campos_C1_nucleo_atual_10ped
+MODO: B&P sem estabilizacao
+TIME_LIMIT_BP: 3600 s
+SM: 30
+PRICING: PD
+==========================================================================================
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json
+Clientes: 10 | Navios: 3 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+P-09_order_1     30.0     30.0      0.0      0.0      0.0  3600.00     6
+P-09_order_2     15.0      0.0     15.0      0.0      0.0  1800.00     6
+P-09_order_3      0.0      0.0      0.0      0.0    300.0 19182.95     6
+P-09_order_4     10.0      0.0     10.0      0.0      0.0  1200.00     6
+P-38_order_5     10.0     10.0      0.0      0.0      0.0  1200.00     3
+P-38_order_6     55.0     55.0      0.0      0.0      0.0  6600.00     3
+P-38_order_7     74.0      0.0     74.0      0.0      0.0  8880.00     3
+P-38_order_8      0.0      0.0      0.0    299.3      0.0 16153.89     3
+P-43_order_9    200.0    200.0      0.0      0.0      0.0 24000.00     6
+P-43_order_10     80.0      0.0     80.0      0.0      0.0  9600.00     6
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 474.0  (capacidade 900)
+Diesel total: 299.3 (stock 500) | Agua total: 300.0 (stock 400)
+base -> P-09_order_1:   94.2 km     24013 s
+base -> P-09_order_2:   94.2 km     24013 s
+base -> P-09_order_3:   94.2 km     24013 s
+base -> P-09_order_4:   94.2 km     24013 s
+base -> P-38_order_5:  120.1 km     29606 s
+base -> P-38_order_6:  120.1 km     29606 s
+base -> P-38_order_7:  120.1 km     29606 s
+base -> P-38_order_8:  120.1 km     29606 s
+base -> P-43_order_9:  109.1 km     27230 s
+base -> P-43_order_10:  109.1 km     27230 s
+======================================================================
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 4, 3, 2, 1, 11]
+  custo = 46190.0000 | artificial = False
+Veículo 1: [0, 10, 9, 11]
+  custo = 52624.0000 | artificial = False
+Veículo 2: [0, 7, 6, 5, 8, 11]
+  custo = 57376.0000 | artificial = False
+Custo inicial inteiro = 156190.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 3 navios (navio pode ficar na base)
+[GANTT] dados exportados em C:\Users\PolyanaSilva\Documents\BP_VRPTW\resultados_petro_bp_sem_estab\rodada_20260716_143845\visualizacoes\petro_campos_C1_nucleo_atual_10ped_construtiva.js
+
+==========================================================================================
+INICIO DO BRANCH-AND-PRICE
+==========================================================================================
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+[Nó 0] Iter 0 - Obj = 100000.0000  Colunas = 6 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json Colunas ativas na iteração 0: 
+   veic=0 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 11]
+   veic=1 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 11]
+   veic=2 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 11]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 0.000000
+
+   valor recomposto = 0.000000
+[Nó 0] slack_total=10.000000 (vis=10.000000, arc=0.000000) inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=0.000000 | slack=1.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10000.000000
+  pi[2] =  10000.000000
+  pi[3] =  10000.000000
+  pi[4] =  10000.000000
+  pi[5] =  10000.000000
+  pi[6] =  10000.000000
+  pi[7] =  10000.000000
+  pi[8] =  10000.000000
+  pi[9] =  10000.000000
+  pi[10] =  10000.000000
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+[PETRO] pricing exato via C++ (sub_prog_din_petro)

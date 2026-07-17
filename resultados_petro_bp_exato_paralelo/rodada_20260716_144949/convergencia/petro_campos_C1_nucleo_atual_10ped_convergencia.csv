@@ -1,0 +1,5 @@
+﻿instancia;iteracao;no_id;LB_frac;UB_mip_iter;UB_mip_periodico;melhor_UB;gap_%;n_colunas_pool;tempo
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json;0;0;100000.0;;;;;6;64.60160398483276
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json;1;0;72577.0;72577.0;;72577.0;0.0;9;86.53985786437988
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json;2;0;72577.0;72577.0;;72577.0;0.0;10;107.7260172367096
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C1_nucleo_atual_10ped.json;3;0;72577.0;72577.0;;72577.0;0.0;11;142.02175974845886

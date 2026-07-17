@@ -1,0 +1,6 @@
+﻿instancia;iteracao;no_id;LB_frac;UB_mip_iter;UB_mip_periodico;melhor_UB;gap_%;n_colunas_pool;tempo
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_10ped.json;0;0;100000.0;;;;;6;0.10145878791809082
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_10ped.json;1;0;74182.0;74182.0;;74182.0;0.0;9;0.2014789581298828
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_10ped.json;2;0;74182.0;74182.0;;74182.0;0.0;10;0.22101259231567383
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_10ped.json;3;0;74182.0;74182.0;;74182.0;0.0;11;56.74852466583252
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_10ped.json;4;0;74182.0;74182.0;;74182.0;0.0;12;56.75779700279236

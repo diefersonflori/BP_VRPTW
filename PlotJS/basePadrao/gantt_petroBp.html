@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-<title>Gantt PSV — construtiva</title>
+<title>Gantt PSV — validação do cronograma</title>
 <style>
   :root{
     --ink:#12263a; --grid:#d8dee6; --band:#eef1f5; --band-usada:#dde6ee;
@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<h2>Cronograma da solução (Gantt) — CONSTRUTIVA</h2>
+<h2>Cronograma da solução (Gantt)</h2>
 <div class="sub" id="cabecalho">carregando…</div>
 
 <div id="entrada" style="display:none">
@@ -413,7 +413,7 @@ function carregarDados(){
   const script = document.createElement("script");
 
   // Date.now() evita que o navegador reaproveite a solucao anterior do cache.
-  script.src = "PlotJS/visualizacao_dados_construtiva.js?v=" + Date.now();
+  script.src = "petroBP.js?v=" + Date.now();
 
   script.onload = ()=>{
     if (typeof DADOS !== "undefined" && !window.DADOS) window.DADOS = DADOS;
