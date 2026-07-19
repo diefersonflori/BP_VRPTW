@@ -1,0 +1,228 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_15ped.json
+Clientes: 15 | Navios: 3 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+P-38_order_1     30.0     30.0      0.0      0.0      0.0  3600.00     6
+P-38_order_2     15.0      0.0     15.0      0.0      0.0  1800.00     6
+P-38_order_3      0.0      0.0      0.0      0.0    300.0 19182.95     6
+P-38_order_4     10.0      0.0     10.0      0.0      0.0  1200.00     6
+P-40_order_5     10.0     10.0      0.0      0.0      0.0  1200.00     3
+P-40_order_6     55.0     55.0      0.0      0.0      0.0  6600.00     3
+P-40_order_7     74.0      0.0     74.0      0.0      0.0  8880.00     3
+P-40_order_8      0.0      0.0      0.0    299.3      0.0 16153.89     3
+P-51_order_9    200.0    200.0      0.0      0.0      0.0 24000.00     6
+P-51_order_10     80.0      0.0     80.0      0.0      0.0  9600.00     6
+FPANE_order_11     55.0     55.0      0.0      0.0      0.0  6600.00     3
+FPANE_order_12     74.0      0.0     74.0      0.0      0.0  8880.00     3
+FPANE_order_13      0.0      0.0      0.0    299.3      0.0 16153.89     3
+P-56_order_14    200.0    200.0      0.0      0.0      0.0 24000.00     6
+P-56_order_15     80.0      0.0     80.0      0.0      0.0  9600.00     6
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 883.0  (capacidade 900)
+Diesel total: 598.6 (stock 500) | Agua total: 300.0 (stock 400)
+base -> P-38_order_1:  120.1 km     29606 s
+base -> P-38_order_2:  120.1 km     29606 s
+base -> P-38_order_3:  120.1 km     29606 s
+base -> P-38_order_4:  120.1 km     29606 s
+base -> P-40_order_5:  123.5 km     30337 s
+base -> P-40_order_6:  123.5 km     30337 s
+base -> P-40_order_7:  123.5 km     30337 s
+base -> P-40_order_8:  123.5 km     30337 s
+base -> P-51_order_9:  127.8 km     31273 s
+base -> P-51_order_10:  127.8 km     31273 s
+base -> FPANE_order_11:  118.7 km     29305 s
+base -> FPANE_order_12:  118.7 km     29305 s
+base -> FPANE_order_13:  118.7 km     29305 s
+base -> P-56_order_14:  135.0 km     32840 s
+base -> P-56_order_15:  135.0 km     32840 s
+======================================================================
+[PLOTJS] pasta da instancia: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\petro_campos_C2_leste_compacto_15ped_15nos_3veiculos
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 4, 3, 2, 1, 16]
+  custo = 57376.0000 | artificial = False
+Veículo 1: [0, 10, 9, 15, 14, 11, 13, 12, 16]
+  custo = 76790.0000 | artificial = False
+Veículo 2: [0, 6, 5, 8, 7, 16]
+  custo = 58838.0000 | artificial = False
+Custo inicial inteiro = 193004.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 3 navios (navio pode ficar na base)
+[CONSTRUT] petro_campos_C2_leste_compacto_15ped_15nos_3veiculos | custo=193004.0 | art=0 | V0:[4, 3, 2, 1] | V1:[10, 9, 15, 14, 11, 13, 12] | V2:[6, 5, 8, 7]
+[GANTT] dados exportados em C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\petro_campos_C2_leste_compacto_15ped_15nos_3veiculos\petroConstr.js
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+[Nó 0] Iter 0 - Obj = 193004.0000  Colunas = 6 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_15ped.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_15ped.json Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=57376.0000 | rota=[0, 4, 3, 2, 1, 16]
+   veic=1 | col=0 | lambda=1.000000 | custo=76790.0000 | rota=[0, 10, 9, 15, 14, 11, 13, 12, 16]
+   veic=2 | col=0 | lambda=1.000000 | custo=58838.0000 | rota=[0, 6, 5, 8, 7, 16]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 193004.000000
+
+   valor recomposto = 193004.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  1000000.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  1000000.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] =  1000000.000000
+  pi[13] =  1000000.000000
+  pi[14] =  1000000.000000
+  pi[15] =  1000000.000000
+
+SIGMA (veículos):
+  sigma[0] = -3942624.000000
+  sigma[1] = -6923210.000000
+  sigma[2] = -3941162.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=2
+rc=-10968396.000000
+custo=90442.000000
+seq=[0, 1, 2, 3, 4, 8, 7, 6, 5, 9, 10, 15, 14, 12, 13, 11, 16]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=0
+rc=-10967338.000000
+custo=90038.000000
+seq=[0, 3, 2, 4, 1, 10, 9, 15, 14, 8, 6, 7, 5, 12, 13, 11, 16]
+TESTA ALLBEST
+
+[ALLBEST GEROU CANDIDATA]
+k=1
+rc=-7978920.000000
+custo=97870.000000
+seq=[0, 11, 13, 12, 6, 5, 8, 14, 15, 9, 10, 3, 2, 4, 1, 7, 16]
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 0.4s
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 1, 2, 3, 4, 8, 7, 6, 5, 9, 10, 15, 14, 12, 13, 11, 16]
+Custo: 90442.00
+Custo Reduzido: -10968396.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 3, 2, 4, 1, 10, 9, 15, 14, 8, 6, 7, 5, 12, 13, 11, 16]
+Custo: 90038.00
+Custo Reduzido: -10967338.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 13, 12, 6, 5, 8, 14, 15, 9, 10, 3, 2, 4, 1, 7, 16]
+Custo: 97870.00
+Custo Reduzido: -7978920.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+[Nó 0] Iter 1 - Obj = 90038.0000  Colunas = 15 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_15ped.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\petro_campos_C2_leste_compacto_15ped.json Colunas ativas na iteração 1: 
+   veic=0 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 16]
+   veic=1 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 16]
+   veic=2 | col=3 | lambda=1.000000 | custo=90038.0000 | rota=[0, 3, 2, 4, 1, 10, 9, 15, 14, 8, 6, 7, 5, 12, 13, 11, 16]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 90038.000000
+
+   valor recomposto = 90038.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  1000000.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] = -2942624.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] = -3044128.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] =  1000000.000000
+  pi[13] =  1000000.000000
+  pi[14] =  1000000.000000
+  pi[15] = -5923210.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+TESTA ALLBEST

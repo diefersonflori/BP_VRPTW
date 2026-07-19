@@ -88,6 +88,7 @@ class NoBP:
         self.iter_int_target = None
         self.tempo_lp_target = None
         self.tempo_int_target = None
+        self.pricing_timeout = False
         ######
 
     def criaMatriRC(self, inst):
@@ -130,6 +131,7 @@ class Metodos:
 
         # estabilizacao
         self.pi_antigo = []
+        self._ultimo_timeout_cpp = False
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -4486,127 +4488,96 @@ class Metodos:
 
         return self._vrptw_pd_mod_cache
 
-    def SUB_PROG_DIN_PETRO_CPP(self, inst, pi, sigma_k, k, NO_BP=None, mu_arc=None, eps=1e-6):
-        """Porta C++ (pybind11, vrptw_pd.sub_prog_din_petro) do SUB_PROG_DIN_PETRO:
-        mesma montagem de dados (tt/mu_flat/forbid_flat/req_i/req_j) que
-        SUB_PROG_DIN_BIDIRECIONAL_CPP usa hoje, com multi-janela (READY_TIME/DUE_DATE
-        completos) e os 3 recursos do Petro (deck/diesel/agua)."""
+    def _montar_dados_petro_cpp(self, inst, k, NO_BP=None, mu_arc=None):
         import numpy as np
-
-        vrptw_pd = self._get_vrptw_pd_module()
-        if vrptw_pd is None or not hasattr(vrptw_pd, "sub_prog_din_petro"):
-            raise RuntimeError("vrptw_pd.sub_prog_din_petro indisponivel (modulo C++ nao recompilado)")
-
-        nbn = inst.nbn
-        nbcd = inst.nbcd
-        dep0 = 0
-        depf = inst.nbn - 1
-
-        tt = np.array([
-            [inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade for j in range(nbn)]
-            for i in range(nbn)
-        ], dtype=np.float64)
-
-        aw, bw, s, d, d_diesel, d_agua = [], [], [], [], [], []
+        nbn, nbcd, dep0, depf = inst.nbn, inst.nbcd, 0, inst.nbn - 1
+        tt = np.array([[inst.matriz_distancia[i][j] / inst.veiculos[k].velocidade for j in range(nbn)] for i in range(nbn)], dtype=np.float64)
+        aw, bw, s, d_deck, b_deck, d_diesel, d_agua = [], [], [], [], [], [], []
         for i in range(nbn):
             noh = inst.noh[i]
             aw.append(list(noh.READY_TIME) if hasattr(noh, "READY_TIME") and noh.READY_TIME else [0.0])
             bw.append(list(noh.DUE_DATE) if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else [1e9])
             s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
-            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+            d_deck.append(getattr(noh, "DEMAND_DECK_LOAD", 0.0))
+            b_deck.append(getattr(noh, "DEMAND_DECK_BACKLOAD", 0.0))
             d_diesel.append(getattr(noh, "DEMAND_DIESEL", 0.0))
             d_agua.append(getattr(noh, "DEMAND_AGUA", 0.0))
+        plataforma_id = [-1] * nbn
+        mapa_plataformas = {}
+        nomes = inst.dados_petro["nomes"]
 
-        cap_deck = float(inst.veiculos[k].capacidade)
-        cap_diesel = float(inst.veiculos[k].cap_diesel)
-        cap_agua = float(inst.veiculos[k].cap_agua)
+        for i in range(1, nbcd + 1):
+            nome = str(nomes[i])
 
-        if mu_arc is None:
-            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
-        else:
-            mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+            if "_order_" in nome:
+                plataforma = nome.split("_order_", 1)[0]
+            elif "_order" in nome:
+                plataforma = nome.split("_order", 1)[0]
+            else:
+                plataforma = nome
+
+            if plataforma not in mapa_plataformas:
+                mapa_plataformas[plataforma] = len(mapa_plataformas)
+
+            plataforma_id[i] = mapa_plataformas[plataforma]
+
+        mu_flat = np.zeros(nbn * nbn, dtype=np.float64)
+        if mu_arc:
             for key, val in mu_arc.items():
                 if len(key) == 3:
                     i, j, kk = key
-                    if kk != k:
-                        continue
+                    if kk != k: continue
                 else:
                     i, j = key
                 mu_flat[i * nbn + j] = float(val)
-
-        arcos_proibidos = NO_BP.arcos_proibidos if NO_BP else None
-        arcos_fixados = NO_BP.arcos_fixados_em_1 if NO_BP else None
-
         forbid_flat = np.zeros(nbn * nbn, dtype=np.uint8)
-        if arcos_proibidos:
-            for arco in arcos_proibidos:
+        if NO_BP and NO_BP.arcos_proibidos:
+            for arco in NO_BP.arcos_proibidos:
                 if len(arco) == 3:
                     i, j, kk = arco
-                    if kk != k:
-                        continue
+                    if kk != k: continue
                 else:
                     i, j = arco
                 forbid_flat[i * nbn + j] = 1
-
         req_i, req_j = [], []
-        if arcos_fixados:
-            for arco in arcos_fixados:
+        if NO_BP and NO_BP.arcos_fixados_em_1:
+            for arco in NO_BP.arcos_fixados_em_1:
                 if len(arco) == 3:
                     i, j, kk = arco
-                    if kk != k:
-                        continue
+                    if kk != k: continue
                 else:
                     i, j = arco
-                req_i.append(i)
-                req_j.append(j)
+                req_i.append(i); req_j.append(j)
 
-        rota, rc = vrptw_pd.sub_prog_din_petro(
-            tt=tt,
-            aw=aw,
-            bw=bw,
-            s=s,
-            d=d,
-            d_diesel=d_diesel,
-            d_agua=d_agua,
-            pi=list(map(float, pi)),
-            sigma_k=float(sigma_k),
-            cap_deck=cap_deck,
-            cap_diesel=cap_diesel,
-            cap_agua=cap_agua,
-            nbcd=nbcd,
-            dep0=dep0,
-            depf=depf,
-            mu_flat=mu_flat.tolist(),
-            forbid_flat=forbid_flat.tolist(),
-            req_i=req_i,
-            req_j=req_j,
-            max_labels_por_no=1000000000,
-            eps=float(eps),
-        )
+        return tt, aw, bw, s, d_deck, b_deck, d_diesel, d_agua, plataforma_id, float(
+            inst.veiculos[k].capacidade), float(inst.veiculos[k].cap_diesel), float(
+            inst.veiculos[k].cap_agua), nbcd, dep0, depf, mu_flat, forbid_flat, req_i, req_j
+    def SUB_PROG_DIN_PETRO_CPP(self, inst, pi, sigma_k, k, NO_BP=None, mu_arc=None, eps=1e-6, timeout_s=15, max_labels_por_no=1_000_000_000):
+        vrptw_pd = self._get_vrptw_pd_module()
+        if vrptw_pd is None or not hasattr(vrptw_pd, "sub_prog_din_petro"): raise RuntimeError("vrptw_pd.sub_prog_din_petro indisponivel (modulo C++ nao recompilado)")
+        tt, aw, bw, s, d_deck, b_deck, d_diesel, d_agua, plataforma_id, cap_deck, cap_diesel, cap_agua, nbcd, dep0, depf, mu_flat, forbid_flat, req_i, req_j = self._montar_dados_petro_cpp(inst, k, NO_BP, mu_arc)
+        kwargs = {"tt": tt, "plataforma_id": plataforma_id,"aw": aw, "bw": bw, "s": s, "d_deck": d_deck, "b_deck": b_deck, "d_diesel": d_diesel, "d_agua": d_agua, "pi": list(map(float, pi)), "sigma_k": float(sigma_k), "cap_deck": cap_deck, "cap_diesel": cap_diesel, "cap_agua": cap_agua, "nbcd": nbcd, "dep0": dep0, "depf": depf, "mu_flat": mu_flat.tolist(), "forbid_flat": forbid_flat.tolist(), "req_i": req_i, "req_j": req_j, "max_labels_por_no": int(max_labels_por_no), "eps": float(eps)}
+        t0 = time.time(); rota, rc = self.chamar_cpp_timeout(vrptw_pd.sub_prog_din_petro, kwargs=kwargs, timeout=timeout_s)
+        print(f"[PETRO PD] k={k} | limite={timeout_s}s | tempo={time.time() - t0:.2f}s | timeout={self._ultimo_timeout_cpp}")
+        return (None, None) if rota is None else (rota, rc)
 
-        if rota is None:
-            return None, None
+    def SUB_PROG_DIN_BIDIRECIONAL_PETRO_CPP(self, inst, pi, sigma_k, k, NO_BP=None, mu_arc=None, eps=1e-6, timeout_s=5, max_labels_por_no=200, max_depth=None, max_combinacoes=200_000):
+        vrptw_pd = self._get_vrptw_pd_module()
+        if vrptw_pd is None or not hasattr(vrptw_pd, "sub_prog_din_bidirecional_petro"): raise RuntimeError("vrptw_pd.sub_prog_din_bidirecional_petro indisponivel; recompile o C++ em Release")
+        tt, aw, bw, s, d_deck, b_deck, d_diesel, d_agua, plataforma_id, cap_deck, cap_diesel, cap_agua, nbcd, dep0, depf, mu_flat, forbid_flat, req_i, req_j = self._montar_dados_petro_cpp(
+            inst, k, NO_BP, mu_arc)
+        if max_depth is None: max_depth = (nbcd + 2) // 2
+        kwargs = {"tt": tt,"plataforma_id": plataforma_id, "aw": aw, "bw": bw, "s": s, "d_deck": d_deck, "b_deck": b_deck, "d_diesel": d_diesel, "d_agua": d_agua, "pi": list(map(float, pi)), "sigma_k": float(sigma_k), "cap_deck": cap_deck, "cap_diesel": cap_diesel, "cap_agua": cap_agua, "nbcd": nbcd, "dep0": dep0, "depf": depf, "mu_flat": mu_flat.tolist(), "forbid_flat": forbid_flat.tolist(), "req_i": req_i, "req_j": req_j, "max_labels_por_no": int(max_labels_por_no), "max_depth": int(max_depth), "max_combinacoes": int(max_combinacoes), "eps": float(eps)}
+        t0 = time.time(); rota, rc = self.chamar_cpp_timeout(vrptw_pd.sub_prog_din_bidirecional_petro, kwargs=kwargs, timeout=timeout_s)
+        print(f"[PETRO BID] k={k} | limite={timeout_s}s | labels={max_labels_por_no} | depth={max_depth} | tempo={time.time() - t0:.2f}s | timeout={self._ultimo_timeout_cpp}")
+        return (None, None) if rota is None else (rota, rc)
 
-        return rota, rc
-
-    def _petro_pricing_exato(self, inst, pi, sigma_k, k, no_bp=None, mu_arc=None):
-        """Ponto unico de despacho do pricing exato Petro: usa a porta C++
-        (vrptw_pd.sub_prog_din_petro) se o modulo compilado ja tiver essa funcao,
-        senao cai para o SUB_PROG_DIN_PETRO em Python (fronteira multi-janela +
-        deck/diesel/agua, mesma logica)."""
+    def _petro_pricing_exato(self, inst, pi, sigma_k, k, no_bp=None, mu_arc=None, timeout_s=15, max_labels_por_no=1_000_000_000):
         vrptw_pd = self._get_vrptw_pd_module()
         usa_cpp = vrptw_pd is not None and hasattr(vrptw_pd, "sub_prog_din_petro")
         print(f"[PETRO] pricing exato via {'C++ (sub_prog_din_petro)' if usa_cpp else 'Python (SUB_PROG_DIN_PETRO)'}")
-
-        if usa_cpp:
-            return self.SUB_PROG_DIN_PETRO_CPP(inst, pi, sigma_k, k, NO_BP=no_bp, mu_arc=mu_arc)
-
-        return self.SUB_PROG_DIN_PETRO(
-            inst, pi, sigma_k, k,
-            arcos_proibidos=no_bp.arcos_proibidos if no_bp else None,
-            arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None,
-            mu_arc=mu_arc
-        )
+        if usa_cpp: return self.SUB_PROG_DIN_PETRO_CPP(inst, pi, sigma_k, k, NO_BP=no_bp, mu_arc=mu_arc, timeout_s=timeout_s, max_labels_por_no=max_labels_por_no)
+        return self.SUB_PROG_DIN_PETRO(inst, pi, sigma_k, k, arcos_proibidos=no_bp.arcos_proibidos if no_bp else None, arcos_fixados=no_bp.arcos_fixados_em_1 if no_bp else None, mu_arc=mu_arc)
 
     def SUB_PROG_DIN_BIDIRECIONAL(self, inst, pi, sigma_k, k, NO_BP,
                                   arcos_proibidos=None, arcos_fixados=None, mu_arc=None,
@@ -10005,6 +9976,11 @@ class Metodos:
             if not novas_colunas:
                 print("SEM NOVAS COLUNAS")
                 print(f"RODADA SEM MELHORA {rodadas_sem_melhoria}")
+                if getattr(no_bp, "pricing_timeout", False):
+                    no_bp.cg_convergiu = False
+                    sol_pool.motivoConv = "pricing_timeout_cpp"
+                    print("[FALHA CG] O pricing completo terminou por timeout; o LB nao sera certificado.")
+                    break
 
                 if inst.temmip and rodadas_sem_melhoria >= nmaxrodadas_sem_melhoria and colunas_reais_usadas:
                     rodadas_sem_melhoria = 0
@@ -10282,12 +10258,14 @@ class Metodos:
                     and fase_final_sem_estab
                     and (no_bp.slack_sum_final <= 1e-9)
                     and (not no_bp.parou_por_max_iter)
+                    and (not getattr(no_bp, "pricing_timeout", False))
             )
         else:
             no_bp.lb_confiavel = (
                     no_bp.cg_convergiu
                     and (no_bp.slack_sum_final <= 1e-9)
                     and (not no_bp.parou_por_max_iter)
+                    and (not getattr(no_bp, "pricing_timeout", False))
             )
 
         if no_bp.slack_sum_final > 1e-9:
@@ -11328,6 +11306,7 @@ class Metodos:
     def gerar_novas_colunas_com_duais11(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, EPS_RC):
 
         novas_colunas = []
+        no_bp.pricing_timeout = False
         ks = list(sol_pool.rotas.keys())
 
         # round-robin
@@ -11392,9 +11371,8 @@ class Metodos:
                     # CPPP
                     t0 = time.time()
                     if hasattr(inst, "dados_petro"):
-                        rota, rc = self._petro_pricing_exato(
-                            inst, pi, sigma[k], k, no_bp=no_bp, mu_arc=mu_arc
-                        )
+                        print("TESTA BID PETRO")
+                        rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_PETRO_CPP(inst, pi, sigma[k], k, NO_BP=no_bp, mu_arc=mu_arc, eps=EPS_RC, timeout_s=5, max_labels_por_no=200, max_depth=None, max_combinacoes=200_000)
                     else:
                         print("TESTA BID")
                         rota, rc = self.SUB_PROG_DIN_BIDIRECIONAL_CPP(
@@ -11462,9 +11440,11 @@ class Metodos:
             if melhor_rota is None:
                 # PD COMPLETA
                 if hasattr(inst, "dados_petro"):
-                    rota, rc = self._petro_pricing_exato(
-                        inst, pi, sigma[k], k, no_bp=no_bp, mu_arc=mu_arc
-                    )
+                    print("TESTA PETRO PD COMPLETA")
+                    rota, rc = self._petro_pricing_exato(inst, pi, sigma[k], k, no_bp=no_bp, mu_arc=mu_arc, timeout_s=15, max_labels_por_no=1_000_000_000)
+                    if self._ultimo_timeout_cpp:
+                        no_bp.pricing_timeout = True
+                        print(f"[PETRO] PD completa excedeu 15s no veiculo {k}; convergencia nao certificada.")
                 else:
                     print("TESTa completo")
                     rota, rc = self.SUB_PROG_DIN_PW_CPP_NOVA(
@@ -11496,15 +11476,18 @@ class Metodos:
                 sol_pool.construtivas[metodo_escolhido] += 1
 
             if float(melhor_custo_red) < -EPS_RC:
-                seq = melhor_rota["clientes"]
+                seq = list(melhor_rota["clientes"])
 
                 if not self.coluna_respeita_no(no_bp, seq, k):
                     continue
 
+                # Proteção final comum para ALLBEST, BID e PD completa.
+                if hasattr(inst, "dados_petro") and not sol_pool.viavel_cargas_petro(inst, k, seq):
+                    print(f"[DESCARTA PETRO] k={k} | rota viola coleta antes da entrega por plataforma | seq={seq}")
+                    continue
+
                 melhor_rota["custo_reduzido"] = float(melhor_custo_red)
 
-                """
-                """
                 novas_colunas.append((
                     k,
                     seq,
@@ -11512,7 +11495,6 @@ class Metodos:
                     melhor_rota["custo"],
                     float(melhor_custo_red)
                 ))
-
                 # tabu
                 mat = no_bp.tabu_until[k]
                 for i in range(inst.nbn):
@@ -12582,7 +12564,7 @@ class Metodos:
                         for k in K for i in V for j in V if i != j),
             GRB.MINIMIZE
         )
-        model.Params.TimeLimit = 12000
+        model.Params.TimeLimit = 1200
         """
         T_retorno = model.addVar(vtype=GRB.CONTINUOUS, name='T_retorno')
         model.addConstr(
@@ -12612,18 +12594,48 @@ class Metodos:
                 )
 
         # Restrições de capacidade e fluxo de carga
-        for k in K:
-            Q = inst.veiculos[k].capacidade
-            model.addConstr(u[0, k] == 0, name=f"carga_deposito_{k}")
-            for i in V:
-                model.addConstr(u[i, k] <= Q, name=f'capacidade_max_{i}_{k}')
-                for j in clientes:
-                    if i != j:
-                        demand_j = inst.noh[j].DEMAND
-                        model.addConstr(
-                            u[j, k] >= u[i, k] + demand_j - Q * (1 - x[i, j, k]),
-                            name=f'fluxo_carga_{i}_{j}_{k}'
-                        )
+        if hasattr(inst, "dados_petro"):
+            # Petro: u[i,k] = ocupação do convés APÓS servir i (coleta backload
+            # e entrega deck do nó i). O pico de ocupação de uma visita ocorre
+            # antes da entrega (ao coletar o backload), por isso a restrição
+            # de pico usa a ocupação do nó anterior + backload do nó atual.
+            dp = inst.dados_petro
+            for k in K:
+                Q = getattr(inst.veiculos[k], "cap_deck", inst.veiculos[k].capacidade)
+                model.addConstr(
+                    u[0, k] == gp.quicksum(
+                        dp["dem_deck_load"][i] * gp.quicksum(x[j, i, k] for j in V if j != i)
+                        for i in clientes
+                    ),
+                    name=f"carga_deposito_{k}"
+                )
+                for i in V:
+                    model.addConstr(u[i, k] <= Q, name=f'capacidade_max_{i}_{k}')
+                    for j in clientes:
+                        if i != j:
+                            d_j = dp["dem_deck_load"][j]
+                            b_j = dp["dem_deck_backload"][j]
+                            model.addConstr(
+                                u[j, k] >= u[i, k] + b_j - d_j - Q * (1 - x[i, j, k]),
+                                name=f'fluxo_carga_{i}_{j}_{k}'
+                            )
+                            model.addConstr(
+                                u[i, k] + b_j <= Q + Q * (1 - x[i, j, k]),
+                                name=f'pico_carga_{i}_{j}_{k}'
+                            )
+        else:
+            for k in K:
+                Q = inst.veiculos[k].capacidade
+                model.addConstr(u[0, k] == 0, name=f"carga_deposito_{k}")
+                for i in V:
+                    model.addConstr(u[i, k] <= Q, name=f'capacidade_max_{i}_{k}')
+                    for j in clientes:
+                        if i != j:
+                            demand_j = inst.noh[j].DEMAND
+                            model.addConstr(
+                                u[j, k] >= u[i, k] + demand_j - Q * (1 - x[i, j, k]),
+                                name=f'fluxo_carga_{i}_{j}_{k}'
+                            )
 
         # recursos por compartimento (Petro): diesel e agua por navio
         if hasattr(inst, "dados_petro"):
@@ -14620,13 +14632,18 @@ class Metodos:
         depf = nbn - 1
 
         # ------------------ dados ------------------
-        a, b, s, d, dd, da = [], [], [], [], [], []
+        # d_deck/b_deck: entrega e backload de convés por nó (convés
+        # embarca no depósito e desembarca ao longo da rota; o backload
+        # é coletado ANTES da entrega em cada visita - ver formalização
+        # em metodos.py:SUB_PROG_DIN_PETRO / solucao.viavel_cargas_petro)
+        a, b, s, d_deck, b_deck, dd, da = [], [], [], [], [], [], []
         for i in range(nbn):
             noh = inst.noh[i]
             a.append(noh.READY_TIME[0] if hasattr(noh, "READY_TIME") and noh.READY_TIME else 0.0)
             b.append(noh.DUE_DATE[0] if hasattr(noh, "DUE_DATE") and noh.DUE_DATE else float("inf"))
             s.append(noh.SERVICE_TIME[0] if hasattr(noh, "SERVICE_TIME") and noh.SERVICE_TIME else 0.0)
-            d.append(noh.DEMAND if hasattr(noh, "DEMAND") else 0.0)
+            d_deck.append(getattr(noh, "DEMAND_DECK_LOAD", 0.0))
+            b_deck.append(getattr(noh, "DEMAND_DECK_BACKLOAD", 0.0))
             dd.append(getattr(noh, "DEMAND_DIESEL", 0.0))
             da.append(getattr(noh, "DEMAND_AGUA", 0.0))
 
@@ -14661,12 +14678,16 @@ class Metodos:
 
         tol = 1e-6
 
-        def domina(cA, tA, qA, cB, tB, qB):
+        # dominância Pareto 3D: (custo, tempo, m). soma_d e net NÃO entram
+        # na dominância porque são determinados pela mask (mesma mask ->
+        # mesma soma_d/net); m depende da ORDEM de visita e por isso precisa
+        # ser comparado label a label.
+        def domina(cA, tA, mA, cB, tB, mB):
             return (
                     cA <= cB + tol and
                     tA <= tB + tol and
-                    qA <= qB + tol and
-                    (cA < cB - tol or tA < tB - tol or qA < qB - tol)
+                    mA <= mB + tol and
+                    (cA < cB - tol or tA < tB - tol or mA < mB - tol)
             )
 
         # fronteira por estado (no, mask_clientes) com lista de labels não dominados
@@ -14679,7 +14700,9 @@ class Metodos:
         rotulos.append({
             "no": dep0,
             "tempo": tempo_inicial,
-            "carga": 0.0,
+            "soma_d": 0.0,
+            "net": 0.0,
+            "m": 0.0,
             "diesel": 0.0,
             "agua": 0.0,
             "custo_mod": 0.0,
@@ -14701,7 +14724,9 @@ class Metodos:
 
             no_i = r_atual["no"]
             tempo_i = r_atual["tempo"]
-            carga_i = r_atual["carga"]
+            soma_d_i = r_atual["soma_d"]
+            net_i = r_atual["net"]
+            m_i = r_atual["m"]
             diesel_i = r_atual.get("diesel", 0.0)
             agua_i = r_atual.get("agua", 0.0)
             custo_mod_i = r_atual["custo_mod"]
@@ -14740,11 +14765,18 @@ class Metodos:
                         continue
                     nova_mask = mask_i | bit
 
-                # capacidade (deck)
-                nova_carga = carga_i
+                # capacidade (deck): recorrência soma_d/net/m (formalização
+                # do pico de ocupação de convés, coleta de backload antes
+                # da entrega em cada visita)
+                novo_soma_d = soma_d_i
+                novo_net = net_i
+                novo_m = m_i
                 if 1 <= j <= nbcd:
-                    nova_carga += d[j]
-                if nova_carga > cap_k:
+                    pico_cand = net_i + b_deck[j]
+                    novo_m = max(m_i, pico_cand)
+                    novo_net = net_i + b_deck[j] - d_deck[j]
+                    novo_soma_d = soma_d_i + d_deck[j]
+                if novo_soma_d + novo_m > cap_k + 1e-9:
                     continue
 
                 # capacidade (diesel/agua)
@@ -14783,8 +14815,8 @@ class Metodos:
                     r_old = rotulos[idx_old]
                     if not r_old.get("ativo", True):
                         continue
-                    if domina(r_old["custo_mod"], r_old["tempo"], r_old["carga"],
-                              custo_mod_novo, tempo_chegada, nova_carga):
+                    if domina(r_old["custo_mod"], r_old["tempo"], r_old["m"],
+                              custo_mod_novo, tempo_chegada, novo_m):
                         dominado = True
                         break
                 if dominado:
@@ -14795,8 +14827,8 @@ class Metodos:
                     r_old = rotulos[idx_old]
                     if not r_old.get("ativo", True):
                         continue
-                    if domina(custo_mod_novo, tempo_chegada, nova_carga,
-                              r_old["custo_mod"], r_old["tempo"], r_old["carga"]):
+                    if domina(custo_mod_novo, tempo_chegada, novo_m,
+                              r_old["custo_mod"], r_old["tempo"], r_old["m"]):
                         rotulos[idx_old]["ativo"] = False
                     else:
                         nova_lista.append(idx_old)
@@ -14804,7 +14836,9 @@ class Metodos:
                 novo_rotulo = {
                     "no": j,
                     "tempo": tempo_chegada,
-                    "carga": nova_carga,
+                    "soma_d": novo_soma_d,
+                    "net": novo_net,
+                    "m": novo_m,
                     "diesel": novo_diesel,
                     "agua": nova_agua,
                     "custo_mod": custo_mod_novo,
@@ -14820,7 +14854,10 @@ class Metodos:
                 fronteira[chave] = nova_lista
 
                 # =========================
-                # EARLY TEST: fechar no depósito final
+                # TESTE DE FECHAMENTO no depósito final: apenas ATUALIZA a
+                # melhor coluna encontrada até agora (não retorna) -- a busca
+                # continua completa e a melhor coluna é retornada só ao final,
+                # igual ao C++ (sub_prog_din_petro).
                 # =========================
                 if j != depf:
 
@@ -14838,13 +14875,20 @@ class Metodos:
                             custo_close -= float(mu_arc.get((j, depf), 0.0))
                             custo_close -= float(sigma_k)
 
-                            if custo_close < -1e-6:
+                            if custo_close < melhor_custo_reduzido:
+                                melhor_custo_reduzido = custo_close
 
-                                # cria rótulo final temporário
+                                # cria rótulo final temporário só para
+                                # reconstrução da rota ao final da busca
+                                # (fechamento em depf: nenhuma checagem extra
+                                # de convés é necessária além das podas já
+                                # aplicadas na extensão para j)
                                 rotulos.append({
                                     "no": depf,
                                     "tempo": tempo_close,
-                                    "carga": nova_carga,
+                                    "soma_d": novo_soma_d,
+                                    "net": novo_net,
+                                    "m": novo_m,
                                     "diesel": novo_diesel,
                                     "agua": nova_agua,
                                     "custo_mod": custo_close,
@@ -14852,32 +14896,7 @@ class Metodos:
                                     "pai": idx_novo,
                                     "ativo": True
                                 })
-
-                                idx_final = len(rotulos) - 1
-
-                                # reconstrói rota
-                                rota_reversa = []
-                                idx_tmp = idx_final
-                                while idx_tmp is not None:
-                                    rota_reversa.append(rotulos[idx_tmp]["no"])
-                                    idx_tmp = rotulos[idx_tmp]["pai"]
-
-                                rota = list(reversed(rota_reversa))
-
-                                custo_real = 0.0
-                                for t in range(len(rota) - 1):
-                                    custo_real += travel_time(rota[t], rota[t + 1])
-
-                                bin_xij = [0 for _ in range(nbcd)]
-                                for v in rota:
-                                    if 1 <= v <= nbcd:
-                                        bin_xij[v - 1] = 1
-
-                                return {
-                                    "clientes": rota,
-                                    "custo": custo_real,
-                                    "bin_xij": bin_xij
-                                }, custo_close
+                                melhor_indice = len(rotulos) - 1
 
         # ------------------ pós ------------------
         if melhor_indice is None:
@@ -15668,38 +15687,26 @@ class Metodos:
 
     def chamar_cpp_timeout(self, func_cpp, args=(), kwargs=None, timeout=600):
         from multiprocessing import Process, Queue
-
-        if kwargs is None:
-            kwargs = {}
-
-        q = Queue()
-
-        p = Process(
-            target=Metodos.worker_cpp,
-            args=(q, func_cpp, args, kwargs)
-        )
-
-        p.start()
-        p.join(timeout)
-
-        if not p.is_alive():
-            if not q.empty():
-                rota, custo, erro = q.get()
-
-                if erro is not None:
-                    print("Erro CPP:", erro)
-                    return None, None
-
-                return rota, custo
-
+        from queue import Empty
+        self._ultimo_timeout_cpp = False
+        if kwargs is None: kwargs = {}
+        q = Queue(); p = Process(target=Metodos.worker_cpp, args=(q, func_cpp, args, kwargs)); p.start(); p.join(timeout)
+        if p.is_alive():
+            self._ultimo_timeout_cpp = True
+            print(f"[TIMEOUT CPP] excedeu {timeout}s")
+            p.terminate(); p.join(); q.close(); q.join_thread()
             return None, None
-
-        print(f"[TIMEOUT CPP] excedeu {timeout}s")
-
-        p.terminate()
-        p.join()
-
-        return None, None
+        try:
+            rota, custo, erro = q.get(timeout=1)
+        except Empty:
+            print("[ERRO CPP] processo terminou sem retornar resultado")
+            return None, None
+        finally:
+            q.close(); q.join_thread()
+        if erro is not None:
+            print("Erro CPP:", erro)
+            return None, None
+        return rota, custo
 
     def SUB_PROG_DIN_PW_CPP_NOVA(self, inst, pi, sigma_k, k,
                                  arcos_proibidos=None, arcos_fixados=None, mu_arc=None,

@@ -1,2 +1,1 @@
 instancia;gamma_ini;gamma_max;SM;fo_bp;fo_target;gap_bks;nos_bp;colunas_bp;iteracoes;tempo_bp;motivo;lb_bp;lb_certificado
-instancias/Petro_instancias/10n-1k-3c-1r_testeUSP_v33.json;15;600;30;72575.0;-1;;1;12;5;247.2531;convergiu_sem_coluna_negativa;72575.0;True

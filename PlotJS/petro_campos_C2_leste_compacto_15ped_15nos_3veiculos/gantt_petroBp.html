@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<title>Gantt PSV — validação do cronograma</title>
+<style>
+  :root{
+    --ink:#12263a; --grid:#d8dee6; --band:#eef1f5; --band-usada:#dde6ee;
+    --nav:#3e6d9c; --espera:#b9c4cf; --alerta:#c0392b; --fundo:#ffffff;
+  }
+  body{ font-family:"Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--fundo);
+        margin:24px; font-variant-numeric:tabular-nums; }
+  h2{ margin:0 0 2px 0; font-weight:600; letter-spacing:.2px; }
+  .sub{ color:#5a6b7c; font-size:13px; margin-bottom:14px; }
+  .painel{ margin:18px 0 30px 0; }
+  .legenda{ font-size:12px; color:#40556a; margin:6px 0 12px 0; }
+  .legenda span{ display:inline-block; margin-right:16px; }
+  .chip{ display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:4px; }
+  .chip.hachura{ background:repeating-linear-gradient(45deg,#fff,#fff 2px,var(--espera) 2px,var(--espera) 4px); border:1px solid var(--espera); }
+  svg{ display:block; }
+  #entrada{ border:1px dashed #9fb0c0; padding:14px; border-radius:6px; margin-bottom:16px;
+            font-size:13px; color:#40556a; background:#fafbfc; }
+  canvas{ border:1px solid var(--grid); }
+  #mapa{ height:620px; width:100%; max-width:1180px; border:1px solid var(--grid); }
+  .aviso{ color:var(--alerta); font-size:12px; }
+</style>
+</head>
+<body>
+
+<h2>Cronograma da solução (Gantt)</h2>
+<div class="sub" id="cabecalho">carregando…</div>
+
+<div id="entrada" style="display:none">
+  <code>petroBP.js</code> não encontrado nesta pasta — rode o B&P (instância Petro) para gerá-lo e recarregue a página (F5).
+</div>
+
+<div class="legenda" id="legenda"></div>
+<div class="painel"><svg id="gantt"></svg></div>
+
+<h2>Mapa das rotas</h2>
+<div class="sub">OpenStreetMap — clique numa plataforma, na base ou numa rota para ver detalhes no painel</div>
+<div class="painel" style="display:flex; gap:14px; align-items:stretch;">
+  <div id="mapa" style="flex:1 1 auto;"></div>
+  <div id="painel-info" style="flex:0 0 340px; border:1px solid var(--grid); border-radius:6px; padding:12px; font-size:13px; overflow-y:auto; max-height:620px;">Clique em uma plataforma, na base ou em uma rota para ver os detalhes aqui.</div>
+</div>
+
+<!-- o petroBP.js e carregado abaixo sem usar cache -->
+<script>
+// ============================ paleta por plataforma ============================
+const CORES_PLAT = ["#1f8a8c","#d9862b","#7a5cc5","#2f7d3b","#b3486f","#946200"];
+const corPlat = {};
+function corDaPlataforma(nome){
+  if(!(nome in corPlat)) corPlat[nome] = CORES_PLAT[Object.keys(corPlat).length % CORES_PLAT.length];
+  return corPlat[nome];
+}
+
+// ============================ carregamento ============================
+function dadosProntos(){
+  return !!(window.DADOS && Array.isArray(window.DADOS.navios));
+}
+// ============================ GANTT (SVG) ============================
+function desenharGantt(){
+  const svg = document.getElementById("gantt");
+  svg.innerHTML = "";
+  const D = window.DADOS;
+  const H = D.horizonte_h || 168;
+
+  // geometria
+  const mEsq = 150, mDir = 30, mTopo = 26;
+  const largura = 1180, escX = (largura - mEsq - mDir) / H;
+  const altLinha = 20, altNavio = 16, gapVisita = 4, gapNavio = 26;
+
+  // conta linhas p/ altura total
+  let linhas = 0;
+  D.navios.forEach(n=>{ linhas += n.ocioso ? 1.4 : (1.6 + n.visitas.length); });
+  const altura = mTopo + linhas*(altLinha+gapVisita) + D.navios.length*gapNavio + 40;
+  svg.setAttribute("width", largura); svg.setAttribute("height", altura);
+
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt)=>{ const e=document.createElementNS(NS,tag);
+    for(const k in at) e.setAttribute(k, at[k]); if(txt!=null) e.textContent=txt; svg.appendChild(e); return e; };
+  const X = h => mEsq + h*escX;
+
+  // eixo do tempo: grade a cada 12 h, rótulo a cada 24 h
+  for(let h=0; h<=H; h+=12){
+    el("line", {x1:X(h), y1:mTopo-8, x2:X(h), y2:altura-26,
+                stroke:"var(--grid)", "stroke-width": h%24? .5:1});
+    if(h%24===0) el("text",{x:X(h), y:mTopo-12, "font-size":10, fill:"#7c8b9a",
+                            "text-anchor":"middle"}, h+" h");
+  }
+
+  let y = mTopo + 6;
+  D.navios.forEach(n=>{
+    // título do navio
+if(n.ocioso){
+      el("text",{x:8, y:y+12, "font-size":13, "font-weight":600, fill:"var(--ink)"},
+         `Navio ${n.k} — ${n.nome}  ·  OCIOSO (fica na base)`);
+y += altLinha + gapNavio; return;
+    }
+    el("text",{x:8, y:y+12, "font-size":13, "font-weight":600, fill:"var(--ink)"},
+       `Navio ${n.k} — ${n.nome}`);
+    el("text",{x:8, y:y+27, "font-size":10.5, fill:"#5a6b7c"},
+       `naveg ${n.navegacao_h.toFixed(1)} h · serviço ${n.servico_h.toFixed(1)} h · espera ${n.espera_h.toFixed(1)} h · retorno ${n.retorno_h.toFixed(1)} h`);
+
+    // linha do navio: navegação / espera / serviço agregado
+    const yN = y + 2;
+    n.segmentos.forEach(s=>{
+      if(s.tipo==="nav")
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:"var(--nav)", rx:2});
+      else if(s.tipo==="espera")
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:"url(#hachura)", stroke:"var(--espera)", "stroke-width":.6, rx:2});
+      else
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:corDaPlataforma(s.plataforma||""), opacity:.45, rx:2});
+    });
+    y += altLinha + 14;
+
+    // uma linha por visita: faixas de janelas + barra de serviço
+    n.visitas.forEach(v=>{
+      const cor = corDaPlataforma(v.plataforma);
+      el("text",{x:mEsq-8, y:y+13, "font-size":11, fill:"var(--ink)", "text-anchor":"end"}, v.nome);
+      // todas as janelas do nó (faixas)
+      (v.janelas||[]).forEach((j,idx)=>{
+        el("rect",{x:X(j[0]), y:y+2, width:Math.max(1,(j[1]-j[0])*escX), height:altLinha-6,
+                   fill: idx===v.jidx ? "var(--band-usada)" : "var(--band)",
+                   stroke:"#c8d2dc", "stroke-width":.5, rx:2});
+      });
+      // espera antes do serviço
+      if(v.espera > 1e-6)
+        el("rect",{x:X(v.chegada), y:y+5, width:Math.max(1,v.espera*escX), height:altLinha-12,
+                   fill:"url(#hachura)"});
+      // barra de serviço; parte que ultrapassa o fechamento da janela usada fica contornada
+      const dueUsada = v.janela ? v.janela[1] : v.fim;
+      const fimDentro = Math.min(v.fim, dueUsada);
+      el("rect",{x:X(v.ini), y:y+3, width:Math.max(1.5,(fimDentro-v.ini)*escX), height:altLinha-8,
+                 fill:cor, rx:2});
+      if(v.fim > dueUsada + 1e-6){
+        el("rect",{x:X(dueUsada), y:y+3, width:Math.max(1.5,(v.fim-dueUsada)*escX), height:altLinha-8,
+                   fill:cor, opacity:.35, stroke:"var(--alerta)", "stroke-width":1.2, rx:2});
+        el("text",{x:X(v.fim)+3, y:y+14, "font-size":10, fill:"var(--alerta)"}, "termina fora");
+      }
+      y += altLinha + gapVisita;
+    });
+    y += gapNavio;
+  });
+
+  // padrão de hachura p/ espera
+  const defs = document.createElementNS(NS,"defs");
+  defs.innerHTML = `<pattern id="hachura" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                      <rect width="5" height="5" fill="#ffffff"/>
+                      <line x1="0" y1="0" x2="0" y2="5" stroke="#b9c4cf" stroke-width="2.2"/>
+                    </pattern>`;
+  svg.appendChild(defs);
+}
+
+// ============================ MAPA (Leaflet / OpenStreetMap) ============================
+let MAPA = null;
+let CAMADA_SETAS = null;
+let PERNAS_ATUAIS = [];
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371, toRad = d => d*Math.PI/180;
+  const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+
+// âncora estilizada p/ a base (~20px, halo branco via drop-shadow)
+function iconAncora(){
+  return L.divIcon({ className:"", iconSize:[20,20], iconAnchor:[10,10], html:
+    `<svg width="20" height="20" viewBox="0 0 24 24"
+          style="filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff);">
+       <circle cx="12" cy="4.2" r="2.3" fill="none" stroke="#12263a" stroke-width="2"/>
+       <line x1="12" y1="6.4" x2="12" y2="20" stroke="#12263a" stroke-width="2"/>
+       <line x1="6.5" y1="9" x2="17.5" y2="9" stroke="#12263a" stroke-width="2"/>
+       <path d="M4 13 a8 8 0 0 0 8 8 a8 8 0 0 0 8 -8" fill="none" stroke="#12263a" stroke-width="2"/>
+     </svg>` });
+}
+
+// torre/jaqueta offshore estilizada p/ plataformas; tamanho vem da Melhoria 4 (demanda de convés);
+// o nome vai dentro do próprio SVG, ABAIXO do desenho, com halo (paint-order:stroke) — a âncora
+// fica no centro do desenho (não do texto) para o ponto geográfico não deslocar.
+function iconPlataforma(nomePlat, tam){
+  const cor = corDaPlataforma(nomePlat);
+  const altoTexto = 14;
+  const larguraTexto = nomePlat.length * 6.5 + 6;
+  const W = Math.max(tam, larguraTexto);
+  const H = tam + altoTexto;
+  const escala = tam / 24;
+  const offX = (W - tam) / 2;
+  return L.divIcon({ className:"", iconSize:[W,H], iconAnchor:[W/2, tam/2], html:
+    `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+       <g transform="translate(${offX},0) scale(${escala})">
+         <polygon points="12,2 21,21 3,21" fill="${cor}" stroke="#fff" stroke-width="${(1.6/escala).toFixed(2)}"/>
+         <line x1="7" y1="13.5" x2="17" y2="13.5" stroke="#fff" stroke-width="${(1.3/escala).toFixed(2)}"/>
+         <line x1="9.3" y1="17.5" x2="14.7" y2="17.5" stroke="#fff" stroke-width="${(1.1/escala).toFixed(2)}"/>
+       </g>
+       <text x="${W/2}" y="${tam+11}" text-anchor="middle" font-size="11" font-weight="600"
+             fill="#12263a" stroke="#fff" stroke-width="3" paint-order="stroke"
+             font-family="'Segoe UI', Arial, sans-serif">${nomePlat}</text>
+     </svg>` });
+}
+
+function iconSeta(cor, angulo){
+  return L.divIcon({ className:"", iconSize:[10,10], iconAnchor:[5,5], html:
+    `<div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+                 border-bottom:10px solid ${cor};
+                 transform:rotate(${angulo+90}deg); transform-origin:50% 50%;"></div>` });
+}
+
+// redesenha as setas de direção nas pernas das rotas (ângulo recalculado na projeção atual)
+function desenharSetas(){
+  if(!MAPA) return;
+  if(CAMADA_SETAS){ MAPA.removeLayer(CAMADA_SETAS); }
+  CAMADA_SETAS = L.layerGroup().addTo(MAPA);
+  PERNAS_ATUAIS.forEach(({p1,p2,cor})=>{
+    const pt1 = MAPA.latLngToLayerPoint([p1.lat,p1.lon]);
+    const pt2 = MAPA.latLngToLayerPoint([p2.lat,p2.lon]);
+    const ang = Math.atan2(pt2.y-pt1.y, pt2.x-pt1.x) * 180/Math.PI;
+    const meio = [(p1.lat+p2.lat)/2, (p1.lon+p2.lon)/2];
+    L.marker(meio, { icon: iconSeta(cor, ang), interactive:false }).addTo(CAMADA_SETAS);
+  });
+}
+
+// ---- painel lateral (substitui os popups sobre o mapa) ----
+function fmtH(x){ return x.toFixed(2).replace(".", ","); }
+function fmtKm(x){ return x.toFixed(1).replace(".", ","); }
+function setPainel(html){ document.getElementById("painel-info").innerHTML = html; }
+
+// ficha da plataforma: totais de demanda + um cartão por order (atendida ou não) (Melhoria 3 do painel)
+function painelPlataforma(nomePlat, nos, navios){
+  const cor = corDaPlataforma(nomePlat);
+  const orders = nos.filter(q=>q.plataforma===nomePlat);
+  let totalDeck=0, totalDiesel=0, totalAgua=0;
+  orders.forEach(o=>{ totalDeck += o.deck||0; totalDiesel += o.diesel||0; totalAgua += o.agua||0; });
+
+  const cartoes = orders.map(o=>{
+    let atendido = null;
+    for(const n of navios){
+      const v = n.visitas.find(v=>v.no===o.id);
+      if(v){ atendido = {n, v}; break; }
+    }
+    if(!atendido){
+      return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
+        <b>${o.nome}</b> — <span style="color:var(--alerta)">não atendida</span>
+      </div>`;
+    }
+    const {n, v} = atendido;
+    const dueUsada = v.janela ? v.janela[1] : v.fim;
+    const espera = v.espera > 1e-6 ? `espera ${fmtH(v.espera)} h` : "sem espera";
+    const jan = v.janela
+      ? `janela usada: ${fmtH(v.janela[0])}–${fmtH(v.janela[1])} h (${v.jidx+1}ª de ${v.janelas.length})`
+      : "sem janela atendida";
+    const cargaPartes = [];
+    if(o.deck>0)   cargaPartes.push(`convés ${o.deck} t`);
+    if(o.diesel>0) cargaPartes.push(`diesel ${o.diesel} t`);
+    if(o.agua>0)   cargaPartes.push(`água ${o.agua} t`);
+    const carga = cargaPartes.length ? `carga: ${cargaPartes.join(" · ")}` : "carga: —";
+    const alerta = v.fim > dueUsada + 1e-6
+      ? `<div style="color:var(--alerta); margin-top:4px;">atenção: serviço termina às ${fmtH(v.fim)} h, após o fechamento (${fmtH(dueUsada)} h)</div>`
+      : "";
+    return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
+      <b>${o.nome}</b> — Navio ${n.k} (${n.nome})<br>
+      chegada ${fmtH(v.chegada)} h · ${espera}<br>
+      serviço ${fmtH(v.ini)} → ${fmtH(v.fim)} h (${fmtH(v.fim-v.ini)} h)<br>
+      ${jan}<br>
+      ${carga}
+      ${alerta}
+    </div>`;
+  });
+
+  return `
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+      <span style="width:14px; height:14px; border-radius:3px; background:${cor}; display:inline-block;"></span>
+      <b style="font-size:15px;">${nomePlat}</b>
+    </div>
+    <div style="margin-bottom:10px; color:#40556a;">
+      Convés ${totalDeck} t · Diesel ${totalDiesel} t · Água ${totalAgua} t
+    </div>
+    ${cartoes.join("")}
+  `;
+}
+
+// ficha da base: partidas/chegadas dos navios não ociosos
+function painelBase(nome, navios){
+  const linhas = navios.filter(n=>!n.ocioso).map(n=>{
+    const segNav = n.segmentos.find(s=>s.tipo==="nav");
+    const partida = segNav ? segNav.ini : 0;
+    return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
+      <b>Navio ${n.k}</b> — ${n.nome}<br>
+      partida às ${fmtH(partida)} h · retorno às ${fmtH(n.retorno_h)} h
+    </div>`;
+  });
+  return `
+    <div style="margin-bottom:10px;"><b style="font-size:15px;">${nome}</b></div>
+    ${linhas.join("") || '<div style="color:#5a6b7c;">Nenhum navio em rota.</div>'}
+  `;
+}
+
+// ficha da perna de rota clicada + resumo do navio
+function painelRota(n, nome1, nome2, distKm, durH){
+  return `
+    <div style="margin-bottom:10px;">
+      <b style="font-size:15px;">Navio ${n.k} — ${n.nome}</b><br>
+      trecho ${nome1} → ${nome2} · ${fmtKm(distKm)} km · ${fmtH(durH)} h
+    </div>
+    <div style="border:1px solid var(--grid); border-radius:4px; padding:8px;">
+      navegação ${fmtH(n.navegacao_h)} h · serviço ${fmtH(n.servico_h)} h ·
+      espera ${fmtH(n.espera_h)} h · retorno ${fmtH(n.retorno_h)} h
+    </div>
+  `;
+}
+
+function desenharMapa(){
+  if(typeof window.L === "undefined"){
+    document.getElementById("mapa").innerHTML =
+      '<div style="padding:16px;color:var(--alerta);font-size:13px;">Mapa OSM indisponível (sem conexão)</div>';
+    return;
+  }
+
+  const D = window.DADOS, nos = D.nos;
+
+  if(MAPA){ MAPA.off(); MAPA.remove(); MAPA = null; }
+  CAMADA_SETAS = null;
+  PERNAS_ATUAIS = [];
+  setPainel("Clique em uma plataforma, na base ou em uma rota para ver os detalhes aqui.");
+  MAPA = L.map("mapa");
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+    { attribution:'&copy; OpenStreetMap contributors &copy; CARTO', subdomains:'abcd', maxZoom:12 }).addTo(MAPA);
+
+  const CORES_NAV = ["#3e6d9c","#8a4f9e","#2f7d3b"];
+  const tudo = [];
+
+  // demanda de convés (deck) por plataforma -> tamanho do ícone (Melhoria 4)
+  const deckPorPlat = {};
+  nos.forEach(p=>{
+    if(p.id===0) return;
+    deckPorPlat[p.plataforma] = (deckPorPlat[p.plataforma]||0) + (p.deck||0);
+  });
+  const deckVals = Object.values(deckPorPlat);
+  const deckMin = deckVals.length ? Math.min(...deckVals) : 0;
+  const deckMax = deckVals.length ? Math.max(...deckVals) : 0;
+  const tamanhoIcone = plat => deckMax<=deckMin ? 22 :
+    16 + (deckPorPlat[plat]-deckMin)/(deckMax-deckMin) * (30-16);
+
+  // rotas: pernas individuais (tooltip com distância/tempo) + coleta p/ setas de direção
+  D.navios.forEach((n,i)=>{
+    if(n.ocioso) return;
+    const base = nos.find(p=>p.id===0);
+    const seqNos = [base, ...n.visitas.map(v=>nos.find(q=>q.id===v.no)), base];
+    const navsSeg = n.segmentos.filter(s=>s.tipo==="nav");
+    const cor = CORES_NAV[i%CORES_NAV.length];
+    for(let a=0; a<seqNos.length-1; a++){
+      const p1 = seqNos[a], p2 = seqNos[a+1];
+      tudo.push([p1.lat, p1.lon]);
+      const distKm = haversineKm(p1.lat, p1.lon, p2.lat, p2.lon);
+      if(distKm < 0.05) continue; // pula pernas ~0 (plataformas co-localizadas)
+      const durH = navsSeg[a] ? (navsSeg[a].fim - navsSeg[a].ini) : 0;
+      const nome1 = p1.id===0 ? p1.nome : p1.plataforma;
+      const nome2 = p2.id===0 ? p2.nome : p2.plataforma;
+      L.polyline([[p1.lat,p1.lon],[p2.lat,p2.lon]], { color: cor, weight: 2.5, opacity: .9 })
+        .addTo(MAPA)
+        .bindTooltip(`${nome1} → ${nome2} · ${distKm.toFixed(1)} km · ${durH.toFixed(2)} h`, { sticky:true })
+        .on("click", ()=> setPainel(painelRota(n, nome1, nome2, distKm, durH)));
+      PERNAS_ATUAIS.push({p1, p2, cor});
+    }
+    tudo.push([base.lat, base.lon]);
+  });
+
+  // nós: base (âncora) e plataformas (ícone offshore com nome embutido no SVG) — clique abre o painel
+  const vistos = new Set();
+  nos.forEach(p=>{
+    if(p.id===0){
+      L.marker([p.lat, p.lon], { icon: iconAncora() })
+        .addTo(MAPA)
+        .on("click", ()=> setPainel(painelBase(p.nome, D.navios)));
+      tudo.push([p.lat, p.lon]);
+      return;
+    }
+    if(vistos.has(p.plataforma)) return;
+    vistos.add(p.plataforma);
+    L.marker([p.lat, p.lon], { icon: iconPlataforma(p.plataforma, tamanhoIcone(p.plataforma)) })
+      .addTo(MAPA)
+      .on("click", ()=> setPainel(painelPlataforma(p.plataforma, nos, D.navios)));
+    tudo.push([p.lat, p.lon]);
+  });
+
+  MAPA.fitBounds(tudo, { padding:[40,40] });
+  desenharSetas();
+  MAPA.on("zoomend", desenharSetas);
+}
+
+// ============================ montagem ============================
+function desenharTudo(){
+  document.getElementById("entrada").style.display = "none";
+  const D = window.DADOS;
+  document.getElementById("cabecalho").textContent =
+    `${D.instancia} — FO = ${D.fo_total_s.toFixed(0)} s = ${(D.fo_total_s/3600).toFixed(2)} h (navegação + manobras)`;
+  document.getElementById("legenda").innerHTML =
+    `<span><span class="chip" style="background:var(--nav)"></span>navegação + manobras (FO)</span>
+     <span><span class="chip hachura"></span>espera</span>
+     <span><span class="chip" style="background:var(--band)"></span>janela de tempo (a usada fica mais escura)</span>
+     <span class="aviso">contorno vermelho = serviço termina após o fechamento (semântica: início dentro da janela)</span>`;
+  desenharGantt();
+  desenharMapa();
+}
+function carregarDados(){
+  const entrada = document.getElementById("entrada");
+  const script = document.createElement("script");
+
+  // Date.now() evita que o navegador reaproveite a solucao anterior do cache.
+  script.src = "petroBP.js?v=" + Date.now();
+
+  script.onload = ()=>{
+    if (typeof DADOS !== "undefined" && !window.DADOS) window.DADOS = DADOS;
+    if(dadosProntos()){
+      desenharTudo();
+    }else{
+      entrada.style.display = "block";
+      document.getElementById("cabecalho").textContent =
+        "petroBP.js foi carregado, mas nao contem DADOS validos.";
+    }
+  };
+
+  script.onerror = ()=>{
+    entrada.style.display = "block";
+    document.getElementById("cabecalho").textContent =
+      "Nao foi possivel carregar petroBP.js.";
+  };
+
+  document.head.appendChild(script);
+}
+
+carregarDados();
+</script>
+</body>
+</html>

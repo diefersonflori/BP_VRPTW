@@ -213,29 +213,127 @@ class Solucao:
         print(f"[GANTT] dados exportados em {caminho_js}")
         return dados
 
-    def viavel_cargas_petro(self, inst, k, seq):
+    def plataforma_petro(self, inst, no):
+        if not (1 <= no <= inst.nbcd):
+            return None
 
+        dp = inst.dados_petro
+
+        # Forma principal: nome da plataforma no nome do pedido.
+        nome = str(dp["nomes"][no])
+        if "_order" in nome:
+            return nome.split("_order", 1)[0]
+
+        # Fallback para instâncias sem nome padronizado.
+        lat = round(float(dp["lat"][no]), 6)
+        lon = round(float(dp["lon"][no]), 6)
+        return lat, lon
+
+    def ordem_plataformas_petro_valida(self, inst, seq):
+        dp = inst.dados_petro
+        eps = 1e-9
+
+        plataforma_atual = None
+        plataformas_encerradas = set()
+        entrega_iniciada = False
+
+        for no in seq:
+            if not (1 <= no <= inst.nbcd):
+                continue
+
+            plataforma = self.plataforma_petro(inst, no)
+
+            # Mudou de plataforma: encerra definitivamente a anterior.
+            if plataforma != plataforma_atual:
+                if plataforma_atual is not None:
+                    plataformas_encerradas.add(plataforma_atual)
+
+                # Não pode sair da plataforma e retornar depois.
+                if plataforma in plataformas_encerradas:
+                    return False
+
+                plataforma_atual = plataforma
+                entrega_iniciada = False
+
+            tem_coleta = float(dp["dem_deck_backload"][no]) > eps
+            tem_entrega = (
+                float(dp["dem_deck_load"][no]) > eps or
+                float(dp["dem_diesel"][no]) > eps or
+                float(dp["dem_agua"][no]) > eps
+            )
+
+            # Depois que começou a entregar nessa plataforma,
+            # não pode aparecer outra coleta da mesma plataforma.
+            if tem_coleta and entrega_iniciada:
+                return False
+
+            # Pedido com coleta e entrega: coleta primeiro e,
+            # depois dele, a fase de entrega já foi iniciada.
+            if tem_entrega:
+                entrega_iniciada = True
+
+        return True
+
+    def viavel_cargas_petro(self, inst, k, seq):
         dp = getattr(inst, "dados_petro", None)
         if dp is None:
             return True
+
+        if not self.ordem_plataformas_petro_valida(inst, seq):
+            return False
+
         veic = inst.veiculos[k]
-        nbcd = inst.nbcd
-        deck = 0.0
-        diesel = 0.0
-        agua = 0.0
-        for no in seq:
-            if 1 <= no <= nbcd:
-                deck += dp["dem_deck_load"][no] + dp["dem_deck_backload"][no]
-                diesel += dp["dem_diesel"][no]
-                agua += dp["dem_agua"][no]
+        cap_deck = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua = float(getattr(veic, "cap_agua", float("inf")))
         eps = 1e-9
-        if deck > getattr(veic, "cap_deck", veic.capacidade) + eps:
+
+        clientes = [no for no in seq if 1 <= no <= inst.nbcd]
+
+        # O navio sai da base levando todas as entregas de convés da rota.
+        deck = sum(float(dp["dem_deck_load"][no]) for no in clientes)
+        diesel = sum(float(dp["dem_diesel"][no]) for no in clientes)
+        agua = sum(float(dp["dem_agua"][no]) for no in clientes)
+
+        if deck > cap_deck + eps:
             return False
-        if diesel > getattr(veic, "cap_diesel", float("inf")) + eps:
+        if diesel > cap_diesel + eps:
             return False
-        if agua > getattr(veic, "cap_agua", float("inf")) + eps:
+        if agua > cap_agua + eps:
             return False
+
+        pos = 0
+
+        while pos < len(clientes):
+            plataforma = self.plataforma_petro(inst, clientes[pos])
+            fim = pos
+
+            coleta_plataforma = 0.0
+            entrega_plataforma = 0.0
+
+            # Os pedidos da plataforma são consecutivos.
+            while fim < len(clientes) and self.plataforma_petro(inst, clientes[fim]) == plataforma:
+                no = clientes[fim]
+                coleta_plataforma += float(dp["dem_deck_backload"][no])
+                entrega_plataforma += float(dp["dem_deck_load"][no])
+                fim += 1
+
+            # Primeiro embarca todos os backloads da plataforma.
+            deck += coleta_plataforma
+
+            if deck > cap_deck + eps:
+                return False
+
+            # Só depois descarrega todas as entregas da plataforma.
+            deck -= entrega_plataforma
+
+            if deck < -eps:
+                return False
+
+            pos = fim
+
         return True
+
 
     def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo, ub_mip_iter=None):
         if not hasattr(self, "melhor_ub"):

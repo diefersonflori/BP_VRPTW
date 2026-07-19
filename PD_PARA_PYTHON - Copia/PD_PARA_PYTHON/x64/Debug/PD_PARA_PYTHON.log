@@ -1,0 +1,6 @@
+﻿  PD_PARA_PYTHON.cpp
+LINK : warning LNK4075: ignorando '/INCREMENTAL' devido a especificação '/LTCG'
+     Criando biblioteca C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Debug\vrptw_pd.lib e objeto C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Debug\vrptw_pd.exp
+PD_PARA_PYTHON.obj : error LNK2001: símbolo externo não resolvido __imp__CrtDbgReport
+PD_PARA_PYTHON.obj : error LNK2001: símbolo externo não resolvido __imp__invalid_parameter
+C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Debug\vrptw_pd.pyd : fatal error LNK1120: 2 externo não resolvidos

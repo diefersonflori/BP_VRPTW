@@ -1,9 +1,9 @@
 ﻿  PD_PARA_PYTHON.cpp
 LINK : warning LNK4075: ignorando '/INCREMENTAL' devido a especificação '/LTCG'
-     Criando biblioteca C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\PD_PARA_PYTHON.lib e objeto C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\PD_PARA_PYTHON.exp
+     Criando biblioteca C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\vrptw_pd.lib e objeto C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\vrptw_pd.exp
   Gerando código
-  4 of 5961 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    19 functions had inline decision re-evaluated but remain unchanged
+  284 of 5950 functions ( 4.8%) were compiled, the rest were copied from previous compilation.
+    238 functions were new in current compilation
+    73 functions had inline decision re-evaluated but remain unchanged
   Finalizada a geração de código
-  PD_PARA_PYTHON.vcxproj -> C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\PD_PARA_PYTHON.pyd
+  PD_PARA_PYTHON.vcxproj -> C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_PARA_PYTHON\PD_PARA_PYTHON\x64\Release\vrptw_pd.pyd
