@@ -1,0 +1,21 @@
+{
+  "instancia": "A03",
+  "arquivo_instancia": "petro_A03_12ped_5plat_3nav_min2_coleta_pesada.json",
+  "status": "INTERRUPTED",
+  "tem_solucao": true,
+  "otimo": false,
+  "consistente": true,
+  "retorno_metodo": true,
+  "lb": 57594.0,
+  "ub": 170210.0,
+  "gap_percentual": 66.16297514834616,
+  "tempo_solver": 6.373000144958496,
+  "tempo_total": 8.756001472473145,
+  "time_limit": 1200,
+  "threads": 1,
+  "seed_gurobi": 42,
+  "terminou_por_timeout_externo": false,
+  "motivo_final": "TIME_LIMIT_OU_PARADA_SEM_OTIMALIDADE",
+  "log": "",
+  "rotas_json": "C:\\Users\\PolyanaSilva\\Documents\\BP_VRPTW\\resultados_compacto_petro\\rodada_20260727_102532\\rotas\\A03_rotas.json"
+}

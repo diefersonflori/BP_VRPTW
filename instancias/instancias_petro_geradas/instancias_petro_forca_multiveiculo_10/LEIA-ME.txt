@@ -1,0 +1,30 @@
+INSTÂNCIAS PETROBRAS — TESTE MULTIVEÍCULO
+======================================================
+
+Capacidade de convés de cada navio: 900.
+Cada navio possui maximumNumberOfTrips = 1.
+
+Critério de construção:
+- arquivos 01 a 08: exigem no mínimo 2 navios por capacidade;
+- arquivos 09 e 10: exigem no mínimo 3 navios por capacidade;
+- nenhum pedido individual de convés ultrapassa 900;
+- água e diesel foram mantidos como na instância-base;
+- coordenadas, janelas, frota, sucessores e transshipment foram preservados.
+
+A exigência mínima é uma prova por capacidade de convés:
+ceil(total deckCargoLoad / 900) e ceil(total deckCargoBackload / 900).
+
+Ainda é necessário rodar o modelo para confirmar viabilidade completa
+com janelas de tempo, precedências e duração de viagem.
+
+Resumo:
+- petro_campos_C1_forca2v_01_balanceada_leve.json: load=1100, backload=950, mínimo=2 navios
+- petro_campos_C1_forca2v_02_entrega_pesada.json: load=1250, backload=700, mínimo=2 navios
+- petro_campos_C1_forca2v_03_coleta_pesada.json: load=800, backload=1100, mínimo=2 navios
+- petro_campos_C1_forca2v_04_balanceada_media.json: load=1300, backload=1200, mínimo=2 navios
+- petro_campos_C1_forca2v_05_p43_pesada.json: load=1400, backload=1100, mínimo=2 navios
+- petro_campos_C1_forca2v_06_p38_pesada.json: load=1400, backload=1100, mínimo=2 navios
+- petro_campos_C1_forca2v_07_p09_pesada.json: load=1100, backload=1200, mínimo=2 navios
+- petro_campos_C1_forca2v_08_proxima_limite_2v.json: load=1700, backload=1600, mínimo=2 navios
+- petro_campos_C1_forca3v_09_entrega.json: load=1950, backload=1200, mínimo=3 navios
+- petro_campos_C1_forca3v_10_entrega_coleta.json: load=2100, backload=1900, mínimo=3 navios

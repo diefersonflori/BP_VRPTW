@@ -1,0 +1,2706 @@
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+Clientes: 12 | Navios: 3 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+PPG-1A_order_1    250.0    250.0      0.0      0.0      0.0 30000.00     1
+PPG-1A_order_2    134.0      0.0    134.0      0.0      0.0 16080.00     1
+PGP-1_order_3    250.0    250.0      0.0      0.0      0.0 30000.00     1
+PGP-1_order_4    133.0      0.0    133.0      0.0      0.0 15960.00     1
+P-43_order_5    250.0    250.0      0.0      0.0      0.0 30000.00     1
+P-43_order_6    133.0      0.0    133.0      0.0      0.0 15960.00     1
+P-40_order_7    375.0    375.0      0.0      0.0      0.0 45000.00     1
+P-40_order_8    200.0      0.0    200.0      0.0      0.0 24000.00     1
+FPANE_order_9    375.0    375.0      0.0      0.0      0.0 45000.00     1
+FPANE_order_10    200.0      0.0    200.0      0.0      0.0 24000.00     1
+PPG-1A_order_11      0.0      0.0      0.0      0.0    220.0 14067.50     1
+P-43_order_12      0.0      0.0      0.0    180.0      0.0  9715.14     1
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 2300.0  (capacidade 900)
+Diesel total: 180.0 (stock 500) | Agua total: 220.0 (stock 400)
+base -> PPG-1A_order_1:   82.5 km     21481 s
+base -> PPG-1A_order_2:   82.5 km     21481 s
+base -> PGP-1_order_3:   83.8 km     21771 s
+base -> PGP-1_order_4:   83.8 km     21771 s
+base -> P-43_order_5:  109.1 km     27230 s
+base -> P-43_order_6:  109.1 km     27230 s
+base -> P-40_order_7:  123.5 km     30337 s
+base -> P-40_order_8:  123.5 km     30337 s
+base -> FPANE_order_9:  118.7 km     29305 s
+base -> FPANE_order_10:  118.7 km     29305 s
+base -> PPG-1A_order_11:   82.5 km     21481 s
+base -> P-43_order_12:  109.1 km     27230 s
+======================================================================
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 10, 6, 5, 12, 4, 3, 13]
+  custo = 70675.0000 | artificial = False
+Veículo 1: [0, 9, 8, 7, 13]
+  custo = 65837.0000 | artificial = False
+Veículo 2: [0, 2, 11, 1, 13]
+  custo = 41126.0000 | artificial = False
+Custo inicial inteiro = 177638.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 3 navios (navio pode ficar na base)
+[CONSTRUT] petro_A02_12ped_5plat_3nav_min2_entrega_pesada_12nos_3veiculos | custo=177638.0 | art=0 | V0:[10, 6, 5, 12, 4, 3] | V1:[9, 8, 7] | V2:[2, 11, 1]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+[Nó 0] Iter 0 - Obj = 177638.0000  Colunas = 6 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  1000000.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  1000000.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] =  1000000.000000
+
+SIGMA (veículos):
+  sigma[0] = -5929325.000000
+  sigma[1] = -2934163.000000
+  sigma[2] = -2958874.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=1 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 2, 1, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 11, 2, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 2, 1, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 11, 1, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 1, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 1, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 1, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 2, 1, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 1, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 1, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 1, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 1, 11, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 12, 6, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=3 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 6, 12, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 2, 1, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 11, 1, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 6, 12, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 1, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 1, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 11, 1, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 1, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 11, 2, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 11, 2, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 11, 2, 1, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=20 | novas_pool=2 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 1, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 6, 12, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 2, 11, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 11, 1, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 6, 12, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 1, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 2, 1, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 11, 2, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 2, 11, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 11, 1, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 11, 2, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 12, 11, 2, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 1, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 6, 12, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=1 | selecionadas=5 | por_veiculo={0: 2, 1: 2, 2: 1}
+Tempo total nessa geracao : 0.8s
+Tempo total no NO: 0.8s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 1, 6, 12, 4, 3, 13]
+Custo: 65157.00
+Custo Reduzido: -1005518.000000
+Clientes atendidos: [1, 2, 3, 4, 6, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 3, 6, 12, 2, 11, 1, 13]
+Custo: 65157.00
+Custo Reduzido: -4000680.000000
+Clientes atendidos: [1, 2, 3, 4, 6, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 2, 1, 11, 6, 12, 4, 3, 13]
+Custo: 65157.00
+Custo Reduzido: -3975969.000000
+Clientes atendidos: [1, 2, 3, 4, 6, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 3, 6, 12, 2, 11, 1, 13]
+Custo: 65157.00
+Custo Reduzido: -1005518.000000
+Clientes atendidos: [1, 2, 3, 4, 6, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 3, 6, 12, 2, 1, 11, 13]
+Custo: 65157.00
+Custo Reduzido: -4000680.000000
+Clientes atendidos: [1, 2, 3, 4, 6, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=65157.000000 | rc=-4000680.000000
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=65157.000000 | rc=-3975969.000000
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=65157.000000 | rc=-1005518.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_iter | k=0 | rc=-1005518.000000 | seq=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+[DUPLICADA RC] origem=pricing_iter | k=0 | rc_pricing=-1005518.000000 | custo_pricing=65157.000000 | custo_pool=65157.0 | seq=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-4000680.000000 | seq=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-4000680.000000 | custo_pricing=65157.000000 | custo_pool=65157.0 | seq=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=2 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 1 - Obj = 177638.0000  Colunas = 11 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 1: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 1 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  1000000.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  1000000.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] = -5518.000000
+  pi[12] = -2975969.000000
+
+SIGMA (veículos):
+  sigma[0] = -1953356.000000
+  sigma[1] = -2934163.000000
+  sigma[2] = -1953356.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=2 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PETRO BID MULTI] k=2 | limite=5s | labels=200 | depth=7 | tempo=1.53s | candidatas=20 | timeout=False
+[PRICING MULTI] origem=BID_CPP | k=2 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=False
+Tempo CPP 1.6364102363586426
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PETRO BID MULTI] k=0 | limite=5s | labels=200 | depth=7 | tempo=1.46s | candidatas=20 | timeout=False
+[PRICING MULTI] origem=BID_CPP | k=0 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=False
+Tempo CPP 1.4583237171173096
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=1 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=2 | selecionadas=5 | por_veiculo={2: 2, 0: 2, 1: 1}
+Tempo total nessa geracao : 3.7s
+Tempo total no NO: 4.5s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 6, 5, 10, 2, 1, 13]
+Custo: 76214.00
+Custo Reduzido: -4970430.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 10]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 3, 6, 5, 10, 2, 1, 13]
+Custo: 76214.00
+Custo Reduzido: -4970430.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 10]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 1, 6, 5, 13]
+Custo: 59628.00
+Custo Reduzido: -6209.000000
+Clientes atendidos: [1, 5, 6]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 6, 5, 8, 2, 1, 13]
+Custo: 76795.00
+Custo Reduzido: -4969849.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 8]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 3, 6, 5, 8, 2, 1, 13]
+Custo: 76795.00
+Custo Reduzido: -4969849.000000
+Clientes atendidos: [1, 2, 3, 4, 5, 6, 8]
+
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=76214.000000 | rc=-4970430.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=76214.000000 | rc=-3989623.000000
+[COLUNA DUPLICADA] origem=pricing_iter | k=0 | rc=-4970430.000000 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+[DUPLICADA RC] origem=pricing_iter | k=0 | rc_pricing=-4970430.000000 | custo_pricing=76214.000000 | custo_pool=76214.0 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-3989623.000000 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-3989623.000000 | custo_pricing=76214.000000 | custo_pool=76214.0 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+Nao adicionou no k 1
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=2 | rc=-4970430.000000 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=2 | rc_pricing=-4970430.000000 | custo_pricing=76214.000000 | custo_pool=76214.0 | seq=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+Nao adicionou no k 2
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=59628.000000 | rc=-987016.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=3 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 2 - Obj = 177638.0000  Colunas = 16 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 2: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 2 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -5518.000000
+  pi[2] =  1000000.000000
+  pi[3] = -2964912.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  1000000.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] =  988943.000000
+
+SIGMA (veículos):
+  sigma[0] = -1953356.000000
+  sigma[1] = -2934163.000000
+  sigma[2] = -1953356.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=3 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 5, 6, 10, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 12, 6, 5, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 5, 8, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 8, 5, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 5, 12, 6, 8, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 8, 10, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 9, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 9, 10, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 9, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 7, 8, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 7, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 10, 7, 12, 6, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 8, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 10, 8, 12, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=20 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 5, 10, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 5, 6, 12, 8, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 8, 12, 6, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 8, 6, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 6, 5, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 9, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 5, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 8, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 7, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 8, 1, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 7, 10, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=9 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 5, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 8, 6, 12, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 8, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 5, 6, 9, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 9, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 8, 7, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 7, 8, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 5, 6, 12, 7, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 6, 12, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 10, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 8, 9, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 7, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=7 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=3 | selecionadas=5 | por_veiculo={1: 2, 2: 2, 0: 1}
+Tempo total nessa geracao : 0.5s
+Tempo total no NO: 5.0s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 6, 12, 8, 10, 2, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -3971215.000000
+Clientes atendidos: [2, 4, 6, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 2, 11, 10, 8, 6, 12, 4, 13]
+Custo: 83565.00
+Custo Reduzido: -4952022.000000
+Clientes atendidos: [2, 4, 6, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 12, 5, 8, 10, 2, 11, 13]
+Custo: 78036.00
+Custo Reduzido: -3957551.000000
+Clientes atendidos: [2, 5, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 2, 11, 10, 8, 12, 5, 13]
+Custo: 78036.00
+Custo Reduzido: -2976744.000000
+Clientes atendidos: [2, 5, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 2, 11, 9, 12, 5, 4, 13]
+Custo: 76214.00
+Custo Reduzido: -3959373.000000
+Clientes atendidos: [2, 4, 5, 9, 11, 12]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=83565.000000 | rc=-4952022.000000
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=83565.000000 | rc=-4952022.000000
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=83565.000000 | rc=-4952022.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=83565.000000 | rc=-3971215.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 3 - Obj = 177638.0000  Colunas = 21 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 3: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 3 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -1958874.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] = -1011556.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  12890.000000
+  pi[9] =  1000000.000000
+  pi[10] = -953356.000000
+  pi[11] =  1000000.000000
+  pi[12] = -964413.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -1947053.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=4 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 5, 9, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 9, 5, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 5, 7, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 6, 12, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 8, 9, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 5, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 5, 12, 6, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 5, 6, 12, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 5, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 7, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=8 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 6, 12, 9, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 6, 9, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 12, 6, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 6, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 6, 7, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 6, 12, 7, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 8, 6, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 5, 6, 12, 8, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 5, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 6, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 6, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 5, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 8, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 5, 12, 8, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=20 | novas_pool=5 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 5, 12, 9, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 9, 12, 6, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 12, 6, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 6, 12, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 8, 9, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 5, 12, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 5, 12, 6, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 5, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=11 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=4 | selecionadas=5 | por_veiculo={0: 2, 1: 2, 2: 1}
+Tempo total nessa geracao : 0.5s
+Tempo total no NO: 5.5s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 7, 6, 5, 12, 13]
+Custo: 71266.00
+Custo Reduzido: -3964321.000000
+Clientes atendidos: [2, 5, 6, 7, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 2, 11, 9, 6, 12, 5, 13]
+Custo: 70685.00
+Custo Reduzido: -2017849.000000
+Clientes atendidos: [2, 5, 6, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 6, 12, 5, 9, 2, 11, 13]
+Custo: 70685.00
+Custo Reduzido: -3964902.000000
+Clientes atendidos: [2, 5, 6, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 3, 6, 12, 9, 2, 11, 13]
+Custo: 76214.00
+Custo Reduzido: -3959373.000000
+Clientes atendidos: [2, 3, 6, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 3, 6, 12, 9, 2, 11, 13]
+Custo: 76214.00
+Custo Reduzido: -2012320.000000
+Clientes atendidos: [2, 3, 6, 9, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=71266.000000 | rc=-2017268.000000
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=71266.000000 | rc=-3964321.000000
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=70685.000000 | rc=-3964902.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 4 - Obj = 177638.0000  Colunas = 26 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 4: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 4 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  32828.000000
+  pi[2] = -991702.000000
+  pi[3] =  1000000.000000
+  pi[4] = -991712.000000
+  pi[5] = -953356.000000
+  pi[6] =  980156.000000
+  pi[7] =  1000000.000000
+  pi[8] =  51236.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] = -964413.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -1985399.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=5 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 10, 12, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 9, 10, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 9, 10, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 9, 12, 6, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 10, 7, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 10, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=9 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 8, 12, 6, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 9, 10, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 10, 12, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 10, 9, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 6, 9, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 9, 10, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 7, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 7, 6, 12, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 6, 8, 10, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 10, 12, 6, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 9, 10, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 9, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=10 | novas_pool=5 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=5 | selecionadas=5 | por_veiculo={2: 2, 0: 2, 1: 1}
+Tempo total nessa geracao : 0.5s
+Tempo total no NO: 6.0s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 3, 6, 12, 8, 10, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -2983414.000000
+Clientes atendidos: [3, 6, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 3, 6, 12, 8, 10, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -2983414.000000
+Clientes atendidos: [3, 6, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 10, 9, 12, 3, 13]
+Custo: 76214.00
+Custo Reduzido: -973974.000000
+Clientes atendidos: [3, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 11, 10, 9, 12, 3, 13]
+Custo: 76214.00
+Custo Reduzido: -2959373.000000
+Clientes atendidos: [3, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 10, 8, 6, 12, 3, 13]
+Custo: 83565.00
+Custo Reduzido: -2983414.000000
+Clientes atendidos: [3, 6, 8, 10, 11, 12]
+
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=83565.000000 | rc=-2983414.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=83565.000000 | rc=-998015.000000
+[COLUNA DUPLICADA] origem=pricing_iter | k=0 | rc=-2983414.000000 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_iter | k=0 | rc_pricing=-2983414.000000 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-998015.000000 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-998015.000000 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+Nao adicionou no k 1
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=2 | rc=-2983414.000000 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=2 | rc_pricing=-2983414.000000 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 3, 6, 12, 8, 10, 11, 13]
+Nao adicionou no k 2
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=76214.000000 | rc=-2959373.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-2959373.000000 | seq=[0, 11, 10, 9, 12, 3, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-2959373.000000 | custo_pricing=76214.000000 | custo_pool=76214.0 | seq=[0, 11, 10, 9, 12, 3, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-973974.000000 | seq=[0, 11, 10, 9, 12, 3, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-973974.000000 | custo_pricing=76214.000000 | custo_pool=76214.0 | seq=[0, 11, 10, 9, 12, 3, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=5 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Rodando MIP periódico após 5 colunas...
+[Nó 0] MIP periódico encontrou solução inteira válida. FO=177638.000000
+[Nó 0] Iter 5 - Obj = 177638.0000  Colunas = 31 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 5: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 5 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  31403.000000
+  pi[2] = -990277.000000
+  pi[3] = -3167.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] = -971775.000000
+  pi[7] =  34345.000000
+  pi[8] =  1000000.000000
+  pi[9] =  33764.000000
+  pi[10] = -953356.000000
+  pi[11] =  1000000.000000
+  pi[12] = -1027.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -1002272.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=6 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 5, 8, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 5, 12, 8, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 5, 12, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=12 | novas_pool=8 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 5, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 5, 12, 8, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=15 | novas_pool=12 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 5, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 5, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 5, 12, 8, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=12 | novas_pool=8 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=6 | selecionadas=5 | por_veiculo={1: 2, 2: 2, 0: 1}
+Tempo total nessa geracao : 0.7s
+Tempo total no NO: 6.7s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 1, 11, 8, 12, 5, 4, 13]
+Custo: 76795.00
+Custo Reduzido: -2951309.000000
+Clientes atendidos: [1, 4, 5, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 5, 12, 8, 1, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -3953581.000000
+Clientes atendidos: [1, 4, 5, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 5, 12, 8, 11, 1, 13]
+Custo: 76795.00
+Custo Reduzido: -3953581.000000
+Clientes atendidos: [1, 4, 5, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 12, 5, 8, 11, 1, 13]
+Custo: 76795.00
+Custo Reduzido: -2951309.000000
+Clientes atendidos: [1, 4, 5, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 12, 5, 8, 1, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -3953581.000000
+Clientes atendidos: [1, 4, 5, 8, 11, 12]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=76795.000000 | rc=-3953581.000000
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=76795.000000 | rc=-3953581.000000
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=76795.000000 | rc=-3953581.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=76795.000000 | rc=-2951309.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 6 - Obj = 177638.0000  Colunas = 36 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 6: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 6 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  142959.187500
+  pi[2] = -991411.500000
+  pi[3] = -504870.250000
+  pi[4] =  1000000.000000
+  pi[5] = -355802.062500
+  pi[6] =  272470.875000
+  pi[7] =  1000000.000000
+  pi[8] = -856370.812500
+  pi[9] = -77792.187500
+  pi[10] =  512867.750000
+  pi[11] =  1000000.000000
+  pi[12] = -853991.312500
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=7 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 7, 10, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 7, 12, 6, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 7, 12, 6, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=6 | novas_pool=3 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 7, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 7, 10, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 7, 12, 6, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=6 | novas_pool=3 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 7, 10, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 7, 12, 6, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 7, 1, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=7 | novas_pool=4 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=7 | selecionadas=5 | por_veiculo={0: 2, 1: 2, 2: 1}
+Tempo total nessa geracao : 0.7s
+Tempo total no NO: 7.4s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 10, 7, 6, 12, 4, 13]
+Custo: 83565.00
+Custo Reduzido: -2847782.312500
+Clientes atendidos: [4, 6, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 6, 12, 7, 10, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -2847782.312500
+Clientes atendidos: [4, 6, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 6, 12, 7, 10, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -2847782.312500
+Clientes atendidos: [4, 6, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 6, 12, 7, 10, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -2847782.312500
+Clientes atendidos: [4, 6, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 10, 7, 6, 12, 4, 13]
+Custo: 83565.00
+Custo Reduzido: -2847782.312500
+Clientes atendidos: [4, 6, 7, 10, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=83565.000000 | rc=-2847782.312500
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=83565.000000 | rc=-2847782.312500
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=83565.000000 | rc=-2847782.312500
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-2847782.312500 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-2847782.312500 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_iter | k=0 | rc=-2847782.312500 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_iter | k=0 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-2847782.312500 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 4, 6, 12, 7, 10, 11, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-2847782.312500 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_iter | k=1 | rc=-2847782.312500 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+[DUPLICADA RC] origem=pricing_iter | k=1 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+Nao adicionou no k 1
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=2 | rc=-2847782.312500 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=2 | rc_pricing=-2847782.312500 | custo_pricing=83565.000000 | custo_pool=83565.0 | seq=[0, 11, 10, 7, 6, 12, 4, 13]
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=7 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 7 - Obj = 177638.0000  Colunas = 41 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 7: 
+   veic=0 | col=0 | lambda=1.000000 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=1.000000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=2 | col=0 | lambda=1.000000 | custo=41126.0000 | rota=[0, 2, 11, 1, 13]
+MESMA FO-  Sem melhora 7 Recom 177638.0 Ultmf 177638.0  VALOR SUB 0.0
+   valor recomposto = 177638.000000
+
+   valor recomposto = 177638.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  662696.730769
+  pi[2] =  252904.692308
+  pi[3] = -207172.653846
+  pi[4] = -460077.346154
+  pi[5] = -294349.730769
+  pi[6] = -308719.000000
+  pi[7] =  295905.461538
+  pi[8] =  43000.769231
+  pi[9] = -273069.230769
+  pi[10] =  430931.307692
+  pi[11] = -874475.423077
+  pi[12] =  1000000.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=8 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 10, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 1, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 11, 1, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 10, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 10, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 10, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 10, 1, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 7, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 1, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 6, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 7, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 1, 11, 7, 12, 6, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 11, 2, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 1, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 10, 8, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 10, 8, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 10, 8, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 10, 12, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 10, 5, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 7, 6, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 6, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 1, 11, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 2, 11, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 10, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 7, 6, 12, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=5 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 1, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 10, 11, 2, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 10, 8, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 10, 8, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 6, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 7, 12, 6, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 7, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 10, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=19 | novas_pool=10 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=8 | selecionadas=5 | por_veiculo={2: 2, 0: 2, 1: 1}
+Tempo total nessa geracao : 0.5s
+Tempo total no NO: 7.9s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 12, 8, 10, 2, 1, 11, 13]
+Custo: 78036.00
+Custo Reduzido: -1437022.076923
+Clientes atendidos: [1, 2, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 12, 8, 10, 2, 11, 1, 13]
+Custo: 78036.00
+Custo Reduzido: -1437022.076923
+Clientes atendidos: [1, 2, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 12, 7, 10, 1, 11, 13]
+Custo: 78036.00
+Custo Reduzido: -1437022.076923
+Clientes atendidos: [1, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 1, 11, 10, 7, 12, 13]
+Custo: 78036.00
+Custo Reduzido: -1437022.076923
+Clientes atendidos: [1, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 1, 10, 7, 12, 13]
+Custo: 78036.00
+Custo Reduzido: -1437022.076923
+Clientes atendidos: [1, 7, 10, 11, 12]
+
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=78036.000000 | rc=-1437022.076923
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=78036.000000 | rc=-1437022.076923
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=78036.000000 | rc=-1437022.076923
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 8 - Obj = 164931.1429  Colunas = 46 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 8: 
+   veic=0 | col=3 | lambda=0.142857 | custo=65157.0000 | rota=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+   veic=0 | col=4 | lambda=0.571429 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=0 | col=8 | lambda=0.214286 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+   veic=0 | col=17 | lambda=0.071429 | custo=78036.0000 | rota=[0, 12, 8, 10, 2, 11, 1, 13]
+   veic=1 | col=0 | lambda=0.714286 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=11 | lambda=0.285714 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=2 | col=1 | lambda=0.714286 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=7 | lambda=0.214286 | custo=76795.0000 | rota=[0, 1, 11, 8, 12, 5, 4, 13]
+   veic=2 | col=8 | lambda=0.071429 | custo=83565.0000 | rota=[0, 11, 10, 7, 6, 12, 4, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 164931.142857
+
+   valor recomposto = 164931.142857
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  28439.619048
+  pi[2] = -8553.460317
+  pi[3] =  7810.349206
+  pi[4] = -3024.460317
+  pi[5] =  13583.571429
+  pi[6] =  17604.809524
+  pi[7] =  25750.936508
+  pi[8] =  14916.126984
+  pi[9] =  25169.936508
+  pi[10] =  20353.571429
+  pi[11] =  21239.841270
+  pi[12] =  1640.301587
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=9 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 5, 10, 11, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 10, 5, 6, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 9, 10, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 9, 10, 1, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 8, 11, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 2, 11, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 1, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 7, 12, 6, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=20 | novas_pool=12 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 10, 12, 6, 5, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 10, 8, 12, 6, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 9, 10, 1, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 9, 10, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 9, 10, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 9, 2, 11, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 9, 11, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 9, 12, 6, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 9, 12, 6, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=11 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 9, 10, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 9, 10, 1, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 8, 11, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 7, 8, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 8, 12, 6, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 7, 11, 2, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 1, 7, 6, 12, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=12 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=9 | selecionadas=5 | por_veiculo={1: 2, 2: 2, 0: 1}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 8.3s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 1, 10, 9, 12, 13]
+Custo: 70685.00
+Custo Reduzido: -26158.269841
+Clientes atendidos: [1, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 1, 11, 8, 6, 5, 12, 13]
+Custo: 71266.00
+Custo Reduzido: -26158.269841
+Clientes atendidos: [1, 5, 6, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 12, 10, 9, 1, 11, 13]
+Custo: 70685.00
+Custo Reduzido: -26158.269841
+Clientes atendidos: [1, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 1, 11, 10, 9, 12, 13]
+Custo: 70685.00
+Custo Reduzido: -26158.269841
+Clientes atendidos: [1, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 12, 10, 9, 1, 11, 13]
+Custo: 70685.00
+Custo Reduzido: -26158.269841
+Clientes atendidos: [1, 9, 10, 11, 12]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=70685.000000 | rc=-26158.269841
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=70685.000000 | rc=-26158.269841
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=71266.000000 | rc=-26158.269841
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=71266.000000 | rc=-26158.269841
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 9 - Obj = 164931.1429  Colunas = 51 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 9: 
+   veic=0 | col=3 | lambda=0.142857 | custo=65157.0000 | rota=[0, 4, 3, 6, 12, 2, 11, 1, 13]
+   veic=0 | col=4 | lambda=0.571429 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=0 | col=8 | lambda=0.214286 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+   veic=0 | col=11 | lambda=0.071429 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=1 | col=0 | lambda=0.714286 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=11 | lambda=0.214286 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=1 | col=17 | lambda=0.071429 | custo=78036.0000 | rota=[0, 12, 8, 10, 2, 11, 1, 13]
+   veic=2 | col=1 | lambda=0.714286 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=7 | lambda=0.214286 | custo=76795.0000 | rota=[0, 1, 11, 8, 12, 5, 4, 13]
+   veic=2 | col=8 | lambda=0.071429 | custo=83565.0000 | rota=[0, 11, 10, 7, 6, 12, 4, 13]
+MESMA FO-  Sem melhora 1 Recom 164931.14285714284 Ultmf 164931.14285714287  VALOR SUB -2.9103830456733704e-11
+   valor recomposto = 164931.142857
+
+   valor recomposto = 164931.142857
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  8919.673469
+  pi[2] =  4459.836735
+  pi[3] =  14448.673469
+  pi[4] =  9988.836735
+  pi[5] =  13583.571429
+  pi[6] =  4459.836735
+  pi[7] =  25882.612245
+  pi[8] =  21422.775510
+  pi[9] =  18531.612245
+  pi[10] =  20353.571429
+  pi[11] =  27746.489796
+  pi[12] = -4866.346939
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=10 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 5, 12, 7, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 7, 8, 12, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 8, 10, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 7, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 11, 1, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 5, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 7, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=11 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 5, 7, 8, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 8, 12, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 8, 7, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 5, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 7, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 10, 12, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=12 | novas_pool=5 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 7, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 7, 8, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 8, 12, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 6, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 5, 11, 1, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 8, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 8, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 10, 12, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=12 | novas_pool=2 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=10 | selecionadas=5 | por_veiculo={0: 1, 1: 2, 2: 2}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 8.7s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 10, 8, 7, 12, 13]
+Custo: 78036.00
+Custo Reduzido: -12503.102041
+Clientes atendidos: [7, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 12, 8, 7, 10, 11, 13]
+Custo: 78036.00
+Custo Reduzido: -12503.102041
+Clientes atendidos: [7, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 12, 8, 7, 10, 11, 13]
+Custo: 78036.00
+Custo Reduzido: -12503.102041
+Clientes atendidos: [7, 8, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 8, 7, 5, 12, 13]
+Custo: 71266.00
+Custo Reduzido: -12503.102041
+Clientes atendidos: [5, 7, 8, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 12, 7, 2, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -865.102041
+Clientes atendidos: [2, 3, 4, 7, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=78036.000000 | rc=-12503.102041
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=78036.000000 | rc=-12503.102041
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=78036.000000 | rc=-12503.102041
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-12503.102041 | seq=[0, 12, 8, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-12503.102041 | custo_pricing=78036.000000 | custo_pool=78036.0 | seq=[0, 12, 8, 7, 10, 11, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-12503.102041 | seq=[0, 12, 8, 7, 10, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-12503.102041 | custo_pricing=78036.000000 | custo_pool=78036.0 | seq=[0, 12, 8, 7, 10, 11, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=2 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Rodando MIP periódico após 5 colunas...
+[Nó 0] MIP periódico encontrou solução inteira válida. FO=177638.000000
+[Nó 0] Iter 10 - Obj = 164931.1429  Colunas = 56 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 10: 
+   veic=0 | col=1 | lambda=0.428571 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=8 | lambda=0.214286 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+   veic=0 | col=11 | lambda=0.285714 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=16 | lambda=0.071429 | custo=78036.0000 | rota=[0, 12, 8, 10, 2, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.714286 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.285714 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.142857 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.571429 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=2 | col=7 | lambda=0.214286 | custo=76795.0000 | rota=[0, 1, 11, 8, 12, 5, 4, 13]
+   veic=2 | col=8 | lambda=0.071429 | custo=83565.0000 | rota=[0, 11, 10, 7, 6, 12, 4, 13]
+MESMA FO-  Sem melhora 2 Recom 164931.14285714287 Ultmf 164931.14285714287  VALOR SUB 0.0
+   valor recomposto = 164931.142857
+
+   valor recomposto = 164931.142857
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] = -3583.428571
+  pi[2] =  41969.142857
+  pi[3] =  1945.571429
+  pi[4] =  47498.142857
+  pi[5] =  13583.571429
+  pi[6] = -45552.571429
+  pi[7] =  38385.714286
+  pi[8] = -3583.428571
+  pi[9] =  31034.714286
+  pi[10] =  20353.571429
+  pi[11] =  2740.285714
+  pi[12] =  20139.857143
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=11 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 9, 10, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 5, 12, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 10, 12, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 7, 12, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 5, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 5, 12, 9, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 7, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 12, 4, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 9, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 9, 11, 2, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 12, 6, 5, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=20 | novas_pool=8 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 5, 7, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 10, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 9, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 5, 9, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 5, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 7, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 7, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 8, 7, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 8, 12, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 9, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=20 | novas_pool=9 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 9, 10, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 7, 10, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 10, 9, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 10, 12, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 9, 12, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 7, 12, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 7, 12, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 7, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 9, 2, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 7, 9, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 7, 12, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 10, 1, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=20 | novas_pool=8 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=11 | selecionadas=5 | por_veiculo={0: 2, 1: 2, 2: 1}
+Tempo total nessa geracao : 0.6s
+Tempo total no NO: 9.3s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 10, 9, 12, 4, 13]
+Custo: 76214.00
+Custo Reduzido: -87521.714286
+Clientes atendidos: [2, 4, 9, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 5, 12, 7, 2, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -87521.714286
+Clientes atendidos: [2, 4, 5, 7, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 5, 12, 7, 2, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -87521.714286
+Clientes atendidos: [2, 4, 5, 7, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 10, 7, 12, 4, 13]
+Custo: 83565.00
+Custo Reduzido: -87521.714286
+Clientes atendidos: [2, 4, 7, 10, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 12, 7, 10, 2, 11, 13]
+Custo: 83565.00
+Custo Reduzido: -87521.714286
+Clientes atendidos: [2, 4, 7, 10, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=76214.000000 | rc=-87521.714286
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=76214.000000 | rc=-87521.714286
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=76795.000000 | rc=-87521.714286
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-87521.714286 | seq=[0, 4, 5, 12, 7, 2, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-87521.714286 | custo_pricing=76795.000000 | custo_pool=76795.0 | seq=[0, 4, 5, 12, 7, 2, 11, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-87521.714286 | seq=[0, 4, 5, 12, 7, 2, 11, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-87521.714286 | custo_pricing=76795.000000 | custo_pool=76795.0 | seq=[0, 4, 5, 12, 7, 2, 11, 13]
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=2 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 11 - Obj = 163686.4815  Colunas = 61 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 11: 
+   veic=0 | col=1 | lambda=0.370370 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=8 | lambda=0.148148 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+   veic=0 | col=9 | lambda=0.055556 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=0 | col=11 | lambda=0.222222 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=14 | lambda=0.018519 | custo=83565.0000 | rota=[0, 11, 10, 7, 6, 12, 4, 13]
+   veic=0 | col=18 | lambda=0.037037 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=21 | lambda=0.129630 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=23 | lambda=0.018519 | custo=76795.0000 | rota=[0, 4, 5, 12, 7, 2, 11, 13]
+   veic=1 | col=0 | lambda=0.685185 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.314815 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=1 | lambda=0.037037 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.185185 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.592593 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=2 | col=7 | lambda=0.185185 | custo=76795.0000 | rota=[0, 1, 11, 8, 12, 5, 4, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 163686.481481
+
+   valor recomposto = 163686.481481
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  8863.185185
+  pi[2] = -896.037037
+  pi[3] =  14392.185185
+  pi[4] =  13345.592593
+  pi[5] =  17317.555556
+  pi[6] =  7816.592593
+  pi[7] =  25392.407407
+  pi[8] =  15633.185185
+  pi[9] =  24811.407407
+  pi[10] =  15374.925926
+  pi[11] =  33158.851852
+  pi[12] = -11523.370370
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=12 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 5, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 5, 12, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 8, 6, 12, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 7, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=10 | novas_pool=3 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 7, 8, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 5, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 7, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 5, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 7, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 6, 12, 5, 1, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 7, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 9, 12, 6, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=15 | novas_pool=5 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 8, 5, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 5, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 8, 7, 12, 6, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 10, 9, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 5, 6, 10, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=12 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=12 | selecionadas=5 | por_veiculo={2: 2, 0: 2, 1: 1}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 9.7s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 6, 12, 7, 11, 13]
+Custo: 76795.00
+Custo Reduzido: -5787.259259
+Clientes atendidos: [3, 4, 6, 7, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 7, 6, 12, 4, 3, 13]
+Custo: 76795.00
+Custo Reduzido: -5787.259259
+Clientes atendidos: [3, 4, 6, 7, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 9, 12, 5, 3, 13]
+Custo: 76214.00
+Custo Reduzido: -1942.629630
+Clientes atendidos: [3, 5, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 11, 1, 9, 12, 5, 13]
+Custo: 70685.00
+Custo Reduzido: -1942.629630
+Clientes atendidos: [1, 5, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 11, 1, 9, 12, 5, 13]
+Custo: 70685.00
+Custo Reduzido: -1942.629630
+Clientes atendidos: [1, 5, 9, 11, 12]
+
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=76795.000000 | rc=-5787.259259
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=76795.000000 | rc=-5787.259259
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=76795.000000 | rc=-5787.259259
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 12 - Obj = 163541.8000  Colunas = 66 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 12: 
+   veic=0 | col=1 | lambda=0.350000 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=8 | lambda=0.125000 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+   veic=0 | col=9 | lambda=0.075000 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=0 | col=11 | lambda=0.200000 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=18 | lambda=0.050000 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=21 | lambda=0.150000 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=23 | lambda=0.025000 | custo=76795.0000 | rota=[0, 4, 5, 12, 7, 2, 11, 13]
+   veic=0 | col=25 | lambda=0.025000 | custo=76795.0000 | rota=[0, 11, 7, 6, 12, 4, 3, 13]
+   veic=1 | col=0 | lambda=0.675000 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.325000 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=1 | lambda=0.050000 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.175000 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.600000 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=2 | col=7 | lambda=0.175000 | custo=76795.0000 | rota=[0, 1, 11, 8, 12, 5, 4, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 163541.800000
+
+   valor recomposto = 163541.800000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10310.000000
+  pi[2] =  2721.000000
+  pi[3] =  15839.000000
+  pi[4] =  10162.600000
+  pi[5] =  17751.600000
+  pi[6] =  4633.600000
+  pi[7] =  24669.000000
+  pi[8] =  17080.000000
+  pi[9] =  24088.000000
+  pi[10] =  14796.200000
+  pi[11] =  28095.000000
+  pi[12] = -6604.200000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=13 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 5, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 5, 11, 1, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 12, 5, 6, 4, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 7, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 1, 2, 7, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 12, 5, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 7, 8, 12, 3, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 12, 6, 5, 1, 2, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=14 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 5, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 6, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 7, 11, 1, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 7, 1, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=13 | novas_pool=9 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 5, 11, 1, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 11, 2, 6, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 6, 1, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 5, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 12, 5, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 5, 1, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 12, 7, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 9, 3, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=14 | novas_pool=6 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=13 | selecionadas=5 | por_veiculo={1: 2, 2: 2, 0: 1}
+Tempo total nessa geracao : 0.5s
+Tempo total no NO: 10.3s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 3, 5, 12, 1, 11, 13]
+Custo: 65157.00
+Custo Reduzido: -10397.000000
+Clientes atendidos: [1, 3, 4, 5, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 12, 5, 1, 11, 13]
+Custo: 65157.00
+Custo Reduzido: -10397.000000
+Clientes atendidos: [1, 3, 4, 5, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 1, 6, 4, 3, 13]
+Custo: 65157.00
+Custo Reduzido: -6604.200000
+Clientes atendidos: [1, 2, 3, 4, 6, 11]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 3, 9, 1, 11, 13]
+Custo: 68564.00
+Custo Reduzido: -9768.000000
+Clientes atendidos: [1, 3, 9, 11]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 11, 8, 7, 12, 5, 13]
+Custo: 71266.00
+Custo Reduzido: -9725.400000
+Clientes atendidos: [5, 7, 8, 11, 12]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=65157.000000 | rc=-10397.000000
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=65157.000000 | rc=-10397.000000
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=65157.000000 | rc=-10397.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=65157.000000 | rc=-10397.000000
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 13 - Obj = 161725.8889  Colunas = 71 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 13: 
+   veic=0 | col=1 | lambda=0.185185 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=9 | lambda=0.203704 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=0 | col=11 | lambda=0.037037 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=18 | lambda=0.037037 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=19 | lambda=0.018519 | custo=71266.0000 | rota=[0, 1, 11, 8, 6, 5, 12, 13]
+   veic=0 | col=21 | lambda=0.296296 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=22 | lambda=0.037037 | custo=76214.0000 | rota=[0, 2, 11, 10, 9, 12, 4, 13]
+   veic=0 | col=27 | lambda=0.185185 | custo=65157.0000 | rota=[0, 4, 3, 12, 5, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.685185 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.296296 | custo=0.0000 | rota=[0, 13]
+   veic=1 | col=25 | lambda=0.018519 | custo=76795.0000 | rota=[0, 11, 7, 6, 12, 4, 3, 13]
+   veic=2 | col=1 | lambda=0.240741 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.166667 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.592593 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 161725.888889
+
+   valor recomposto = 161725.888889
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  7675.111111
+  pi[2] =  1403.555556
+  pi[3] =  13204.111111
+  pi[4] =  11800.555556
+  pi[5] =  12802.333333
+  pi[6] =  11398.777778
+  pi[7] =  20716.666667
+  pi[8] =  19714.888889
+  pi[9] =  25405.444444
+  pi[10] =  17929.555556
+  pi[11] =  32047.333333
+  pi[12] = -12372.444444
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=14 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 6, 10, 9, 2, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 5, 9, 10, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 7, 11, 2, 1, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=5 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 9, 1, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 5, 2, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 10, 8, 12, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 8, 6, 12, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=6 | novas_pool=2 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 10, 9, 12, 6, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 6, 12, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 12, 6, 4, 3, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 9, 10, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 8, 11, 1, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 1, 2, 11, 7, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=8 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=14 | selecionadas=4 | por_veiculo={0: 1, 1: 2, 2: 1}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 10.7s
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 2, 11, 7, 4, 3, 13]
+Custo: 70354.00
+Custo Reduzido: -8818.222222
+Clientes atendidos: [2, 3, 4, 7, 11]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 1, 11, 9, 4, 13]
+Custo: 68564.00
+Custo Reduzido: -8364.444444
+Clientes atendidos: [1, 4, 9, 11]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 2, 11, 1, 8, 3, 13]
+Custo: 70354.00
+Custo Reduzido: -3691.000000
+Clientes atendidos: [1, 2, 3, 8, 11]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 3, 6, 12, 9, 11, 13]
+Custo: 76214.00
+Custo Reduzido: -5269.777778
+Clientes atendidos: [3, 4, 6, 9, 11, 12]
+
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=70354.000000 | rc=-8818.222222
+[COPIA ACEITA] origem_k=0 | destino_k=2 | custo=70354.000000 | rc=-8818.222222
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=68564.000000 | rc=-8364.444444
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 14 - Obj = 161725.8889  Colunas = 76 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 14: 
+   veic=0 | col=1 | lambda=0.185185 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=9 | lambda=0.203704 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=0 | col=11 | lambda=0.037037 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=18 | lambda=0.037037 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=19 | lambda=0.018519 | custo=71266.0000 | rota=[0, 1, 11, 8, 6, 5, 12, 13]
+   veic=0 | col=21 | lambda=0.296296 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=22 | lambda=0.037037 | custo=76214.0000 | rota=[0, 2, 11, 10, 9, 12, 4, 13]
+   veic=0 | col=27 | lambda=0.185185 | custo=65157.0000 | rota=[0, 4, 3, 12, 5, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.685185 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.296296 | custo=0.0000 | rota=[0, 13]
+   veic=1 | col=25 | lambda=0.018519 | custo=76795.0000 | rota=[0, 11, 7, 6, 12, 4, 3, 13]
+   veic=2 | col=1 | lambda=0.240741 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.166667 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.592593 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+MESMA FO-  Sem melhora 1 Recom 161725.8888888889 Ultmf 161725.88888888888  VALOR SUB 2.9103830456733704e-11
+   valor recomposto = 161725.888889
+
+   valor recomposto = 161725.888889
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  7675.111111
+  pi[2] =  1403.555556
+  pi[3] =  13204.111111
+  pi[4] =  11800.555556
+  pi[5] =  12802.333333
+  pi[6] =  11398.777778
+  pi[7] =  20716.666667
+  pi[8] =  19714.888889
+  pi[9] =  25405.444444
+  pi[10] =  17929.555556
+  pi[11] =  23229.111111
+  pi[12] = -3554.222222
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=15 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 9, 11, 2, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 3, 4, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 8, 9, 10, 11, 13]
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 1, 11, 6, 3, 4, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=7 | novas_pool=3 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 6, 12, 3, 4, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 4, 9, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 10, 8, 12, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=6 | novas_pool=2 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 12, 6, 9, 11, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 9, 12, 6, 3, 4, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 9, 1, 2, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=4 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=15 | selecionadas=5 | por_veiculo={2: 2, 0: 2, 1: 1}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 11.1s
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 4, 3, 6, 9, 11, 13]
+Custo: 76214.00
+Custo Reduzido: -8824.000000
+Clientes atendidos: [3, 4, 6, 9, 11]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 4, 3, 6, 12, 9, 11, 13]
+Custo: 76214.00
+Custo Reduzido: -5269.777778
+Clientes atendidos: [3, 4, 6, 9, 11, 12]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 4, 7, 9, 11, 13]
+Custo: 77124.00
+Custo Reduzido: -4027.777778
+Clientes atendidos: [4, 7, 9, 11]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 11, 9, 4, 3, 13]
+Custo: 68564.00
+Custo Reduzido: -5075.222222
+Clientes atendidos: [3, 4, 9, 11]
+TAMANHO NOVAS COL 5
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 3, 9, 1, 11, 13]
+Custo: 68564.00
+Custo Reduzido: -949.777778
+Clientes atendidos: [1, 3, 9, 11]
+
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=76214.000000 | rc=-8824.000000
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=76214.000000 | rc=-8824.000000
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=76214.000000 | rc=-5269.777778
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Rodando MIP periódico após 5 colunas...
+[Nó 0] MIP periódico encontrou solução inteira válida. FO=177638.000000
+[Nó 0] Iter 15 - Obj = 161613.7660  Colunas = 81 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 15: 
+   veic=0 | col=1 | lambda=0.404255 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=11 | lambda=0.021277 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=18 | lambda=0.042553 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=21 | lambda=0.319149 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=22 | lambda=0.021277 | custo=76214.0000 | rota=[0, 2, 11, 10, 9, 12, 4, 13]
+   veic=0 | col=27 | lambda=0.191489 | custo=65157.0000 | rota=[0, 4, 3, 12, 5, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.680851 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.085106 | custo=0.0000 | rota=[0, 13]
+   veic=1 | col=9 | lambda=0.212766 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=1 | col=31 | lambda=0.021277 | custo=76214.0000 | rota=[0, 4, 3, 6, 12, 9, 11, 13]
+   veic=2 | col=1 | lambda=0.234043 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.170213 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.595745 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 161613.765957
+
+   valor recomposto = 161613.765957
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  8796.340426
+  pi[2] =  4991.489362
+  pi[3] =  14325.340426
+  pi[4] =  9333.851064
+  pi[5] =  13138.702128
+  pi[6] =  8147.212766
+  pi[7] =  25425.829787
+  pi[8] =  15566.340426
+  pi[9] =  24844.829787
+  pi[10] =  17481.063830
+  pi[11] =  16277.489362
+  pi[12] =  3285.276596
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=16 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 6, 12, 10, 9, 11, 2, 13]
+[DESCARTA PETRO] k=1 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 9, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=3 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=2 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 7, 8, 12, 6, 13]
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=2 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 12, 5, 7, 8, 11, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=2 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=16 | selecionadas=3 | por_veiculo={1: 1, 2: 1, 0: 1}
+Tempo total nessa geracao : 0.4s
+Tempo total no NO: 11.5s
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 2, 11, 9, 7, 13]
+Custo: 71376.00
+Custo Reduzido: -163.638298
+Clientes atendidos: [2, 7, 9, 11]
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 2, 11, 9, 7, 13]
+Custo: 71376.00
+Custo Reduzido: -163.638298
+Clientes atendidos: [2, 7, 9, 11]
+TAMANHO NOVAS COL 3
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 7, 9, 2, 11, 13]
+Custo: 71376.00
+Custo Reduzido: -163.638298
+Clientes atendidos: [2, 7, 9, 11]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=71376.000000 | rc=-163.638298
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=71376.000000 | rc=-163.638298
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=0 | rc=-163.638298 | seq=[0, 2, 11, 9, 7, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=0 | rc_pricing=-163.638298 | custo_pricing=71376.000000 | custo_pool=71376.0 | seq=[0, 2, 11, 9, 7, 13]
+Nao adicionou no k 0
+[COLUNA DUPLICADA] origem=pricing_copia_veiculo | k=1 | rc=-163.638298 | seq=[0, 2, 11, 9, 7, 13]
+[DUPLICADA RC] origem=pricing_copia_veiculo | k=1 | rc_pricing=-163.638298 | custo_pricing=71376.000000 | custo_pool=71376.0 | seq=[0, 2, 11, 9, 7, 13]
+Nao adicionou no k 1
+[COLUNA DUPLICADA] origem=pricing_iter | k=2 | rc=-163.638298 | seq=[0, 2, 11, 9, 7, 13]
+[DUPLICADA RC] origem=pricing_iter | k=2 | rc_pricing=-163.638298 | custo_pricing=71376.000000 | custo_pool=71376.0 | seq=[0, 2, 11, 9, 7, 13]
+Nao adicionou no k 2
+[COPIA ACEITA] origem_k=0 | destino_k=1 | custo=71376.000000 | rc=-163.638298
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=3 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 16 - Obj = 161613.7660  Colunas = 86 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 16: 
+   veic=0 | col=1 | lambda=0.404255 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=11 | lambda=0.021277 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=18 | lambda=0.042553 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=21 | lambda=0.319149 | custo=78036.0000 | rota=[0, 12, 8, 7, 10, 11, 13]
+   veic=0 | col=22 | lambda=0.021277 | custo=76214.0000 | rota=[0, 2, 11, 10, 9, 12, 4, 13]
+   veic=0 | col=27 | lambda=0.191489 | custo=65157.0000 | rota=[0, 4, 3, 12, 5, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.680851 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.085106 | custo=0.0000 | rota=[0, 13]
+   veic=1 | col=9 | lambda=0.212766 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=1 | col=31 | lambda=0.021277 | custo=76214.0000 | rota=[0, 4, 3, 6, 12, 9, 11, 13]
+   veic=2 | col=1 | lambda=0.234043 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.170213 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.595745 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+
+MESMA FO-  Sem melhora 1 Recom 161613.7659574468 Ultmf 161613.76595744677  VALOR SUB 2.9103830456733704e-11
+   valor recomposto = 161613.765957
+
+   valor recomposto = 161613.765957
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  8796.340426
+  pi[2] =  4991.489362
+  pi[3] =  14325.340426
+  pi[4] =  9333.851064
+  pi[5] =  13138.702128
+  pi[6] =  8147.212766
+  pi[7] =  25425.829787
+  pi[8] =  15566.340426
+  pi[9] =  24844.829787
+  pi[10] =  17481.063830
+  pi[11] =  16113.851064
+  pi[12] =  3448.914894
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=17 | veiculos=[1, 2, 0]
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PETRO BID MULTI] k=1 | limite=5s | labels=200 | depth=7 | tempo=1.60s | candidatas=20 | timeout=False
+[PRICING MULTI] origem=BID_CPP | k=1 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=False
+Tempo CPP 1.6032524108886719
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=1 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA ALLBEST MULTI
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 2, 11, 10, 9, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 11, 2, 10, 9, 12, 6, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 3, 7, 8, 11, 13]
+[DESCARTA PETRO] k=0 | rota viola coleta antes da entrega por plataforma | seq=[0, 4, 3, 9, 11, 2, 13]
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=5 | novas_pool=1 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+[SELECAO MULTI] iter=17 | selecionadas=4 | por_veiculo={1: 2, 2: 1, 0: 1}
+Tempo total nessa geracao : 2.0s
+Tempo total no NO: 13.5s
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 1, 11, 10, 9, 8, 4, 3, 13]
+Custo: 77124.00
+Custo Reduzido: -29337.617021
+Clientes atendidos: [1, 3, 4, 8, 9, 10, 11]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 2
+Sequência: [0, 5, 12, 8, 7, 11, 13]
+Custo: 71266.00
+Custo Reduzido: -2427.638298
+Clientes atendidos: [5, 7, 8, 11, 12]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 0
+Sequência: [0, 3, 8, 7, 11, 13]
+Custo: 70354.00
+Custo Reduzido: -1077.361702
+Clientes atendidos: [3, 7, 8, 11]
+TAMANHO NOVAS COL 4
+
+--- Nova Coluna ---
+Veículo: 1
+Sequência: [0, 11, 1, 10, 9, 8, 4, 3, 13]
+Custo: 77124.00
+Custo Reduzido: -29337.617021
+Clientes atendidos: [1, 3, 4, 8, 9, 10, 11]
+
+[COPIA ACEITA] origem_k=1 | destino_k=0 | custo=77124.000000 | rc=-29337.617021
+[COPIA ACEITA] origem_k=1 | destino_k=2 | custo=77124.000000 | rc=-29337.617021
+[COPIA ACEITA] origem_k=2 | destino_k=0 | custo=71266.000000 | rc=-2427.638298
+[COPIA ACEITA] origem_k=2 | destino_k=1 | custo=71266.000000 | rc=-2427.638298
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[LIMITE MULTI] k=0 | motivo=limite_total
+Nao adicionou no k 0
+[LIMITE MULTI] k=1 | motivo=limite_total
+Nao adicionou no k 1
+[LIMITE MULTI] k=2 | motivo=limite_total
+Nao adicionou no k 2
+[COLUNAS ITER] novas=5 | duplicadas=0 | por_veiculo={0: 2, 1: 2, 2: 1}
+[Nó 0] Iter 17 - Obj = 159017.8333  Colunas = 91 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\petro_A02_12ped_5plat_3nav_min2_entrega_pesada.json Colunas ativas na iteração 17: 
+   veic=0 | col=0 | lambda=0.179487 | custo=70675.0000 | rota=[0, 10, 6, 5, 12, 4, 3, 13]
+   veic=0 | col=1 | lambda=0.435897 | custo=0.0000 | rota=[0, 13]
+   veic=0 | col=11 | lambda=0.038462 | custo=76214.0000 | rota=[0, 11, 10, 9, 12, 3, 13]
+   veic=0 | col=16 | lambda=0.141026 | custo=78036.0000 | rota=[0, 12, 8, 10, 2, 1, 11, 13]
+   veic=0 | col=18 | lambda=0.076923 | custo=70685.0000 | rota=[0, 11, 1, 10, 9, 12, 13]
+   veic=0 | col=23 | lambda=0.038462 | custo=76795.0000 | rota=[0, 4, 5, 12, 7, 2, 11, 13]
+   veic=0 | col=27 | lambda=0.089744 | custo=65157.0000 | rota=[0, 4, 3, 12, 5, 1, 11, 13]
+   veic=1 | col=0 | lambda=0.679487 | custo=65837.0000 | rota=[0, 9, 8, 7, 13]
+   veic=1 | col=1 | lambda=0.115385 | custo=0.0000 | rota=[0, 13]
+   veic=1 | col=9 | lambda=0.025641 | custo=70685.0000 | rota=[0, 2, 11, 9, 6, 12, 5, 13]
+   veic=1 | col=34 | lambda=0.179487 | custo=77124.0000 | rota=[0, 1, 11, 10, 9, 8, 4, 3, 13]
+   veic=2 | col=1 | lambda=0.205128 | custo=0.0000 | rota=[0, 13]
+   veic=2 | col=2 | lambda=0.128205 | custo=65157.0000 | rota=[0, 2, 11, 1, 6, 12, 4, 3, 13]
+   veic=2 | col=3 | lambda=0.384615 | custo=76214.0000 | rota=[0, 4, 3, 6, 5, 10, 2, 1, 13]
+   veic=2 | col=5 | lambda=0.282051 | custo=71266.0000 | rota=[0, 2, 11, 7, 6, 5, 12, 13]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 159017.833333
+
+   valor recomposto = 159017.833333
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  14068.166667
+  pi[2] =  19065.500000
+  pi[3] =  19597.166667
+  pi[4] =  494.166667
+  pi[5] =  14030.666667
+  pi[6] = -5034.833333
+  pi[7] =  26237.833333
+  pi[8] =  13942.333333
+  pi[9] =  25656.833333
+  pi[10] =  13993.166667
+  pi[11] = -10627.833333
+  pi[12] =  27594.666667
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[ORDEM PRICING] iter=18 | veiculos=[2, 0, 1]
+TESTA ALLBEST MULTI

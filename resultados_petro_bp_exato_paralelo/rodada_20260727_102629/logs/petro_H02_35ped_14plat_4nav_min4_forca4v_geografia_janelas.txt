@@ -1,0 +1,91 @@
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H02_35ped_14plat_4nav_min4_forca4v_geografia_janelas.json
+Clientes: 35 | Navios: 4 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+P-58_order_1    213.0    213.0      0.0      0.0      0.0 25560.00     2
+P-58_order_2    204.0      0.0    204.0      0.0      0.0 24480.00     2
+FPCGZ_order_3    213.0    213.0      0.0      0.0      0.0 25560.00     2
+FPCGZ_order_4    203.0      0.0    203.0      0.0      0.0 24360.00     2
+P-57_order_5    212.0    212.0      0.0      0.0      0.0 25440.00     2
+P-57_order_6    203.0      0.0    203.0      0.0      0.0 24360.00     2
+P-51_order_7    212.0    212.0      0.0      0.0      0.0 25440.00     2
+P-51_order_8    203.0      0.0    203.0      0.0      0.0 24360.00     2
+P-62_order_9    213.0    213.0      0.0      0.0      0.0 25560.00     2
+P-62_order_10    204.0      0.0    204.0      0.0      0.0 24480.00     2
+P-65_order_11    213.0    213.0      0.0      0.0      0.0 25560.00     2
+P-65_order_12    203.0      0.0    203.0      0.0      0.0 24360.00     2
+P-54_order_13    212.0    212.0      0.0      0.0      0.0 25440.00     2
+P-54_order_14    203.0      0.0    203.0      0.0      0.0 24360.00     2
+P-08_order_15    212.0    212.0      0.0      0.0      0.0 25440.00     2
+P-08_order_16    203.0      0.0    203.0      0.0      0.0 24360.00     2
+FORTE_order_17    284.0    284.0      0.0      0.0      0.0 34080.00     2
+FORTE_order_18    271.0      0.0    271.0      0.0      0.0 32520.00     2
+PPG-1A_order_19    283.0    283.0      0.0      0.0      0.0 33960.00     2
+PPG-1A_order_20    271.0      0.0    271.0      0.0      0.0 32520.00     2
+P-43_order_21    283.0    283.0      0.0      0.0      0.0 33960.00     2
+P-43_order_22    270.0      0.0    270.0      0.0      0.0 32400.00     2
+PGP-1_order_23    284.0    284.0      0.0      0.0      0.0 34080.00     2
+PGP-1_order_24    271.0      0.0    271.0      0.0      0.0 32520.00     2
+P-48_order_25    283.0    283.0      0.0      0.0      0.0 33960.00     2
+P-48_order_26    271.0      0.0    271.0      0.0      0.0 32520.00     2
+P-40_order_27    283.0    283.0      0.0      0.0      0.0 33960.00     2
+P-40_order_28    270.0      0.0    270.0      0.0      0.0 32400.00     2
+P-58_order_29      0.0      0.0      0.0      0.0    220.0 14067.50     2
+P-57_order_30      0.0      0.0      0.0    180.0      0.0  9715.14     2
+P-62_order_31      0.0      0.0      0.0      0.0    220.0 14067.50     2
+P-54_order_32      0.0      0.0      0.0    180.0      0.0  9715.14     2
+FORTE_order_33      0.0      0.0      0.0      0.0    220.0 14067.50     2
+P-43_order_34      0.0      0.0      0.0    180.0      0.0  9715.14     2
+P-48_order_35      0.0      0.0      0.0      0.0    220.0 14067.50     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 6650.0  (capacidade 900)
+Diesel total: 540.0 (stock 500) | Agua total: 880.0 (stock 400)
+base -> P-58_order_1:  124.9 km     30647 s
+base -> P-58_order_2:  124.9 km     30647 s
+base -> FPCGZ_order_3:  126.3 km     30949 s
+base -> FPCGZ_order_4:  126.3 km     30949 s
+base -> P-57_order_5:  119.0 km     29373 s
+base -> P-57_order_6:  119.0 km     29373 s
+base -> P-51_order_7:  127.8 km     31273 s
+base -> P-51_order_8:  127.8 km     31273 s
+base -> P-62_order_9:  125.3 km     30745 s
+base -> P-62_order_10:  125.3 km     30745 s
+base -> P-65_order_11:  100.7 km     25427 s
+base -> P-65_order_12:  100.7 km     25427 s
+base -> P-54_order_13:  121.6 km     29940 s
+base -> P-54_order_14:  121.6 km     29940 s
+base -> P-08_order_15:  103.0 km     25921 s
+base -> P-08_order_16:  103.0 km     25921 s
+base -> FORTE_order_17:  123.5 km     30336 s
+base -> FORTE_order_18:  123.5 km     30336 s
+base -> PPG-1A_order_19:   82.5 km     21481 s
+base -> PPG-1A_order_20:   82.5 km     21481 s
+base -> P-43_order_21:  109.1 km     27230 s
+base -> P-43_order_22:  109.1 km     27230 s
+base -> PGP-1_order_23:   83.8 km     21771 s
+base -> PGP-1_order_24:   83.8 km     21771 s
+base -> P-48_order_25:  119.7 km     29535 s
+base -> P-48_order_26:  119.7 km     29535 s
+base -> P-40_order_27:  123.5 km     30337 s
+base -> P-40_order_28:  123.5 km     30337 s
+base -> P-58_order_29:  124.9 km     30647 s
+base -> P-57_order_30:  119.0 km     29373 s
+base -> P-62_order_31:  125.3 km     30745 s
+base -> P-54_order_32:  121.6 km     29940 s
+base -> FORTE_order_33:  123.5 km     30336 s
+base -> P-43_order_34:  109.1 km     27230 s
+base -> P-48_order_35:  119.7 km     29535 s
+======================================================================
+[ERRO] petro_H02_35ped_14plat_4nav_min4_forca4v_geografia_janelas: 'artificial'
+Traceback (most recent call last):
+  File "C:\Users\PolyanaSilva\Documents\BP_VRPTW\main.py", line 149, in rodar_caso
+    metod.adiciona_colunas_ociosas(inst, sol_pool)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\PolyanaSilva\Documents\BP_VRPTW\metodos.py", line 1472, in adiciona_colunas_ociosas
+    sol_pool.rotas[k]['artificial'].append(False)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'artificial'
+

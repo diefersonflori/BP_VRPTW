@@ -1,26 +1,16 @@
 window.ROUTE_PLOT_DATA = {
-  "title": "Solução inteira do nó 0",
+  "title": "Solução inteira do nó 16",
   "subtitle": "Melhor inteira do pool | rotas ativas: 3",
   "routes": [
     {
       "id": 0,
-      "name": "veic=0 col=2",
+      "name": "veic=0 col=1",
       "vehicle": 0,
       "sequence": [
         0,
-        1,
-        2,
-        3,
-        10,
-        8,
-        9,
-        4,
-        5,
-        6,
-        7,
-        11
+        13
       ],
-      "total_real_cost": 72575.0,
+      "total_real_cost": 0.0,
       "total_reduced_cost": 0.0,
       "nodes": [
         {
@@ -33,97 +23,7 @@ window.ROUTE_PLOT_DATA = {
           "service_time": 0.0
         },
         {
-          "id": 1,
-          "x": -40.528,
-          "y": -22.573,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 3600.0
-        },
-        {
-          "id": 2,
-          "x": -40.528,
-          "y": -22.573,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 1800.0
-        },
-        {
-          "id": 3,
-          "x": -40.528,
-          "y": -22.573,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 19183.0
-        },
-        {
-          "id": 10,
-          "x": -40.528,
-          "y": -22.573,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 1200.0
-        },
-        {
-          "id": 8,
-          "x": -40.259,
-          "y": -22.55,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 24000.0
-        },
-        {
-          "id": 9,
-          "x": -40.259,
-          "y": -22.55,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 313200.0,
-          "service_time": 9600.0
-        },
-        {
-          "id": 4,
-          "x": -40.123,
-          "y": -22.561,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 453600.0,
-          "service_time": 1200.0
-        },
-        {
-          "id": 5,
-          "x": -40.123,
-          "y": -22.561,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 453600.0,
-          "service_time": 6600.0
-        },
-        {
-          "id": 6,
-          "x": -40.123,
-          "y": -22.561,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 453600.0,
-          "service_time": 8880.0
-        },
-        {
-          "id": 7,
-          "x": -40.123,
-          "y": -22.561,
-          "kind": "customer",
-          "ready_time": 216000.0,
-          "due_date": 453600.0,
-          "service_time": 16154.0
-        },
-        {
-          "id": 11,
+          "id": 13,
           "x": -40.996652,
           "y": -21.845602,
           "kind": "depot_end",
@@ -135,127 +35,30 @@ window.ROUTE_PLOT_DATA = {
       "arcs": [
         {
           "from": 0,
-          "to": 1,
+          "to": 13,
           "from_x": -40.996652,
           "from_y": -21.845602,
-          "to_x": -40.528,
-          "to_y": -22.573,
-          "real_cost": 24013.0,
-          "reduced_cost": 14013.0
-        },
-        {
-          "from": 1,
-          "to": 2,
-          "from_x": -40.528,
-          "from_y": -22.573,
-          "to_x": -40.528,
-          "to_y": -22.573,
-          "real_cost": 0.0,
-          "reduced_cost": -10000.0
-        },
-        {
-          "from": 2,
-          "to": 3,
-          "from_x": -40.528,
-          "from_y": -22.573,
-          "to_x": -40.528,
-          "to_y": -22.573,
-          "real_cost": 0.0,
-          "reduced_cost": -10000.0
-        },
-        {
-          "from": 3,
-          "to": 10,
-          "from_x": -40.528,
-          "from_y": -22.573,
-          "to_x": -40.528,
-          "to_y": -22.573,
-          "real_cost": 0.0,
-          "reduced_cost": 0.0
-        },
-        {
-          "from": 10,
-          "to": 8,
-          "from_x": -40.528,
-          "from_y": -22.573,
-          "to_x": -40.259,
-          "to_y": -22.55,
-          "real_cost": 11499.0,
-          "reduced_cost": 5201.0
-        },
-        {
-          "from": 8,
-          "to": 9,
-          "from_x": -40.259,
-          "from_y": -22.55,
-          "to_x": -40.259,
-          "to_y": -22.55,
-          "real_cost": 0.0,
-          "reduced_cost": 0.0
-        },
-        {
-          "from": 9,
-          "to": 4,
-          "from_x": -40.259,
-          "from_y": -22.55,
-          "to_x": -40.123,
-          "to_y": -22.561,
-          "real_cost": 9293.0,
-          "reduced_cost": -707.0
-        },
-        {
-          "from": 4,
-          "to": 5,
-          "from_x": -40.123,
-          "from_y": -22.561,
-          "to_x": -40.123,
-          "to_y": -22.561,
-          "real_cost": 0.0,
-          "reduced_cost": -10000.0
-        },
-        {
-          "from": 5,
-          "to": 6,
-          "from_x": -40.123,
-          "from_y": -22.561,
-          "to_x": -40.123,
-          "to_y": -22.561,
-          "real_cost": 0.0,
-          "reduced_cost": -10000.0
-        },
-        {
-          "from": 6,
-          "to": 7,
-          "from_x": -40.123,
-          "from_y": -22.561,
-          "to_x": -40.123,
-          "to_y": -22.561,
-          "real_cost": 0.0,
-          "reduced_cost": -6277.0
-        },
-        {
-          "from": 7,
-          "to": 11,
-          "from_x": -40.123,
-          "from_y": -22.561,
           "to_x": -40.996652,
           "to_y": -21.845602,
-          "real_cost": 27770.0,
-          "reduced_cost": 27770.0
+          "real_cost": 0.0,
+          "reduced_cost": 0.0
         }
       ],
       "color": "#2563eb"
     },
     {
       "id": 1,
-      "name": "veic=1 col=1",
+      "name": "veic=1 col=179",
       "vehicle": 1,
       "sequence": [
         0,
-        11
+        10,
+        9,
+        8,
+        13
       ],
-      "total_real_cost": 0.0,
-      "total_reduced_cost": 0.0,
+      "total_real_cost": 69275.0,
+      "total_reduced_cost": -505.375,
       "nodes": [
         {
           "id": 0,
@@ -267,7 +70,34 @@ window.ROUTE_PLOT_DATA = {
           "service_time": 0.0
         },
         {
-          "id": 11,
+          "id": 10,
+          "x": -39.82799861,
+          "y": -22.08638778,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 45000.0
+        },
+        {
+          "id": 9,
+          "x": -39.82799861,
+          "y": -22.08638778,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 24000.0
+        },
+        {
+          "id": 8,
+          "x": -39.78611111,
+          "y": -21.94083333,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 45000.0
+        },
+        {
+          "id": 13,
           "x": -40.996652,
           "y": -21.845602,
           "kind": "depot_end",
@@ -279,26 +109,65 @@ window.ROUTE_PLOT_DATA = {
       "arcs": [
         {
           "from": 0,
-          "to": 11,
+          "to": 10,
           "from_x": -40.996652,
           "from_y": -21.845602,
+          "to_x": -39.82799861,
+          "to_y": -22.08638778,
+          "real_cost": 30336.0,
+          "reduced_cost": 30336.0
+        },
+        {
+          "from": 10,
+          "to": 9,
+          "from_x": -39.82799861,
+          "from_y": -22.08638778,
+          "to_x": -39.82799861,
+          "to_y": -22.08638778,
+          "real_cost": 0.0,
+          "reduced_cost": -9080.875
+        },
+        {
+          "from": 9,
+          "to": 8,
+          "from_x": -39.82799861,
+          "from_y": -22.08638778,
+          "to_x": -39.78611111,
+          "to_y": -21.94083333,
+          "real_cost": 10030.0,
+          "reduced_cost": -12531.25
+        },
+        {
+          "from": 8,
+          "to": 13,
+          "from_x": -39.78611111,
+          "from_y": -21.94083333,
           "to_x": -40.996652,
           "to_y": -21.845602,
-          "real_cost": 0.0,
-          "reduced_cost": 0.0
+          "real_cost": 28909.0,
+          "reduced_cost": 28909.0
         }
       ],
       "color": "#ef4444"
     },
     {
       "id": 2,
-      "name": "veic=2 col=1",
+      "name": "veic=2 col=66",
       "vehicle": 2,
       "sequence": [
         0,
-        11
+        6,
+        5,
+        12,
+        7,
+        2,
+        1,
+        11,
+        4,
+        3,
+        13
       ],
-      "total_real_cost": 0.0,
+      "total_real_cost": 95045.0,
       "total_reduced_cost": 0.0,
       "nodes": [
         {
@@ -311,7 +180,88 @@ window.ROUTE_PLOT_DATA = {
           "service_time": 0.0
         },
         {
+          "id": 6,
+          "x": -39.82530278,
+          "y": -21.96911389,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 30000.0
+        },
+        {
+          "id": 5,
+          "x": -39.82530278,
+          "y": -21.96911389,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 15960.0
+        },
+        {
+          "id": 12,
+          "x": -39.82530278,
+          "y": -21.96911389,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 9715.0
+        },
+        {
+          "id": 7,
+          "x": -39.78611111,
+          "y": -21.94083333,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 24000.0
+        },
+        {
+          "id": 2,
+          "x": -39.99736472,
+          "y": -21.21508417,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 30000.0
+        },
+        {
+          "id": 1,
+          "x": -39.99736472,
+          "y": -21.21508417,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 16080.0
+        },
+        {
           "id": 11,
+          "x": -39.99736472,
+          "y": -21.21508417,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 14067.0
+        },
+        {
+          "id": 4,
+          "x": -40.04807778,
+          "y": -21.24001111,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 30000.0
+        },
+        {
+          "id": 3,
+          "x": -40.04807778,
+          "y": -21.24001111,
+          "kind": "customer",
+          "ready_time": 43200.0,
+          "due_date": 604800.0,
+          "service_time": 15960.0
+        },
+        {
+          "id": 13,
           "x": -40.996652,
           "y": -21.845602,
           "kind": "depot_end",
@@ -323,13 +273,103 @@ window.ROUTE_PLOT_DATA = {
       "arcs": [
         {
           "from": 0,
-          "to": 11,
+          "to": 6,
           "from_x": -40.996652,
           "from_y": -21.845602,
-          "to_x": -40.996652,
-          "to_y": -21.845602,
+          "to_x": -39.82530278,
+          "to_y": -21.96911389,
+          "real_cost": 29940.0,
+          "reduced_cost": 17898.0
+        },
+        {
+          "from": 6,
+          "to": 5,
+          "from_x": -39.82530278,
+          "from_y": -21.96911389,
+          "to_x": -39.82530278,
+          "to_y": -21.96911389,
+          "real_cost": 0.0,
+          "reduced_cost": -5384.625
+        },
+        {
+          "from": 5,
+          "to": 12,
+          "from_x": -39.82530278,
+          "from_y": -21.96911389,
+          "to_x": -39.82530278,
+          "to_y": -21.96911389,
           "real_cost": 0.0,
           "reduced_cost": 0.0
+        },
+        {
+          "from": 12,
+          "to": 7,
+          "from_x": -39.82530278,
+          "from_y": -21.96911389,
+          "to_x": -39.78611111,
+          "to_y": -21.94083333,
+          "real_cost": 6891.0,
+          "reduced_cost": -9012.875
+        },
+        {
+          "from": 7,
+          "to": 2,
+          "from_x": -39.78611111,
+          "from_y": -21.94083333,
+          "to_x": -39.99736472,
+          "to_y": -21.21508417,
+          "real_cost": 23565.0,
+          "reduced_cost": 6388.375
+        },
+        {
+          "from": 2,
+          "to": 1,
+          "from_x": -39.99736472,
+          "from_y": -21.21508417,
+          "to_x": -39.99736472,
+          "to_y": -21.21508417,
+          "real_cost": 0.0,
+          "reduced_cost": -10184.625
+        },
+        {
+          "from": 1,
+          "to": 11,
+          "from_x": -39.99736472,
+          "from_y": -21.21508417,
+          "to_x": -39.99736472,
+          "to_y": -21.21508417,
+          "real_cost": 0.0,
+          "reduced_cost": 0.0
+        },
+        {
+          "from": 11,
+          "to": 4,
+          "from_x": -39.99736472,
+          "from_y": -21.21508417,
+          "to_x": -40.04807778,
+          "to_y": -21.24001111,
+          "real_cost": 7112.0,
+          "reduced_cost": -10064.625
+        },
+        {
+          "from": 4,
+          "to": 3,
+          "from_x": -40.04807778,
+          "from_y": -21.24001111,
+          "to_x": -40.04807778,
+          "to_y": -21.24001111,
+          "real_cost": 0.0,
+          "reduced_cost": -17176.625
+        },
+        {
+          "from": 3,
+          "to": 13,
+          "from_x": -40.04807778,
+          "from_y": -21.24001111,
+          "to_x": -40.996652,
+          "to_y": -21.845602,
+          "real_cost": 27537.0,
+          "reduced_cost": 27537.0
         }
       ],
       "color": "#0f766e"

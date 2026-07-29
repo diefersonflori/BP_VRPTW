@@ -25,6 +25,84 @@
   canvas{ border:1px solid var(--grid); }
   #mapa{ height:620px; width:100%; max-width:1180px; border:1px solid var(--grid); }
   .aviso{ color:var(--alerta); font-size:12px; }
+  .carga-grid{ display:flex; flex-direction:column; gap:18px; max-width:1180px; }
+  .carga-card{ border:1px solid var(--grid); border-radius:10px; background:#fff; overflow:hidden; box-shadow:0 2px 10px rgba(18,38,58,.06); }
+  .carga-card-header{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:14px 16px; background:#f7f9fb; border-bottom:1px solid var(--grid); }
+  .carga-card-header h3{ margin:0; font-size:26px; font-weight:700; }
+  .carga-meta{ margin-top:4px; color:#5a6b7c; font-size:13px; }
+  .badge{ display:inline-block; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .badge.ok{ color:#1f6b42; background:#e7f5ed; border:1px solid #b8dec8; }
+  .badge.warn{ color:#8a5a00; background:#fff4d8; border:1px solid #ead28d; }
+  .badge.erro{ color:#9b2e23; background:#fdebea; border:1px solid #e7aaa5; }
+  .badge.info{ color:#1f4977; background:#ebf3ff; border:1px solid #bdd1ef; }
+  .carga-body{ display:grid; grid-template-columns:360px 1fr; gap:14px; align-items:start; padding:14px 16px 8px; }
+  .carga-lateral{ display:flex; flex-direction:column; gap:10px; }
+  .carga-resumo{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .kpi{ border:1px solid #e1e6ec; border-radius:8px; padding:10px; min-height:62px; background:#fff; }
+  .kpi .rotulo{ color:#5a6b7c; font-size:11px; }
+  .kpi .valor{ margin-top:4px; font-size:18px; font-weight:700; }
+  .barra-cap{ height:10px; border-radius:999px; background:#edf1f5; overflow:hidden; margin-top:8px; }
+  .barra-cap > span{ display:block; height:100%; background:#3e6d9c; border-radius:999px; }
+  .barra-cap > span.warn{ background:#d9862b; }
+  .barra-cap > span.erro{ background:#c0392b; }
+  .carga-aviso{ margin:0; padding:9px 11px; border-radius:7px; font-size:12px; color:#6b5200; background:#fff8e4; border:1px solid #eadba8; }
+  .carga-hero{ border:1px solid #e1e6ec; border-radius:8px; padding:12px; background:linear-gradient(180deg,#fbfcfd 0%,#f5f8fb 100%); }
+  .carga-hero-title{ font-size:12px; color:#5a6b7c; margin-bottom:8px; }
+  .carga-hero-row{ margin-bottom:10px; }
+  .carga-hero-label{ display:flex; justify-content:space-between; gap:8px; font-size:11.5px; margin-bottom:4px; }
+  .carga-hero-track{ position:relative; height:20px; border-radius:999px; background:#edf1f5; overflow:hidden; }
+  .carga-hero-fill{ position:absolute; left:0; top:0; bottom:0; border-radius:999px; opacity:.95; }
+  .carga-hero-fill.deck{ background:linear-gradient(90deg,#2f6ea6,#4d8bc3); }
+  .carga-hero-fill.pico{ background:linear-gradient(90deg,#f5a623,#ee7f1b); opacity:.55; }
+  .carga-hero-fill.final{ background:linear-gradient(90deg,#2e8b57,#58b67f); opacity:.85; }
+  .carga-hero-fill.diesel{ background:linear-gradient(90deg,#5a6b7c,#8b99a7); }
+  .carga-hero-fill.agua{ background:linear-gradient(90deg,#4b93d1,#80c0f3); }
+  .carga-hero-note{ font-size:11.5px; color:#5a6b7c; margin-top:4px; }
+  .carga-chart-wrap{ overflow-x:auto; padding:4px 0 8px; }
+  .carga-chart{ min-width:780px; width:100%; height:250px; border:1px solid #e2e7ed; border-radius:8px; background:#fff; }
+  .tabela-wrap{ overflow:auto; max-height:340px; border-top:1px solid var(--grid); }
+
+  .navio-selector-wrap{ margin:0 0 18px 0; }
+  .navio-selector-title{ margin:0 0 9px 2px; font-size:11px; color:#607286; text-transform:uppercase; letter-spacing:.7px; font-weight:700; }
+  .navio-selector{ display:flex; gap:12px; flex-wrap:wrap; align-items:stretch; }
+  .navio-tab{ min-width:145px; border:1px solid #8ea9ba; border-radius:12px; padding:12px 14px; background:#9eb9c8; color:#fff; cursor:pointer; opacity:.48; transition:transform .16s ease, opacity .16s ease, box-shadow .16s ease, background .16s ease; text-align:left; font-family:inherit; }
+  .navio-tab:hover{ opacity:.82; transform:translateY(-1px); }
+  .navio-tab.active{ opacity:1; background:#17658b; border-color:#0e4866; box-shadow:0 6px 16px rgba(18,77,108,.20); transform:translateY(-2px); }
+  .navio-tab.ocioso{ background:#b8cbd5; }
+  .navio-tab.ocioso.active{ background:#6f95aa; }
+  .navio-tab .tab-linha1{ display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .navio-tab .tab-rotulo{ font-size:11px; font-weight:700; letter-spacing:.8px; opacity:.92; }
+  .navio-tab .tab-numero{ margin-top:1px; font-size:30px; line-height:1; font-weight:750; }
+  .navio-tab .tab-nome{ margin-top:7px; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:650; }
+  .navio-tab .tab-info{ margin-top:5px; font-size:10.5px; opacity:.93; }
+
+  @media (max-width: 980px){
+  .carga-body{
+    grid-template-columns:1fr;
+  }
+
+  .carga-card-header h3{
+    font-size:21px;
+  }
+
+  .navio-selector{
+    gap:8px;
+  }
+
+  .navio-tab{
+    min-width:120px;
+    padding:10px 12px;
+  }
+} table.carga{ width:100%; border-collapse:collapse; font-size:11px; white-space:nowrap; }
+  table.carga th{ position:sticky; top:0; z-index:1; background:#f7f9fb; color:#40556a; text-align:right; padding:7px 8px; border-bottom:1px solid var(--grid); }
+  table.carga th:first-child, table.carga th:nth-child(2){ text-align:left; }
+  table.carga td{ padding:6px 8px; text-align:right; border-bottom:1px solid #edf0f3; }
+  table.carga td:first-child, table.carga td:nth-child(2){ text-align:left; }
+  table.carga tr:hover td{ background:#f8fafc; }
+  table.carga tr.linha-erro td{ background:#fff0ef; }
+  .mono{ font-family:Consolas,"SFMono-Regular",monospace; }
+  .sem-dados{ border:1px dashed #9fb0c0; border-radius:7px; padding:12px; color:#5a6b7c; background:#fafbfc; max-width:1180px; }
+  @media (max-width:900px){ .carga-resumo{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>
 </head>
 <body>
@@ -38,6 +116,10 @@
 
 <div class="legenda" id="legenda"></div>
 <div class="painel"><svg id="gantt"></svg></div>
+
+<h2>Carga a bordo</h2>
+<div class="sub">Auditoria da carga por navio: coleta de backload antes da entrega, pico de convés e estoque restante de diesel e água.</div>
+<div class="painel" id="auditoria-carga"></div>
 
 <h2>Mapa das rotas</h2>
 <div class="sub">OpenStreetMap — clique numa plataforma, na base ou numa rota para ver detalhes no painel</div>
@@ -60,6 +142,499 @@ function corDaPlataforma(nome){
 function dadosProntos(){
   return !!(window.DADOS && Array.isArray(window.DADOS.navios));
 }
+
+// ============================ CARGA A BORDO ============================
+let PERFIS_CARGA = new Map();
+let NAVIO_SELECIONADO = null;
+
+function numeroOuNull(v){
+  const x = Number(v);
+  return Number.isFinite(x) ? x : null;
+}
+function primeiroNumero(...valores){
+  for(const v of valores){
+    const x = numeroOuNull(v);
+    if(x!==null) return x;
+  }
+  return null;
+}
+function fmtCarga(v){
+  const x = numeroOuNull(v);
+  return x===null ? "—" : x.toFixed(1).replace(".",",");
+}
+function fmtPct(v){
+  const x = numeroOuNull(v);
+  return x===null ? "—" : `${x.toFixed(1).replace(".",",")}%`;
+}
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function escapeHtml(s){
+  return String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+}
+
+function capacidadesNavio(n){
+  const c = n.capacidades || {};
+  return {
+    deck: primeiroNumero(c.deck, n.cap_deck, n.capacidade_deck, n.deck_capacity, n.capacidade),
+    diesel: primeiroNumero(c.diesel, n.cap_diesel, n.capacidade_diesel, n.diesel_capacity),
+    agua: primeiroNumero(c.agua, n.cap_agua, n.capacidade_agua, n.water_capacity)
+  };
+}
+
+function cargasDoNo(o){
+  const temDeckSeparado = numeroOuNull(o.deck_load)!==null || numeroOuNull(o.deck_backload)!==null ||
+                           numeroOuNull(o.deck_entrega)!==null || numeroOuNull(o.deck_coleta)!==null;
+  const deckLoad = primeiroNumero(o.deck_load, o.deck_entrega, temDeckSeparado ? 0 : o.deck, 0) || 0;
+  const deckBackload = primeiroNumero(o.deck_backload, o.deck_coleta, 0) || 0;
+  return {
+    deckLoad,
+    deckBackload,
+    diesel: primeiroNumero(o.diesel, o.diesel_entrega, 0) || 0,
+    agua: primeiroNumero(o.agua, o.agua_entrega, 0) || 0,
+    temDeckSeparado
+  };
+}
+
+function auditarOrdemPlataformas(n, nosPorId){
+  let atual = null, entregaIniciada = false;
+  const encerradas = new Set();
+  const erros = [];
+  (n.visitas||[]).forEach((v,idx)=>{
+    const o = nosPorId.get(v.no) || v;
+    const plat = v.plataforma || o.plataforma || o.nome || `no ${v.no}`;
+    const c = cargasDoNo(o);
+    if(plat!==atual){
+      if(atual!==null) encerradas.add(atual);
+      if(encerradas.has(plat)) erros.push(`retorno à plataforma ${plat} após o bloco ter sido encerrado`);
+      atual = plat;
+      entregaIniciada = false;
+    }
+    const temColeta = c.deckBackload > 1e-9;
+    const temEntrega = c.deckLoad > 1e-9 || c.diesel > 1e-9 || c.agua > 1e-9;
+    if(temColeta && entregaIniciada) erros.push(`coleta após início das entregas em ${plat}, na etapa ${idx+1}`);
+    if(temEntrega) entregaIniciada = true;
+  });
+  return erros;
+}
+
+function normalizarCargaExportada(n, nosPorId){
+  if(!Array.isArray(n.cargas) || !n.cargas.length) return null;
+  const caps = capacidadesNavio(n);
+  const bruto = n.cargas;
+  const inicialBruta = n.carga_inicial || bruto.find(x=>x.tipo==="base") || {};
+  const inicial = {
+    deck: primeiroNumero(inicialBruta.deck, inicialBruta.deck_depois, 0) || 0,
+    diesel: primeiroNumero(inicialBruta.diesel, inicialBruta.diesel_depois, 0) || 0,
+    agua: primeiroNumero(inicialBruta.agua, inicialBruta.agua_depois, 0) || 0
+  };
+  const passos = bruto.filter(x=>x.tipo!=="base").map((r,idx)=>{
+    const o = nosPorId.get(r.no) || {};
+    return {
+      indice: idx+1,
+      no: r.no,
+      nome: r.nome || o.nome || `Etapa ${idx+1}`,
+      plataforma: r.plataforma || o.plataforma || "",
+      deckAntes: primeiroNumero(r.deck_antes,0)||0,
+      deckColeta: primeiroNumero(r.deck_coleta,r.deck_backload,0)||0,
+      deckPico: primeiroNumero(r.deck_pico,0)||0,
+      deckEntrega: primeiroNumero(r.deck_entrega,r.deck_load,0)||0,
+      deckDepois: primeiroNumero(r.deck_depois,0)||0,
+      dieselAntes: primeiroNumero(r.diesel_antes,0)||0,
+      dieselEntrega: primeiroNumero(r.diesel_entrega,0)||0,
+      dieselDepois: primeiroNumero(r.diesel_depois,0)||0,
+      aguaAntes: primeiroNumero(r.agua_antes,0)||0,
+      aguaEntrega: primeiroNumero(r.agua_entrega,0)||0,
+      aguaDepois: primeiroNumero(r.agua_depois,0)||0,
+      fonteSeparada: true
+    };
+  });
+  return {caps,inicial,passos,fonte:"exportada",deckSeparado:true};
+}
+
+function calcularPerfilCarga(n, nosPorId){
+  const exportado = normalizarCargaExportada(n,nosPorId);
+  if(exportado) return exportado;
+
+  const caps = capacidadesNavio(n);
+  const visitados = (n.visitas||[]).map(v=>nosPorId.get(v.no)||v);
+  const cargas = visitados.map(cargasDoNo);
+  const deckSeparado = cargas.every(c=>c.temDeckSeparado);
+  let deck = cargas.reduce((s,c)=>s+c.deckLoad,0);
+  let diesel = cargas.reduce((s,c)=>s+c.diesel,0);
+  let agua = cargas.reduce((s,c)=>s+c.agua,0);
+  const inicial = {deck,diesel,agua};
+  const passos = (n.visitas||[]).map((v,idx)=>{
+    const o = nosPorId.get(v.no)||v;
+    const c = cargas[idx];
+    const deckAntes = deck;
+    const deckColeta = c.deckBackload;
+    const deckPico = deckAntes + deckColeta;
+    const deckEntrega = c.deckLoad;
+    const deckDepois = deckPico - deckEntrega;
+    const dieselAntes = diesel, dieselEntrega = c.diesel, dieselDepois = dieselAntes-dieselEntrega;
+    const aguaAntes = agua, aguaEntrega = c.agua, aguaDepois = aguaAntes-aguaEntrega;
+    deck=deckDepois; diesel=dieselDepois; agua=aguaDepois;
+    return {
+      indice:idx+1, no:v.no, nome:v.nome||o.nome||`Etapa ${idx+1}`,
+      plataforma:v.plataforma||o.plataforma||"",
+      deckAntes,deckColeta,deckPico,deckEntrega,deckDepois,
+      dieselAntes,dieselEntrega,dieselDepois,
+      aguaAntes,aguaEntrega,aguaDepois,
+      fonteSeparada:c.temDeckSeparado
+    };
+  });
+  return {caps,inicial,passos,fonte:"calculada",deckSeparado};
+}
+
+function prepararPerfisCarga(){
+  PERFIS_CARGA = new Map();
+  const D = window.DADOS;
+  const nosPorId = new Map((D.nos||[]).map(o=>[o.id,o]));
+  (D.navios||[]).forEach(n=>{
+    const p = calcularPerfilCarga(n,nosPorId);
+    p.errosOrdem = auditarOrdemPlataformas(n,nosPorId);
+    p.picoDeck = Math.max(p.inicial.deck,...p.passos.map(x=>x.deckPico));
+    p.minDeck = Math.min(p.inicial.deck,...p.passos.map(x=>x.deckDepois));
+    p.minDiesel = Math.min(p.inicial.diesel,...p.passos.map(x=>x.dieselDepois));
+    p.minAgua = Math.min(p.inicial.agua,...p.passos.map(x=>x.aguaDepois));
+    p.errosCarga = [];
+    if(p.caps.deck!==null && p.picoDeck>p.caps.deck+1e-6) p.errosCarga.push(`pico de convés ${fmtCarga(p.picoDeck)} acima da capacidade ${fmtCarga(p.caps.deck)}`);
+    if(p.minDeck < -1e-6) p.errosCarga.push(`carga de convés negativa (${fmtCarga(p.minDeck)})`);
+    if(p.caps.diesel!==null && p.inicial.diesel>p.caps.diesel+1e-6) p.errosCarga.push(`diesel inicial acima da capacidade`);
+    if(p.caps.agua!==null && p.inicial.agua>p.caps.agua+1e-6) p.errosCarga.push(`água inicial acima da capacidade`);
+    if(p.minDiesel < -1e-6) p.errosCarga.push(`estoque de diesel negativo`);
+    if(p.minAgua < -1e-6) p.errosCarga.push(`estoque de água negativo`);
+    PERFIS_CARGA.set(n.k,p);
+  });
+}
+
+function classeUtilizacao(valor,cap){
+  if(cap===null || cap<=0) return "";
+  const pct=100*valor/cap;
+  return pct>100+1e-6 ? "erro" : pct>=90 ? "warn" : "";
+}
+function kpiCarga(rotulo,valor,cap){
+  const pct = cap!==null && cap>0 ? 100*valor/cap : null;
+  const classe=classeUtilizacao(valor,cap);
+  const largura=pct===null?0:clamp(pct,0,100);
+  return `<div class="kpi">
+    <div class="rotulo">${escapeHtml(rotulo)}</div>
+    <div class="valor">${fmtCarga(valor)}${cap!==null?` / ${fmtCarga(cap)}`:""} t</div>
+    ${pct!==null?`<div class="barra-cap"><span class="${classe}" style="width:${largura}%"></span></div><div class="rotulo" style="margin-top:3px">${fmtPct(pct)}</div>`:"<div class=\"rotulo\" style=\"margin-top:5px\">capacidade não exportada</div>"}
+  </div>`;
+}
+
+function barraHero(rotulo, valor, cap, css, subtitulo=""){
+  const pct = cap!==null && cap>0 ? clamp(100*valor/cap,0,100) : 0;
+  const capTxt = cap!==null && cap>0 ? `${fmtCarga(cap)} t` : "capacidade não exportada";
+  return `<div class="carga-hero-row">
+    <div class="carga-hero-label"><span><b>${escapeHtml(rotulo)}</b> · ${fmtCarga(valor)} t</span><span>${escapeHtml(capTxt)}</span></div>
+    <div class="carga-hero-track"><div class="carga-hero-fill ${css}" style="width:${pct}%"></div></div>
+    ${subtitulo ? `<div class="carga-hero-note">${escapeHtml(subtitulo)}</div>` : ""}
+  </div>`;
+}
+
+function heroCarga(p){
+  const finalPasso = p.passos.length ? p.passos[p.passos.length-1] : null;
+  const finalDeck = finalPasso ? finalPasso.deckDepois : p.inicial.deck;
+  const finalDiesel = finalPasso ? finalPasso.dieselDepois : p.inicial.diesel;
+  const finalAgua = finalPasso ? finalPasso.aguaDepois : p.inicial.agua;
+  const modo = p.deckSeparado
+    ? "Leitura exata: coleta e entrega do convés vieram separadas no JS."
+    : "Leitura ilustrativa: o JS atual traz apenas o campo deck; por isso a ocupação do convés é estimada.";
+  return `<div class="carga-hero">
+    <div class="carga-hero-title">Visão rápida da ocupação a bordo</div>
+    ${barraHero("Convés inicial", p.inicial.deck, p.caps.deck, "deck", "Carga embarcada na saída da base.")}
+    ${barraHero("Pico de convés", p.picoDeck, p.caps.deck, "pico", "Momento mais carregado durante a rota.")}
+    ${barraHero("Convés ao final", finalDeck, p.caps.deck, "final", "Carga restante após a última operação.")}
+    ${barraHero("Diesel restante ao final", finalDiesel, p.caps.diesel, "diesel")}
+    ${barraHero("Água restante ao final", finalAgua, p.caps.agua, "agua")}
+    <div class="carga-hero-note">${escapeHtml(modo)}</div>
+  </div>`;
+}
+
+function svgPerfilDeck(n,p){
+  const nOps = Math.max(1, p.passos.length);
+  const W = Math.max(920, 180 + nOps * 180);
+  const H = 360;
+  const ml = 66, mr = 24, plotTop = 118, plotBottom = 274;
+  const valores = [p.inicial.deck, p.picoDeck, ...p.passos.flatMap(s => [s.deckPico, s.deckDepois])];
+  if(p.caps.deck !== null) valores.push(p.caps.deck);
+  const ymax = Math.max(1, ...valores) * 1.12;
+  const y = v => plotTop + (plotBottom - plotTop) * (1 - Math.max(0, v) / ymax);
+  const x = i => ml + i * (W - ml - mr) / nOps;
+  const pontosDepois = [
+    {x:x(0), y:y(p.inicial.deck), v:p.inicial.deck, nome:"Base"},
+    ...p.passos.map((s,i)=>({x:x(i+1), y:y(s.deckDepois), v:s.deckDepois, nome:s.nome}))
+  ];
+
+  const partes = [];
+  const clipId = `clip-carga-${n.k}`;
+  partes.push(`<svg class="carga-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Perfil de carga de convés do navio ${n.k}">`);
+  partes.push(`<defs><clipPath id="${clipId}"><rect x="${ml}" y="${plotTop}" width="${W-ml-mr}" height="${plotBottom-plotTop}" rx="5"/></clipPath></defs>`);
+
+  // Faixas suaves para os blocos consecutivos de plataforma.
+  const grupos = [];
+  p.passos.forEach((s,idx)=>{
+    const ultimo = grupos[grupos.length-1];
+    if(!ultimo || ultimo.plataforma !== s.plataforma){
+      grupos.push({plataforma:s.plataforma, ini:idx+1, fim:idx+1});
+    }else{
+      ultimo.fim = idx+1;
+    }
+  });
+  grupos.forEach((g,idx)=>{
+    const xa = g.ini===1 ? ml : (x(g.ini-1)+x(g.ini))/2;
+    const xb = g.fim===p.passos.length ? W-mr : (x(g.fim)+x(g.fim+1))/2;
+    const fill = idx%2===0 ? '#f4f8fb' : '#eef4f8';
+    partes.push(`<rect x="${xa}" y="${plotTop}" width="${Math.max(1,xb-xa)}" height="${plotBottom-plotTop}" fill="${fill}" clip-path="url(#${clipId})"/>`);
+    partes.push(`<text x="${(xa+xb)/2}" y="${plotTop+13}" text-anchor="middle" font-size="10" font-weight="650" fill="#7890a4">${escapeHtml(g.plataforma || 'SEM PLATAFORMA')}</text>`);
+  });
+
+  // Grade horizontal.
+  for(let g=0; g<=4; g++){
+    const v = ymax*g/4, yy = y(v);
+    partes.push(`<line x1="${ml}" y1="${yy}" x2="${W-mr}" y2="${yy}" stroke="#dfe6ed" stroke-width="1"/>`);
+    partes.push(`<text x="${ml-8}" y="${yy+4}" text-anchor="end" font-size="10" fill="#6d7d8d">${v.toFixed(0)}</text>`);
+  }
+
+  // Capacidade máxima.
+  if(p.caps.deck !== null){
+    partes.push(`<line x1="${ml}" y1="${y(p.caps.deck)}" x2="${W-mr}" y2="${y(p.caps.deck)}" stroke="#c0392b" stroke-width="1.7" stroke-dasharray="7 5"/>`);
+    partes.push(`<text x="${W-mr-3}" y="${y(p.caps.deck)-6}" text-anchor="end" font-size="10" font-weight="650" fill="#c0392b">capacidade ${fmtCarga(p.caps.deck)} t</text>`);
+  }
+
+  function dadosOperacao(s){
+    const coleta = s.deckColeta > 1e-9;
+    const entregaDeck = s.deckEntrega > 1e-9;
+    const entregaFluido = s.dieselEntrega > 1e-9 || s.aguaEntrega > 1e-9;
+    const entrega = entregaDeck || entregaFluido;
+    const viola = p.caps.deck !== null && s.deckPico > p.caps.deck + 1e-6;
+    let cor = '#8b99a7', tipo = 'SEM ALTERAÇÃO DE CONVÉS';
+    if(coleta && entrega){ cor = '#7a5cc5'; tipo = 'COLETA + ENTREGA'; }
+    else if(coleta){ cor = '#d9862b'; tipo = 'COLETA'; }
+    else if(entrega){ cor = '#2f8b57'; tipo = 'ENTREGA'; }
+    if(viola){ cor = '#c0392b'; tipo = 'CAPACIDADE EXCEDIDA'; }
+
+    const movDeck = [];
+    if(s.deckColeta > 1e-9) movDeck.push(`+${fmtCarga(s.deckColeta)} t`);
+    if(s.deckEntrega > 1e-9) movDeck.push(`−${fmtCarga(s.deckEntrega)} t`);
+    let movimento = movDeck.length ? movDeck.join('  ') : 'convés sem alteração';
+    if(!movDeck.length && entregaFluido){
+      const fluidos=[];
+      if(s.dieselEntrega>1e-9) fluidos.push(`diesel −${fmtCarga(s.dieselEntrega)} t`);
+      if(s.aguaEntrega>1e-9) fluidos.push(`água −${fmtCarga(s.aguaEntrega)} t`);
+      movimento = fluidos.join(' · ');
+    }
+    return {cor,tipo,movimento};
+  }
+
+  // Linhas-guia e cartões das operações, atrás da curva.
+  p.passos.forEach((s,idx)=>{
+    const qx = x(idx+1);
+    const op = dadosOperacao(s);
+    const cardW = 154, cardH = 56;
+    const cardY = idx%2===0 ? 8 : 58;
+    const cardX = Math.max(ml, Math.min(W-mr-cardW, qx-cardW/2));
+    const titulo = s.nome.length>22 ? s.nome.slice(0,20)+'…' : s.nome;
+    const fluxo = `${fmtCarga(s.deckAntes)} → ${fmtCarga(s.deckPico)} → ${fmtCarga(s.deckDepois)} t`;
+    const detalhe = `${s.nome}\n${op.tipo}\n${op.movimento}\nDeck: ${fluxo}\nDiesel depois: ${fmtCarga(s.dieselDepois)} t\nÁgua depois: ${fmtCarga(s.aguaDepois)} t`;
+
+    partes.push(`<line x1="${qx}" y1="${cardY+cardH}" x2="${qx}" y2="${plotBottom}" stroke="${op.cor}" stroke-width="1.2" stroke-dasharray="4 4" opacity=".78"><title>${escapeHtml(detalhe)}</title></line>`);
+    partes.push(`<rect x="${cardX}" y="${cardY}" width="${cardW}" height="${cardH}" rx="7" fill="#ffffff" stroke="${op.cor}" stroke-width="1.3" filter="drop-shadow(0 1px 1px rgba(18,38,58,.10))"><title>${escapeHtml(detalhe)}</title></rect>`);
+    partes.push(`<rect x="${cardX}" y="${cardY}" width="5" height="${cardH}" rx="3" fill="${op.cor}"/>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+15}" font-size="10" font-weight="700" fill="#12263a">${escapeHtml(titulo)}</text>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+31}" font-size="9.5" font-weight="700" fill="${op.cor}">${escapeHtml(op.tipo)} · ${escapeHtml(op.movimento)}</text>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+46}" font-size="9.5" fill="#5a6b7c">Deck ${escapeHtml(fluxo)}</text>`);
+  });
+
+  // Curva em degraus da carga após cada operação.
+  for(let i=0; i<pontosDepois.length-1; i++){
+    const a=pontosDepois[i], b=pontosDepois[i+1];
+    partes.push(`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${a.y}" stroke="#3e6d9c" stroke-width="3.2"/>`);
+    partes.push(`<line x1="${b.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#3e6d9c" stroke-width="3.2"/>`);
+  }
+
+  // Pontos de carga final e pico temporário.
+  pontosDepois.forEach((q,i)=>{
+    partes.push(`<circle cx="${q.x}" cy="${q.y}" r="4" fill="#3e6d9c" stroke="#fff" stroke-width="1.2"><title>${escapeHtml(q.nome)} — carga após operação: ${fmtCarga(q.v)} t</title></circle>`);
+    if(i===0){
+      partes.push(`<text x="${q.x}" y="${plotBottom+22}" text-anchor="middle" font-size="10" fill="#5a6b7c">BASE</text>`);
+      return;
+    }
+    const s=p.passos[i-1], op=dadosOperacao(s);
+    const picoCor=p.caps.deck!==null&&s.deckPico>p.caps.deck+1e-6?'#c0392b':'#d9862b';
+    partes.push(`<circle cx="${q.x}" cy="${y(s.deckPico)}" r="4.6" fill="${picoCor}" stroke="#fff" stroke-width="1.2"><title>${escapeHtml(s.nome)} — pico após coleta: ${fmtCarga(s.deckPico)} t</title></circle>`);
+    if(Math.abs(s.deckPico-s.deckDepois)>1e-6){
+      partes.push(`<line x1="${q.x}" y1="${y(s.deckPico)}" x2="${q.x}" y2="${q.y}" stroke="${op.cor}" stroke-width="1.2" stroke-dasharray="3 2"/>`);
+    }
+    partes.push(`<circle cx="${q.x}" cy="${plotBottom+13}" r="9" fill="${op.cor}"/>`);
+    partes.push(`<text x="${q.x}" y="${plotBottom+17}" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">${i}</text>`);
+    partes.push(`<text x="${q.x}" y="${plotBottom+35}" text-anchor="middle" font-size="9.5" fill="#5a6b7c">${escapeHtml(s.plataforma)}</text>`);
+  });
+
+  partes.push(`<text x="16" y="${plotTop+8}" font-size="10" fill="#40556a">t</text>`);
+  partes.push(`<g transform="translate(${ml},${H-16})">
+    <circle cx="0" cy="0" r="4" fill="#3e6d9c"/><text x="9" y="4" font-size="10" fill="#40556a">carga após operação</text>
+    <circle cx="145" cy="0" r="4" fill="#d9862b"/><text x="154" y="4" font-size="10" fill="#40556a">pico após coleta</text>
+    <rect x="286" y="-5" width="10" height="10" rx="2" fill="#d9862b"/><text x="302" y="4" font-size="10" fill="#40556a">coleta</text>
+    <rect x="358" y="-5" width="10" height="10" rx="2" fill="#2f8b57"/><text x="374" y="4" font-size="10" fill="#40556a">entrega</text>
+    <rect x="433" y="-5" width="10" height="10" rx="2" fill="#7a5cc5"/><text x="449" y="4" font-size="10" fill="#40556a">coleta + entrega</text>
+  </g>`);
+  partes.push(`</svg>`);
+  return partes.join("");
+}
+
+function statusPasso(s,cap){
+  const erros=[];
+  if(cap!==null && s.deckPico>cap+1e-6) erros.push("acima da capacidade");
+  if(s.deckDepois<-1e-6) erros.push("deck negativo");
+  if(s.dieselDepois<-1e-6) erros.push("diesel negativo");
+  if(s.aguaDepois<-1e-6) erros.push("água negativa");
+  return erros;
+}
+
+function tabelaCarga(p){
+  const linhas=p.passos.map(s=>{
+    const erros=statusPasso(s,p.caps.deck);
+    return `<tr class="${erros.length?"linha-erro":""}">
+      <td>${escapeHtml(s.nome)}</td><td>${escapeHtml(s.plataforma)}</td>
+      <td>${fmtCarga(s.deckAntes)}</td><td>${fmtCarga(s.deckColeta)}</td><td><b>${fmtCarga(s.deckPico)}</b></td>
+      <td>${fmtCarga(s.deckEntrega)}</td><td>${fmtCarga(s.deckDepois)}</td>
+      <td>${fmtCarga(s.dieselDepois)}</td><td>${fmtCarga(s.aguaDepois)}</td>
+      <td>${erros.length?`<span class="badge erro">${escapeHtml(erros.join("; "))}</span>`:`<span class="badge ok">OK</span>`}</td>
+    </tr>`;
+  }).join("");
+  return `<div class="tabela-wrap"><table class="carga"><thead><tr>
+    <th>Order</th><th>Plataforma</th><th>Deck antes</th><th>+ coleta</th><th>Pico</th><th>− entrega</th><th>Deck depois</th><th>Diesel depois</th><th>Água depois</th><th>Status</th>
+  </tr></thead><tbody>${linhas||'<tr><td colspan="10">Sem visitas.</td></tr>'}</tbody></table></div>`;
+}
+
+function botaoNavio(n, p, ativo){
+  const erros = [...(p?.errosCarga || []), ...(p?.errosOrdem || [])];
+  const util = p?.caps?.deck !== null && p?.caps?.deck > 0
+    ? fmtPct(100 * p.picoDeck / p.caps.deck)
+    : null;
+  const resumo = n.ocioso
+    ? "ocioso na base"
+    : `${p?.passos?.length || 0} operações${util ? ` · pico ${util}` : ""}`;
+
+  return `<button type="button" class="navio-tab ${ativo ? "active" : ""} ${n.ocioso ? "ocioso" : ""}"
+                  data-k="${n.k}" aria-pressed="${ativo ? "true" : "false"}">
+    <div class="tab-linha1">
+      <div>
+        <div class="tab-rotulo">NAVIO</div>
+        <div class="tab-numero">${n.k + 1}</div>
+      </div>
+      <span class="badge ${erros.length ? "erro" : "ok"}">${n.ocioso ? "OCIOSO" : (erros.length ? "ATENÇÃO" : "OK")}</span>
+    </div>
+    <div class="tab-nome">${escapeHtml(n.nome || `Navio ${n.k}`)}</div>
+    <div class="tab-info">${escapeHtml(resumo)}</div>
+  </button>`;
+}
+
+function cardNavio(n){
+  const p = PERFIS_CARGA.get(n.k);
+
+  if(n.ocioso){
+    return `<section class="carga-card">
+      <div class="carga-card-header">
+        <div>
+          <h3>Navio ${n.k} — ${escapeHtml(n.nome)}</h3>
+          <div class="carga-meta">Sem rota: permanece na base.</div>
+        </div>
+        <span class="badge ok">OCIOSO</span>
+      </div>
+    </section>`;
+  }
+
+  const erros = [...(p.errosCarga || []), ...(p.errosOrdem || [])];
+  const statusBadge = erros.length
+    ? `<span class="badge erro">${erros.length} problema(s)</span>`
+    : `<span class="badge ok">CARGA VIÁVEL</span>`;
+  const modoBadge = p.deckSeparado
+    ? `<span class="badge info">LEITURA EXATA</span>`
+    : `<span class="badge warn">LEITURA ILUSTRATIVA</span>`;
+
+  const avisos = [];
+  if(!p.deckSeparado){
+    avisos.push("O arquivo JS desta solução não traz deck_load e deck_backload separados. A parte do convés fica ilustrativa.");
+  }
+  if(p.caps.deck === null){
+    avisos.push("A capacidade do convés não foi exportada; os percentuais do convés não podem ser auditados com segurança.");
+  }
+  avisos.push(...erros);
+
+  const util = p.caps.deck !== null && p.caps.deck > 0 ? 100 * p.picoDeck / p.caps.deck : null;
+
+  return `<section class="carga-card">
+    <div class="carga-card-header">
+      <div>
+        <h3>Navio ${n.k} — ${escapeHtml(n.nome)}</h3>
+        <div class="carga-meta">${p.passos.length} operações · fonte ${p.fonte}${util !== null ? ` · maior ocupação do convés <b>${fmtPct(util)}</b>` : ""}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">${modoBadge}${statusBadge}</div>
+    </div>
+
+    <div class="carga-body">
+      <div class="carga-lateral">
+        <div class="carga-resumo">
+          ${kpiCarga("Deck inicial", p.inicial.deck, p.caps.deck)}
+          ${kpiCarga("Pico de deck", p.picoDeck, p.caps.deck)}
+          ${kpiCarga("Diesel inicial", p.inicial.diesel, p.caps.diesel)}
+          ${kpiCarga("Água inicial", p.inicial.agua, p.caps.agua)}
+        </div>
+        ${heroCarga(p)}
+        ${avisos.map(a => `<div class="carga-aviso">${escapeHtml(a)}</div>`).join("")}
+      </div>
+
+      <div>
+        <div class="carga-chart-wrap">${svgPerfilDeck(n, p)}</div>
+      </div>
+    </div>
+
+    ${tabelaCarga(p)}
+  </section>`;
+}
+
+function renderAuditoriaCarga(){
+  const alvo = document.getElementById("auditoria-carga");
+  const D = window.DADOS;
+
+  if(!D.navios?.length){
+    alvo.innerHTML = '<div class="sem-dados">Não há navios em DADOS.</div>';
+    return;
+  }
+
+  if(NAVIO_SELECIONADO === null || !D.navios.some(n => n.k === NAVIO_SELECIONADO)){
+    NAVIO_SELECIONADO = (D.navios.find(n => !n.ocioso) || D.navios[0]).k;
+  }
+
+  const botoes = D.navios
+    .map(n => botaoNavio(n, PERFIS_CARGA.get(n.k), n.k === NAVIO_SELECIONADO))
+    .join("");
+
+  const selecionado = D.navios.find(n => n.k === NAVIO_SELECIONADO) || D.navios[0];
+
+  alvo.innerHTML = `
+    <div class="navio-selector-wrap">
+      <div class="navio-selector-title">Selecione um navio para inspecionar a carga a bordo</div>
+      <div class="navio-selector">${botoes}</div>
+    </div>
+    ${cardNavio(selecionado)}
+  `;
+
+  alvo.querySelectorAll(".navio-tab").forEach(botao => {
+    botao.addEventListener("click", () => {
+      NAVIO_SELECIONADO = Number(botao.dataset.k);
+      renderAuditoriaCarga();
+    });
+  });
+}
+
+function desenharAuditoriaCarga(){
+  renderAuditoriaCarga();
+}
+
 // ============================ GANTT (SVG) ============================
 function desenharGantt(){
   const svg = document.getElementById("gantt");
@@ -235,8 +810,8 @@ function setPainel(html){ document.getElementById("painel-info").innerHTML = htm
 function painelPlataforma(nomePlat, nos, navios){
   const cor = corDaPlataforma(nomePlat);
   const orders = nos.filter(q=>q.plataforma===nomePlat);
-  let totalDeck=0, totalDiesel=0, totalAgua=0;
-  orders.forEach(o=>{ totalDeck += o.deck||0; totalDiesel += o.diesel||0; totalAgua += o.agua||0; });
+  let totalDeckLoad=0,totalDeckBack=0,totalDiesel=0,totalAgua=0;
+  orders.forEach(o=>{ const c=cargasDoNo(o); totalDeckLoad+=c.deckLoad; totalDeckBack+=c.deckBackload; totalDiesel+=c.diesel; totalAgua+=c.agua; });
 
   const cartoes = orders.map(o=>{
     let atendido = null;
@@ -245,44 +820,37 @@ function painelPlataforma(nomePlat, nos, navios){
       if(v){ atendido = {n, v}; break; }
     }
     if(!atendido){
-      return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
-        <b>${o.nome}</b> — <span style="color:var(--alerta)">não atendida</span>
-      </div>`;
+      return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;"><b>${escapeHtml(o.nome)}</b> — <span style="color:var(--alerta)">não atendida</span></div>`;
     }
     const {n, v} = atendido;
     const dueUsada = v.janela ? v.janela[1] : v.fim;
     const espera = v.espera > 1e-6 ? `espera ${fmtH(v.espera)} h` : "sem espera";
-    const jan = v.janela
-      ? `janela usada: ${fmtH(v.janela[0])}–${fmtH(v.janela[1])} h (${v.jidx+1}ª de ${v.janelas.length})`
-      : "sem janela atendida";
-    const cargaPartes = [];
-    if(o.deck>0)   cargaPartes.push(`convés ${o.deck} t`);
-    if(o.diesel>0) cargaPartes.push(`diesel ${o.diesel} t`);
-    if(o.agua>0)   cargaPartes.push(`água ${o.agua} t`);
-    const carga = cargaPartes.length ? `carga: ${cargaPartes.join(" · ")}` : "carga: —";
-    const alerta = v.fim > dueUsada + 1e-6
-      ? `<div style="color:var(--alerta); margin-top:4px;">atenção: serviço termina às ${fmtH(v.fim)} h, após o fechamento (${fmtH(dueUsada)} h)</div>`
-      : "";
+    const jan = v.janela ? `janela usada: ${fmtH(v.janela[0])}–${fmtH(v.janela[1])} h (${v.jidx+1}ª de ${v.janelas.length})` : "sem janela atendida";
+    const c=cargasDoNo(o);
+    const perfil=PERFIS_CARGA.get(n.k);
+    const passo=perfil?.passos.find(s=>s.no===o.id);
+    const cargaPartes=[];
+    if(c.deckBackload>0) cargaPartes.push(`coleta deck +${fmtCarga(c.deckBackload)} t`);
+    if(c.deckLoad>0) cargaPartes.push(`entrega deck −${fmtCarga(c.deckLoad)} t`);
+    if(c.diesel>0) cargaPartes.push(`diesel −${fmtCarga(c.diesel)} t`);
+    if(c.agua>0) cargaPartes.push(`água −${fmtCarga(c.agua)} t`);
+    const carga=cargaPartes.length?cargaPartes.join(" · "):"sem movimentação de carga";
+    const bordo=passo?`<div style="margin-top:5px; padding:6px; background:#f7f9fb; border-radius:4px;">
+      Deck: ${fmtCarga(passo.deckAntes)} antes → <b>${fmtCarga(passo.deckPico)} pico</b> → ${fmtCarga(passo.deckDepois)} depois<br>
+      Restante: diesel ${fmtCarga(passo.dieselDepois)} t · água ${fmtCarga(passo.aguaDepois)} t
+    </div>`:"";
+    const alerta = v.fim > dueUsada + 1e-6 ? `<div style="color:var(--alerta); margin-top:4px;">atenção: serviço termina às ${fmtH(v.fim)} h, após o fechamento (${fmtH(dueUsada)} h)</div>` : "";
     return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
-      <b>${o.nome}</b> — Navio ${n.k} (${n.nome})<br>
+      <b>${escapeHtml(o.nome)}</b> — Navio ${n.k} (${escapeHtml(n.nome)})<br>
       chegada ${fmtH(v.chegada)} h · ${espera}<br>
       serviço ${fmtH(v.ini)} → ${fmtH(v.fim)} h (${fmtH(v.fim-v.ini)} h)<br>
-      ${jan}<br>
-      ${carga}
-      ${alerta}
+      ${jan}<br>${carga}${bordo}${alerta}
     </div>`;
   });
 
-  return `
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-      <span style="width:14px; height:14px; border-radius:3px; background:${cor}; display:inline-block;"></span>
-      <b style="font-size:15px;">${nomePlat}</b>
-    </div>
-    <div style="margin-bottom:10px; color:#40556a;">
-      Convés ${totalDeck} t · Diesel ${totalDiesel} t · Água ${totalAgua} t
-    </div>
-    ${cartoes.join("")}
-  `;
+  return `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;"><span style="width:14px; height:14px; border-radius:3px; background:${cor}; display:inline-block;"></span><b style="font-size:15px;">${escapeHtml(nomePlat)}</b></div>
+    <div style="margin-bottom:10px; color:#40556a;">Entrega deck ${fmtCarga(totalDeckLoad)} t · Coleta backload ${fmtCarga(totalDeckBack)} t · Diesel ${fmtCarga(totalDiesel)} t · Água ${fmtCarga(totalAgua)} t</div>
+    ${cartoes.join("")}`;
 }
 
 // ficha da base: partidas/chegadas dos navios não ociosos
@@ -302,17 +870,24 @@ function painelBase(nome, navios){
 }
 
 // ficha da perna de rota clicada + resumo do navio
-function painelRota(n, nome1, nome2, distKm, durH){
-  return `
-    <div style="margin-bottom:10px;">
-      <b style="font-size:15px;">Navio ${n.k} — ${n.nome}</b><br>
-      trecho ${nome1} → ${nome2} · ${fmtKm(distKm)} km · ${fmtH(durH)} h
-    </div>
-    <div style="border:1px solid var(--grid); border-radius:4px; padding:8px;">
-      navegação ${fmtH(n.navegacao_h)} h · serviço ${fmtH(n.servico_h)} h ·
-      espera ${fmtH(n.espera_h)} h · retorno ${fmtH(n.retorno_h)} h
-    </div>
-  `;
+function painelRota(n, nome1, nome2, distKm, durH, indicePerna){
+  const p=PERFIS_CARGA.get(n.k);
+  let deck=null,diesel=null,agua=null;
+  if(p){
+    if(indicePerna===0){ deck=p.inicial.deck; diesel=p.inicial.diesel; agua=p.inicial.agua; }
+    else{
+      const s=p.passos[indicePerna-1];
+      if(s){ deck=s.deckDepois; diesel=s.dieselDepois; agua=s.aguaDepois; }
+    }
+  }
+  const pct=p&&p.caps.deck!==null&&p.caps.deck>0&&deck!==null?100*deck/p.caps.deck:null;
+  const bordo=deck===null?"":`<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-top:8px;">
+    <b>Carga durante este trecho</b><br>
+    convés ${fmtCarga(deck)}${p.caps.deck!==null?` / ${fmtCarga(p.caps.deck)}`:""} t${pct!==null?` (${fmtPct(pct)})`:""}<br>
+    diesel ${fmtCarga(diesel)} t · água ${fmtCarga(agua)} t
+  </div>`;
+  return `<div style="margin-bottom:10px;"><b style="font-size:15px;">Navio ${n.k} — ${escapeHtml(n.nome)}</b><br>trecho ${escapeHtml(nome1)} → ${escapeHtml(nome2)} · ${fmtKm(distKm)} km · ${fmtH(durH)} h</div>
+    <div style="border:1px solid var(--grid); border-radius:4px; padding:8px;">navegação ${fmtH(n.navegacao_h)} h · serviço ${fmtH(n.servico_h)} h · espera ${fmtH(n.espera_h)} h · retorno ${fmtH(n.retorno_h)} h</div>${bordo}`;
 }
 
 function desenharMapa(){
@@ -365,7 +940,7 @@ function desenharMapa(){
       L.polyline([[p1.lat,p1.lon],[p2.lat,p2.lon]], { color: cor, weight: 2.5, opacity: .9 })
         .addTo(MAPA)
         .bindTooltip(`${nome1} → ${nome2} · ${distKm.toFixed(1)} km · ${durH.toFixed(2)} h`, { sticky:true })
-        .on("click", ()=> setPainel(painelRota(n, nome1, nome2, distKm, durH)));
+        .on("click", ()=> setPainel(painelRota(n, nome1, nome2, distKm, durH, a)));
       PERNAS_ATUAIS.push({p1, p2, cor});
     }
     tudo.push([base.lat, base.lon]);
@@ -405,7 +980,9 @@ function desenharTudo(){
      <span><span class="chip hachura"></span>espera</span>
      <span><span class="chip" style="background:var(--band)"></span>janela de tempo (a usada fica mais escura)</span>
      <span class="aviso">contorno vermelho = serviço termina após o fechamento (semântica: início dentro da janela)</span>`;
+  prepararPerfisCarga();
   desenharGantt();
+  desenharAuditoriaCarga();
   desenharMapa();
 }
 function carregarDados(){

@@ -1,13 +1,24 @@
 import json
 from pprint import pprint
 import os
+import re
 import csv
 import instancia
+from pathlib import Path
 #import matplotlib.pyplot as plt
 import json
 
+from avaliador_rota import AVALIADOR_ROTA_PADRAO
+
 
 class Solucao:
+    # tipo -> {"html": arquivo padrao, "js": arquivo gerado, "rotulo": nome amigavel}
+    CONFIG_PLOTJS = {
+        "construtiva": {"html": "gantt_petro_construtiva.html", "js": "petroConstr.js", "rotulo": "Solução construtiva"},
+        "bp": {"html": "gantt_petroBp.html", "js": "petroBP.js", "rotulo": "Branch-and-Price"},
+        "exato": {"html": "gantt_petro_exato.html", "js": "petroEx.js", "rotulo": "Modelo exato"},
+    }
+
     def __init__(self, nbv, nbn):
         # bin_visitas[k][i][j]
         #self.bin_visitas = [[[0 for _ in range(nbn)] for _ in range(nbn)] for _ in range(nbv)]
@@ -119,6 +130,16 @@ class Solucao:
         (window.DADOS = {...}), consumido pelos gantt_petro*.html. Tempos em HORAS.
         Mesma propagacao de relatorio_cronograma_petro (mais cedo possivel, servico
         comeca na janela)."""
+        dados = self._montar_dados_visualizacao(inst, nome_solucao)
+        if dados is None:
+            return None
+        self._exportar_js_plotjs(dados, caminho_js)
+        print(f"[GANTT] dados exportados em {caminho_js}")
+        return dados
+
+    def _montar_dados_visualizacao(self, inst, nome_solucao):
+        """Monta o dict de dados (mesmo formato de window.DADOS) para self.solucoes[nome_solucao],
+        sem escrever arquivo. Retorna None se a solucao nao estiver registrada ou faltar dados_petro."""
         if nome_solucao not in self.solucoes:
             print(f"[GANTT] solucao '{nome_solucao}' nao registrada "
                   f"(chame registrar_solucao antes de exportar_visualizacao)")
@@ -142,22 +163,35 @@ class Solucao:
                 "janelas": [[a / H, b / H] for a, b in
                             zip(inst.noh[i].READY_TIME, inst.noh[i].DUE_DATE)],
                 "servico_h": (inst.noh[i].SERVICE_TIME[0] / H) if inst.noh[i].SERVICE_TIME else 0.0,
-                "deck": dp["dem_deck_load"][i] + dp["dem_deck_backload"][i],
-                "diesel": dp["dem_diesel"][i],
-                "agua": dp["dem_agua"][i],
+                "deck": float(dp["dem_deck_load"][i] + dp["dem_deck_backload"][i]),
+                "deck_load": float(dp["dem_deck_load"][i]),
+                "deck_backload": float(dp["dem_deck_backload"][i]),
+                "diesel": float(dp["dem_diesel"][i]),
+                "agua": float(dp["dem_agua"][i]),
             })
 
         navios_js = []
         fo_total = 0.0
-        for k in sorted(rotas_escolhidas.keys()):
-            ent = rotas_escolhidas[k]
+        for k in range(inst.nbv):
+            ent = rotas_escolhidas.get(
+                k,
+                {
+                    "sequencias": [],
+                    "custos": []
+                }
+            )
             seqs = list(ent.get("sequencias", []))
             veic = inst.veiculos[k]
             seq = list(seqs[0]) if seqs else [0, depf]
 
             nav = {"k": k, "nome": getattr(veic, "nome", ""), "ocioso": len(seq) <= 2,
                    "segmentos": [], "visitas": [],
-                   "navegacao_h": 0.0, "servico_h": 0.0, "espera_h": 0.0, "retorno_h": 0.0}
+                   "navegacao_h": 0.0, "servico_h": 0.0, "espera_h": 0.0,
+                   "capacidades": {
+                    "deck": float(getattr(veic, "cap_deck", getattr(veic, "capacidade", dp.get("capacidade", 0.0)))),
+                    "diesel": float(getattr(veic, "cap_diesel", dp.get("cap_diesel", 0.0))),
+                    "agua": float(getattr(veic, "cap_agua", dp.get("cap_agua", 0.0))),
+                    },"retorno_h": 0.0}
             if nav["ocioso"]:
                 navios_js.append(nav)
                 continue
@@ -206,134 +240,111 @@ class Solucao:
         dados = {"instancia": getattr(inst, "fileName", ""),
                  "horizonte_h": inst.noh[0].DUE_DATE[0] / H if inst.noh[0].DUE_DATE else 168.0,
                  "fo_total_s": fo_total, "nos": nos_js, "navios": navios_js}
-        with open(caminho_js, "w", encoding="utf-8") as f:
-            f.write("window.DADOS = ")
-            json.dump(dados, f, ensure_ascii=False, indent=1)
-            f.write(";\n")
-        print(f"[GANTT] dados exportados em {caminho_js}")
         return dados
 
-    def plataforma_petro(self, inst, no):
-        if not (1 <= no <= inst.nbcd):
+    def _exportar_js_plotjs(self, dados, caminho_js):
+        """Escreve `window.DADOS = {...}` (ou `null`, se dados is None) em caminho_js."""
+        with open(caminho_js, "w", encoding="utf-8") as f:
+            f.write("window.DADOS = ")
+            if dados is None:
+                f.write("null")
+            else:
+                json.dump(dados, f, ensure_ascii=False, indent=1)
+            f.write(";\n")
+
+    def _resolver_pasta_base_plotjs(self):
+        """Localiza PlotJS/basePadrao a partir da localizacao real deste arquivo,
+        independente do diretorio de trabalho atual (a bateria roda em pastas work/ paralelas)."""
+        pasta = Path(__file__).resolve().parent / "PlotJS" / "basePadrao"
+        if not pasta.is_dir():
+            raise FileNotFoundError(f"Pasta PlotJS/basePadrao nao encontrada: {pasta}")
+        return pasta
+
+    def _ajustar_script_html(self, texto, nome_js):
+        padrao_script = re.compile(r'script\.src\s*=\s*["\'][^"\']+["\']\s*\+\s*Date\.now\(\)\s*;')
+        texto, quantidade = padrao_script.subn(f'script.src = "{nome_js}?v=" + Date.now();', texto, count=1)
+        if quantidade != 1:
+            raise RuntimeError(f"Nao foi encontrada exatamente uma linha script.src dinamica no HTML de {nome_js}")
+
+        nomes_antigos = ["visualizacao_dados.js", "visualizacao_dadosBP.js", "visualizacao_dados_construtiva.js", "visualizacao_dados_exato.js", "petroConstr.js", "petroBP.js", "PetroBp.js", "petroEx.js"]
+        for nome_antigo in nomes_antigos:
+            texto = texto.replace(nome_antigo, nome_js)
+        return texto
+
+    def _copiar_html_plotjs(self, html_origem, html_destino, nome_js):
+        """Copia html_origem para html_destino apontando o script carregado para nome_js.
+        Nao altera o HTML padrao (a substituicao e feita somente na copia)."""
+        texto = Path(html_origem).read_text(encoding="utf-8")
+        texto = self._ajustar_script_html(texto, nome_js)
+        Path(html_destino).write_text(texto, encoding="utf-8")
+
+    def _nome_limpo_instancia(self, inst):
+        bruto = Path(getattr(inst, "fileName", "") or "").stem
+        return re.sub(r"[^A-Za-z0-9._-]+", "_", bruto).strip("_")
+
+    def _obter_fo_solucao(self, tipo):
+        """Obtem a FO somando os custos das rotas ja registradas em self.solucoes[tipo]
+        (unica fonte de verdade). Retorna None quando a abordagem nao foi registrada."""
+        rotas = self.solucoes.get(tipo)
+        if not rotas:
             return None
 
-        dp = inst.dados_petro
+        custos = [float(custo) for entrada in rotas.values() for custo in entrada.get("custos", [])]
+        return sum(custos) if custos else None
 
-        # Forma principal: nome da plataforma no nome do pedido.
-        nome = str(dp["nomes"][no])
-        if "_order" in nome:
-            return nome.split("_order", 1)[0]
+    def _montar_resumo_comparativo_plotjs(self, inst, fos, tempos):
+        return {
+            "instancia_nome": self._nome_limpo_instancia(inst),
+            "fo_construtiva": fos.get("construtiva"),
+            "fo_bp": fos.get("bp"),
+            "fo_exato": fos.get("exato"),
+            "tempo_construtiva": tempos.get("construtiva"),
+            "tempo_bp": tempos.get("bp"),
+            "tempo_exato": tempos.get("exato"),
+        }
 
-        # Fallback para instâncias sem nome padronizado.
-        lat = round(float(dp["lat"][no]), 6)
-        lon = round(float(dp["lon"][no]), 6)
-        return lat, lon
+    def exportar_plotjs(self, inst, pasta_saida, tempo_construtiva=None, tempo_bp=None, tempo_exato=None):
+        """Orquestra a exportacao completa do pacote PlotJS (HTMLs padrao + JS) para as tres
+        abordagens (construtiva, bp, exato), usando as solucoes ja registradas em
+        self.solucoes via registrar_solucao. Qualquer abordagem ou tempo ausente e
+        exportado como null, sem impedir a exportacao das demais."""
+        pasta_saida = Path(pasta_saida)
+        pasta_saida.mkdir(parents=True, exist_ok=True)
+        pasta_base = self._resolver_pasta_base_plotjs()
+
+        tempos = {"construtiva": tempo_construtiva, "bp": tempo_bp, "exato": tempo_exato}
+        fos = {tipo: self._obter_fo_solucao(tipo) for tipo in self.CONFIG_PLOTJS}
+        comparativo = self._montar_resumo_comparativo_plotjs(inst, fos, tempos)
+
+        for tipo, config in self.CONFIG_PLOTJS.items():
+            caminho_js = pasta_saida / config["js"]
+            self._copiar_html_plotjs(pasta_base / config["html"], pasta_saida / config["html"], config["js"])
+
+            dados = self._montar_dados_visualizacao(inst, tipo)
+            if dados is not None:
+                dados["solucao_atual"] = tipo
+                dados["comparativo"] = comparativo
+            self._exportar_js_plotjs(dados, caminho_js)
+
+            status = "ok" if dados is not None else "sem solucao (DADOS=null)"
+            print(f"[PLOTJS] {config['rotulo']} ({tipo}): {status} -> {caminho_js.name}")
+
+        print(f"[PLOTJS] pacote exportado em {pasta_saida}")
+        return pasta_saida
+
+    def plataforma_petro(self, inst, no):
+        """Delegado a AvaliadorRota.plataforma_petro (fonte unica desta regra)."""
+        return AVALIADOR_ROTA_PADRAO.plataforma_petro(inst, no)
 
     def ordem_plataformas_petro_valida(self, inst, seq):
-        dp = inst.dados_petro
-        eps = 1e-9
-
-        plataforma_atual = None
-        plataformas_encerradas = set()
-        entrega_iniciada = False
-
-        for no in seq:
-            if not (1 <= no <= inst.nbcd):
-                continue
-
-            plataforma = self.plataforma_petro(inst, no)
-
-            # Mudou de plataforma: encerra definitivamente a anterior.
-            if plataforma != plataforma_atual:
-                if plataforma_atual is not None:
-                    plataformas_encerradas.add(plataforma_atual)
-
-                # Não pode sair da plataforma e retornar depois.
-                if plataforma in plataformas_encerradas:
-                    return False
-
-                plataforma_atual = plataforma
-                entrega_iniciada = False
-
-            tem_coleta = float(dp["dem_deck_backload"][no]) > eps
-            tem_entrega = (
-                float(dp["dem_deck_load"][no]) > eps or
-                float(dp["dem_diesel"][no]) > eps or
-                float(dp["dem_agua"][no]) > eps
-            )
-
-            # Depois que começou a entregar nessa plataforma,
-            # não pode aparecer outra coleta da mesma plataforma.
-            if tem_coleta and entrega_iniciada:
-                return False
-
-            # Pedido com coleta e entrega: coleta primeiro e,
-            # depois dele, a fase de entrega já foi iniciada.
-            if tem_entrega:
-                entrega_iniciada = True
-
-        return True
+        """Delegado a AvaliadorRota.validar_ordem_plataformas_petro (fonte unica desta regra)."""
+        viavel, _motivo = AVALIADOR_ROTA_PADRAO.validar_ordem_plataformas_petro(inst, seq)
+        return viavel
 
     def viavel_cargas_petro(self, inst, k, seq):
-        dp = getattr(inst, "dados_petro", None)
-        if dp is None:
-            return True
-
-        if not self.ordem_plataformas_petro_valida(inst, seq):
-            return False
-
-        veic = inst.veiculos[k]
-        cap_deck = float(getattr(veic, "cap_deck", veic.capacidade))
-        cap_diesel = float(getattr(veic, "cap_diesel", float("inf")))
-        cap_agua = float(getattr(veic, "cap_agua", float("inf")))
-        eps = 1e-9
-
-        clientes = [no for no in seq if 1 <= no <= inst.nbcd]
-
-        # O navio sai da base levando todas as entregas de convés da rota.
-        deck = sum(float(dp["dem_deck_load"][no]) for no in clientes)
-        diesel = sum(float(dp["dem_diesel"][no]) for no in clientes)
-        agua = sum(float(dp["dem_agua"][no]) for no in clientes)
-
-        if deck > cap_deck + eps:
-            return False
-        if diesel > cap_diesel + eps:
-            return False
-        if agua > cap_agua + eps:
-            return False
-
-        pos = 0
-
-        while pos < len(clientes):
-            plataforma = self.plataforma_petro(inst, clientes[pos])
-            fim = pos
-
-            coleta_plataforma = 0.0
-            entrega_plataforma = 0.0
-
-            # Os pedidos da plataforma são consecutivos.
-            while fim < len(clientes) and self.plataforma_petro(inst, clientes[fim]) == plataforma:
-                no = clientes[fim]
-                coleta_plataforma += float(dp["dem_deck_backload"][no])
-                entrega_plataforma += float(dp["dem_deck_load"][no])
-                fim += 1
-
-            # Primeiro embarca todos os backloads da plataforma.
-            deck += coleta_plataforma
-
-            if deck > cap_deck + eps:
-                return False
-
-            # Só depois descarrega todas as entregas da plataforma.
-            deck -= entrega_plataforma
-
-            if deck < -eps:
-                return False
-
-            pos = fim
-
-        return True
-
+        """Delegado a AvaliadorRota.validar_cargas_petro (fonte unica desta regra)."""
+        viavel, _motivo, _carga_deck_maxima = AVALIADOR_ROTA_PADRAO.validar_cargas_petro(inst, k, seq)
+        return viavel
 
     def registrar_convergencia(self, inst, iteracao, no_id, lb, ub, n_colunas, tempo, ub_mip_iter=None):
         if not hasattr(self, "melhor_ub"):
@@ -691,6 +702,13 @@ class Solucao:
 
     def inserir_cliente_rota(self, inst, k, cliente, pos):
         """
+        LEGADO: nao usada pelo pipeline ativo (unica chamadora e
+        Metodos.geracao_colunas, que por sua vez nao e invocada por
+        branch_and_price_global). Logica Solomon equivalente a
+        AvaliadorRota.avaliar_rota_solomon; mantida standalone (nao
+        delegada) para preservar seu contrato de retorno ('s'/'u' por
+        posicao) sem cobertura de teste.
+
         Insere `cliente` na rota do veículo k na posição pos.
         Atualiza tempos e carga. Testa viabilidade (janelas e capacidade).
         """

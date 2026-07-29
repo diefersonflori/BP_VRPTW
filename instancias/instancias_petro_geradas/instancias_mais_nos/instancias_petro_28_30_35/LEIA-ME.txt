@@ -1,0 +1,20 @@
+BATERIA PETROBRAS — 28, 30 E 35 PEDIDOS
+
+Arquivos gerados:
+- 28 pedidos: uma instância com 3 navios/min3 e uma com 4 navios/min4.
+- 30 pedidos: uma instância com 3 navios/min3 e uma com 4 navios/min4.
+- 35 pedidos: uma instância com 3 navios/min3 e uma com 4 navios/min4.
+
+A exigência mínima de navios é imposta pela carga total de convés:
+- min3: total de deckCargoLoad e/ou deckCargoBackload maior que 2 x 900.
+- min4: total de deckCargoLoad e/ou deckCargoBackload maior que 3 x 900.
+
+As instâncias não utilizam successor nem transshipment. O script gerador valida:
+- quantidade de pedidos;
+- quantidade de plataformas;
+- quantidade de navios;
+- IDs únicos;
+- totais de carga;
+- mínimo de navios forçado pela capacidade.
+
+Copie os seis arquivos JSON para uma pasta de instâncias e execute normalmente com leitura_petro.

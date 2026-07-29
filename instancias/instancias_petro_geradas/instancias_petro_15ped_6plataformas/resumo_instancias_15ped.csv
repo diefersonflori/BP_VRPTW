@@ -1,0 +1,7 @@
+﻿arquivo;descricao;pedidos;plataformas;plataformas_usadas;deck_load_total;deck_backload_total;minimo_teorico_navios;menor_tempo_base_plataforma_h;maior_tempo_base_plataforma_h
+petro_campos_15ped_6plat_01_forca2v_balanceada.json;"15 pedidos, 6 plataformas, mínimo teórico de 2 navios; entregas e coletas balanceadas.";15;6;P-43, P-40, P-51, P-53, P-48, FPANE;1200.0;1050.0;2;6.54;7.67
+petro_campos_15ped_6plat_02_forca2v_entrega_pesada.json;15 pedidos, 6 plataformas, mínimo de 2 navios forçado principalmente por entregas.;15;6;P-43, P-40, P-51, P-53, P-48, FPANE;1550.0;750.0;2;6.54;7.67
+petro_campos_15ped_6plat_03_forca2v_coleta_pesada.json;15 pedidos, 6 plataformas, mínimo de 2 navios forçado principalmente por coletas.;15;6;P-43, P-40, P-51, P-53, P-48, FPANE;800.0;1300.0;2;6.54;7.67
+petro_campos_15ped_6plat_04_forca3v_balanceada.json;15 pedidos, 6 plataformas, mínimo teórico de 3 navios por entregas e coletas.;15;6;P-43, P-40, P-51, P-53, P-48, FPANE;1920.0;1840.0;3;6.54;7.67
+petro_campos_15ped_6plat_05_forca3v_janelas_escalonadas.json;15 pedidos, 6 plataformas, mínimo de 3 navios por entregas, com janelas escalonadas.;15;6;P-43, P-40, P-51, P-53, P-48, FPANE;1890.0;1600.0;3;6.54;7.67
+petro_campos_15ped_6plat_06_forca3v_geografia_espalhada.json;"15 pedidos, 6 plataformas mais espalhadas na Bacia de Campos; mínimo de 3 navios por entregas.";15;6;P-58, P-54, P-43, P-48, P-65, FPCGZ;1920.0;1500.0;3;6.04;7.58

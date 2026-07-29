@@ -1,0 +1,48 @@
+{
+  "tipo": "fracionaria",
+  "no_id": 0,
+  "custo": 560.0,
+  "lambdas": {
+    "0,0": 0.0,
+    "0,1": 1.0,
+    "1,0": 1.0,
+    "2,0": 1.0
+  },
+  "rotas_ativas": {
+    "0": {
+      "sequencias": [
+        [
+          0,
+          36
+        ]
+      ],
+      "custos": [
+        0.0
+      ]
+    },
+    "1": {
+      "sequencias": [
+        [
+          0,
+          36
+        ]
+      ],
+      "custos": [
+        0.0
+      ]
+    },
+    "2": {
+      "sequencias": [
+        [
+          0,
+          36
+        ]
+      ],
+      "custos": [
+        0.0
+      ]
+    }
+  },
+  "arcos_fixados_em_1": [],
+  "arcos_proibidos": []
+}

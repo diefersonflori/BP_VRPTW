@@ -1,0 +1,11 @@
+﻿arquivo;cenario;deck_load_total;deck_backload_total;capacidade_navio;minimo_teorico_por_capacidade;maior_pedido_deck
+petro_campos_C1_forca2v_01_balanceada_leve.json;2 veículos — balanceada leve;1100.0;950.0;900.0;2;500.0
+petro_campos_C1_forca2v_02_entrega_pesada.json;2 veículos — entrega pesada;1250.0;700.0;900.0;2;550.0
+petro_campos_C1_forca2v_03_coleta_pesada.json;2 veículos — coleta pesada;800.0;1100.0;900.0;2;450.0
+petro_campos_C1_forca2v_04_balanceada_media.json;2 veículos — balanceada média;1300.0;1200.0;900.0;2;550.0
+petro_campos_C1_forca2v_05_p43_pesada.json;2 veículos — P-43 pesada;1400.0;1100.0;900.0;2;800.0
+petro_campos_C1_forca2v_06_p38_pesada.json;2 veículos — P-38 pesada;1400.0;1100.0;900.0;2;500.0
+petro_campos_C1_forca2v_07_p09_pesada.json;2 veículos — P-09 pesada;1100.0;1200.0;900.0;2;450.0
+petro_campos_C1_forca2v_08_proxima_limite_2v.json;2 veículos — próxima do limite de 2;1700.0;1600.0;900.0;2;500.0
+petro_campos_C1_forca3v_09_entrega.json;3 veículos — forçada por entregas;1950.0;1200.0;900.0;3;600.0
+petro_campos_C1_forca3v_10_entrega_coleta.json;3 veículos — forçada por entregas e coletas;2100.0;1900.0;900.0;3;600.0

@@ -1,0 +1,131 @@
+{
+  "0": {
+    "rotas_binaria": [
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    ],
+    "sequencia_rota": [
+      [
+        0,
+        10,
+        9,
+        5,
+        8,
+        13
+      ]
+    ],
+    "custo": [
+      75165.0
+    ],
+    "vezes_usada_geral": [
+      0
+    ],
+    "vezes_usada_otimo": [
+      0
+    ],
+    "lbd_iteracao": [
+      []
+    ],
+    "artificial": [
+      false
+    ]
+  },
+  "1": {
+    "rotas_binaria": [
+      [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    ],
+    "sequencia_rota": [
+      [
+        0,
+        4,
+        3,
+        2,
+        11,
+        1,
+        7,
+        6,
+        12,
+        13
+      ]
+    ],
+    "custo": [
+      95045.0
+    ],
+    "vezes_usada_geral": [
+      0
+    ],
+    "vezes_usada_otimo": [
+      0
+    ],
+    "lbd_iteracao": [
+      []
+    ],
+    "artificial": [
+      false
+    ]
+  },
+  "2": {
+    "rotas_binaria": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "sequencia_rota": [
+      [
+        0,
+        13
+      ]
+    ],
+    "custo": [
+      0.0
+    ],
+    "vezes_usada_geral": [
+      0
+    ],
+    "vezes_usada_otimo": [
+      0
+    ],
+    "lbd_iteracao": [
+      []
+    ],
+    "artificial": [
+      false
+    ]
+  }
+}

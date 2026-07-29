@@ -1,0 +1,35 @@
+INSTÂNCIAS PETROBRAS — 15 PEDIDOS E 6 PLATAFORMAS
+==============================================================
+
+Conteúdo:
+- 6 arquivos JSON prontos;
+- 15 pedidos por instância;
+- 6 plataformas distintas por instância;
+- 3 navios, cada um com deckSpace = 900 e uma viagem;
+- coordenadas reais da planilha Localização das Plataformas(1).xlsx;
+- successor e transshipment nulos, para isolar o efeito de capacidade, janelas e roteamento.
+
+Famílias:
+- 01 a 03: mínimo teórico de 2 navios;
+- 04 a 06: mínimo teórico de 3 navios;
+- 05: janelas escalonadas;
+- 06: plataformas geograficamente mais espalhadas.
+
+Importante:
+O mínimo é garantido pela capacidade de convés:
+max(ceil(total deckCargoLoad/900), ceil(total deckCargoBackload/900)).
+A viabilidade completa e a quantidade ótima efetivamente usada devem ser confirmadas
+pela construtiva, pelo Branch-and-Price e pelo modelo compacto.
+
+Para usar:
+1. Extraia os arquivos.
+2. Copie a pasta para instancias/instancias_petro_geradas/.
+3. Aponte PASTA_INSTANCIAS_ATIVA da main para essa pasta.
+
+Resumo:
+- petro_campos_15ped_6plat_01_forca2v_balanceada.json: load=1200, backload=1050, mínimo=2 navios.
+- petro_campos_15ped_6plat_02_forca2v_entrega_pesada.json: load=1550, backload=750, mínimo=2 navios.
+- petro_campos_15ped_6plat_03_forca2v_coleta_pesada.json: load=800, backload=1300, mínimo=2 navios.
+- petro_campos_15ped_6plat_04_forca3v_balanceada.json: load=1920, backload=1840, mínimo=3 navios.
+- petro_campos_15ped_6plat_05_forca3v_janelas_escalonadas.json: load=1890, backload=1600, mínimo=3 navios.
+- petro_campos_15ped_6plat_06_forca3v_geografia_espalhada.json: load=1920, backload=1500, mínimo=3 navios.

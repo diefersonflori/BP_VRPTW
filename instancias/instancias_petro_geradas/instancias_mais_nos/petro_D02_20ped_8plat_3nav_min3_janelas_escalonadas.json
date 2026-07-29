@@ -1,0 +1,763 @@
+{
+  "instanceInformation": {
+    "omarGatewayJobId": 999999999,
+    "referenceDateTime": "2021-01-01T04:00:00-0300",
+    "userComments": [
+      "Grupo D: 20 pedidos, 8 plataformas e 3 navios.",
+      "Coordenadas obtidas da planilha Localização das Plataformas(1).xlsx.",
+      "Sem successor e transshipment para isolar capacidade, janelas e roteamento."
+    ],
+    "instanceDatetimeGeneration": "2026-07-20T08:23:15+0000",
+    "instanceId": {
+      "basicData": "PETRO_ESCALA",
+      "capacityCommodityAssignmentData": "PETRO_ESCALA_CAP",
+      "fleetData": "PETRO_ESCALA_3V",
+      "supplyBasesData": "PACU",
+      "ordersData": "PETRO_D02"
+    }
+  },
+  "input": {
+    "basicData": {
+      "alphaWeight": 0.1,
+      "etaConversion": 1.4,
+      "mipRelativeGapTolerance": 0.001,
+      "numberOfThreads": 1,
+      "runTimeLimit": 600,
+      "useCostMeasureInFuelVolume": true,
+      "useMipStarts": false,
+      "useRoundedCapacityInequalities": false,
+      "useSolverCuts": false,
+      "useSubtourEliminationConstraints": false,
+      "conversionTonDieselTonCO2Eq": 3.595,
+      "dieselDensity": 0.852,
+      "numberOfOrders": 20,
+      "numberOfVessels": 3,
+      "numberOfClients": 8,
+      "numberOfBackloadCommodities": 1,
+      "numberOfCompartments": 3,
+      "numberOfLoadCommodities": 3,
+      "tripClass": "cronograma"
+    },
+    "capacityCommodityAssignmentData": [
+      {
+        "compartment": "deckSpace",
+        "deckCargoBackload": 1,
+        "deckCargoLoad": 1,
+        "dieselLoad": 0,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "dieselTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 1,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "waterTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 0,
+        "waterLoad": 1
+      }
+    ],
+    "fleetData": [
+      {
+        "vesselId": 2,
+        "vesselName": "STARNAV TAURUS2",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -22.333,
+        "longitude": -41.645,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      },
+      {
+        "vesselId": 1,
+        "vesselName": "STARNAV TAURUS3",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -22.333,
+        "longitude": -41.645,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      },
+      {
+        "vesselId": 3,
+        "vesselName": "STARNAV TAURUS",
+        "vesselClass": "PSV 4500",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 168.0,
+        "setupArrival": 1.02,
+        "setupDeparture": 0.51,
+        "estimatedTimeOfReadiness": 3.0,
+        "maximumDepartureTime": 48.0,
+        "latitude": -22.333,
+        "longitude": -41.645,
+        "capacity": {
+          "deckSpace": 900.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 2500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.3525,
+          "base": 0.9832,
+          "navigation": 3.9419,
+          "dynamic": 1.9694
+        },
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 16.668
+          },
+          {
+            "above": 0.0,
+            "speed": 13.3344
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 500.0,
+          "waterLoad": 400.0
+        }
+      }
+    ],
+    "supplyBasesData": [
+      {
+        "baseName": "PACU",
+        "baseId": 0,
+        "region": "SE",
+        "efficiency": {
+          "deckCargoBackload": 73.0,
+          "deckCargoLoad": 73.0,
+          "dieselLoad": 90.0,
+          "waterLoad": 102.0
+        },
+        "successor": null,
+        "navigationTimeToMoor": 3.0,
+        "latitude": -21.845602,
+        "longitude": -40.996652
+      }
+    ],
+    "ordersData": [
+      {
+        "orderId": 1,
+        "clientId": 1,
+        "clientName": "PPG-1A",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.25555306,
+        "longitude": -40.32994917,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            12.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 2,
+        "clientId": 1,
+        "clientName": "PPG-1A",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.25555306,
+        "longitude": -40.32994917,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 234.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            12.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 3,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            17.0,
+            103.0
+          ],
+          [
+            115.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 4,
+        "clientId": 2,
+        "clientName": "PGP-1",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.37477944,
+        "longitude": -40.417455,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 233.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            17.0,
+            103.0
+          ],
+          [
+            115.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 5,
+        "clientId": 3,
+        "clientName": "P-43",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.55011,
+        "longitude": -40.25944889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            22.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 6,
+        "clientId": 3,
+        "clientName": "P-43",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.55011,
+        "longitude": -40.25944889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 233.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            22.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 7,
+        "clientId": 4,
+        "clientName": "P-40",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.54742194,
+        "longitude": -40.06744306,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            27.0,
+            109.0
+          ],
+          [
+            121.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 8,
+        "clientId": 4,
+        "clientName": "P-40",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.54742194,
+        "longitude": -40.06744306,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 234.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            27.0,
+            109.0
+          ],
+          [
+            121.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 9,
+        "clientId": 5,
+        "clientName": "FPANE",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.46391639,
+        "longitude": -40.05731667,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            32.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 10,
+        "clientId": 5,
+        "clientName": "FPANE",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.46391639,
+        "longitude": -40.05731667,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 233.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            32.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 11,
+        "clientId": 6,
+        "clientName": "P-53",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.42401667,
+        "longitude": -39.95766667,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 250.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            12.0,
+            103.0
+          ],
+          [
+            115.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 12,
+        "clientId": 6,
+        "clientName": "P-53",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.42401667,
+        "longitude": -39.95766667,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 233.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            12.0,
+            103.0
+          ],
+          [
+            115.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 13,
+        "clientId": 7,
+        "clientName": "P-51",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.63440278,
+        "longitude": -40.09363722,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 375.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            17.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 14,
+        "clientId": 7,
+        "clientName": "P-51",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.63440278,
+        "longitude": -40.09363722,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 350.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            17.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 15,
+        "clientId": 8,
+        "clientName": "P-48",
+        "clusterName": "BC04",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.66388389,
+        "longitude": -40.24018889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 375.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            22.0,
+            109.0
+          ],
+          [
+            121.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 16,
+        "clientId": 8,
+        "clientName": "P-48",
+        "clusterName": "BC04",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.0,
+        "serviceSetup": 0.0,
+        "latitude": -22.66388389,
+        "longitude": -40.24018889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 350.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            22.0,
+            109.0
+          ],
+          [
+            121.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 17,
+        "clientId": 1,
+        "clientName": "PPG-1A",
+        "clusterName": "BC04",
+        "commodity": "waterLoad",
+        "efficiency": 56.3,
+        "serviceSetup": 0.0,
+        "latitude": -22.25555306,
+        "longitude": -40.32994917,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 220.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            12.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 18,
+        "clientId": 3,
+        "clientName": "P-43",
+        "clusterName": "BC04",
+        "commodity": "dieselLoad",
+        "efficiency": 66.7,
+        "serviceSetup": 0.0,
+        "latitude": -22.55011,
+        "longitude": -40.25944889,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 180.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            22.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 19,
+        "clientId": 5,
+        "clientName": "FPANE",
+        "clusterName": "BC04",
+        "commodity": "waterLoad",
+        "efficiency": 56.3,
+        "serviceSetup": 0.0,
+        "latitude": -22.46391639,
+        "longitude": -40.05731667,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 220.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            32.0,
+            100.0
+          ],
+          [
+            112.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 20,
+        "clientId": 7,
+        "clientName": "P-51",
+        "clusterName": "BC04",
+        "commodity": "dieselLoad",
+        "efficiency": 66.7,
+        "serviceSetup": 0.0,
+        "latitude": -22.63440278,
+        "longitude": -40.09363722,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 1000.0,
+        "penaltyReadyTime": 1000.0,
+        "quantity": 180.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            17.0,
+            106.0
+          ],
+          [
+            118.0,
+            168.0
+          ]
+        ]
+      }
+    ]
+  },
+  "output": {
+    "instanceStatus": "unsolved"
+  }
+}

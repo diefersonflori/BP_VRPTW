@@ -1,0 +1,7 @@
+codigo;arquivo;pedidos;plataformas;navios_disponiveis;minimo_forcado_por_capacidade;total_deck_load;total_deck_backload;capacidade_deck_por_navio;janelas;geografia_espalhada;tipo
+F01;petro_F01_28ped_11plat_3nav_min3_balanceada.json;28;11;3;3;2450.0;2300.0;900.0;amplas;False;balanceada
+F02;petro_F02_28ped_11plat_4nav_min4_forca4v_balanceada.json;28;11;4;4;3100.0;2950.0;900.0;amplas;False;forca4v_balanceada
+G01;petro_G01_30ped_12plat_3nav_min3_janelas_escalonadas.json;30;12;3;3;2550.0;2400.0;900.0;escalonadas;False;janelas_escalonadas
+G02;petro_G02_30ped_12plat_4nav_min4_forca4v_janelas.json;30;12;4;4;3250.0;3050.0;900.0;escalonadas;False;forca4v_janelas
+H01;petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json;35;14;3;3;2650.0;2500.0;900.0;amplas;True;geografia_espalhada
+H02;petro_H02_35ped_14plat_4nav_min4_forca4v_geografia_janelas.json;35;14;4;4;3400.0;3250.0;900.0;escalonadas;True;forca4v_geografia_janelas

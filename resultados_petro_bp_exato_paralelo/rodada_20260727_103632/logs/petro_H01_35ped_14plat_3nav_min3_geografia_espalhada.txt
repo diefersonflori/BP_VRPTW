@@ -1,0 +1,624 @@
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json
+Clientes: 35 | Navios: 3 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+P-58_order_1    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-58_order_2    167.0      0.0    167.0      0.0      0.0 20040.00     1
+FPCGZ_order_3    177.0    177.0      0.0      0.0      0.0 21240.00     1
+FPCGZ_order_4    167.0      0.0    167.0      0.0      0.0 20040.00     1
+P-57_order_5    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-57_order_6    167.0      0.0    167.0      0.0      0.0 20040.00     1
+P-51_order_7    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-51_order_8    167.0      0.0    167.0      0.0      0.0 20040.00     1
+P-62_order_9    176.0    176.0      0.0      0.0      0.0 21120.00     1
+P-62_order_10    166.0      0.0    166.0      0.0      0.0 19920.00     1
+P-65_order_11    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-65_order_12    167.0      0.0    167.0      0.0      0.0 20040.00     1
+P-54_order_13    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-54_order_14    167.0      0.0    167.0      0.0      0.0 20040.00     1
+P-08_order_15    177.0    177.0      0.0      0.0      0.0 21240.00     1
+P-08_order_16    167.0      0.0    167.0      0.0      0.0 20040.00     1
+FORTE_order_17    176.0    176.0      0.0      0.0      0.0 21120.00     1
+FORTE_order_18    166.0      0.0    166.0      0.0      0.0 19920.00     1
+PPG-1A_order_19    176.0    176.0      0.0      0.0      0.0 21120.00     1
+PPG-1A_order_20    166.0      0.0    166.0      0.0      0.0 19920.00     1
+P-43_order_21    221.0    221.0      0.0      0.0      0.0 26520.00     1
+P-43_order_22    209.0      0.0    209.0      0.0      0.0 25080.00     1
+PGP-1_order_23    221.0    221.0      0.0      0.0      0.0 26520.00     1
+PGP-1_order_24    208.0      0.0    208.0      0.0      0.0 24960.00     1
+P-48_order_25    221.0    221.0      0.0      0.0      0.0 26520.00     1
+P-48_order_26    208.0      0.0    208.0      0.0      0.0 24960.00     1
+P-40_order_27    220.0    220.0      0.0      0.0      0.0 26400.00     1
+P-40_order_28    208.0      0.0    208.0      0.0      0.0 24960.00     1
+P-58_order_29      0.0      0.0      0.0      0.0    220.0 14067.50     1
+P-57_order_30      0.0      0.0      0.0    180.0      0.0  9715.14     1
+P-62_order_31      0.0      0.0      0.0      0.0    220.0 14067.50     1
+P-54_order_32      0.0      0.0      0.0    180.0      0.0  9715.14     1
+FORTE_order_33      0.0      0.0      0.0      0.0    220.0 14067.50     1
+P-43_order_34      0.0      0.0      0.0    180.0      0.0  9715.14     1
+P-48_order_35      0.0      0.0      0.0      0.0    220.0 14067.50     1
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 5150.0  (capacidade 900)
+Diesel total: 540.0 (stock 500) | Agua total: 880.0 (stock 400)
+base -> P-58_order_1:  124.9 km     30647 s
+base -> P-58_order_2:  124.9 km     30647 s
+base -> FPCGZ_order_3:  126.3 km     30949 s
+base -> FPCGZ_order_4:  126.3 km     30949 s
+base -> P-57_order_5:  119.0 km     29373 s
+base -> P-57_order_6:  119.0 km     29373 s
+base -> P-51_order_7:  127.8 km     31273 s
+base -> P-51_order_8:  127.8 km     31273 s
+base -> P-62_order_9:  125.3 km     30745 s
+base -> P-62_order_10:  125.3 km     30745 s
+base -> P-65_order_11:  100.7 km     25427 s
+base -> P-65_order_12:  100.7 km     25427 s
+base -> P-54_order_13:  121.6 km     29940 s
+base -> P-54_order_14:  121.6 km     29940 s
+base -> P-08_order_15:  103.0 km     25921 s
+base -> P-08_order_16:  103.0 km     25921 s
+base -> FORTE_order_17:  123.5 km     30336 s
+base -> FORTE_order_18:  123.5 km     30336 s
+base -> PPG-1A_order_19:   82.5 km     21481 s
+base -> PPG-1A_order_20:   82.5 km     21481 s
+base -> P-43_order_21:  109.1 km     27230 s
+base -> P-43_order_22:  109.1 km     27230 s
+base -> PGP-1_order_23:   83.8 km     21771 s
+base -> PGP-1_order_24:   83.8 km     21771 s
+base -> P-48_order_25:  119.7 km     29535 s
+base -> P-48_order_26:  119.7 km     29535 s
+base -> P-40_order_27:  123.5 km     30337 s
+base -> P-40_order_28:  123.5 km     30337 s
+base -> P-58_order_29:  124.9 km     30647 s
+base -> P-57_order_30:  119.0 km     29373 s
+base -> P-62_order_31:  125.3 km     30745 s
+base -> P-54_order_32:  121.6 km     29940 s
+base -> FORTE_order_33:  123.5 km     30336 s
+base -> P-43_order_34:  109.1 km     27230 s
+base -> P-48_order_35:  119.7 km     29535 s
+======================================================================
+[POOL] Coluna ociosa adicionada para 3 navios (navio pode ficar na base)
+==============================================================================
+[POOL INICIAL ARTIFICIAL SEQUENCIAL]
+Veículo artificial: 0
+Custo artificial: 99999.0
+Pedidos cobertos: 35
+Sequência: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+  k=0 | colunas=2 | rotas=[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36], [0, 36]] | artificial=[True, False]
+  k=1 | colunas=1 | rotas=[[0, 36]] | artificial=[False]
+  k=2 | colunas=1 | rotas=[[0, 36]] | artificial=[False]
+==============================================================================
+[CONSTRUT] petro_H01_35ped_14plat_3nav_min3_geografia_espalhada_35nos_3veiculos | custo=99999.0 | art=1 | V0*:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35] | V1:[] | V2:[]
+
+=========== PROCESSANDO NÓ 0 (prof=0, pai=None) ===========
+
+--- Resolve nó 0 com POOL GLOBAL NORMALZITO ---
+[ESTAB] No 0: sem centro herdado -- caixa comeca fixada em zero ate obter um centro utilizavel (nao dominado pelo BIGM).
+[Nó 0] Iter 0 - Obj = 99999.0000  Colunas = 4 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json Colunas ativas na iteração 0: 
+   veic=0 | col=0 | lambda=1.000000 | custo=99999.0000 | rota=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+   veic=1 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   veic=2 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 99999.000000
+
+   valor recomposto = 99999.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 02 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 03 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 04 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 05 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 06 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 07 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 08 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 09 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 10 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 11 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 12 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 13 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 14 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 15 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 16 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 17 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 18 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 19 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 20 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 21 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 22 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 23 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 24 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 25 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 26 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 27 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 28 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 29 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 30 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 31 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 32 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 33 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 34 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+cliente 35 | lambda=1.000000 | slack=0.000000 | y_low=0.000000 | y_up=0.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  1000000.000000
+  pi[2] =  1000000.000000
+  pi[3] =  1000000.000000
+  pi[4] =  1000000.000000
+  pi[5] =  1000000.000000
+  pi[6] =  1000000.000000
+  pi[7] =  1000000.000000
+  pi[8] =  1000000.000000
+  pi[9] =  1000000.000000
+  pi[10] =  1000000.000000
+  pi[11] =  1000000.000000
+  pi[12] =  1000000.000000
+  pi[13] =  1000000.000000
+  pi[14] =  1000000.000000
+  pi[15] =  1000000.000000
+  pi[16] =  1000000.000000
+  pi[17] =  1000000.000000
+  pi[18] =  1000000.000000
+  pi[19] =  1000000.000000
+  pi[20] =  1000000.000000
+  pi[21] =  1000000.000000
+  pi[22] =  1000000.000000
+  pi[23] =  1000000.000000
+  pi[24] =  1000000.000000
+  pi[25] =  1000000.000000
+  pi[26] =  1000000.000000
+  pi[27] =  1000000.000000
+  pi[28] =  1000000.000000
+  pi[29] =  1000000.000000
+  pi[30] =  1000000.000000
+  pi[31] =  1000000.000000
+  pi[32] =  1000000.000000
+  pi[33] =  1000000.000000
+  pi[34] =  1000000.000000
+  pi[35] =  1000000.000000
+
+SIGMA (veículos):
+  sigma[0] =  0.000000
+  sigma[1] =  0.000000
+  sigma[2] =  0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+[GAMMA REL] rho=0.25 | escala_dual=1.0000 | gamma_ini=10.0000 | gamma_min=10.0000 | gamma_max=40.0000
+[ESTAB INIT] Centro válido obtido após enriquecimento do RMP. Ativando caixa.
+[ESTAB INIT] iter=0 | pi: min=1000000.000000 | max=1000000.000000 | media=1000000.000000
+[Nó 0] Iter 1 - Obj = 350.0000  Colunas = 4 inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json
+[Nó 0] inst= C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\instancias_mais_nos\instancias_petro_28_30_35\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada.json Colunas ativas na iteração 1: 
+   veic=0 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   veic=1 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   veic=2 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+Diff FO-  Sem melhora 0 
+   valor recomposto = 0.000000
+
+   valor recomposto = 0.000000
+
+--- COBERTURA POR CLIENTE ---
+cliente 01 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 02 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 03 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 04 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 05 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 06 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 07 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 08 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 09 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 10 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 11 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 12 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 13 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 14 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 15 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 16 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 17 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 18 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 19 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 20 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 21 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 22 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 23 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 24 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 25 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 26 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 27 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 28 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 29 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 30 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 31 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 32 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 33 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 34 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+cliente 35 | lambda=0.000000 | slack=0.000000 | y_low=0.000000 | y_up=1.000000 | total_real=1.000000
+
+
+================ DUAIS DO MESTRE ================
+
+PI (clientes):
+  pi[1] =  10.000000
+  pi[2] =  10.000000
+  pi[3] =  10.000000
+  pi[4] =  10.000000
+  pi[5] =  10.000000
+  pi[6] =  10.000000
+  pi[7] =  10.000000
+  pi[8] =  10.000000
+  pi[9] =  10.000000
+  pi[10] =  10.000000
+  pi[11] =  10.000000
+  pi[12] =  10.000000
+  pi[13] =  10.000000
+  pi[14] =  10.000000
+  pi[15] =  10.000000
+  pi[16] =  10.000000
+  pi[17] =  10.000000
+  pi[18] =  10.000000
+  pi[19] =  10.000000
+  pi[20] =  10.000000
+  pi[21] =  10.000000
+  pi[22] =  10.000000
+  pi[23] =  10.000000
+  pi[24] =  10.000000
+  pi[25] =  10.000000
+  pi[26] =  10.000000
+  pi[27] =  10.000000
+  pi[28] =  10.000000
+  pi[29] =  10.000000
+  pi[30] =  10.000000
+  pi[31] =  10.000000
+  pi[32] =  10.000000
+  pi[33] =  10.000000
+  pi[34] =  10.000000
+  pi[35] =  10.000000
+
+SIGMA (veículos):
+  sigma[0] = -0.000000
+  sigma[1] = -0.000000
+  sigma[2] = -0.000000
+
+MU (arcos):
+  sem duais de arco
+=================================================
+
+ [ETSAB] gamma_pi = 10.000000
+[ORDEM PRICING] iter=2 | veiculos=[0, 1, 2]
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PRICING CAPS] nbcd=35 max_labels=2100 timeout_s=5 max_comb=200000
+[TIMEOUT CPP] excedeu 5s
+[PETRO BID MULTI] k=0 | limite=5s | labels=2100 | depth=18 | tempo=5.16s | candidatas=0 | timeout=True
+[PRICING MULTI] origem=BID_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+Tempo CPP 5.161553144454956
+TESTA PETRO PD COMPLETA MULTI
+[PRICING EXATO CONFIG] k=0 | timeout=60.0s | max_labels=1000000000
+[PETRO] pricing exato multi via C++ (sub_prog_din_petro_multi)
+[TIMEOUT CPP] excedeu 60.0s
+[PETRO PD MULTI] k=0 | limite=60.0s | tempo=60.19s | candidatas=0 | completa=False | timeout=True
+[PETRO] PD completa excedeu 60.0s no veiculo 0; convergencia nao certificada.
+[PRICING MULTI] origem=PD_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+NAO GEROU NADA
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=1 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PRICING CAPS] nbcd=35 max_labels=2100 timeout_s=5 max_comb=200000
+[TIMEOUT CPP] excedeu 5s
+[PETRO BID MULTI] k=1 | limite=5s | labels=2100 | depth=18 | tempo=5.17s | candidatas=0 | timeout=True
+[PRICING MULTI] origem=BID_CPP | k=1 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+Tempo CPP 5.175321817398071
+TESTA PETRO PD COMPLETA MULTI
+[PRICING EXATO CONFIG] k=1 | timeout=60.0s | max_labels=1000000000
+[PETRO] pricing exato multi via C++ (sub_prog_din_petro_multi)
+[TIMEOUT CPP] excedeu 60.0s
+[PETRO PD MULTI] k=1 | limite=60.0s | tempo=60.20s | candidatas=0 | completa=False | timeout=True
+[PETRO] PD completa excedeu 60.0s no veiculo 1; convergencia nao certificada.
+[PRICING MULTI] origem=PD_CPP | k=1 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+NAO GEROU NADA
+TESTA ALLBEST MULTI
+[PRICING MULTI] origem=ALLBEST | k=2 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False
+TESTA BID PETRO MULTI
+[PRICING CAPS] nbcd=35 max_labels=2100 timeout_s=5 max_comb=200000
+[TIMEOUT CPP] excedeu 5s
+[PETRO BID MULTI] k=2 | limite=5s | labels=2100 | depth=18 | tempo=5.18s | candidatas=0 | timeout=True
+[PRICING MULTI] origem=BID_CPP | k=2 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+Tempo CPP 5.18032431602478
+TESTA PETRO PD COMPLETA MULTI
+[PRICING EXATO CONFIG] k=2 | timeout=60.0s | max_labels=1000000000
+[PETRO] pricing exato multi via C++ (sub_prog_din_petro_multi)
+[TIMEOUT CPP] excedeu 60.0s
+[PETRO PD MULTI] k=2 | limite=60.0s | tempo=60.32s | candidatas=0 | completa=False | timeout=True
+[PETRO] PD completa excedeu 60.0s no veiculo 2; convergencia nao certificada.
+[PRICING MULTI] origem=PD_CPP | k=2 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | duplicadas_lote=0 | completa=False | timeout=True
+NAO GEROU NADA
+[SELECAO MULTI] iter=2 | selecionadas=0 | por_veiculo={}
+GAMMA PI 10.0
+GAMMA PI atualizado 15.0
+Tempo total nessa geracao : 196.4s
+Tempo total no NO: 196.4s
+SEM NOVAS COLUNAS
+RODADA SEM MELHORA 0
+[FALHA CG] O pricing completo terminou por timeout; o LB nao sera certificado.
+[LB NAO CERTIFICADA] Variaveis de estabilizacao ativas: y_total=35.00000000
+[Nó 0] Melhor solução fracionada final (LP com slack):
+   veic=0 | col=1 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   veic=1 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   veic=2 | col=0 | lambda=1.000000 | custo=0.0000 | rota=[0, 36]
+   valor LP recomposto = 0.000000
+   slack_final = 0.000000
+
+[Nó 0] MIP final do pool inviável/sem solução ótima.
+[COLUNAS NO] novas_total=0 | duplicadas_total=0
+Nó 0 finalizado: LP=560.0000, MIP_pool=None, tem_inteira=False, cg_convergiu=False, max_iter=False, slack_final=0.000000, artificial_final=0.000000, lb_confiavel=False
+Melhor LP com slack = 0.0 iter=1
+Melhor LP válido    = 0.0 iter=1
+Melhor inteiro      = inf iter=None
+Achou LP target     = False iter=None tempo=None
+Achou INT target    = False iter=None tempo=None
+SALDOS
+[0, 0, 0, 0, 0, 0, 0]
+PRIMEIRO NO
+[CONFIABILIDADE] no=0 | lb_confiavel=False | cg_convergiu=False | motivo=pricing_timeout_cpp
+Tempo total: 196.4s
+[Nó 0] LP=560.0000 inteira=False lb_confiavel=False slack_final=0.000000 cg_convergiu=False max_iter=False
+Nó 0 Valor fracionário com custo 560.0000
+ATUALIZOU MELHOR FRAC Nó 0 Valor fracionário com custo 560.0000
+DIVIDE
+FIM do nó  0 
+
+==== FIM B&P ====
+Diagnóstico salvo em diag.csv
+Nenhuma solução inteira encontrada.
+Melhor solução fracionária: nó 0 com custo 560.0000
+
+=== LAMBDAS DO NÓ 0 ===
+Veículo 0, rota 1: lambda = 1.0000
+   Sequência: [0, 36]
+   Custo:     0.00
+Veículo 1, rota 0: lambda = 1.0000
+   Sequência: [0, 36]
+   Custo:     0.00
+Veículo 2, rota 0: lambda = 1.0000
+   Sequência: [0, 36]
+   Custo:     0.00
+=== FIM LAMBDAS NÓ 0 ===
+
+[BP_FIM] petro_H01_35ped_14plat_3nav_min3_geografia_espalhada_35nos_3veiculos | LB=NA | UB=NA | gap=NA | lb_valido=False | arvore_certificada_completa=False | otimalidade_certificada=False | nos=0 | cols=0 | t=196.5s
+[SEQ_BP] petro_H01_35ped_14plat_3nav_min3_geografia_espalhada_35nos_3veiculos | sem_solucao_inteira
+[EXATO] resolvendo modelo compacto...
+==================== Iniciando o MODELO EXATO PETRO
+Set parameter TimeLimit to value 1200
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  1200
+Seed  42
+Threads  4
+
+Optimize a model with 20123 rows, 4686 columns and 69474 nonzeros (Min)
+Model fingerprint: 0x3acbc8dd
+Model has 3822 linear objective coefficients
+Variable types: 327 continuous, 4359 integer (4359 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [7e+03, 5e+04]
+  Bounds range     [1e+00, 4e+01]
+  RHS range        [1e+00, 2e+06]
+
+Presolve removed 4149 rows and 444 columns
+Presolve time: 3.12s
+Presolved: 15974 rows, 4242 columns, 117938 nonzeros
+Variable types: 318 continuous, 3924 integer (3921 binary)
+
+Root relaxation: objective 1.283990e+05, 938 iterations, 0.56 seconds (0.08 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 128399.000    0   89          - 128399.000      -     -    4s
+     0     0 128399.000    0  119          - 128399.000      -     -    4s
+     0     0 128399.000    0  111          - 128399.000      -     -    5s
+     0     0 128399.000    0  146          - 128399.000      -     -   13s
+     0     0 128565.519    0  187          - 128565.519      -     -   18s
+     0     0 128565.519    0  187          - 128565.519      -     -   18s
+     0     0 130647.000    0  222          - 130647.000      -     -   21s
+     0     0 130647.000    0  133          - 130647.000      -     -   22s
+     0     0 130647.000    0  222          - 130647.000      -     -   25s
+     0     0 130647.000    0  220          - 130647.000      -     -   26s
+     0     0 130647.000    0  184          - 130647.000      -     -   28s
+     0     0 130647.000    0  122          - 130647.000      -     -   31s
+     0     0 130647.000    0  200          - 130647.000      -     -   33s
+     0     0 130647.000    0  220          - 130647.000      -     -   34s
+     0     0 130647.000    0  136          - 130647.000      -     -   36s
+     0     0 130647.000    0  207          - 130647.000      -     -   38s
+     0     0 130647.000    0  246          - 130647.000      -     -   42s
+     0     0 130647.000    0  148          - 130647.000      -     -   44s
+     0     0 130647.000    0  205          - 130647.000      -     -   46s
+     0     0 130647.000    0  215          - 130647.000      -     -   49s
+     0     0 130647.000    0  142          - 130647.000      -     -   53s
+     0     0 130647.000    0  227          - 130647.000      -     -   56s
+     0     0 130647.000    0  202          - 130647.000      -     -   58s
+     0     0 130647.000    0  167          - 130647.000      -     -   61s
+     0     0 130647.000    0  167          - 130647.000      -     -   62s
+     0     0 130647.000    0  143          - 130647.000      -     -   63s
+     0     2 130830.000    0  143          - 130830.000      -     -   79s
+     1     5 130830.000    1  136          - 130830.000      -  33.0   80s
+    26    32 130949.040    6  170          - 130830.000      -   107   85s
+    47    55 131399.530    9  166          - 130830.000      -   122   90s
+    97   108 132352.472   21  146          - 130830.000      -  97.7   95s
+   128   130 132890.227   28  113          - 130830.000      -  90.5  102s
+   133   135 132987.836   29  113          - 130830.000      -  90.3  105s
+   164   166 136926.282   38   80          - 130830.000      -  87.8  110s
+   193   175 131471.513    5  165          - 130830.000      -  84.6  115s
+   208   186 132461.206    9  187          - 130830.000      -  88.7  121s
+   255   210 133254.863   11  150          - 130830.000      -  87.3  125s
+   300   252 149075.667   25   81          - 130830.000      -  90.2  130s
+   418   375 131481.667   10   73          - 130830.000      -  83.2  136s
+   501   425 infeasible   15               - 130830.000      -  77.4  141s
+   573   507 136208.997   10  147          - 130830.000      -  77.2  145s
+   706   562 141588.885   19  137          - 131086.508      -  74.1  152s
+   725   586 152578.057   21  116          - 131086.508      -  77.1  155s
+   797   616 187617.580   50   37          - 131086.508      -  79.0  161s
+   802   620 187838.038   49   32          - 131086.508      -  78.9  165s
+   806   623 188431.522   51   35          - 131086.508      -  78.8  170s
+   816   625 189044.208   53   35          - 131086.508      -  78.1  180s
+   824   629 189765.122   54   53          - 131086.508      -  78.0  189s
+   828   636 190026.044   55   64          - 131086.508      -  77.8  195s
+   879   648 191598.415   56  101          - 131241.709      -  76.0  201s
+   887   656 229945.137   56   31          - 131241.709      -  77.2  213s
+   895   668 191686.536   57  100          - 131241.709      -  77.9  220s
+   913   669 191951.811   58   98          - 131241.709      -  78.0  232s
+   953   759 192537.800   60   60          - 131241.709      -  78.4  235s
+  1084   896 193227.289   62   74          - 131241.709      -  75.8  240s
+  1327  1007 140623.664   21  111          - 131241.709      -  69.2  296s
+  1329  1008 248934.693   53  131          - 131241.709      -  69.1  323s
+  1330  1009 166182.167   32  228          - 131464.520      -  69.1  333s
+  1331  1010 333244.000   65  208          - 131464.520      -  69.0  336s
+  1332  1010 152557.295   12  207          - 131464.520      -  69.0  354s
+  1333  1011 421632.000  137  219          - 131872.875      -  68.9  378s
+  1335  1012 134268.758   29  205          - 131872.875      -  68.8  380s
+  1339  1015 226728.045   78  251          - 132205.573      -  68.6  409s
+  1340  1016 188346.262   36  213          - 133360.000      -  68.6  413s
+  1341  1016 161897.231   31  225          - 133838.280      -  68.5  452s
+  1342  1017 210812.760   64  224          - 133838.280      -  68.5  455s
+  1344  1018 139144.271   18  239          - 136224.029      -  68.4  460s
+  1346  1020 156129.422   14  214          - 136744.647      -  68.3  465s
+  1349  1022 218039.333   63  250          - 148863.000      -  68.1  490s
+  1350  1022 149089.889   43  180          - 149089.889      -  68.1  495s
+  1352  1024 157735.667   37  214          - 149089.889      -  68.0  514s
+  1353  1024 243067.512   55  206          - 149089.889      -  67.9  516s
+  1354  1025 149089.889   70  208          - 149089.889      -  67.9  538s
+  1355  1026 175641.456   16  208          - 149089.889      -  67.8  542s
+  1356  1026 182854.047   33  183          - 149089.889      -  67.8  547s
+  1357  1027 159121.167   31  245          - 149089.889      -  67.7  550s
+  1358  1028 191161.657   47  185          - 149089.889      -  67.7  555s
+  1359  1028 186539.864   36  154          - 149089.889      -  67.6  567s
+  1360  1029 199791.324   40  265          - 149089.889      -  67.6  577s
+  1361  1030 192520.000   26  204          - 149089.889      -  67.5  598s
+  1362  1030 278660.778   64  231          - 149089.889      -  67.5  607s
+  1363  1031 149089.889    7  144          - 149089.889      -  67.4  625s
+  1364  1032 328090.000   86  242          - 149089.889      -  67.4  636s
+  1365  1032 157583.000   16  213          - 149089.889      -  67.3  641s
+  1366  1033 226728.000   66  243          - 149089.889      -  67.3  648s
+  1367  1034 159121.167   31  228          - 149089.889      -  67.2  652s
+  1368  1034 149089.889    9  236          - 149089.889      -  67.2  655s
+  1370  1036 157921.000   27  238          - 149089.889      -  67.1  663s
+  1371  1036 212827.999   42  247          - 149089.889      -  67.0  666s
+  1372  1037 173060.391   14  231          - 149089.889      -  67.0  670s
+  1373  1038 168538.500   34  237          - 149089.889      -  66.9  675s
+  1374  1038 378616.541  126  224          - 149089.889      -  66.9  682s
+  1375  1039 238236.287   46  217          - 149089.889      -  66.8  694s
+  1376  1040 156594.456   18  266          - 149089.889      -  66.8  700s
+  1377  1040 149584.415   20  192          - 149089.889      -  66.7  710s
+  1378  1041 149089.889   20  224          - 149089.889      -  66.7  716s
+  1380  1042 259173.000   63  229          - 149089.889      -  66.6  721s
+  1381  1043 149089.889   41  262          - 149089.889      -  66.5  726s
+  1382  1044 207209.000   29  220          - 149089.889      -  66.5  733s
+  1383  1044 163799.000    8  266          - 149089.889      -  66.4  736s
+  1385  1046 149089.889   20  252          - 149089.889      -  66.3  745s
+  1386  1046 242189.693   47  224          - 149089.889      -  66.3  750s
+  1389  1048 187501.000   28  225          - 149089.889      -  66.2  761s
+  1390  1049 167587.000   16  251          - 149089.889      -  66.1  765s
+  1391  1050 168049.891   41  286          - 149089.889      -  66.1  776s
+  1392  1050 149089.889   40  247          - 149089.889      -  66.0  784s
+  1393  1051 155772.178   12  267          - 149089.889      -  66.0  789s
+  1394  1052 149089.889   18  217          - 149089.889      -  65.9  795s
+  1395  1052 381165.000  131  237          - 149089.889      -  65.9  805s
+  1397  1054 322239.000   82  238          - 149089.889      -  65.8  810s
+  1398  1054 149089.889   37  278          - 149089.889      -  65.7  817s
+  1399  1055 198963.276   31  248          - 149089.889      -  65.7  820s
+  1401  1056 154276.091   15  241          - 149089.889      -  65.6  825s
+  1402  1057 149089.889    9  245          - 149089.889      -  65.5  831s
+  1403  1058 149089.889   12  213          - 149089.889      -  65.5  841s
+  1405  1059 149089.889   26  230          - 149089.889      -  65.4  849s
+  1406  1060 377005.346  131  244          - 149089.889      -  65.4  864s
+  1407  1060 279850.966   61  268          - 149089.889      -  65.3  871s
+  1408  1061 180355.767   26  260          - 149089.889      -  65.3  882s
+  1410  1062 313524.267   86  167          - 149089.889      -  65.2  888s
+  1411  1063 173200.340   57  228          - 149089.889      -  65.1  896s
+  1412  1064 149089.889   51  234          - 149089.889      -  65.1  900s
+  1416  1066 308175.649   12  243          - 149089.889      -  64.9  908s
+  1417  1067 420374.556  139  257          - 149089.889      -  64.9  910s
+  1420  1069 355647.901   13  284          - 149089.889      -  64.7  916s
+  1421  1070 286736.701   72  210          - 149089.889      -  64.7  932s
+  1422  1070 161008.380   48  249          - 149089.889      -  64.6  938s
+  1423  1071 168816.852   25  250          - 149089.889      -  64.6  946s
+  1425  1072 201627.657   49  235          - 149089.889      -  64.5  954s
+  1426  1073 149089.889   27  159          - 149089.889      -  64.4  956s
+  1429  1075 248934.693   53  271          - 149089.889      -  64.3  960s
+  1431  1076 333244.000   65  284          - 149089.889      -  64.2  965s
+  1432  1077 152557.295   12  284          - 149089.889      -  64.2  970s
+  1435  1079 149089.889   29  257          - 149089.889      -  64.0  977s
+  1437  1080 199676.000   44  270          - 149089.889      -  63.9  981s
+  1439  1082 226728.045   78  236          - 149089.889      -  63.9  985s
+  1441  1083 161897.231   31  239          - 149089.889      -  63.8  990s
+  1443  1084 149089.889   70  277          - 149089.889      -  63.7  998s
+  1444  1085 149089.889   18  236          - 149089.889      -  63.6 1001s
+  1448  1088 175856.408   21  287          - 149089.889      -  63.5 1011s
+  1451  1090 149089.889   37  271          - 149089.889      -  63.3 1020s
+  1454  1092 149089.889   70  275          - 149089.889      -  63.2 1027s
+  1456  1093 182854.047   33  252          - 149089.889      -  63.1 1031s
+  1459  1095 186539.864   36  223          - 149089.889      -  63.0 1037s
+  1461  1096 192520.000   26  246          - 149089.889      -  62.9 1043s
+  1462  1097 278660.778   64  276          - 149089.889      -  62.9 1045s
+  1467  1100 159121.167   31  307          - 149089.889      -  62.6 1055s
+  1469  1102 157921.000   13  278          - 149089.889      -  62.6 1062s
+  1470  1102 157921.000   27  257          - 149089.889      -  62.5 1067s
+  1472  1104 173060.391   14  252          - 149089.889      -  62.4 1070s
+  1473  1104 168538.500   34  278          - 149089.889      -  62.4 1075s
+  1475  1106 238236.287   46  269          - 149089.889      -  62.3 1084s
+  1476  1106 156594.456   18  272          - 149089.889      -  62.3 1087s
+  1477  1107 149584.415   20  280          - 149089.889      -  62.2 1094s
+  1478  1108 149089.889   20  231          - 149089.889      -  62.2 1131s
+  1479  1108 149089.889   10  262          - 149089.889      -  62.1 1135s
+  1480  1109 259173.000   63  217          - 149089.889      -  62.1 1142s
+  1483  1112 163799.000    8  111          - 149089.889      -  91.2 1164s
+  1484  1113 149089.889   35  111          - 149089.889      -  91.2 1166s
+  1485  1113 149089.889   20  156          - 149089.889      -  91.1 1192s
+  1486  1114 242189.693   47  226          - 149089.889      -  91.0 1196s
+
+Cutting planes:
+  Learned: 3
+  Gomory: 6
+  Cover: 10
+  Implied bound: 26
+  Projected implied bound: 25
+  Clique: 9
+  MIR: 55
+  Flow cover: 81
+  Zero half: 18
+  RLT: 4
+  Relax-and-lift: 21
+  BQP: 1
+
+Explored 1491 nodes (158338 simplex iterations) in 1200.13 seconds (104.82 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 0
+
+Time limit reached
+Best objective -, best bound 1.490900000000e+05, gap -
+[EXATO_PETRO] status=TIME_LIMIT | FO=NA | bound=149090.00 | gap=NA | t=1200.1s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[EXATO_PETRO] petro_H01_35ped_14plat_3nav_min3_geografia_espalhada_35nos_3veiculos | status=TIME_LIMIT | FO=NA | t=1213.7s
+[PLOTJS] Solução construtiva (construtiva): ok -> petroConstr.js
+[GANTT] solucao 'bp' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Branch-and-Price (bp): sem solucao (DADOS=null) -> petroBP.js
+[GANTT] solucao 'exato' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Modelo exato (exato): sem solucao (DADOS=null) -> petroEx.js
+[PLOTJS] pacote exportado em C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\petro_H01_35ped_14plat_3nav_min3_geografia_espalhada_35nos_3veiculos

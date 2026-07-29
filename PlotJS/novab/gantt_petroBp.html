@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<title>Gantt PSV — validação do cronograma</title>
+<style>
+  :root{
+    --ink:#12263a; --grid:#d8dee6; --band:#eef1f5; --band-usada:#dde6ee;
+    --nav:#3e6d9c; --espera:#b9c4cf; --alerta:#c0392b; --fundo:#ffffff;
+  }
+  body{ font-family:"Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--fundo);
+        margin:24px; font-variant-numeric:tabular-nums; }
+  h2{ margin:0 0 2px 0; font-weight:600; letter-spacing:.2px; }
+  .sub{ color:#5a6b7c; font-size:13px; margin-bottom:14px; }
+  .painel{ margin:18px 0 30px 0; }
+  .legenda{ font-size:12px; color:#40556a; margin:6px 0 12px 0; }
+  .legenda span{ display:inline-block; margin-right:16px; }
+  .chip{ display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:4px; }
+  .chip.hachura{ background:repeating-linear-gradient(45deg,#fff,#fff 2px,var(--espera) 2px,var(--espera) 4px); border:1px solid var(--espera); }
+  svg{ display:block; }
+  #entrada{ border:1px dashed #9fb0c0; padding:14px; border-radius:6px; margin-bottom:16px;
+            font-size:13px; color:#40556a; background:#fafbfc; }
+  canvas{ border:1px solid var(--grid); }
+  #mapa{ height:620px; width:100%; max-width:1180px; border:1px solid var(--grid); }
+  .aviso{ color:var(--alerta); font-size:12px; }
+  .carga-grid{ display:flex; flex-direction:column; gap:18px; max-width:1180px; }
+  .carga-card{ border:1px solid var(--grid); border-radius:10px; background:#fff; overflow:hidden; box-shadow:0 2px 10px rgba(18,38,58,.06); }
+  .carga-card-header{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; padding:14px 16px; background:#f7f9fb; border-bottom:1px solid var(--grid); }
+  .carga-card-header h3{ margin:0; font-size:26px; font-weight:700; }
+  .carga-meta{ margin-top:4px; color:#5a6b7c; font-size:13px; }
+  .badge{ display:inline-block; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .badge.ok{ color:#1f6b42; background:#e7f5ed; border:1px solid #b8dec8; }
+  .badge.warn{ color:#8a5a00; background:#fff4d8; border:1px solid #ead28d; }
+  .badge.erro{ color:#9b2e23; background:#fdebea; border:1px solid #e7aaa5; }
+  .badge.info{ color:#1f4977; background:#ebf3ff; border:1px solid #bdd1ef; }
+  .carga-body{ display:grid; grid-template-columns:360px 1fr; gap:14px; align-items:start; padding:14px 16px 8px; }
+  .carga-lateral{ display:flex; flex-direction:column; gap:10px; }
+  .carga-resumo{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .kpi{ border:1px solid #e1e6ec; border-radius:8px; padding:10px; min-height:62px; background:#fff; }
+  .kpi .rotulo{ color:#5a6b7c; font-size:11px; }
+  .kpi .valor{ margin-top:4px; font-size:18px; font-weight:700; }
+  .barra-cap{ height:10px; border-radius:999px; background:#edf1f5; overflow:hidden; margin-top:8px; }
+  .barra-cap > span{ display:block; height:100%; background:#3e6d9c; border-radius:999px; }
+  .barra-cap > span.warn{ background:#d9862b; }
+  .barra-cap > span.erro{ background:#c0392b; }
+  .carga-aviso{ margin:0; padding:9px 11px; border-radius:7px; font-size:12px; color:#6b5200; background:#fff8e4; border:1px solid #eadba8; }
+  .carga-hero{ border:1px solid #e1e6ec; border-radius:8px; padding:12px; background:linear-gradient(180deg,#fbfcfd 0%,#f5f8fb 100%); }
+  .carga-hero-title{ font-size:12px; color:#5a6b7c; margin-bottom:8px; }
+  .carga-hero-row{ margin-bottom:10px; }
+  .carga-hero-label{ display:flex; justify-content:space-between; gap:8px; font-size:11.5px; margin-bottom:4px; }
+  .carga-hero-track{ position:relative; height:20px; border-radius:999px; background:#edf1f5; overflow:hidden; }
+  .carga-hero-fill{ position:absolute; left:0; top:0; bottom:0; border-radius:999px; opacity:.95; }
+  .carga-hero-fill.deck{ background:linear-gradient(90deg,#2f6ea6,#4d8bc3); }
+  .carga-hero-fill.pico{ background:linear-gradient(90deg,#f5a623,#ee7f1b); opacity:.55; }
+  .carga-hero-fill.final{ background:linear-gradient(90deg,#2e8b57,#58b67f); opacity:.85; }
+  .carga-hero-fill.diesel{ background:linear-gradient(90deg,#5a6b7c,#8b99a7); }
+  .carga-hero-fill.agua{ background:linear-gradient(90deg,#4b93d1,#80c0f3); }
+  .carga-hero-note{ font-size:11.5px; color:#5a6b7c; margin-top:4px; }
+  .carga-chart-wrap{ overflow-x:auto; padding:4px 0 8px; }
+  .carga-chart{ min-width:780px; width:100%; height:250px; border:1px solid #e2e7ed; border-radius:8px; background:#fff; }
+  .tabela-wrap{ overflow:auto; max-height:340px; border-top:1px solid var(--grid); }
+
+  .navio-selector-wrap{ margin:0 0 18px 0; }
+  .navio-selector-title{ margin:0 0 9px 2px; font-size:11px; color:#607286; text-transform:uppercase; letter-spacing:.7px; font-weight:700; }
+  .navio-selector{ display:flex; gap:12px; flex-wrap:wrap; align-items:stretch; }
+  .navio-tab{ min-width:145px; border:1px solid #8ea9ba; border-radius:12px; padding:12px 14px; background:#9eb9c8; color:#fff; cursor:pointer; opacity:.48; transition:transform .16s ease, opacity .16s ease, box-shadow .16s ease, background .16s ease; text-align:left; font-family:inherit; }
+  .navio-tab:hover{ opacity:.82; transform:translateY(-1px); }
+  .navio-tab.active{ opacity:1; background:#17658b; border-color:#0e4866; box-shadow:0 6px 16px rgba(18,77,108,.20); transform:translateY(-2px); }
+  .navio-tab.ocioso{ background:#b8cbd5; }
+  .navio-tab.ocioso.active{ background:#6f95aa; }
+  .navio-tab .tab-linha1{ display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .navio-tab .tab-rotulo{ font-size:11px; font-weight:700; letter-spacing:.8px; opacity:.92; }
+  .navio-tab .tab-numero{ margin-top:1px; font-size:30px; line-height:1; font-weight:750; }
+  .navio-tab .tab-nome{ margin-top:7px; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:650; }
+  .navio-tab .tab-info{ margin-top:5px; font-size:10.5px; opacity:.93; }
+
+  @media (max-width: 980px){
+  .carga-body{
+    grid-template-columns:1fr;
+  }
+
+  .carga-card-header h3{
+    font-size:21px;
+  }
+
+  .navio-selector{
+    gap:8px;
+  }
+
+  .navio-tab{
+    min-width:120px;
+    padding:10px 12px;
+  }
+}
+
+  table.carga{ width:100%; border-collapse:collapse; font-size:11px; white-space:nowrap; }
+  table.carga th{ position:sticky; top:0; z-index:1; background:#f7f9fb; color:#40556a; text-align:right; padding:7px 8px; border-bottom:1px solid var(--grid); }
+  table.carga th:first-child, table.carga th:nth-child(2){ text-align:left; }
+  table.carga td{ padding:6px 8px; text-align:right; border-bottom:1px solid #edf0f3; }
+  table.carga td:first-child, table.carga td:nth-child(2){ text-align:left; }
+  table.carga tr:hover td{ background:#f8fafc; }
+  table.carga tr.linha-erro td{ background:#fff0ef; }
+  .mono{ font-family:Consolas,"SFMono-Regular",monospace; }
+  .sem-dados{ border:1px dashed #9fb0c0; border-radius:7px; padding:12px; color:#5a6b7c; background:#fafbfc; max-width:1180px; }
+  @media (max-width:900px){ .carga-resumo{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+  /* ============================ CABEÇALHO COMPARATIVO ============================ */
+  .resumo-topo{
+    max-width:1180px;
+    margin:0 0 28px 0;
+    border-radius:18px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#102b3b 0%,#173f52 58%,#1d5266 100%);
+    box-shadow:0 16px 38px rgba(16,43,59,.18);
+    border:1px solid rgba(255,255,255,.10);
+  }
+  .resumo-topo-inner{ padding:22px; }
+  .resumo-identidade{ display:flex; justify-content:space-between; gap:24px; align-items:flex-start; color:#fff; }
+  .resumo-kicker{ font-size:11px; font-weight:750; letter-spacing:1.45px; text-transform:uppercase; color:#9ed0d8; }
+  .resumo-instancia{ margin:6px 0 5px 0; font-size:29px; line-height:1.15; font-weight:720; letter-spacing:-.3px; color:#fff; }
+  .resumo-subtitulo{ color:#d3e6eb; font-size:13px; }
+  .resumo-solucao-atual{ display:flex; flex-direction:column; align-items:flex-end; gap:7px; min-width:190px; }
+  .resumo-solucao-atual-label{ color:#a9cad3; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+  .resumo-solucao-atual-badge{ display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:999px; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.23); color:#fff; font-size:13px; font-weight:750; box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+  .resumo-solucao-atual-badge::before{ content:""; width:8px; height:8px; border-radius:50%; background:#73d6bf; box-shadow:0 0 0 4px rgba(115,214,191,.14); }
+  .resumo-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+  .resumo-tag{ padding:5px 9px; border-radius:999px; color:#d8e9ed; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.07); font-size:11px; }
+  .resumo-metricas{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:19px; }
+  .resumo-card{ position:relative; display:block; min-height:118px; padding:15px 16px; border-radius:13px; text-decoration:none; color:#173348; background:#fff; border:1px solid rgba(255,255,255,.55); box-shadow:0 8px 19px rgba(7,29,42,.12); transition:transform .16s ease, box-shadow .16s ease, opacity .16s ease; overflow:hidden; }
+  .resumo-card:hover{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(7,29,42,.17); }
+  .resumo-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--metodo-cor,#527a92); }
+  .resumo-card.atual{ outline:2px solid var(--metodo-cor,#527a92); outline-offset:2px; }
+  .resumo-card.indisponivel{ opacity:.55; }
+  .resumo-card-topo{ display:flex; justify-content:space-between; gap:8px; align-items:center; }
+  .resumo-metodo{ font-size:11px; font-weight:800; letter-spacing:.85px; text-transform:uppercase; color:#5b6f7c; }
+  .resumo-aberto{ padding:3px 7px; border-radius:999px; color:#174e45; background:#dff4ee; border:1px solid #b7ded3; font-size:9px; font-weight:800; letter-spacing:.5px; }
+  .resumo-fo{ margin-top:10px; font-size:27px; line-height:1; font-weight:760; letter-spacing:-.45px; color:#102b3b; }
+  .resumo-fo-unidade{ margin-left:3px; font-size:12px; font-weight:650; color:#72838d; }
+  .resumo-horas{ margin-top:5px; font-size:11.5px; color:#72838d; }
+  .resumo-tempo{ display:flex; align-items:center; gap:6px; margin-top:12px; padding-top:9px; border-top:1px solid #edf1f3; font-size:11.5px; color:#465f6d; }
+  .resumo-tempo::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--metodo-cor,#527a92); }
+  .resumo-melhor{ position:absolute; right:-30px; bottom:10px; transform:rotate(-38deg); width:115px; padding:4px 0; text-align:center; color:#fff; background:#24765f; font-size:9px; font-weight:800; letter-spacing:.6px; }
+  .resumo-card.construtiva{ --metodo-cor:#d59a32; }
+  .resumo-card.bp{ --metodo-cor:#3e78a8; }
+  .resumo-card.exato{ --metodo-cor:#2a8a6f; }
+  @media(max-width:850px){
+    .resumo-identidade{ flex-direction:column; }
+    .resumo-solucao-atual{ align-items:flex-start; min-width:0; }
+    .resumo-metricas{ grid-template-columns:1fr; }
+    .resumo-instancia{ font-size:24px; }
+  }
+
+</style>
+</head>
+<body>
+
+
+<section class="resumo-topo" id="resumo-topo">
+  <div class="resumo-topo-inner">
+    <div class="resumo-identidade">
+      <div>
+        <div class="resumo-kicker">Painel comparativo da instância</div>
+        <h1 class="resumo-instancia" id="resumo-instancia">Carregando instância…</h1>
+        <div class="resumo-subtitulo" id="resumo-subtitulo">Resumo das soluções geradas para esta instância.</div>
+        <div class="resumo-tags" id="resumo-tags"></div>
+      </div>
+      <div class="resumo-solucao-atual">
+        <div class="resumo-solucao-atual-label">Solução exibida nesta página</div>
+        <div class="resumo-solucao-atual-badge" id="resumo-solucao-atual">Carregando…</div>
+      </div>
+    </div>
+    <div class="resumo-metricas" id="resumo-metricas"></div>
+  </div>
+</section>
+
+<h2>Cronograma da solução (Gantt)</h2>
+<div class="sub" id="cabecalho">carregando…</div>
+
+<div id="entrada" style="display:none">
+  <code>petroBP.js</code> não encontrado nesta pasta — rode o B&P (instância Petro) para gerá-lo e recarregue a página (F5).
+</div>
+
+<div class="legenda" id="legenda"></div>
+<div class="painel"><svg id="gantt"></svg></div>
+
+<h2>Carga a bordo</h2>
+<div class="sub">Auditoria da carga por navio: coleta de backload antes da entrega, pico de convés e estoque restante de diesel e água.</div>
+<div class="painel" id="auditoria-carga"></div>
+
+<h2>Mapa das rotas</h2>
+<div class="sub">OpenStreetMap — clique numa plataforma, na base ou numa rota para ver detalhes no painel</div>
+<div class="painel" style="display:flex; gap:14px; align-items:stretch;">
+  <div id="mapa" style="flex:1 1 auto;"></div>
+  <div id="painel-info" style="flex:0 0 340px; border:1px solid var(--grid); border-radius:6px; padding:12px; font-size:13px; overflow-y:auto; max-height:620px;">Clique em uma plataforma, na base ou em uma rota para ver os detalhes aqui.</div>
+</div>
+
+<!-- petroBP.js e os arquivos comparativos sao carregados abaixo sem cache -->
+<script>
+// ============================ paleta por plataforma ============================
+const CORES_PLAT = ["#1f8a8c","#d9862b","#7a5cc5","#2f7d3b","#b3486f","#946200"];
+const corPlat = {};
+function corDaPlataforma(nome){
+  if(!(nome in corPlat)) corPlat[nome] = CORES_PLAT[Object.keys(corPlat).length % CORES_PLAT.length];
+  return corPlat[nome];
+}
+
+// ============================ carregamento ============================
+function dadosProntos(){
+  return !!(window.DADOS && Array.isArray(window.DADOS.navios));
+}
+
+
+// ============================ CABEÇALHO COMPARATIVO ============================
+// ARQUIVO_ATUAL sera atualizado automaticamente pela main ao copiar o HTML.
+function arquivoAtualConfigurado(){
+  const script={};
+  script.src = "petroBP.js?v=" + Date.now();
+  return String(script.src).split("?")[0];
+}
+const ARQUIVO_ATUAL = arquivoAtualConfigurado();
+// Os nomes abaixo ficam quebrados para nao serem alterados pela substituicao da main.
+const ARQUIVOS_COMPARACAO = {
+  construtiva: "petro" + "Constr.js",
+  bp: "petro" + "BP.js",
+  exato: "petro" + "Ex.js"
+};
+const PAGINAS_SOLUCAO = {
+  construtiva: "gantt_petro_construtiva.html",
+  bp: "gantt_petroBp.html",
+  exato: "gantt_petro_exato.html"
+};
+const NOMES_SOLUCAO = {
+  construtiva: "Solução construtiva",
+  bp: "Branch-and-Price",
+  exato: "Modelo exato"
+};
+
+function tipoDoArquivo(nome){
+  const s=String(nome||"").toLowerCase();
+  if(s.includes("constr")) return "construtiva";
+  if(s.includes("ex")) return "exato";
+  return "bp";
+}
+function clonarDados(dados){
+  if(!dados) return null;
+  try{ return structuredClone(dados); }
+  catch(_){ return JSON.parse(JSON.stringify(dados)); }
+}
+function nomeInstanciaLimpo(caminho){
+  const nome=String(caminho||"").split(/[\\/]/).pop() || "Instância";
+  return nome.replace(/\.json$/i,"");
+}
+function numeroValido(v){
+  const x=Number(v);
+  return Number.isFinite(x) ? x : null;
+}
+function tempoDosDados(d){
+  return primeiroNumero(d?.meta?.tempo_execucao_s, d?.tempo_execucao_s);
+}
+function formatarInteiroPt(v){
+  const x=numeroValido(v);
+  return x===null ? "—" : Math.round(x).toLocaleString("pt-BR");
+}
+function formatarDuracao(v){
+  const s=numeroValido(v);
+  if(s===null) return "tempo não exportado";
+  if(s<60) return `${s.toFixed(1).replace(".",",")} s`;
+  if(s<3600){
+    const min=Math.floor(s/60), seg=Math.round(s-min*60);
+    return `${min} min ${String(seg).padStart(2,"0")} s`;
+  }
+  const h=Math.floor(s/3600), min=Math.round((s-h*3600)/60);
+  return `${h} h ${String(min).padStart(2,"0")} min`;
+}
+function cardResumo(tipo,dados,tipoAtual,melhorFo){
+  const fo=numeroValido(dados?.fo_total_s);
+  const tempo=tempoDosDados(dados);
+  const atual=tipo===tipoAtual;
+  const indisponivel=!dados || fo===null;
+  const melhor=fo!==null && melhorFo!==null && Math.abs(fo-melhorFo)<1e-6;
+  const titulo=NOMES_SOLUCAO[tipo];
+  return `<a class="resumo-card ${tipo} ${atual?'atual':''} ${indisponivel?'indisponivel':''}" href="${PAGINAS_SOLUCAO[tipo]}" title="Abrir ${escapeHtml(titulo)}">
+    <div class="resumo-card-topo">
+      <div class="resumo-metodo">${escapeHtml(titulo)}</div>
+      ${atual?'<span class="resumo-aberto">ABERTO AGORA</span>':''}
+    </div>
+    <div class="resumo-fo">${fo===null?'—':formatarInteiroPt(fo)}${fo===null?'':'<span class="resumo-fo-unidade">s</span>'}</div>
+    <div class="resumo-horas">${fo===null?'não executado':`${(fo/3600).toFixed(2).replace('.',',')} h de FO`}</div>
+    <div class="resumo-tempo">${escapeHtml(formatarDuracao(tempo))}</div>
+    ${melhor?'<div class="resumo-melhor">MELHOR FO</div>':''}
+  </a>`;
+}
+function desenharResumoComparativo(){
+  const atual=window.DADOS;
+  const comparativos=window.DADOS_COMPARATIVOS || {};
+  const tipoAtual=tipoDoArquivo(ARQUIVO_ATUAL);
+  const nome=nomeInstanciaLimpo(atual?.instancia);
+  const nPedidos=Math.max(0,(atual?.nos?.length||1)-1);
+  const nNavios=atual?.navios?.length||0;
+  const fos=Object.values(comparativos).map(d=>numeroValido(d?.fo_total_s)).filter(v=>v!==null);
+  const melhorFo=fos.length?Math.min(...fos):null;
+
+  document.getElementById("resumo-instancia").textContent=nome;
+  document.getElementById("resumo-subtitulo").innerHTML=`Solução aberta: <b>${escapeHtml(NOMES_SOLUCAO[tipoAtual])}</b> · comparação direta entre os três métodos.`;
+  document.getElementById("resumo-solucao-atual").textContent=NOMES_SOLUCAO[tipoAtual];
+  document.getElementById("resumo-tags").innerHTML=`
+    <span class="resumo-tag">${nPedidos} pedidos</span>
+    <span class="resumo-tag">${nNavios} navios</span>
+    <span class="resumo-tag">FO em segundos</span>`;
+  document.getElementById("resumo-metricas").innerHTML=["construtiva","bp","exato"]
+    .map(tipo=>cardResumo(tipo,comparativos[tipo],tipoAtual,melhorFo)).join("");
+  document.title=`${NOMES_SOLUCAO[tipoAtual]} — ${nome}`;
+}
+
+function carregarArquivoComparativo(nome){
+  return new Promise(resolve=>{
+    const anterior=window.DADOS;
+    window.DADOS=null;
+    const script=document.createElement("script");
+    script.src=`${nome}?v=${Date.now()}_${Math.random().toString(16).slice(2)}`;
+    script.onload=()=>{
+      const capturado=dadosProntos()?clonarDados(window.DADOS):null;
+      window.DADOS=anterior;
+      script.remove();
+      resolve(capturado);
+    };
+    script.onerror=()=>{
+      window.DADOS=anterior;
+      script.remove();
+      resolve(null);
+    };
+    document.head.appendChild(script);
+  });
+}
+
+
+// ============================ CARGA A BORDO ============================
+let PERFIS_CARGA = new Map();
+let NAVIO_SELECIONADO = null;
+
+function numeroOuNull(v){
+  const x = Number(v);
+  return Number.isFinite(x) ? x : null;
+}
+function primeiroNumero(...valores){
+  for(const v of valores){
+    const x = numeroOuNull(v);
+    if(x!==null) return x;
+  }
+  return null;
+}
+function fmtCarga(v){
+  const x = numeroOuNull(v);
+  return x===null ? "—" : x.toFixed(1).replace(".",",");
+}
+function fmtPct(v){
+  const x = numeroOuNull(v);
+  return x===null ? "—" : `${x.toFixed(1).replace(".",",")}%`;
+}
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function escapeHtml(s){
+  return String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+}
+
+function capacidadesNavio(n){
+  const c = n.capacidades || {};
+  return {
+    deck: primeiroNumero(c.deck, n.cap_deck, n.capacidade_deck, n.deck_capacity, n.capacidade),
+    diesel: primeiroNumero(c.diesel, n.cap_diesel, n.capacidade_diesel, n.diesel_capacity),
+    agua: primeiroNumero(c.agua, n.cap_agua, n.capacidade_agua, n.water_capacity)
+  };
+}
+
+function cargasDoNo(o){
+  const temDeckSeparado = numeroOuNull(o.deck_load)!==null || numeroOuNull(o.deck_backload)!==null ||
+                           numeroOuNull(o.deck_entrega)!==null || numeroOuNull(o.deck_coleta)!==null;
+  const deckLoad = primeiroNumero(o.deck_load, o.deck_entrega, temDeckSeparado ? 0 : o.deck, 0) || 0;
+  const deckBackload = primeiroNumero(o.deck_backload, o.deck_coleta, 0) || 0;
+  return {
+    deckLoad,
+    deckBackload,
+    diesel: primeiroNumero(o.diesel, o.diesel_entrega, 0) || 0,
+    agua: primeiroNumero(o.agua, o.agua_entrega, 0) || 0,
+    temDeckSeparado
+  };
+}
+
+function auditarOrdemPlataformas(n, nosPorId){
+  let atual = null, entregaIniciada = false;
+  const encerradas = new Set();
+  const erros = [];
+  (n.visitas||[]).forEach((v,idx)=>{
+    const o = nosPorId.get(v.no) || v;
+    const plat = v.plataforma || o.plataforma || o.nome || `no ${v.no}`;
+    const c = cargasDoNo(o);
+    if(plat!==atual){
+      if(atual!==null) encerradas.add(atual);
+      if(encerradas.has(plat)) erros.push(`retorno à plataforma ${plat} após o bloco ter sido encerrado`);
+      atual = plat;
+      entregaIniciada = false;
+    }
+    const temColeta = c.deckBackload > 1e-9;
+    const temEntrega = c.deckLoad > 1e-9 || c.diesel > 1e-9 || c.agua > 1e-9;
+    if(temColeta && entregaIniciada) erros.push(`coleta após início das entregas em ${plat}, na etapa ${idx+1}`);
+    if(temEntrega) entregaIniciada = true;
+  });
+  return erros;
+}
+
+function normalizarCargaExportada(n, nosPorId){
+  if(!Array.isArray(n.cargas) || !n.cargas.length) return null;
+  const caps = capacidadesNavio(n);
+  const bruto = n.cargas;
+  const inicialBruta = n.carga_inicial || bruto.find(x=>x.tipo==="base") || {};
+  const inicial = {
+    deck: primeiroNumero(inicialBruta.deck, inicialBruta.deck_depois, 0) || 0,
+    diesel: primeiroNumero(inicialBruta.diesel, inicialBruta.diesel_depois, 0) || 0,
+    agua: primeiroNumero(inicialBruta.agua, inicialBruta.agua_depois, 0) || 0
+  };
+  const passos = bruto.filter(x=>x.tipo!=="base").map((r,idx)=>{
+    const o = nosPorId.get(r.no) || {};
+    return {
+      indice: idx+1,
+      no: r.no,
+      nome: r.nome || o.nome || `Etapa ${idx+1}`,
+      plataforma: r.plataforma || o.plataforma || "",
+      deckAntes: primeiroNumero(r.deck_antes,0)||0,
+      deckColeta: primeiroNumero(r.deck_coleta,r.deck_backload,0)||0,
+      deckPico: primeiroNumero(r.deck_pico,0)||0,
+      deckEntrega: primeiroNumero(r.deck_entrega,r.deck_load,0)||0,
+      deckDepois: primeiroNumero(r.deck_depois,0)||0,
+      dieselAntes: primeiroNumero(r.diesel_antes,0)||0,
+      dieselEntrega: primeiroNumero(r.diesel_entrega,0)||0,
+      dieselDepois: primeiroNumero(r.diesel_depois,0)||0,
+      aguaAntes: primeiroNumero(r.agua_antes,0)||0,
+      aguaEntrega: primeiroNumero(r.agua_entrega,0)||0,
+      aguaDepois: primeiroNumero(r.agua_depois,0)||0,
+      fonteSeparada: true
+    };
+  });
+  return {caps,inicial,passos,fonte:"exportada",deckSeparado:true};
+}
+
+function calcularPerfilCarga(n, nosPorId){
+  const exportado = normalizarCargaExportada(n,nosPorId);
+  if(exportado) return exportado;
+
+  const caps = capacidadesNavio(n);
+  const visitados = (n.visitas||[]).map(v=>nosPorId.get(v.no)||v);
+  const cargas = visitados.map(cargasDoNo);
+  const deckSeparado = cargas.every(c=>c.temDeckSeparado);
+  let deck = cargas.reduce((s,c)=>s+c.deckLoad,0);
+  let diesel = cargas.reduce((s,c)=>s+c.diesel,0);
+  let agua = cargas.reduce((s,c)=>s+c.agua,0);
+  const inicial = {deck,diesel,agua};
+  const passos = (n.visitas||[]).map((v,idx)=>{
+    const o = nosPorId.get(v.no)||v;
+    const c = cargas[idx];
+    const deckAntes = deck;
+    const deckColeta = c.deckBackload;
+    const deckPico = deckAntes + deckColeta;
+    const deckEntrega = c.deckLoad;
+    const deckDepois = deckPico - deckEntrega;
+    const dieselAntes = diesel, dieselEntrega = c.diesel, dieselDepois = dieselAntes-dieselEntrega;
+    const aguaAntes = agua, aguaEntrega = c.agua, aguaDepois = aguaAntes-aguaEntrega;
+    deck=deckDepois; diesel=dieselDepois; agua=aguaDepois;
+    return {
+      indice:idx+1, no:v.no, nome:v.nome||o.nome||`Etapa ${idx+1}`,
+      plataforma:v.plataforma||o.plataforma||"",
+      deckAntes,deckColeta,deckPico,deckEntrega,deckDepois,
+      dieselAntes,dieselEntrega,dieselDepois,
+      aguaAntes,aguaEntrega,aguaDepois,
+      fonteSeparada:c.temDeckSeparado
+    };
+  });
+  return {caps,inicial,passos,fonte:"calculada",deckSeparado};
+}
+
+function prepararPerfisCarga(){
+  PERFIS_CARGA = new Map();
+  const D = window.DADOS;
+  const nosPorId = new Map((D.nos||[]).map(o=>[o.id,o]));
+  (D.navios||[]).forEach(n=>{
+    const p = calcularPerfilCarga(n,nosPorId);
+    p.errosOrdem = auditarOrdemPlataformas(n,nosPorId);
+    p.picoDeck = Math.max(p.inicial.deck,...p.passos.map(x=>x.deckPico));
+    p.minDeck = Math.min(p.inicial.deck,...p.passos.map(x=>x.deckDepois));
+    p.minDiesel = Math.min(p.inicial.diesel,...p.passos.map(x=>x.dieselDepois));
+    p.minAgua = Math.min(p.inicial.agua,...p.passos.map(x=>x.aguaDepois));
+    p.errosCarga = [];
+    if(p.caps.deck!==null && p.picoDeck>p.caps.deck+1e-6) p.errosCarga.push(`pico de convés ${fmtCarga(p.picoDeck)} acima da capacidade ${fmtCarga(p.caps.deck)}`);
+    if(p.minDeck < -1e-6) p.errosCarga.push(`carga de convés negativa (${fmtCarga(p.minDeck)})`);
+    if(p.caps.diesel!==null && p.inicial.diesel>p.caps.diesel+1e-6) p.errosCarga.push(`diesel inicial acima da capacidade`);
+    if(p.caps.agua!==null && p.inicial.agua>p.caps.agua+1e-6) p.errosCarga.push(`água inicial acima da capacidade`);
+    if(p.minDiesel < -1e-6) p.errosCarga.push(`estoque de diesel negativo`);
+    if(p.minAgua < -1e-6) p.errosCarga.push(`estoque de água negativo`);
+    PERFIS_CARGA.set(n.k,p);
+  });
+}
+
+function classeUtilizacao(valor,cap){
+  if(cap===null || cap<=0) return "";
+  const pct=100*valor/cap;
+  return pct>100+1e-6 ? "erro" : pct>=90 ? "warn" : "";
+}
+function kpiCarga(rotulo,valor,cap){
+  const pct = cap!==null && cap>0 ? 100*valor/cap : null;
+  const classe=classeUtilizacao(valor,cap);
+  const largura=pct===null?0:clamp(pct,0,100);
+  return `<div class="kpi">
+    <div class="rotulo">${escapeHtml(rotulo)}</div>
+    <div class="valor">${fmtCarga(valor)}${cap!==null?` / ${fmtCarga(cap)}`:""} t</div>
+    ${pct!==null?`<div class="barra-cap"><span class="${classe}" style="width:${largura}%"></span></div><div class="rotulo" style="margin-top:3px">${fmtPct(pct)}</div>`:"<div class=\"rotulo\" style=\"margin-top:5px\">capacidade não exportada</div>"}
+  </div>`;
+}
+
+function barraHero(rotulo, valor, cap, css, subtitulo=""){
+  const pct = cap!==null && cap>0 ? clamp(100*valor/cap,0,100) : 0;
+  const capTxt = cap!==null && cap>0 ? `${fmtCarga(cap)} t` : "capacidade não exportada";
+  return `<div class="carga-hero-row">
+    <div class="carga-hero-label"><span><b>${escapeHtml(rotulo)}</b> · ${fmtCarga(valor)} t</span><span>${escapeHtml(capTxt)}</span></div>
+    <div class="carga-hero-track"><div class="carga-hero-fill ${css}" style="width:${pct}%"></div></div>
+    ${subtitulo ? `<div class="carga-hero-note">${escapeHtml(subtitulo)}</div>` : ""}
+  </div>`;
+}
+
+function heroCarga(p){
+  const finalPasso = p.passos.length ? p.passos[p.passos.length-1] : null;
+  const finalDeck = finalPasso ? finalPasso.deckDepois : p.inicial.deck;
+  const finalDiesel = finalPasso ? finalPasso.dieselDepois : p.inicial.diesel;
+  const finalAgua = finalPasso ? finalPasso.aguaDepois : p.inicial.agua;
+  const modo = p.deckSeparado
+    ? "Leitura exata: coleta e entrega do convés vieram separadas no JS."
+    : "Leitura ilustrativa: o JS atual traz apenas o campo deck; por isso a ocupação do convés é estimada.";
+  return `<div class="carga-hero">
+    <div class="carga-hero-title">Visão rápida da ocupação a bordo</div>
+    ${barraHero("Convés inicial", p.inicial.deck, p.caps.deck, "deck", "Carga embarcada na saída da base.")}
+    ${barraHero("Pico de convés", p.picoDeck, p.caps.deck, "pico", "Momento mais carregado durante a rota.")}
+    ${barraHero("Convés ao final", finalDeck, p.caps.deck, "final", "Carga restante após a última operação.")}
+    ${barraHero("Diesel restante ao final", finalDiesel, p.caps.diesel, "diesel")}
+    ${barraHero("Água restante ao final", finalAgua, p.caps.agua, "agua")}
+    <div class="carga-hero-note">${escapeHtml(modo)}</div>
+  </div>`;
+}
+
+function svgPerfilDeck(n,p){
+  const nOps = Math.max(1, p.passos.length);
+  const W = Math.max(920, 180 + nOps * 180);
+  const H = 360;
+  const ml = 66, mr = 24, plotTop = 118, plotBottom = 274;
+  const valores = [p.inicial.deck, p.picoDeck, ...p.passos.flatMap(s => [s.deckPico, s.deckDepois])];
+  if(p.caps.deck !== null) valores.push(p.caps.deck);
+  const ymax = Math.max(1, ...valores) * 1.12;
+  const y = v => plotTop + (plotBottom - plotTop) * (1 - Math.max(0, v) / ymax);
+  const x = i => ml + i * (W - ml - mr) / nOps;
+  const pontosDepois = [
+    {x:x(0), y:y(p.inicial.deck), v:p.inicial.deck, nome:"Base"},
+    ...p.passos.map((s,i)=>({x:x(i+1), y:y(s.deckDepois), v:s.deckDepois, nome:s.nome}))
+  ];
+
+  const partes = [];
+  const clipId = `clip-carga-${n.k}`;
+  partes.push(`<svg class="carga-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Perfil de carga de convés do navio ${n.k}">`);
+  partes.push(`<defs><clipPath id="${clipId}"><rect x="${ml}" y="${plotTop}" width="${W-ml-mr}" height="${plotBottom-plotTop}" rx="5"/></clipPath></defs>`);
+
+  // Faixas suaves para os blocos consecutivos de plataforma.
+  const grupos = [];
+  p.passos.forEach((s,idx)=>{
+    const ultimo = grupos[grupos.length-1];
+    if(!ultimo || ultimo.plataforma !== s.plataforma){
+      grupos.push({plataforma:s.plataforma, ini:idx+1, fim:idx+1});
+    }else{
+      ultimo.fim = idx+1;
+    }
+  });
+  grupos.forEach((g,idx)=>{
+    const xa = g.ini===1 ? ml : (x(g.ini-1)+x(g.ini))/2;
+    const xb = g.fim===p.passos.length ? W-mr : (x(g.fim)+x(g.fim+1))/2;
+    const fill = idx%2===0 ? '#f4f8fb' : '#eef4f8';
+    partes.push(`<rect x="${xa}" y="${plotTop}" width="${Math.max(1,xb-xa)}" height="${plotBottom-plotTop}" fill="${fill}" clip-path="url(#${clipId})"/>`);
+    partes.push(`<text x="${(xa+xb)/2}" y="${plotTop+13}" text-anchor="middle" font-size="10" font-weight="650" fill="#7890a4">${escapeHtml(g.plataforma || 'SEM PLATAFORMA')}</text>`);
+  });
+
+  // Grade horizontal.
+  for(let g=0; g<=4; g++){
+    const v = ymax*g/4, yy = y(v);
+    partes.push(`<line x1="${ml}" y1="${yy}" x2="${W-mr}" y2="${yy}" stroke="#dfe6ed" stroke-width="1"/>`);
+    partes.push(`<text x="${ml-8}" y="${yy+4}" text-anchor="end" font-size="10" fill="#6d7d8d">${v.toFixed(0)}</text>`);
+  }
+
+  // Capacidade máxima.
+  if(p.caps.deck !== null){
+    partes.push(`<line x1="${ml}" y1="${y(p.caps.deck)}" x2="${W-mr}" y2="${y(p.caps.deck)}" stroke="#c0392b" stroke-width="1.7" stroke-dasharray="7 5"/>`);
+    partes.push(`<text x="${W-mr-3}" y="${y(p.caps.deck)-6}" text-anchor="end" font-size="10" font-weight="650" fill="#c0392b">capacidade ${fmtCarga(p.caps.deck)} t</text>`);
+  }
+
+  function dadosOperacao(s){
+    const coleta = s.deckColeta > 1e-9;
+    const entregaDeck = s.deckEntrega > 1e-9;
+    const entregaFluido = s.dieselEntrega > 1e-9 || s.aguaEntrega > 1e-9;
+    const entrega = entregaDeck || entregaFluido;
+    const viola = p.caps.deck !== null && s.deckPico > p.caps.deck + 1e-6;
+    let cor = '#8b99a7', tipo = 'SEM ALTERAÇÃO DE CONVÉS';
+    if(coleta && entrega){ cor = '#7a5cc5'; tipo = 'COLETA + ENTREGA'; }
+    else if(coleta){ cor = '#d9862b'; tipo = 'COLETA'; }
+    else if(entrega){ cor = '#2f8b57'; tipo = 'ENTREGA'; }
+    if(viola){ cor = '#c0392b'; tipo = 'CAPACIDADE EXCEDIDA'; }
+
+    const movDeck = [];
+    if(s.deckColeta > 1e-9) movDeck.push(`+${fmtCarga(s.deckColeta)} t`);
+    if(s.deckEntrega > 1e-9) movDeck.push(`−${fmtCarga(s.deckEntrega)} t`);
+    let movimento = movDeck.length ? movDeck.join('  ') : 'convés sem alteração';
+    if(!movDeck.length && entregaFluido){
+      const fluidos=[];
+      if(s.dieselEntrega>1e-9) fluidos.push(`diesel −${fmtCarga(s.dieselEntrega)} t`);
+      if(s.aguaEntrega>1e-9) fluidos.push(`água −${fmtCarga(s.aguaEntrega)} t`);
+      movimento = fluidos.join(' · ');
+    }
+    return {cor,tipo,movimento};
+  }
+
+  // Linhas-guia e cartões das operações, atrás da curva.
+  p.passos.forEach((s,idx)=>{
+    const qx = x(idx+1);
+    const op = dadosOperacao(s);
+    const cardW = 154, cardH = 56;
+    const cardY = idx%2===0 ? 8 : 58;
+    const cardX = Math.max(ml, Math.min(W-mr-cardW, qx-cardW/2));
+    const titulo = s.nome.length>22 ? s.nome.slice(0,20)+'…' : s.nome;
+    const fluxo = `${fmtCarga(s.deckAntes)} → ${fmtCarga(s.deckPico)} → ${fmtCarga(s.deckDepois)} t`;
+    const detalhe = `${s.nome}\n${op.tipo}\n${op.movimento}\nDeck: ${fluxo}\nDiesel depois: ${fmtCarga(s.dieselDepois)} t\nÁgua depois: ${fmtCarga(s.aguaDepois)} t`;
+
+    partes.push(`<line x1="${qx}" y1="${cardY+cardH}" x2="${qx}" y2="${plotBottom}" stroke="${op.cor}" stroke-width="1.2" stroke-dasharray="4 4" opacity=".78"><title>${escapeHtml(detalhe)}</title></line>`);
+    partes.push(`<rect x="${cardX}" y="${cardY}" width="${cardW}" height="${cardH}" rx="7" fill="#ffffff" stroke="${op.cor}" stroke-width="1.3" filter="drop-shadow(0 1px 1px rgba(18,38,58,.10))"><title>${escapeHtml(detalhe)}</title></rect>`);
+    partes.push(`<rect x="${cardX}" y="${cardY}" width="5" height="${cardH}" rx="3" fill="${op.cor}"/>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+15}" font-size="10" font-weight="700" fill="#12263a">${escapeHtml(titulo)}</text>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+31}" font-size="9.5" font-weight="700" fill="${op.cor}">${escapeHtml(op.tipo)} · ${escapeHtml(op.movimento)}</text>`);
+    partes.push(`<text x="${cardX+12}" y="${cardY+46}" font-size="9.5" fill="#5a6b7c">Deck ${escapeHtml(fluxo)}</text>`);
+  });
+
+  // Curva em degraus da carga após cada operação.
+  for(let i=0; i<pontosDepois.length-1; i++){
+    const a=pontosDepois[i], b=pontosDepois[i+1];
+    partes.push(`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${a.y}" stroke="#3e6d9c" stroke-width="3.2"/>`);
+    partes.push(`<line x1="${b.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#3e6d9c" stroke-width="3.2"/>`);
+  }
+
+  // Pontos de carga final e pico temporário.
+  pontosDepois.forEach((q,i)=>{
+    partes.push(`<circle cx="${q.x}" cy="${q.y}" r="4" fill="#3e6d9c" stroke="#fff" stroke-width="1.2"><title>${escapeHtml(q.nome)} — carga após operação: ${fmtCarga(q.v)} t</title></circle>`);
+    if(i===0){
+      partes.push(`<text x="${q.x}" y="${plotBottom+22}" text-anchor="middle" font-size="10" fill="#5a6b7c">BASE</text>`);
+      return;
+    }
+    const s=p.passos[i-1], op=dadosOperacao(s);
+    const picoCor=p.caps.deck!==null&&s.deckPico>p.caps.deck+1e-6?'#c0392b':'#d9862b';
+    partes.push(`<circle cx="${q.x}" cy="${y(s.deckPico)}" r="4.6" fill="${picoCor}" stroke="#fff" stroke-width="1.2"><title>${escapeHtml(s.nome)} — pico após coleta: ${fmtCarga(s.deckPico)} t</title></circle>`);
+    if(Math.abs(s.deckPico-s.deckDepois)>1e-6){
+      partes.push(`<line x1="${q.x}" y1="${y(s.deckPico)}" x2="${q.x}" y2="${q.y}" stroke="${op.cor}" stroke-width="1.2" stroke-dasharray="3 2"/>`);
+    }
+    partes.push(`<circle cx="${q.x}" cy="${plotBottom+13}" r="9" fill="${op.cor}"/>`);
+    partes.push(`<text x="${q.x}" y="${plotBottom+17}" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">${i}</text>`);
+    partes.push(`<text x="${q.x}" y="${plotBottom+35}" text-anchor="middle" font-size="9.5" fill="#5a6b7c">${escapeHtml(s.plataforma)}</text>`);
+  });
+
+  partes.push(`<text x="16" y="${plotTop+8}" font-size="10" fill="#40556a">t</text>`);
+  partes.push(`<g transform="translate(${ml},${H-16})">
+    <circle cx="0" cy="0" r="4" fill="#3e6d9c"/><text x="9" y="4" font-size="10" fill="#40556a">carga após operação</text>
+    <circle cx="145" cy="0" r="4" fill="#d9862b"/><text x="154" y="4" font-size="10" fill="#40556a">pico após coleta</text>
+    <rect x="286" y="-5" width="10" height="10" rx="2" fill="#d9862b"/><text x="302" y="4" font-size="10" fill="#40556a">coleta</text>
+    <rect x="358" y="-5" width="10" height="10" rx="2" fill="#2f8b57"/><text x="374" y="4" font-size="10" fill="#40556a">entrega</text>
+    <rect x="433" y="-5" width="10" height="10" rx="2" fill="#7a5cc5"/><text x="449" y="4" font-size="10" fill="#40556a">coleta + entrega</text>
+  </g>`);
+  partes.push(`</svg>`);
+  return partes.join("");
+}
+
+function statusPasso(s,cap){
+  const erros=[];
+  if(cap!==null && s.deckPico>cap+1e-6) erros.push("acima da capacidade");
+  if(s.deckDepois<-1e-6) erros.push("deck negativo");
+  if(s.dieselDepois<-1e-6) erros.push("diesel negativo");
+  if(s.aguaDepois<-1e-6) erros.push("água negativa");
+  return erros;
+}
+
+function tabelaCarga(p){
+  const linhas=p.passos.map(s=>{
+    const erros=statusPasso(s,p.caps.deck);
+    return `<tr class="${erros.length?"linha-erro":""}">
+      <td>${escapeHtml(s.nome)}</td><td>${escapeHtml(s.plataforma)}</td>
+      <td>${fmtCarga(s.deckAntes)}</td><td>${fmtCarga(s.deckColeta)}</td><td><b>${fmtCarga(s.deckPico)}</b></td>
+      <td>${fmtCarga(s.deckEntrega)}</td><td>${fmtCarga(s.deckDepois)}</td>
+      <td>${fmtCarga(s.dieselDepois)}</td><td>${fmtCarga(s.aguaDepois)}</td>
+      <td>${erros.length?`<span class="badge erro">${escapeHtml(erros.join("; "))}</span>`:`<span class="badge ok">OK</span>`}</td>
+    </tr>`;
+  }).join("");
+  return `<div class="tabela-wrap"><table class="carga"><thead><tr>
+    <th>Order</th><th>Plataforma</th><th>Deck antes</th><th>+ coleta</th><th>Pico</th><th>− entrega</th><th>Deck depois</th><th>Diesel depois</th><th>Água depois</th><th>Status</th>
+  </tr></thead><tbody>${linhas||'<tr><td colspan="10">Sem visitas.</td></tr>'}</tbody></table></div>`;
+}
+
+function botaoNavio(n, p, ativo){
+  const erros = [...(p?.errosCarga || []), ...(p?.errosOrdem || [])];
+  const util = p?.caps?.deck !== null && p?.caps?.deck > 0
+    ? fmtPct(100 * p.picoDeck / p.caps.deck)
+    : null;
+  const resumo = n.ocioso
+    ? "ocioso na base"
+    : `${p?.passos?.length || 0} operações${util ? ` · pico ${util}` : ""}`;
+
+  return `<button type="button" class="navio-tab ${ativo ? "active" : ""} ${n.ocioso ? "ocioso" : ""}"
+                  data-k="${n.k}" aria-pressed="${ativo ? "true" : "false"}">
+    <div class="tab-linha1">
+      <div>
+        <div class="tab-rotulo">NAVIO</div>
+        <div class="tab-numero">${n.k + 1}</div>
+      </div>
+      <span class="badge ${erros.length ? "erro" : "ok"}">${n.ocioso ? "OCIOSO" : (erros.length ? "ATENÇÃO" : "OK")}</span>
+    </div>
+    <div class="tab-nome">${escapeHtml(n.nome || `Navio ${n.k}`)}</div>
+    <div class="tab-info">${escapeHtml(resumo)}</div>
+  </button>`;
+}
+
+function cardNavio(n){
+  const p = PERFIS_CARGA.get(n.k);
+
+  if(n.ocioso){
+    return `<section class="carga-card">
+      <div class="carga-card-header">
+        <div>
+          <h3>Navio ${n.k} — ${escapeHtml(n.nome)}</h3>
+          <div class="carga-meta">Sem rota: permanece na base.</div>
+        </div>
+        <span class="badge ok">OCIOSO</span>
+      </div>
+    </section>`;
+  }
+
+  const erros = [...(p.errosCarga || []), ...(p.errosOrdem || [])];
+  const statusBadge = erros.length
+    ? `<span class="badge erro">${erros.length} problema(s)</span>`
+    : `<span class="badge ok">CARGA VIÁVEL</span>`;
+  const modoBadge = p.deckSeparado
+    ? `<span class="badge info">LEITURA EXATA</span>`
+    : `<span class="badge warn">LEITURA ILUSTRATIVA</span>`;
+
+  const avisos = [];
+  if(!p.deckSeparado){
+    avisos.push("O arquivo JS desta solução não traz deck_load e deck_backload separados. A parte do convés fica ilustrativa.");
+  }
+  if(p.caps.deck === null){
+    avisos.push("A capacidade do convés não foi exportada; os percentuais do convés não podem ser auditados com segurança.");
+  }
+  avisos.push(...erros);
+
+  const util = p.caps.deck !== null && p.caps.deck > 0 ? 100 * p.picoDeck / p.caps.deck : null;
+
+  return `<section class="carga-card">
+    <div class="carga-card-header">
+      <div>
+        <h3>Navio ${n.k} — ${escapeHtml(n.nome)}</h3>
+        <div class="carga-meta">${p.passos.length} operações · fonte ${p.fonte}${util !== null ? ` · maior ocupação do convés <b>${fmtPct(util)}</b>` : ""}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">${modoBadge}${statusBadge}</div>
+    </div>
+
+    <div class="carga-body">
+      <div class="carga-lateral">
+        <div class="carga-resumo">
+          ${kpiCarga("Deck inicial", p.inicial.deck, p.caps.deck)}
+          ${kpiCarga("Pico de deck", p.picoDeck, p.caps.deck)}
+          ${kpiCarga("Diesel inicial", p.inicial.diesel, p.caps.diesel)}
+          ${kpiCarga("Água inicial", p.inicial.agua, p.caps.agua)}
+        </div>
+        ${heroCarga(p)}
+        ${avisos.map(a => `<div class="carga-aviso">${escapeHtml(a)}</div>`).join("")}
+      </div>
+
+      <div>
+        <div class="carga-chart-wrap">${svgPerfilDeck(n, p)}</div>
+      </div>
+    </div>
+
+    ${tabelaCarga(p)}
+  </section>`;
+}
+
+function renderAuditoriaCarga(){
+  const alvo = document.getElementById("auditoria-carga");
+  const D = window.DADOS;
+
+  if(!D.navios?.length){
+    alvo.innerHTML = '<div class="sem-dados">Não há navios em DADOS.</div>';
+    return;
+  }
+
+  if(NAVIO_SELECIONADO === null || !D.navios.some(n => n.k === NAVIO_SELECIONADO)){
+    NAVIO_SELECIONADO = (D.navios.find(n => !n.ocioso) || D.navios[0]).k;
+  }
+
+  const botoes = D.navios
+    .map(n => botaoNavio(n, PERFIS_CARGA.get(n.k), n.k === NAVIO_SELECIONADO))
+    .join("");
+
+  const selecionado = D.navios.find(n => n.k === NAVIO_SELECIONADO) || D.navios[0];
+
+  alvo.innerHTML = `
+    <div class="navio-selector-wrap">
+      <div class="navio-selector-title">Selecione um navio para inspecionar a carga a bordo</div>
+      <div class="navio-selector">${botoes}</div>
+    </div>
+    ${cardNavio(selecionado)}
+  `;
+
+  alvo.querySelectorAll(".navio-tab").forEach(botao => {
+    botao.addEventListener("click", () => {
+      NAVIO_SELECIONADO = Number(botao.dataset.k);
+      renderAuditoriaCarga();
+    });
+  });
+}
+
+function desenharAuditoriaCarga(){
+  renderAuditoriaCarga();
+}
+
+// ============================ GANTT (SVG) ============================
+function desenharGantt(){
+  const svg = document.getElementById("gantt");
+  svg.innerHTML = "";
+  const D = window.DADOS;
+  const H = D.horizonte_h || 168;
+
+  // geometria
+  const mEsq = 150, mDir = 30, mTopo = 26;
+  const largura = 1180, escX = (largura - mEsq - mDir) / H;
+  const altLinha = 20, altNavio = 16, gapVisita = 4, gapNavio = 26;
+
+  // conta linhas p/ altura total
+  let linhas = 0;
+  D.navios.forEach(n=>{ linhas += n.ocioso ? 1.4 : (1.6 + n.visitas.length); });
+  const altura = mTopo + linhas*(altLinha+gapVisita) + D.navios.length*gapNavio + 40;
+  svg.setAttribute("width", largura); svg.setAttribute("height", altura);
+
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt)=>{ const e=document.createElementNS(NS,tag);
+    for(const k in at) e.setAttribute(k, at[k]); if(txt!=null) e.textContent=txt; svg.appendChild(e); return e; };
+  const X = h => mEsq + h*escX;
+
+  // eixo do tempo: grade a cada 12 h, rótulo a cada 24 h
+  for(let h=0; h<=H; h+=12){
+    el("line", {x1:X(h), y1:mTopo-8, x2:X(h), y2:altura-26,
+                stroke:"var(--grid)", "stroke-width": h%24? .5:1});
+    if(h%24===0) el("text",{x:X(h), y:mTopo-12, "font-size":10, fill:"#7c8b9a",
+                            "text-anchor":"middle"}, h+" h");
+  }
+
+  let y = mTopo + 6;
+  D.navios.forEach(n=>{
+    // título do navio
+if(n.ocioso){
+      el("text",{x:8, y:y+12, "font-size":13, "font-weight":600, fill:"var(--ink)"},
+         `Navio ${n.k} — ${n.nome}  ·  OCIOSO (fica na base)`);
+y += altLinha + gapNavio; return;
+    }
+    el("text",{x:8, y:y+12, "font-size":13, "font-weight":600, fill:"var(--ink)"},
+       `Navio ${n.k} — ${n.nome}`);
+    el("text",{x:8, y:y+27, "font-size":10.5, fill:"#5a6b7c"},
+       `naveg ${n.navegacao_h.toFixed(1)} h · serviço ${n.servico_h.toFixed(1)} h · espera ${n.espera_h.toFixed(1)} h · retorno ${n.retorno_h.toFixed(1)} h`);
+
+    // linha do navio: navegação / espera / serviço agregado
+    const yN = y + 2;
+    n.segmentos.forEach(s=>{
+      if(s.tipo==="nav")
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:"var(--nav)", rx:2});
+      else if(s.tipo==="espera")
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:"url(#hachura)", stroke:"var(--espera)", "stroke-width":.6, rx:2});
+      else
+        el("rect",{x:X(s.ini), y:yN, width:Math.max(1,(s.fim-s.ini)*escX), height:altNavio,
+                   fill:corDaPlataforma(s.plataforma||""), opacity:.45, rx:2});
+    });
+    y += altLinha + 14;
+
+    // uma linha por visita: faixas de janelas + barra de serviço
+    n.visitas.forEach(v=>{
+      const cor = corDaPlataforma(v.plataforma);
+      el("text",{x:mEsq-8, y:y+13, "font-size":11, fill:"var(--ink)", "text-anchor":"end"}, v.nome);
+      // todas as janelas do nó (faixas)
+      (v.janelas||[]).forEach((j,idx)=>{
+        el("rect",{x:X(j[0]), y:y+2, width:Math.max(1,(j[1]-j[0])*escX), height:altLinha-6,
+                   fill: idx===v.jidx ? "var(--band-usada)" : "var(--band)",
+                   stroke:"#c8d2dc", "stroke-width":.5, rx:2});
+      });
+      // espera antes do serviço
+      if(v.espera > 1e-6)
+        el("rect",{x:X(v.chegada), y:y+5, width:Math.max(1,v.espera*escX), height:altLinha-12,
+                   fill:"url(#hachura)"});
+      // barra de serviço; parte que ultrapassa o fechamento da janela usada fica contornada
+      const dueUsada = v.janela ? v.janela[1] : v.fim;
+      const fimDentro = Math.min(v.fim, dueUsada);
+      el("rect",{x:X(v.ini), y:y+3, width:Math.max(1.5,(fimDentro-v.ini)*escX), height:altLinha-8,
+                 fill:cor, rx:2});
+      if(v.fim > dueUsada + 1e-6){
+        el("rect",{x:X(dueUsada), y:y+3, width:Math.max(1.5,(v.fim-dueUsada)*escX), height:altLinha-8,
+                   fill:cor, opacity:.35, stroke:"var(--alerta)", "stroke-width":1.2, rx:2});
+        el("text",{x:X(v.fim)+3, y:y+14, "font-size":10, fill:"var(--alerta)"}, "termina fora");
+      }
+      y += altLinha + gapVisita;
+    });
+    y += gapNavio;
+  });
+
+  // padrão de hachura p/ espera
+  const defs = document.createElementNS(NS,"defs");
+  defs.innerHTML = `<pattern id="hachura" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                      <rect width="5" height="5" fill="#ffffff"/>
+                      <line x1="0" y1="0" x2="0" y2="5" stroke="#b9c4cf" stroke-width="2.2"/>
+                    </pattern>`;
+  svg.appendChild(defs);
+}
+
+// ============================ MAPA (Leaflet / OpenStreetMap) ============================
+let MAPA = null;
+let CAMADA_SETAS = null;
+let PERNAS_ATUAIS = [];
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371, toRad = d => d*Math.PI/180;
+  const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+
+// âncora estilizada p/ a base (~20px, halo branco via drop-shadow)
+function iconAncora(){
+  return L.divIcon({ className:"", iconSize:[20,20], iconAnchor:[10,10], html:
+    `<svg width="20" height="20" viewBox="0 0 24 24"
+          style="filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff);">
+       <circle cx="12" cy="4.2" r="2.3" fill="none" stroke="#12263a" stroke-width="2"/>
+       <line x1="12" y1="6.4" x2="12" y2="20" stroke="#12263a" stroke-width="2"/>
+       <line x1="6.5" y1="9" x2="17.5" y2="9" stroke="#12263a" stroke-width="2"/>
+       <path d="M4 13 a8 8 0 0 0 8 8 a8 8 0 0 0 8 -8" fill="none" stroke="#12263a" stroke-width="2"/>
+     </svg>` });
+}
+
+// torre/jaqueta offshore estilizada p/ plataformas; tamanho vem da Melhoria 4 (demanda de convés);
+// o nome vai dentro do próprio SVG, ABAIXO do desenho, com halo (paint-order:stroke) — a âncora
+// fica no centro do desenho (não do texto) para o ponto geográfico não deslocar.
+function iconPlataforma(nomePlat, tam){
+  const cor = corDaPlataforma(nomePlat);
+  const altoTexto = 14;
+  const larguraTexto = nomePlat.length * 6.5 + 6;
+  const W = Math.max(tam, larguraTexto);
+  const H = tam + altoTexto;
+  const escala = tam / 24;
+  const offX = (W - tam) / 2;
+  return L.divIcon({ className:"", iconSize:[W,H], iconAnchor:[W/2, tam/2], html:
+    `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+       <g transform="translate(${offX},0) scale(${escala})">
+         <polygon points="12,2 21,21 3,21" fill="${cor}" stroke="#fff" stroke-width="${(1.6/escala).toFixed(2)}"/>
+         <line x1="7" y1="13.5" x2="17" y2="13.5" stroke="#fff" stroke-width="${(1.3/escala).toFixed(2)}"/>
+         <line x1="9.3" y1="17.5" x2="14.7" y2="17.5" stroke="#fff" stroke-width="${(1.1/escala).toFixed(2)}"/>
+       </g>
+       <text x="${W/2}" y="${tam+11}" text-anchor="middle" font-size="11" font-weight="600"
+             fill="#12263a" stroke="#fff" stroke-width="3" paint-order="stroke"
+             font-family="'Segoe UI', Arial, sans-serif">${nomePlat}</text>
+     </svg>` });
+}
+
+function iconSeta(cor, angulo){
+  return L.divIcon({ className:"", iconSize:[10,10], iconAnchor:[5,5], html:
+    `<div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+                 border-bottom:10px solid ${cor};
+                 transform:rotate(${angulo+90}deg); transform-origin:50% 50%;"></div>` });
+}
+
+// redesenha as setas de direção nas pernas das rotas (ângulo recalculado na projeção atual)
+function desenharSetas(){
+  if(!MAPA) return;
+  if(CAMADA_SETAS){ MAPA.removeLayer(CAMADA_SETAS); }
+  CAMADA_SETAS = L.layerGroup().addTo(MAPA);
+  PERNAS_ATUAIS.forEach(({p1,p2,cor})=>{
+    const pt1 = MAPA.latLngToLayerPoint([p1.lat,p1.lon]);
+    const pt2 = MAPA.latLngToLayerPoint([p2.lat,p2.lon]);
+    const ang = Math.atan2(pt2.y-pt1.y, pt2.x-pt1.x) * 180/Math.PI;
+    const meio = [(p1.lat+p2.lat)/2, (p1.lon+p2.lon)/2];
+    L.marker(meio, { icon: iconSeta(cor, ang), interactive:false }).addTo(CAMADA_SETAS);
+  });
+}
+
+// ---- painel lateral (substitui os popups sobre o mapa) ----
+function fmtH(x){ return x.toFixed(2).replace(".", ","); }
+function fmtKm(x){ return x.toFixed(1).replace(".", ","); }
+function setPainel(html){ document.getElementById("painel-info").innerHTML = html; }
+
+// ficha da plataforma: totais de demanda + um cartão por order (atendida ou não) (Melhoria 3 do painel)
+function painelPlataforma(nomePlat, nos, navios){
+  const cor = corDaPlataforma(nomePlat);
+  const orders = nos.filter(q=>q.plataforma===nomePlat);
+  let totalDeckLoad=0,totalDeckBack=0,totalDiesel=0,totalAgua=0;
+  orders.forEach(o=>{ const c=cargasDoNo(o); totalDeckLoad+=c.deckLoad; totalDeckBack+=c.deckBackload; totalDiesel+=c.diesel; totalAgua+=c.agua; });
+
+  const cartoes = orders.map(o=>{
+    let atendido = null;
+    for(const n of navios){
+      const v = n.visitas.find(v=>v.no===o.id);
+      if(v){ atendido = {n, v}; break; }
+    }
+    if(!atendido){
+      return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;"><b>${escapeHtml(o.nome)}</b> — <span style="color:var(--alerta)">não atendida</span></div>`;
+    }
+    const {n, v} = atendido;
+    const dueUsada = v.janela ? v.janela[1] : v.fim;
+    const espera = v.espera > 1e-6 ? `espera ${fmtH(v.espera)} h` : "sem espera";
+    const jan = v.janela ? `janela usada: ${fmtH(v.janela[0])}–${fmtH(v.janela[1])} h (${v.jidx+1}ª de ${v.janelas.length})` : "sem janela atendida";
+    const c=cargasDoNo(o);
+    const perfil=PERFIS_CARGA.get(n.k);
+    const passo=perfil?.passos.find(s=>s.no===o.id);
+    const cargaPartes=[];
+    if(c.deckBackload>0) cargaPartes.push(`coleta deck +${fmtCarga(c.deckBackload)} t`);
+    if(c.deckLoad>0) cargaPartes.push(`entrega deck −${fmtCarga(c.deckLoad)} t`);
+    if(c.diesel>0) cargaPartes.push(`diesel −${fmtCarga(c.diesel)} t`);
+    if(c.agua>0) cargaPartes.push(`água −${fmtCarga(c.agua)} t`);
+    const carga=cargaPartes.length?cargaPartes.join(" · "):"sem movimentação de carga";
+    const bordo=passo?`<div style="margin-top:5px; padding:6px; background:#f7f9fb; border-radius:4px;">
+      Deck: ${fmtCarga(passo.deckAntes)} antes → <b>${fmtCarga(passo.deckPico)} pico</b> → ${fmtCarga(passo.deckDepois)} depois<br>
+      Restante: diesel ${fmtCarga(passo.dieselDepois)} t · água ${fmtCarga(passo.aguaDepois)} t
+    </div>`:"";
+    const alerta = v.fim > dueUsada + 1e-6 ? `<div style="color:var(--alerta); margin-top:4px;">atenção: serviço termina às ${fmtH(v.fim)} h, após o fechamento (${fmtH(dueUsada)} h)</div>` : "";
+    return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
+      <b>${escapeHtml(o.nome)}</b> — Navio ${n.k} (${escapeHtml(n.nome)})<br>
+      chegada ${fmtH(v.chegada)} h · ${espera}<br>
+      serviço ${fmtH(v.ini)} → ${fmtH(v.fim)} h (${fmtH(v.fim-v.ini)} h)<br>
+      ${jan}<br>${carga}${bordo}${alerta}
+    </div>`;
+  });
+
+  return `<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;"><span style="width:14px; height:14px; border-radius:3px; background:${cor}; display:inline-block;"></span><b style="font-size:15px;">${escapeHtml(nomePlat)}</b></div>
+    <div style="margin-bottom:10px; color:#40556a;">Entrega deck ${fmtCarga(totalDeckLoad)} t · Coleta backload ${fmtCarga(totalDeckBack)} t · Diesel ${fmtCarga(totalDiesel)} t · Água ${fmtCarga(totalAgua)} t</div>
+    ${cartoes.join("")}`;
+}
+
+// ficha da base: partidas/chegadas dos navios não ociosos
+function painelBase(nome, navios){
+  const linhas = navios.filter(n=>!n.ocioso).map(n=>{
+    const segNav = n.segmentos.find(s=>s.tipo==="nav");
+    const partida = segNav ? segNav.ini : 0;
+    return `<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-bottom:8px;">
+      <b>Navio ${n.k}</b> — ${n.nome}<br>
+      partida às ${fmtH(partida)} h · retorno às ${fmtH(n.retorno_h)} h
+    </div>`;
+  });
+  return `
+    <div style="margin-bottom:10px;"><b style="font-size:15px;">${nome}</b></div>
+    ${linhas.join("") || '<div style="color:#5a6b7c;">Nenhum navio em rota.</div>'}
+  `;
+}
+
+// ficha da perna de rota clicada + resumo do navio
+function painelRota(n, nome1, nome2, distKm, durH, indicePerna){
+  const p=PERFIS_CARGA.get(n.k);
+  let deck=null,diesel=null,agua=null;
+  if(p){
+    if(indicePerna===0){ deck=p.inicial.deck; diesel=p.inicial.diesel; agua=p.inicial.agua; }
+    else{
+      const s=p.passos[indicePerna-1];
+      if(s){ deck=s.deckDepois; diesel=s.dieselDepois; agua=s.aguaDepois; }
+    }
+  }
+  const pct=p&&p.caps.deck!==null&&p.caps.deck>0&&deck!==null?100*deck/p.caps.deck:null;
+  const bordo=deck===null?"":`<div style="border:1px solid var(--grid); border-radius:4px; padding:8px; margin-top:8px;">
+    <b>Carga durante este trecho</b><br>
+    convés ${fmtCarga(deck)}${p.caps.deck!==null?` / ${fmtCarga(p.caps.deck)}`:""} t${pct!==null?` (${fmtPct(pct)})`:""}<br>
+    diesel ${fmtCarga(diesel)} t · água ${fmtCarga(agua)} t
+  </div>`;
+  return `<div style="margin-bottom:10px;"><b style="font-size:15px;">Navio ${n.k} — ${escapeHtml(n.nome)}</b><br>trecho ${escapeHtml(nome1)} → ${escapeHtml(nome2)} · ${fmtKm(distKm)} km · ${fmtH(durH)} h</div>
+    <div style="border:1px solid var(--grid); border-radius:4px; padding:8px;">navegação ${fmtH(n.navegacao_h)} h · serviço ${fmtH(n.servico_h)} h · espera ${fmtH(n.espera_h)} h · retorno ${fmtH(n.retorno_h)} h</div>${bordo}`;
+}
+
+function desenharMapa(){
+  if(typeof window.L === "undefined"){
+    document.getElementById("mapa").innerHTML =
+      '<div style="padding:16px;color:var(--alerta);font-size:13px;">Mapa OSM indisponível (sem conexão)</div>';
+    return;
+  }
+
+  const D = window.DADOS, nos = D.nos;
+
+  if(MAPA){ MAPA.off(); MAPA.remove(); MAPA = null; }
+  CAMADA_SETAS = null;
+  PERNAS_ATUAIS = [];
+  setPainel("Clique em uma plataforma, na base ou em uma rota para ver os detalhes aqui.");
+  MAPA = L.map("mapa");
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+    { attribution:'&copy; OpenStreetMap contributors &copy; CARTO', subdomains:'abcd', maxZoom:12 }).addTo(MAPA);
+
+  const CORES_NAV = ["#3e6d9c","#8a4f9e","#2f7d3b"];
+  const tudo = [];
+
+  // demanda de convés (deck) por plataforma -> tamanho do ícone (Melhoria 4)
+  const deckPorPlat = {};
+  nos.forEach(p=>{
+    if(p.id===0) return;
+    deckPorPlat[p.plataforma] = (deckPorPlat[p.plataforma]||0) + (p.deck||0);
+  });
+  const deckVals = Object.values(deckPorPlat);
+  const deckMin = deckVals.length ? Math.min(...deckVals) : 0;
+  const deckMax = deckVals.length ? Math.max(...deckVals) : 0;
+  const tamanhoIcone = plat => deckMax<=deckMin ? 22 :
+    16 + (deckPorPlat[plat]-deckMin)/(deckMax-deckMin) * (30-16);
+
+  // rotas: pernas individuais (tooltip com distância/tempo) + coleta p/ setas de direção
+  D.navios.forEach((n,i)=>{
+    if(n.ocioso) return;
+    const base = nos.find(p=>p.id===0);
+    const seqNos = [base, ...n.visitas.map(v=>nos.find(q=>q.id===v.no)), base];
+    const navsSeg = n.segmentos.filter(s=>s.tipo==="nav");
+    const cor = CORES_NAV[i%CORES_NAV.length];
+    for(let a=0; a<seqNos.length-1; a++){
+      const p1 = seqNos[a], p2 = seqNos[a+1];
+      tudo.push([p1.lat, p1.lon]);
+      const distKm = haversineKm(p1.lat, p1.lon, p2.lat, p2.lon);
+      if(distKm < 0.05) continue; // pula pernas ~0 (plataformas co-localizadas)
+      const durH = navsSeg[a] ? (navsSeg[a].fim - navsSeg[a].ini) : 0;
+      const nome1 = p1.id===0 ? p1.nome : p1.plataforma;
+      const nome2 = p2.id===0 ? p2.nome : p2.plataforma;
+      L.polyline([[p1.lat,p1.lon],[p2.lat,p2.lon]], { color: cor, weight: 2.5, opacity: .9 })
+        .addTo(MAPA)
+        .bindTooltip(`${nome1} → ${nome2} · ${distKm.toFixed(1)} km · ${durH.toFixed(2)} h`, { sticky:true })
+        .on("click", ()=> setPainel(painelRota(n, nome1, nome2, distKm, durH, a)));
+      PERNAS_ATUAIS.push({p1, p2, cor});
+    }
+    tudo.push([base.lat, base.lon]);
+  });
+
+  // nós: base (âncora) e plataformas (ícone offshore com nome embutido no SVG) — clique abre o painel
+  const vistos = new Set();
+  nos.forEach(p=>{
+    if(p.id===0){
+      L.marker([p.lat, p.lon], { icon: iconAncora() })
+        .addTo(MAPA)
+        .on("click", ()=> setPainel(painelBase(p.nome, D.navios)));
+      tudo.push([p.lat, p.lon]);
+      return;
+    }
+    if(vistos.has(p.plataforma)) return;
+    vistos.add(p.plataforma);
+    L.marker([p.lat, p.lon], { icon: iconPlataforma(p.plataforma, tamanhoIcone(p.plataforma)) })
+      .addTo(MAPA)
+      .on("click", ()=> setPainel(painelPlataforma(p.plataforma, nos, D.navios)));
+    tudo.push([p.lat, p.lon]);
+  });
+
+  MAPA.fitBounds(tudo, { padding:[40,40] });
+  desenharSetas();
+  MAPA.on("zoomend", desenharSetas);
+}
+
+// ============================ montagem ============================
+function desenharTudo(){
+  document.getElementById("entrada").style.display = "none";
+  const D = window.DADOS;
+  document.getElementById("cabecalho").textContent =
+    `${D.instancia} — FO = ${D.fo_total_s.toFixed(0)} s = ${(D.fo_total_s/3600).toFixed(2)} h (navegação + manobras)`;
+  document.getElementById("legenda").innerHTML =
+    `<span><span class="chip" style="background:var(--nav)"></span>navegação + manobras (FO)</span>
+     <span><span class="chip hachura"></span>espera</span>
+     <span><span class="chip" style="background:var(--band)"></span>janela de tempo (a usada fica mais escura)</span>
+     <span class="aviso">contorno vermelho = serviço termina após o fechamento (semântica: início dentro da janela)</span>`;
+  desenharResumoComparativo();
+  prepararPerfisCarga();
+  desenharGantt();
+  desenharAuditoriaCarga();
+  desenharMapa();
+}
+async function carregarDados(){
+  const entrada=document.getElementById("entrada");
+  const comparativos={};
+
+  // Carrega os três arquivos em sequência para capturar cada window.DADOS sem conflito.
+  for(const tipo of ["construtiva","bp","exato"]){
+    comparativos[tipo]=await carregarArquivoComparativo(ARQUIVOS_COMPARACAO[tipo]);
+  }
+
+  window.DADOS_COMPARATIVOS=comparativos;
+  const tipoAtual=tipoDoArquivo(ARQUIVO_ATUAL);
+  window.DADOS=comparativos[tipoAtual];
+
+  if(dadosProntos()){
+    desenharTudo();
+  }else{
+    entrada.style.display="block";
+    document.getElementById("cabecalho").textContent=
+      `${ARQUIVO_ATUAL} não foi encontrado ou não contém DADOS válidos.`;
+    document.getElementById("resumo-instancia").textContent="Visualização indisponível";
+    document.getElementById("resumo-solucao-atual").textContent=NOMES_SOLUCAO[tipoAtual];
+  }
+}
+
+carregarDados();
+</script>
+</body>
+</html>

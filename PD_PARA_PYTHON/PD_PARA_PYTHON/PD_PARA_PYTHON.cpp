@@ -437,6 +437,8 @@ py::tuple sub_prog_din_pw_branch_greedy(
 // ===================== BIDIRECIONAL =====================
 #include <deque>
 #include <unordered_set>
+#include <set>
+#include <utility>
 
 struct BiLabelF {
     int no;
@@ -1568,6 +1570,360 @@ py::tuple sub_prog_din_petro(
     return py::make_tuple(py::none(), py::none());
 }
 
+// ===================== PETRO (multi-candidatas) =====================
+// Mesmo algoritmo/labeling/dominancia/poda de sub_prog_din_petro (nao alterados).
+// Unica diferenca: em vez de guardar so a melhor coluna, registra ate max_candidatas
+// rotas completas distintas com custo reduzido negativo (rc < -eps), ignorando somente
+// as sequencias completas presentes em rotas_excluidas ou ja coletadas neste lote.
+// rotas_excluidas NUNCA afeta arcos, dominancia, labels parciais, recursos ou custo
+// reduzido -- so descarta uma rota COMPLETA candidata cuja sequencia ja exista no pool.
+// Retorna (candidatas, busca_completa, timeout):
+//   candidatas: lista de dicts {clientes, custo, bin_xij, custo_reduzido}, ordenada
+//               do rc mais negativo para o menos negativo.
+//   busca_completa: True se a enumeracao terminou naturalmente (fila de labels
+//               esvaziada) antes de atingir max_candidatas; False se a busca foi
+//               interrompida por ter atingido max_candidatas (enumeracao incompleta).
+//   timeout: sempre False aqui -- o timeout desta chamada e tratado no lado Python
+//               (chamar_cpp_timeout mata o processo e nunca recebe este retorno).
+py::tuple sub_prog_din_petro_multi(
+    py::array_t<double, py::array::c_style | py::array::forcecast> tt,
+    std::vector<std::vector<double>> aw,
+    std::vector<std::vector<double>> bw,
+    std::vector<double> s,
+    std::vector<double> d_deck,
+    std::vector<double> b_deck,
+    std::vector<double> d_diesel,
+    std::vector<double> d_agua,
+    std::vector<int> plataforma_id,
+    std::vector<double> pi,
+    double sigma_k,
+    double cap_deck,
+    double cap_diesel,
+    double cap_agua,
+    int nbcd,
+    int dep0,
+    int depf,
+    std::vector<double> mu_flat,
+    std::vector<std::uint8_t> forbid_flat,
+    std::vector<int> req_i,
+    std::vector<int> req_j,
+    std::vector<std::vector<int>> rotas_excluidas,
+    int max_candidatas = 20,
+    int max_labels_por_no = 200,
+    double eps = 1e-6
+) {
+    if (tt.ndim() != 2) throw std::runtime_error("tt must be 2D (nbn x nbn)");
+    auto T = tt.unchecked<2>();
+    int nbn = (int)T.shape(0);
+    if ((int)T.shape(1) != nbn) throw std::runtime_error("tt must be square");
+
+    if ((int)aw.size() != nbn || (int)bw.size() != nbn)
+        throw std::runtime_error("aw,bw must have size nbn");
+    if ((int)s.size() != nbn || (int)d_deck.size() != nbn || (int)b_deck.size() != nbn ||
+        (int)d_diesel.size() != nbn || (int)d_agua.size() != nbn)
+        throw std::runtime_error("s,d_deck,b_deck,d_diesel,d_agua must have size nbn");
+    if ((int)plataforma_id.size() != nbn)
+        throw std::runtime_error("plataforma_id must have size nbn");
+    for (int c = 1; c <= nbcd; ++c) {
+        if (plataforma_id[(size_t)c] < 0)
+            throw std::runtime_error("plataforma_id must be nonnegative for every client");
+    }
+    if ((int)pi.size() != nbcd)
+        throw std::runtime_error("pi must have size nbcd");
+    if (!mu_flat.empty() && (int)mu_flat.size() != nbn * nbn)
+        throw std::runtime_error("mu_flat must have size nbn*nbn");
+    if (!forbid_flat.empty() && (int)forbid_flat.size() != nbn * nbn)
+        throw std::runtime_error("forbid_flat must have size nbn*nbn");
+    if ((int)req_i.size() != (int)req_j.size())
+        throw std::runtime_error("req_i and req_j must have same length");
+    if (max_candidatas < 1) max_candidatas = 1;
+
+    if (mu_flat.empty()) mu_flat.assign((size_t)nbn * (size_t)nbn, 0.0);
+    if (forbid_flat.empty()) forbid_flat.assign((size_t)nbn * (size_t)nbn, 0);
+
+    std::set<std::vector<int>> excluidas(rotas_excluidas.begin(), rotas_excluidas.end());
+
+    // ---- fixos (succ/pred), mesmo mecanismo do bidirecional ----
+    std::unordered_map<int, int> succ_fixo;
+    std::unordered_map<int, int> pred_fixo;
+    for (size_t t = 0; t < req_i.size(); ++t) {
+        int i = req_i[t];
+        int j = req_j[t];
+        auto its = succ_fixo.find(i);
+        if (its != succ_fixo.end() && its->second != j) {
+            return py::make_tuple(py::list(), true, false);
+        }
+        auto itp = pred_fixo.find(j);
+        if (itp != pred_fixo.end() && itp->second != i) {
+            return py::make_tuple(py::list(), true, false);
+        }
+        succ_fixo[i] = j;
+        pred_fixo[j] = i;
+    }
+
+    auto idx2 = [&](int i, int j) -> size_t {
+        return (size_t)i * (size_t)nbn + (size_t)j;
+        };
+
+    auto arco_permitido = [&](int i, int j) -> bool {
+        if (forbid_flat[idx2(i, j)] != 0) return false;
+        auto its = succ_fixo.find(i);
+        if (its != succ_fixo.end() && its->second != j) return false;
+        auto itp = pred_fixo.find(j);
+        if (itp != pred_fixo.end() && itp->second != i) return false;
+        return true;
+        };
+
+    auto mu = [&](int i, int j) -> double {
+        return mu_flat[idx2(i, j)];
+        };
+
+    auto delta_rc = [&](int i, int j) -> double {
+        double val = T(i, j) - mu(i, j);
+        if (1 <= j && j <= nbcd) val -= pi[(size_t)(j - 1)];
+        if (j == depf) val -= sigma_k;
+        return val;
+        };
+
+    const double EPS_WIN = 1e-6;
+    auto extensao_janela = [&](double tempo_bruto, int j, double& tempo_saida) -> bool {
+        const auto& aj = aw[(size_t)j];
+        const auto& bj = bw[(size_t)j];
+        double servico = s[(size_t)j];
+        for (size_t r = 0; r < bj.size(); ++r) {
+            double aval = (r < aj.size()) ? aj[r] : 0.0;
+            double inicio = std::max(tempo_bruto, aval);
+            if (inicio + servico <= bj[r] + EPS_WIN) {
+                tempo_saida = inicio;
+                return true;
+            }
+        }
+        return false;
+        };
+
+    auto montar_dict = [&](const std::vector<int>& rota, double rc) -> py::dict {
+        double custo_real = 0.0;
+        for (size_t t = 0; t + 1 < rota.size(); ++t) custo_real += T(rota[t], rota[t + 1]);
+        std::vector<int> bin_xij((size_t)nbcd, 0);
+        for (int v : rota) if (1 <= v && v <= nbcd) bin_xij[(size_t)(v - 1)] = 1;
+        py::dict out;
+        out["clientes"] = rota;
+        out["custo"] = custo_real;
+        out["bin_xij"] = bin_xij;
+        out["custo_reduzido"] = rc;
+        return out;
+        };
+
+    // ---- coleta das K melhores candidatas (secao 6) ----
+    // Mantem sempre as K candidatas de rc mais negativo vistas ate agora (substitui
+    // a pior quando a capacidade esta cheia); a BUSCA em si nunca para por causa da
+    // capacidade -- so o ARMAZENAMENTO e limitado (secao 7: "limite de armazenamento/
+    // retorno, nao prova matematica"). Isso garante que max_candidatas=1 sempre
+    // reproduza a mesma melhor coluna que sub_prog_din_petro (compatibilidade, secao 14).
+    struct CandidataMulti { std::vector<int> rota; double rc; };
+    std::vector<CandidataMulti> candidatas;
+    std::set<std::vector<int>> vistas_no_lote;
+
+    auto tenta_registrar_candidata = [&](const std::vector<int>& rota, double rc) -> void {
+        if (rc >= -eps) return;
+        if (excluidas.find(rota) != excluidas.end()) return;
+        if (vistas_no_lote.find(rota) != vistas_no_lote.end()) return;
+
+        if ((int)candidatas.size() < max_candidatas) {
+            vistas_no_lote.insert(rota);
+            candidatas.push_back({ rota, rc });
+            return;
+        }
+
+        size_t pior_idx = 0;
+        double pior_rc = candidatas[0].rc;
+        for (size_t z = 1; z < candidatas.size(); ++z) {
+            if (candidatas[z].rc > pior_rc) { pior_rc = candidatas[z].rc; pior_idx = z; }
+        }
+        if (rc < pior_rc) {
+            vistas_no_lote.erase(candidatas[pior_idx].rota);
+            vistas_no_lote.insert(rota);
+            candidatas[pior_idx] = { rota, rc };
+        }
+        };
+
+    double tempo_inicial;
+    {
+        const auto& a0 = aw[(size_t)dep0];
+        tempo_inicial = std::max(a0.empty() ? 0.0 : a0[0], 0.0);
+    }
+
+    std::vector<PetroLabel> rot;
+    std::deque<int> abertos;
+    std::unordered_map<int, std::vector<int>> labels_por_no;
+    std::unordered_map<NodeMaskKey, std::vector<int>, NodeMaskKeyHash> fronteira;
+
+    rot.push_back(PetroLabel{
+        dep0, tempo_inicial, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, std::bitset<128>(), -1, true
+        });
+    abertos.push_back(0);
+    labels_por_no[dep0].push_back(0);
+    fronteira[{dep0, std::bitset<128>()}].push_back(0);
+
+    while (!abertos.empty()) {
+        int idx_atual = abertos.front();
+        abertos.pop_front();
+        PetroLabel& r = rot[(size_t)idx_atual];
+        if (!r.ativo) continue;
+
+        int no_i = r.no;
+        double tempo_i = r.tempo;
+        double soma_d_i = r.soma_d;
+        double net_i = r.net;
+        double m_i = r.m;
+        double diesel_i = r.diesel;
+        double agua_i = r.agua;
+        double custo_i = r.custo_mod;
+        auto mask_i = r.mask;
+
+        if (no_i == depf) {
+            if (mask_i.any()) {
+                tenta_registrar_candidata(rota_forward_petro(rot, idx_atual), custo_i);
+            }
+            continue;
+        }
+
+        std::vector<int> candidatos;
+        auto its0 = succ_fixo.find(no_i);
+        if (its0 != succ_fixo.end()) {
+            candidatos.push_back(its0->second);
+        }
+        else {
+            candidatos.reserve((size_t)nbcd + 1);
+            for (int c = 1; c <= nbcd; ++c) {
+                if (!(mask_i & cliente_mask(c)).any()) candidatos.push_back(c);
+            }
+            candidatos.push_back(depf);
+        }
+
+        for (int j : candidatos) {
+            if (!arco_permitido(no_i, j)) continue;
+
+            std::bitset<128> nova_mask = mask_i;
+            if (1 <= j && j <= nbcd) {
+                auto bit = cliente_mask(j);
+                if ((mask_i & bit).any()) continue;
+                if (!petro_extensao_forward_plataforma_valida(
+                    no_i, j, mask_i, plataforma_id, d_deck, b_deck, d_diesel, d_agua, nbcd)) continue;
+                nova_mask = mask_i | bit;
+            }
+
+            double novo_soma_d = soma_d_i;
+            double novo_net = net_i;
+            double novo_m = m_i;
+            double novo_diesel = diesel_i;
+            double nova_agua = agua_i;
+            if (1 <= j && j <= nbcd) {
+                double pico_cand = net_i + b_deck[(size_t)j];
+                novo_m = std::max(m_i, pico_cand);
+                novo_net = net_i + b_deck[(size_t)j] - d_deck[(size_t)j];
+                novo_soma_d = soma_d_i + d_deck[(size_t)j];
+                novo_diesel += d_diesel[(size_t)j];
+                nova_agua += d_agua[(size_t)j];
+            }
+            if (novo_soma_d + novo_m > cap_deck + 1e-9) continue;
+            if (novo_diesel > cap_diesel + 1e-9) continue;
+            if (nova_agua > cap_agua + 1e-9) continue;
+
+            double tempo_bruto = tempo_i + s[(size_t)no_i] + T(no_i, j);
+            double tempo_chegada;
+            if (!extensao_janela(tempo_bruto, j, tempo_chegada)) continue;
+
+            double custo_novo = custo_i + delta_rc(no_i, j);
+
+            NodeMaskKey chave{ j, nova_mask };
+            auto& lista = fronteira[chave];
+
+            bool dominado = false;
+            for (int idx_old : lista) {
+                const auto& ro = rot[(size_t)idx_old];
+                if (!ro.ativo) continue;
+                if (domina_petro(ro.custo_mod, ro.tempo, ro.m, custo_novo, tempo_chegada, novo_m)) {
+                    dominado = true;
+                    break;
+                }
+            }
+            if (dominado) continue;
+
+            std::vector<int> nova_lista;
+            nova_lista.reserve(lista.size() + 1);
+            for (int idx_old : lista) {
+                auto& ro = rot[(size_t)idx_old];
+                if (!ro.ativo) continue;
+                if (domina_petro(custo_novo, tempo_chegada, novo_m, ro.custo_mod, ro.tempo, ro.m)) {
+                    ro.ativo = false;
+                }
+                else {
+                    nova_lista.push_back(idx_old);
+                }
+            }
+
+            int idx_novo = (int)rot.size();
+            rot.push_back(PetroLabel{
+                j, tempo_chegada, novo_soma_d, novo_net, novo_m, novo_diesel, nova_agua, custo_novo,
+                nova_mask, idx_atual, true
+                });
+            abertos.push_back(idx_novo);
+            labels_por_no[j].push_back(idx_novo);
+            nova_lista.push_back(idx_novo);
+            lista = std::move(nova_lista);
+
+            if (j != depf && arco_permitido(j, depf)) {
+                double tempo_close_bruto = tempo_chegada + s[(size_t)j] + T(j, depf);
+                double tempo_close;
+                if (extensao_janela(tempo_close_bruto, depf, tempo_close)) {
+                    double custo_close = custo_novo + delta_rc(j, depf);
+                    auto rota_fechada = rota_forward_petro(rot, idx_novo);
+                    rota_fechada.push_back(depf);
+                    tenta_registrar_candidata(rota_fechada, custo_close);
+                }
+            }
+
+        }
+
+        // poda por max_labels_por_no (mesmo mecanismo do bidirecional)
+        auto& lista_no_all = labels_por_no[no_i];
+        std::vector<int> lista_no;
+        for (int idx : lista_no_all) {
+            if (rot[(size_t)idx].ativo) lista_no.push_back(idx);
+        }
+        if ((int)lista_no.size() > max_labels_por_no) {
+            std::sort(lista_no.begin(), lista_no.end(),
+                [&](int ia, int ib) {
+                    const auto& A = rot[(size_t)ia];
+                    const auto& B = rot[(size_t)ib];
+                    if (A.custo_mod != B.custo_mod) return A.custo_mod < B.custo_mod;
+                    return A.tempo < B.tempo;
+                });
+            std::unordered_set<int> manter;
+            for (int z = 0; z < max_labels_por_no; ++z) manter.insert(lista_no[(size_t)z]);
+            for (int z = max_labels_por_no; z < (int)lista_no.size(); ++z) {
+                rot[(size_t)lista_no[(size_t)z]].ativo = false;
+            }
+            std::vector<int> filtrada;
+            for (int idx : lista_no_all) {
+                if (manter.find(idx) != manter.end()) filtrada.push_back(idx);
+            }
+            lista_no_all = std::move(filtrada);
+        }
+    }
+
+    std::sort(candidatas.begin(), candidatas.end(),
+        [](const CandidataMulti& a, const CandidataMulti& b) { return a.rc < b.rc; });
+
+    py::list saida;
+    for (const auto& c : candidatas) saida.append(montar_dict(c.rota, c.rc));
+
+    // A busca sempre roda ate a fila de labels esvaziar (nunca para pela capacidade
+    // de armazenamento) -> ao chegar aqui, a enumeracao terminou naturalmente.
+    return py::make_tuple(saida, true, false);
+}
+
 // ===================== PETRO BIDIRECIONAL =====================
 // Pricing heuristico rapido: forward e backward ate max_depth, combinacao por no comum
 // e validacao exata da rota completa (multi-janela, deck load/backload, diesel e agua).
@@ -1831,6 +2187,292 @@ py::tuple sub_prog_din_bidirecional_petro(py::array_t<double, py::array::c_style
     return py::make_tuple(py::none(), py::none());
 }
 
+// ===================== PETRO BIDIRECIONAL (multi-candidatas) =====================
+// Mesmo labeling forward/backward, mesma dominancia, mesmo max_depth/max_labels_por_no/
+// max_combinacoes de sub_prog_din_bidirecional_petro (nao alterados). So o que acontece
+// quando uma rota fechada e avaliada muda: em vez de guardar so a melhor, registra ate
+// max_candidatas rotas distintas com rc negativo (ignorando as em rotas_excluidas ou ja
+// coletadas neste lote). Unica adaptacao necessaria ao algoritmo em si: a poda
+// "rc_estimado >= melhor_rc" (valida so para rastrear 1 melhor) virou poda pelo eps,
+// ja que agora podemos aceitar varias combinacoes negativas, nao so a melhor unica.
+// Heuristico (busca truncada por max_depth/max_combinacoes) -> busca_completa sempre False,
+// nunca certifica ausencia de outras colunas negativas. timeout sempre False (tratado no
+// lado Python, que mata o processo via chamar_cpp_timeout antes deste retorno existir).
+py::tuple sub_prog_din_bidirecional_petro_multi(py::array_t<double, py::array::c_style | py::array::forcecast> tt, std::vector<std::vector<double>> aw, std::vector<std::vector<double>> bw, std::vector<double> s, std::vector<double> d_deck, std::vector<double> b_deck, std::vector<double> d_diesel, std::vector<double> d_agua, std::vector<int> plataforma_id, std::vector<double> pi, double sigma_k, double cap_deck, double cap_diesel, double cap_agua, int nbcd, int dep0, int depf, std::vector<double> mu_flat, std::vector<std::uint8_t> forbid_flat, std::vector<int> req_i, std::vector<int> req_j, std::vector<std::vector<int>> rotas_excluidas, int max_candidatas = 20, int max_labels_por_no = 200, int max_depth = -1, long long max_combinacoes = 200000, double eps = 1e-6) {
+    if (tt.ndim() != 2) throw std::runtime_error("tt must be 2D (nbn x nbn)");
+    auto T = tt.unchecked<2>();
+    int nbn = (int)T.shape(0);
+    if ((int)T.shape(1) != nbn) throw std::runtime_error("tt must be square");
+    if ((int)aw.size() != nbn || (int)bw.size() != nbn) throw std::runtime_error("aw,bw must have size nbn");
+    if ((int)s.size() != nbn || (int)d_deck.size() != nbn || (int)b_deck.size() != nbn || (int)d_diesel.size() != nbn || (int)d_agua.size() != nbn) throw std::runtime_error("resource arrays must have size nbn");
+    if ((int)plataforma_id.size() != nbn) throw std::runtime_error("plataforma_id must have size nbn");
+    for (int c = 1; c <= nbcd; ++c) if (plataforma_id[(size_t)c] < 0) throw std::runtime_error("plataforma_id must be nonnegative for every client");
+    if ((int)pi.size() != nbcd) throw std::runtime_error("pi must have size nbcd");
+    if (!mu_flat.empty() && (int)mu_flat.size() != nbn * nbn) throw std::runtime_error("mu_flat must have size nbn*nbn");
+    if (!forbid_flat.empty() && (int)forbid_flat.size() != nbn * nbn) throw std::runtime_error("forbid_flat must have size nbn*nbn");
+    if (req_i.size() != req_j.size()) throw std::runtime_error("req_i and req_j must have same length");
+    if (max_depth < 0) max_depth = (nbcd + 2) / 2;
+    if (max_labels_por_no < 1) max_labels_por_no = 1;
+    if (max_combinacoes < 1) max_combinacoes = 1;
+    if (max_candidatas < 1) max_candidatas = 1;
+    if (mu_flat.empty()) mu_flat.assign((size_t)nbn * (size_t)nbn, 0.0);
+    if (forbid_flat.empty()) forbid_flat.assign((size_t)nbn * (size_t)nbn, 0);
+
+    std::set<std::vector<int>> excluidas(rotas_excluidas.begin(), rotas_excluidas.end());
+    std::set<std::vector<int>> vistas_no_lote;
+    // Mesma politica "K melhores por substituicao" de sub_prog_din_petro_multi (nunca
+    // interrompe a busca por causa da capacidade -- so limita o armazenamento), para
+    // que max_candidatas=1 reproduza exatamente sub_prog_din_bidirecional_petro.
+    struct CandidataBiMulti { std::vector<int> rota; double rc; py::dict col; };
+    std::vector<CandidataBiMulti> candidatas;
+
+    auto tenta_registrar_candidata = [&](const std::vector<int>& rota, double rc, py::dict col) -> void {
+        if (rc >= -eps) return;
+        if (excluidas.find(rota) != excluidas.end()) return;
+        if (vistas_no_lote.find(rota) != vistas_no_lote.end()) return;
+
+        col["custo_reduzido"] = rc;
+
+        if ((int)candidatas.size() < max_candidatas) {
+            vistas_no_lote.insert(rota);
+            candidatas.push_back({ rota, rc, col });
+            return;
+        }
+
+        size_t pior_idx = 0;
+        double pior_rc = candidatas[0].rc;
+        for (size_t z = 1; z < candidatas.size(); ++z) {
+            if (candidatas[z].rc > pior_rc) { pior_rc = candidatas[z].rc; pior_idx = z; }
+        }
+        if (rc < pior_rc) {
+            vistas_no_lote.erase(candidatas[pior_idx].rota);
+            vistas_no_lote.insert(rota);
+            candidatas[pior_idx] = { rota, rc, col };
+        }
+        };
+
+    std::unordered_set<std::uint64_t> fixados_k;
+    std::unordered_map<int, int> succ_fixo, pred_fixo;
+    for (size_t z = 0; z < req_i.size(); ++z) {
+        int i = req_i[z], j = req_j[z];
+        fixados_k.insert(arc_key(i, j));
+        auto its = succ_fixo.find(i); if (its != succ_fixo.end() && its->second != j) return py::make_tuple(py::list(), false, false);
+        auto itp = pred_fixo.find(j); if (itp != pred_fixo.end() && itp->second != i) return py::make_tuple(py::list(), false, false);
+        succ_fixo[i] = j; pred_fixo[j] = i;
+    }
+
+    auto idx2 = [&](int i, int j) -> size_t { return (size_t)i * (size_t)nbn + (size_t)j; };
+    auto arco_permitido = [&](int i, int j) -> bool {
+        if (forbid_flat[idx2(i, j)] != 0) return false;
+        auto its = succ_fixo.find(i); if (its != succ_fixo.end() && its->second != j) return false;
+        auto itp = pred_fixo.find(j); if (itp != pred_fixo.end() && itp->second != i) return false;
+        return true;
+        };
+    auto delta_rc = [&](int i, int j) -> double {
+        double v = T(i, j) - mu_flat[idx2(i, j)];
+        if (1 <= j && j <= nbcd) v -= pi[(size_t)(j - 1)];
+        if (j == depf) v -= sigma_k;
+        return v;
+        };
+    const double EPS_WIN = 1e-6;
+    auto earliest_start = [&](double chegada, int j, double& inicio) -> bool {
+        const auto& aj = aw[(size_t)j]; const auto& bj = bw[(size_t)j];
+        for (size_t r = 0; r < bj.size(); ++r) {
+            double a = r < aj.size() ? aj[r] : 0.0;
+            double ini = std::max(chegada, a);
+            if (ini + s[(size_t)j] <= bj[r] + EPS_WIN) { inicio = ini; return true; }
+        }
+        return false;
+        };
+    auto latest_start_node = [&](int i, double limite_saida, double& latest) -> bool {
+        const auto& ai = aw[(size_t)i]; const auto& bi = bw[(size_t)i];
+        bool ok = false; double best = -std::numeric_limits<double>::infinity();
+        for (size_t r = 0; r < bi.size(); ++r) {
+            double a = r < ai.size() ? ai[r] : 0.0;
+            double cand = std::min(bi[r] - s[(size_t)i], limite_saida);
+            if (cand + EPS_WIN >= a && cand > best) { best = cand; ok = true; }
+        }
+        if (ok) latest = best;
+        return ok;
+        };
+    auto todos_fixados = [&](const std::vector<int>& rota) -> bool {
+        if (fixados_k.empty()) return true;
+        std::unordered_set<std::uint64_t> arcos;
+        for (size_t t = 0; t + 1 < rota.size(); ++t) arcos.insert(arc_key(rota[t], rota[t + 1]));
+        for (const auto& a : fixados_k) if (arcos.find(a) == arcos.end()) return false;
+        return true;
+        };
+    auto avaliar_rota = [&](const std::vector<int>& rota) -> py::tuple {
+        if (rota.size() < 3 || rota.front() != dep0 || rota.back() != depf) return py::make_tuple(py::none(), py::none());
+        if (!petro_ordem_plataformas_valida(rota, plataforma_id, d_deck, b_deck, d_diesel, d_agua, nbcd)) return py::make_tuple(py::none(), py::none());
+        std::unordered_set<int> visitados;
+        double tempo = std::max(aw[(size_t)dep0].empty() ? 0.0 : aw[(size_t)dep0][0], 0.0);
+        double soma_d = 0.0, net = 0.0, pico = 0.0, diesel = 0.0, agua = 0.0, custo_real = 0.0, custo_red = 0.0;
+        for (size_t t = 0; t + 1 < rota.size(); ++t) {
+            int i = rota[t], j = rota[t + 1];
+            if (i == j || !arco_permitido(i, j)) return py::make_tuple(py::none(), py::none());
+            double inicio_j;
+            if (!earliest_start(tempo + s[(size_t)i] + T(i, j), j, inicio_j)) return py::make_tuple(py::none(), py::none());
+            tempo = inicio_j;
+            if (1 <= j && j <= nbcd) {
+                if (!visitados.insert(j).second) return py::make_tuple(py::none(), py::none());
+                pico = std::max(pico, net + b_deck[(size_t)j]);
+                net += b_deck[(size_t)j] - d_deck[(size_t)j];
+                soma_d += d_deck[(size_t)j]; diesel += d_diesel[(size_t)j]; agua += d_agua[(size_t)j];
+                if (soma_d + pico > cap_deck + 1e-9 || diesel > cap_diesel + 1e-9 || agua > cap_agua + 1e-9) return py::make_tuple(py::none(), py::none());
+            }
+            custo_real += T(i, j); custo_red += delta_rc(i, j);
+        }
+        if (visitados.empty() || !todos_fixados(rota)) return py::make_tuple(py::none(), py::none());
+        std::vector<int> bin((size_t)nbcd, 0); for (int v : visitados) bin[(size_t)(v - 1)] = 1;
+        py::dict out; out["clientes"] = rota; out["custo"] = custo_real; out["bin_xij"] = bin;
+        return py::make_tuple(out, custo_red);
+        };
+
+    double tempo0 = std::max(aw[(size_t)dep0].empty() ? 0.0 : aw[(size_t)dep0][0], 0.0);
+    std::vector<PetroBiLabelF> rot_f;
+    std::deque<int> abertos_f;
+    std::unordered_map<int, std::vector<int>> labels_f_por_no;
+    std::unordered_map<NodeMaskKey, std::vector<int>, NodeMaskKeyHash> fronteira_f;
+    rot_f.push_back(PetroBiLabelF{ dep0, tempo0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, std::bitset<128>(), -1, true, 0 });
+    abertos_f.push_back(0); labels_f_por_no[dep0].push_back(0); fronteira_f[{dep0, std::bitset<128>()}].push_back(0);
+
+    while (!abertos_f.empty()) {
+        int idx = abertos_f.front(); abertos_f.pop_front();
+        PetroBiLabelF r = rot_f[(size_t)idx]; if (!r.ativo || r.nvisit >= max_depth) continue;
+        std::vector<int> candidatos;
+        auto its = succ_fixo.find(r.no);
+        if (its != succ_fixo.end()) { if (1 <= its->second && its->second <= nbcd) candidatos.push_back(its->second); }
+        else for (int j = 1; j <= nbcd; ++j) if (!(r.mask & cliente_mask(j)).any()) candidatos.push_back(j);
+        std::sort(candidatos.begin(), candidatos.end(), [&](int x, int y) { return delta_rc(r.no, x) < delta_rc(r.no, y); });
+        for (int j : candidatos) {
+            if (!arco_permitido(r.no, j) || (r.mask & cliente_mask(j)).any()) continue;
+            if (!petro_extensao_forward_plataforma_valida(
+                r.no, j, r.mask, plataforma_id, d_deck, b_deck, d_diesel, d_agua, nbcd)) continue;
+            auto nm = r.mask | cliente_mask(j);
+            double soma_d = r.soma_d + d_deck[(size_t)j];
+            double pico = std::max(r.m, r.net + b_deck[(size_t)j]);
+            double net = r.net + b_deck[(size_t)j] - d_deck[(size_t)j];
+            double diesel = r.diesel + d_diesel[(size_t)j], agua = r.agua + d_agua[(size_t)j];
+            if (soma_d + pico > cap_deck + 1e-9 || diesel > cap_diesel + 1e-9 || agua > cap_agua + 1e-9) continue;
+            double tempo; if (!earliest_start(r.tempo + s[(size_t)r.no] + T(r.no, j), j, tempo)) continue;
+            double custo = r.custo_mod + delta_rc(r.no, j);
+            NodeMaskKey chave{ j, nm }; auto& lista = fronteira_f[chave]; bool dominado = false;
+            for (int io : lista) { const auto& o = rot_f[(size_t)io]; if (o.ativo && domina_petro(o.custo_mod, o.tempo, o.m, custo, tempo, pico)) { dominado = true; break; } }
+            if (dominado) continue;
+            std::vector<int> nova; nova.reserve(lista.size() + 1);
+            for (int io : lista) { auto& o = rot_f[(size_t)io]; if (!o.ativo) continue; if (domina_petro(custo, tempo, pico, o.custo_mod, o.tempo, o.m)) o.ativo = false; else nova.push_back(io); }
+            int in = (int)rot_f.size(); rot_f.push_back(PetroBiLabelF{ j, tempo, soma_d, net, pico, diesel, agua, custo, nm, idx, true, r.nvisit + 1 });
+            abertos_f.push_back(in); labels_f_por_no[j].push_back(in); nova.push_back(in); lista = std::move(nova);
+        }
+        auto& all = labels_f_por_no[r.no]; std::vector<int> ativos;
+        for (int z : all) if (rot_f[(size_t)z].ativo) ativos.push_back(z);
+        if ((int)ativos.size() > max_labels_por_no) {
+            std::sort(ativos.begin(), ativos.end(), [&](int a, int b) { const auto& A = rot_f[(size_t)a]; const auto& B = rot_f[(size_t)b]; if (A.custo_mod != B.custo_mod) return A.custo_mod < B.custo_mod; if (A.tempo != B.tempo) return A.tempo < B.tempo; return A.m < B.m; });
+            std::unordered_set<int> manter; for (int z = 0; z < max_labels_por_no; ++z) manter.insert(ativos[(size_t)z]);
+            for (int z = max_labels_por_no; z < (int)ativos.size(); ++z) rot_f[(size_t)ativos[(size_t)z]].ativo = false;
+            std::vector<int> fil; for (int z : all) if (manter.find(z) != manter.end()) fil.push_back(z); all = std::move(fil);
+        }
+    }
+
+    double latest_depf;
+    if (!latest_start_node(depf, std::numeric_limits<double>::infinity(), latest_depf)) return py::make_tuple(py::list(), false, false);
+    std::vector<PetroBiLabelB> rot_b;
+    std::deque<int> abertos_b;
+    std::unordered_map<int, std::vector<int>> labels_b_por_no;
+    std::unordered_map<NodeMaskKey, std::vector<int>, NodeMaskKeyHash> fronteira_b;
+    rot_b.push_back(PetroBiLabelB{ depf, latest_depf, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, std::bitset<128>(), -1, true, 0 });
+    abertos_b.push_back(0); labels_b_por_no[depf].push_back(0); fronteira_b[{depf, std::bitset<128>()}].push_back(0);
+
+    while (!abertos_b.empty()) {
+        int idx = abertos_b.front(); abertos_b.pop_front();
+        PetroBiLabelB r = rot_b[(size_t)idx]; if (!r.ativo || r.nvisit >= max_depth) continue;
+        std::vector<int> candidatos;
+        auto itp = pred_fixo.find(r.no);
+        if (itp != pred_fixo.end()) { if (1 <= itp->second && itp->second <= nbcd) candidatos.push_back(itp->second); }
+        else for (int i = 1; i <= nbcd; ++i) if (!(r.mask & cliente_mask(i)).any()) candidatos.push_back(i);
+        std::sort(candidatos.begin(), candidatos.end(), [&](int x, int y) { return delta_rc(x, r.no) < delta_rc(y, r.no); });
+        for (int i : candidatos) {
+            if (!arco_permitido(i, r.no) || (r.mask & cliente_mask(i)).any()) continue;
+            if (!petro_extensao_backward_plataforma_valida(
+                i, r.no, r.mask, plataforma_id, d_deck, b_deck, d_diesel, d_agua, nbcd)) continue;
+            auto nm = r.mask | cliente_mask(i);
+            double soma_d = d_deck[(size_t)i] + r.soma_d;
+            double net_i = b_deck[(size_t)i] - d_deck[(size_t)i];
+            double pico = std::max(b_deck[(size_t)i], net_i + r.m);
+            double net = net_i + r.net;
+            double diesel = d_diesel[(size_t)i] + r.diesel, agua = d_agua[(size_t)i] + r.agua;
+            if (soma_d + pico > cap_deck + 1e-9 || diesel > cap_diesel + 1e-9 || agua > cap_agua + 1e-9) continue;
+            double latest; if (!latest_start_node(i, r.latest - s[(size_t)i] - T(i, r.no), latest)) continue;
+            double custo = delta_rc(i, r.no) + r.custo_mod;
+            NodeMaskKey chave{ i, nm }; auto& lista = fronteira_b[chave]; bool dominado = false;
+            for (int io : lista) { const auto& o = rot_b[(size_t)io]; if (o.ativo && domina_petro_bi_b(o.custo_mod, o.latest, o.m, custo, latest, pico)) { dominado = true; break; } }
+            if (dominado) continue;
+            std::vector<int> nova; nova.reserve(lista.size() + 1);
+            for (int io : lista) { auto& o = rot_b[(size_t)io]; if (!o.ativo) continue; if (domina_petro_bi_b(custo, latest, pico, o.custo_mod, o.latest, o.m)) o.ativo = false; else nova.push_back(io); }
+            int in = (int)rot_b.size(); rot_b.push_back(PetroBiLabelB{ i, latest, soma_d, net, pico, diesel, agua, custo, nm, idx, true, r.nvisit + 1 });
+            abertos_b.push_back(in); labels_b_por_no[i].push_back(in); nova.push_back(in); lista = std::move(nova);
+        }
+        auto& all = labels_b_por_no[r.no]; std::vector<int> ativos;
+        for (int z : all) if (rot_b[(size_t)z].ativo) ativos.push_back(z);
+        if ((int)ativos.size() > max_labels_por_no) {
+            std::sort(ativos.begin(), ativos.end(), [&](int a, int b) { const auto& A = rot_b[(size_t)a]; const auto& B = rot_b[(size_t)b]; if (A.custo_mod != B.custo_mod) return A.custo_mod < B.custo_mod; if (A.latest != B.latest) return A.latest > B.latest; return A.m < B.m; });
+            std::unordered_set<int> manter; for (int z = 0; z < max_labels_por_no; ++z) manter.insert(ativos[(size_t)z]);
+            for (int z = max_labels_por_no; z < (int)ativos.size(); ++z) rot_b[(size_t)ativos[(size_t)z]].ativo = false;
+            std::vector<int> fil; for (int z : all) if (manter.find(z) != manter.end()) fil.push_back(z); all = std::move(fil);
+        }
+    }
+
+    long long combinacoes = 0;
+    for (int m = 1; m <= nbcd && combinacoes < max_combinacoes; ++m) {
+        auto itf = labels_f_por_no.find(m), itb = labels_b_por_no.find(m);
+        if (itf == labels_f_por_no.end() || itb == labels_b_por_no.end()) continue;
+        for (int fi : itf->second) {
+            const auto& rf = rot_f[(size_t)fi]; if (!rf.ativo) continue;
+            for (int bi : itb->second) {
+                if (++combinacoes > max_combinacoes) break;
+                const auto& rb = rot_b[(size_t)bi]; if (!rb.ativo) continue;
+                if ((rf.mask & rb.mask) != cliente_mask(m)) continue;
+                if (rf.tempo > rb.latest + EPS_WIN) continue;
+                if (rf.diesel + rb.diesel - d_diesel[(size_t)m] > cap_diesel + 1e-9) continue;
+                if (rf.agua + rb.agua - d_agua[(size_t)m] > cap_agua + 1e-9) continue;
+                double rc_estimado = rf.custo_mod + rb.custo_mod;
+                // Adaptacao necessaria ao multi-candidatas: a poda antiga comparava contra
+                // um unico "melhor_rc" corrente; aqui so podamos por eps (tenta_registrar_
+                // candidata cuida de manter so as K melhores vistas ate agora).
+                if (rc_estimado >= -eps) continue;
+                auto rota_f = rota_forward_petro_bi(rot_f, fi);
+                auto rota_b = rota_backward_petro_bi(rot_b, bi);
+                if (!rota_b.empty()) rota_b.erase(rota_b.begin());
+                std::vector<int> rota; rota.reserve(rota_f.size() + rota_b.size());
+                rota.insert(rota.end(), rota_f.begin(), rota_f.end()); rota.insert(rota.end(), rota_b.begin(), rota_b.end());
+                auto aval = avaliar_rota(rota); py::object col = aval[0]; if (col.is_none()) continue;
+                double rc = aval[1].cast<double>();
+                tenta_registrar_candidata(rota, rc, col.cast<py::dict>());
+            }
+        }
+    }
+
+    for (const auto& kv : labels_f_por_no) {
+        int no = kv.first; if (no == dep0 || no == depf || !arco_permitido(no, depf)) continue;
+        for (int fi : kv.second) {
+            if (!rot_f[(size_t)fi].ativo) continue;
+            auto rota = rota_forward_petro_bi(rot_f, fi); rota.push_back(depf);
+            auto aval = avaliar_rota(rota); py::object col = aval[0]; if (col.is_none()) continue;
+            double rc = aval[1].cast<double>();
+            tenta_registrar_candidata(rota, rc, col.cast<py::dict>());
+        }
+    }
+
+    std::sort(candidatas.begin(), candidatas.end(),
+        [](const CandidataBiMulti& a, const CandidataBiMulti& b) { return a.rc < b.rc; });
+
+    py::list saida;
+    for (const auto& c : candidatas) saida.append(c.col);
+
+    return py::make_tuple(saida, false, false);
+}
+
 
 PYBIND11_MODULE(vrptw_pd, m) {
     m.def("hello", &hello);
@@ -1921,4 +2563,35 @@ PYBIND11_MODULE(vrptw_pd, m) {
         py::arg("max_labels_por_no") = 200,
         py::arg("eps") = 1e-6
     );
+
+    m.def("sub_prog_din_petro_multi", &sub_prog_din_petro_multi,
+        py::arg("tt"),
+        py::arg("aw"),
+        py::arg("bw"),
+        py::arg("s"),
+        py::arg("d_deck"),
+        py::arg("b_deck"),
+        py::arg("d_diesel"),
+        py::arg("d_agua"),
+        py::arg("plataforma_id"),
+        py::arg("pi"),
+        py::arg("sigma_k"),
+        py::arg("cap_deck"),
+        py::arg("cap_diesel"),
+        py::arg("cap_agua"),
+        py::arg("nbcd"),
+        py::arg("dep0"),
+        py::arg("depf"),
+        py::arg("mu_flat") = std::vector<double>{},
+        py::arg("forbid_flat") = std::vector<std::uint8_t>{},
+        py::arg("req_i") = std::vector<int>{},
+        py::arg("req_j") = std::vector<int>{},
+        py::arg("rotas_excluidas") = std::vector<std::vector<int>>{},
+        py::arg("max_candidatas") = 20,
+        py::arg("max_labels_por_no") = 200,
+        py::arg("eps") = 1e-6
+    );
+
+    m.def("sub_prog_din_bidirecional_petro_multi", &sub_prog_din_bidirecional_petro_multi,
+        py::arg("tt"), py::arg("aw"), py::arg("bw"), py::arg("s"), py::arg("d_deck"), py::arg("b_deck"), py::arg("d_diesel"), py::arg("d_agua"), py::arg("plataforma_id"), py::arg("pi"), py::arg("sigma_k"), py::arg("cap_deck"), py::arg("cap_diesel"), py::arg("cap_agua"), py::arg("nbcd"), py::arg("dep0"), py::arg("depf"), py::arg("mu_flat") = std::vector<double>{}, py::arg("forbid_flat") = std::vector<std::uint8_t>{}, py::arg("req_i") = std::vector<int>{}, py::arg("req_j") = std::vector<int>{}, py::arg("rotas_excluidas") = std::vector<std::vector<int>>{}, py::arg("max_candidatas") = 20, py::arg("max_labels_por_no") = 200, py::arg("max_depth") = -1, py::arg("max_combinacoes") = 200000, py::arg("eps") = 1e-6);
 }
