@@ -39,6 +39,14 @@ class Solucao:
         # formato canonico: {"construtiva"|"bp"|"exato": {k: {"sequencias": [...], "custos": [...]}}}
         self.solucoes = {}
 
+        # cronogramas Silva (objective_mode=="silva2024") para o PlotJS: {"construtiva"|
+        # "bp"|"exato": {k: {"AT","B","P","R","F","hB_saida","hB_retorno","cronologia",...}}}.
+        # Cada entrada por navio e o dict retornado por Metodos.avaliar_rota_silva2024()
+        # (construtiva/bp) ou sol.exato_petro_silva_diag[k] (exato) -- ver
+        # registrar_cronograma_plotjs. Estrutura ISOLADA de self.solucoes (nao mistura
+        # com o formato canonico usado pelo modo petrobras).
+        self.cronogramas_plotjs = {}
+
         self.construtivas = [0, 0, 0, 0, 0]
         self.TIME_MAX = 3600
 
@@ -125,6 +133,15 @@ class Solucao:
             canonico[k] = {"sequencias": seqs, "custos": custos}
         self.solucoes[nome] = canonico
 
+    def registrar_cronograma_plotjs(self, nome_solucao, cronogramas):
+        """Registra, para uso exclusivo do PlotJS em modo silva2024, o cronograma por
+        navio de `nome_solucao` ("construtiva"|"bp"|"exato"). `cronogramas` e um dict
+        {k: dict-resultado}, onde dict-resultado e o retorno de
+        Metodos.avaliar_rota_silva2024() (construtiva/bp) ou uma entrada de
+        sol.exato_petro_silva_diag (exato) -- ambos ja trazem AT/B/P/R/F/hB_saida/
+        hB_retorno/cronologia em HORAS. Nao recalcula nada; so armazena."""
+        self.cronogramas_plotjs[nome_solucao] = cronogramas
+
     def exportar_visualizacao(self, inst, nome_solucao, caminho_js):
         """Exporta self.solucoes[nome_solucao] (formato canonico) para caminho_js
         (window.DADOS = {...}), consumido pelos gantt_petro*.html. Tempos em HORAS.
@@ -140,6 +157,13 @@ class Solucao:
     def _montar_dados_visualizacao(self, inst, nome_solucao):
         """Monta o dict de dados (mesmo formato de window.DADOS) para self.solucoes[nome_solucao],
         sem escrever arquivo. Retorna None se a solucao nao estiver registrada ou faltar dados_petro."""
+        if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+            # Modo Silva: a reconstrucao generica abaixo (matriz_distancia[i][j]/velocidade)
+            # NAO reflete a fisica silva2024 (navegacao piecewise VL/VH, SP/SET por entrada
+            # de plataforma, B resolvido pelo Gurobi != AT). Ramo petrobras (abaixo, resto
+            # deste metodo) permanece INTACTO e byte-a-byte igual.
+            return self._montar_dados_visualizacao_silva2024(inst, nome_solucao)
+
         if nome_solucao not in self.solucoes:
             print(f"[GANTT] solucao '{nome_solucao}' nao registrada "
                   f"(chame registrar_solucao antes de exportar_visualizacao)")
@@ -242,6 +266,146 @@ class Solucao:
                  "fo_total_s": fo_total, "nos": nos_js, "navios": navios_js}
         return dados
 
+    def _montar_dados_visualizacao_silva2024(self, inst, nome_solucao):
+        """Equivalente a _montar_dados_visualizacao, exclusivo de objective_mode=="silva2024".
+        NAO duplica a formula fisica Silva (navegacao piecewise VL/VH, SP/SET, B resolvido
+        pelo Gurobi): usa exclusivamente os cronogramas ja calculados por
+        Metodos.avaliar_rota_silva2024()/metodo_exato_petro e registrados via
+        registrar_cronograma_plotjs (self.cronogramas_plotjs[nome_solucao][k]). Se o
+        cronograma de um navio nao foi registrado, o navio e mostrado como ocioso (sem
+        inventar horario). Retorna None nas mesmas condicoes de _montar_dados_visualizacao
+        (solucao nao registrada / sem dados_petro)."""
+        if nome_solucao not in self.solucoes:
+            print(f"[GANTT-SILVA] solucao '{nome_solucao}' nao registrada "
+                  f"(chame registrar_solucao antes de exportar_visualizacao)")
+            return None
+        rotas_escolhidas = self.solucoes[nome_solucao]
+        if not hasattr(inst, "dados_petro"):
+            return None
+
+        H = 3600.0
+        dp = inst.dados_petro
+        nomes = dp["nomes"]
+        depf = inst.nbn - 1
+        cronogramas = self.cronogramas_plotjs.get(nome_solucao, {})
+
+        def plataforma(nome):
+            return "BASE" if nome.startswith("BASE") else nome.split("_order")[0]
+
+        # nos_js: MESMA logica (dado bruto, sem formula fisica) de
+        # _montar_dados_visualizacao -- duplicada aqui de proposito, para manter aquele
+        # metodo intacto para petrobras (ver pedido: "preservar esse codigo INTACTO").
+        nos_js = []
+        for i in range(inst.nbcd + 1):
+            nos_js.append({
+                "id": i, "nome": nomes[i], "plataforma": plataforma(nomes[i]),
+                "lat": dp["lat"][i], "lon": dp["lon"][i],
+                "janelas": [[a / H, b / H] for a, b in
+                            zip(inst.noh[i].READY_TIME, inst.noh[i].DUE_DATE)],
+                "servico_h": (inst.noh[i].SERVICE_TIME[0] / H) if inst.noh[i].SERVICE_TIME else 0.0,
+                "deck": float(dp["dem_deck_load"][i] + dp["dem_deck_backload"][i]),
+                "deck_load": float(dp["dem_deck_load"][i]),
+                "deck_backload": float(dp["dem_deck_backload"][i]),
+                "diesel": float(dp["dem_diesel"][i]),
+                "agua": float(dp["dem_agua"][i]),
+            })
+
+        navios_js = []
+        navegacao_total_h = 0.0
+        for k in range(inst.nbv):
+            ent = rotas_escolhidas.get(k, {"sequencias": [], "custos": []})
+            seqs = list(ent.get("sequencias", []))
+            veic = inst.veiculos[k]
+            seq = list(seqs[0]) if seqs else [0, depf]
+
+            cronog_k = cronogramas.get(k)
+            nav = {"k": k, "nome": getattr(veic, "nome", ""),
+                   "ocioso": len(seq) <= 2 or cronog_k is None,
+                   "segmentos": [], "visitas": [],
+                   "navegacao_h": 0.0, "servico_h": 0.0, "espera_h": 0.0,
+                   "capacidades": {
+                       "deck": float(getattr(veic, "cap_deck", getattr(veic, "capacidade", dp.get("capacidade", 0.0)))),
+                       "diesel": float(getattr(veic, "cap_diesel", dp.get("cap_diesel", 0.0))),
+                       "agua": float(getattr(veic, "cap_agua", dp.get("cap_agua", 0.0))),
+                   }, "retorno_h": 0.0}
+            if nav["ocioso"]:
+                navios_js.append(nav)
+                continue
+
+            AT = float(cronog_k.get("AT", 0.0))
+            B = float(cronog_k.get("B", AT))
+            P = float(cronog_k.get("P", B))
+            R = float(cronog_k.get("R", P))
+            F = float(cronog_k.get("F", R))
+            hB_saida = float(cronog_k.get("hB_saida", P - B))
+            hB_retorno = float(cronog_k.get("hB_retorno", F - R))
+
+            # AT -> B: espera/disponibilidade pre-berco, se houver.
+            if B > AT + 1e-9:
+                nav["segmentos"].append({"tipo": "espera", "ini": AT, "fim": B})
+                nav["espera_h"] += (B - AT)
+
+            # B -> P: carregamento na base (deck+diesel+agua).
+            nav["segmentos"].append({"tipo": "base_loading", "ini": B, "fim": P, "plataforma": "BASE"})
+
+            cronologia = cronog_k.get("cronologia", [])
+            tempo_fim_anterior = P
+            for evento in cronologia:
+                if evento.get("evento") == "retorno_base":
+                    chegada_h = float(evento["chegada_h"])
+                    if chegada_h > tempo_fim_anterior + 1e-9:
+                        nav["segmentos"].append({"tipo": "nav", "ini": tempo_fim_anterior, "fim": chegada_h})
+                        nav["navegacao_h"] += chegada_h - tempo_fim_anterior
+                    tempo_fim_anterior = chegada_h
+                    continue
+
+                no = evento["no"]
+                chegada_h = float(evento["chegada_h"])
+                inicio_h = float(evento["inicio_h"])
+                fim_h = float(evento["fim_h"])
+                espera_h = float(evento.get("espera_h", 0.0))
+                janela_idx = evento.get("janela_idx")
+
+                if chegada_h > tempo_fim_anterior + 1e-9:
+                    nav["segmentos"].append({"tipo": "nav", "ini": tempo_fim_anterior, "fim": chegada_h})
+                    nav["navegacao_h"] += chegada_h - tempo_fim_anterior
+
+                if espera_h > 1e-6:
+                    nav["segmentos"].append({"tipo": "espera", "ini": chegada_h, "fim": inicio_h})
+                    nav["espera_h"] += espera_h
+
+                nav["segmentos"].append({"tipo": "servico", "ini": inicio_h, "fim": fim_h,
+                                         "plataforma": plataforma(nomes[no])})
+                nav["servico_h"] += fim_h - inicio_h
+
+                janelas_no = nos_js[no]["janelas"] if no < len(nos_js) else []
+                janela = janelas_no[janela_idx] if janela_idx is not None and janela_idx < len(janelas_no) else None
+                nav["visitas"].append({
+                    "no": no, "nome": nomes[no], "plataforma": plataforma(nomes[no]),
+                    "chegada": chegada_h, "ini": inicio_h, "fim": fim_h,
+                    "espera": espera_h, "janela": janela, "jidx": janela_idx,
+                    "janelas": janelas_no,
+                })
+                tempo_fim_anterior = fim_h
+
+            # R -> F: descarga de backload na base.
+            nav["retorno_h"] = R
+            if F > R + 1e-9:
+                nav["segmentos"].append({"tipo": "base_unloading", "ini": R, "fim": F, "plataforma": "BASE"})
+
+            navegacao_total_h += nav["navegacao_h"]
+            navios_js.append(nav)
+
+        # fo_total_s: MESMO campo/unidade (segundos) que o ramo petrobras ja preenche
+        # (total de navegacao, so informativo no cabecalho do HTML -- D.fo_total_s).
+        # NAO e a FO Silva (essa vem de self.solucoes[tipo]["custos"] via
+        # _obter_fo_solucao/comparativo, preenchido por exportar_plotjs, nunca
+        # recalculado aqui -- ver pedido: "Não usar navegacao_h*3600 como FO").
+        dados = {"instancia": getattr(inst, "fileName", ""),
+                 "horizonte_h": inst.noh[0].DUE_DATE[0] / H if inst.noh[0].DUE_DATE else 168.0,
+                 "fo_total_s": navegacao_total_h * H, "nos": nos_js, "navios": navios_js}
+        return dados
+
     def _exportar_js_plotjs(self, dados, caminho_js):
         """Escreve `window.DADOS = {...}` (ou `null`, se dados is None) em caminho_js."""
         with open(caminho_js, "w", encoding="utf-8") as f:
@@ -337,8 +501,14 @@ class Solucao:
         return AVALIADOR_ROTA_PADRAO.plataforma_petro(inst, no)
 
     def ordem_plataformas_petro_valida(self, inst, seq):
-        """Delegado a AvaliadorRota.validar_ordem_plataformas_petro (fonte unica desta regra)."""
-        viavel, _motivo = AVALIADOR_ROTA_PADRAO.validar_ordem_plataformas_petro(inst, seq)
+        """Delegado a AvaliadorRota (silva2024 usa a precedencia por
+        compartimento de validar_ordem_plataformas_silva2024; petrobras
+        mantem validar_ordem_plataformas_petro, inalterado)."""
+        modo_silva = getattr(inst, "objective_mode", "petrobras") == "silva2024"
+        if modo_silva:
+            viavel, _motivo = AVALIADOR_ROTA_PADRAO.validar_ordem_plataformas_silva2024(inst, seq)
+        else:
+            viavel, _motivo = AVALIADOR_ROTA_PADRAO.validar_ordem_plataformas_petro(inst, seq)
         return viavel
 
     def viavel_cargas_petro(self, inst, k, seq):

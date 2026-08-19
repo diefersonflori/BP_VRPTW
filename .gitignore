@@ -1,17 +1,29 @@
-# Visual Studio
-.vs/
-
-# Visual Studio solution cache
-*.slnx
-*.vsidx
 
 # PyCharm / JetBrains
-.idea/
-
-# VS Code
-.vscode/
-
 # Python
-__pycache__/
+# VS Code
+# Visual Studio
+# Visual Studio solution cache
 *.pyc
-.venv/
+*.slnx
+*.vsidx
+.idea/
+.venv//PD_PARA_PYTHON/PD_PARA_PYTHON/.vs/PD_PARA_PYTHON/v18/ipch/AutoPCH/b69749170fc58316/PD_PARA_PYTHON.ipch
+.vs/
+.vscode/
+/PD_PARA_PYTHON - Copia/PD_PARA_PYTHON/.vs/PD_PARA_PYTHON/v18/ipch/AutoPCH/b69749170fc58316/PD_PARA_PYTHON.ipch
+/resultados_petro_bp_exato_paralelo/rodada_20260730_132802/logs/14n-2k-6c-008r_ML_silva2024.txt
+__pycache__/
+
+# Visual Studio / C++ build artifacts
+.vs/
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.tlog
+*.idb
+*.ilk
+*.lastbuildstate
+*.exe

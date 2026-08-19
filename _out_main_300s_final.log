@@ -1,0 +1,37 @@
+[INICIO] 14n-2k-6c-008r_ML_silva2024
+[CONSTRUT] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | custo=181.9 | art=0 | V0:[4, 2, 3, 11, 12, 14, 1] | V1:[8, 10, 9, 7, 6, 13, 5]
+[PLOTJS] exportando pacote... (apos construtiva)
+[PLOTJS] pasta: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\14n-2k-6c-008r_ML_silva2024_14nos_2veiculos
+[PLOTJS] OK
+[BP_FIM] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | LB=NA | UB=132.07 | gap=NA | lb_valido=False | arvore_certificada_completa=False | otimalidade_certificada=False | nos=38 | cols=572 | t=300.0s
+[SEQ_BP] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | V0:[10] | V1:[1, 8, 9, 4, 2, 3, 5, 6, 7, 11, 13, 14, 12]
+[PLOTJS] exportando pacote... (apos bp)
+[PLOTJS] pasta: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\14n-2k-6c-008r_ML_silva2024_14nos_2veiculos
+[PLOTJS] OK
+[EXATO_PETRO] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | status=TIME_LIMIT | FO=129.5 | bound=14.6 | gap=88.70% | t=20.1s
+[FO_SILVA_EXATO] f1_total=45488.4834 USD | f2_total=129.5496 h | alpha=0.00 | eta=1.00 | alpha_f1=0.0000 | termo_temporal=129.5496 | FO_total=129.5496
+[PLOTJS] exportando pacote... (apos exato)
+[PLOTJS] pasta: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\14n-2k-6c-008r_ML_silva2024_14nos_2veiculos
+[PLOTJS] OK
+[PLOTJS] exportando pacote... (apos final)
+[PLOTJS] pasta: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\14n-2k-6c-008r_ML_silva2024_14nos_2veiculos
+[PLOTJS] OK
+[PLOTJS CHECK] gantt_petro_construtiva.html | existe=True | tamanho=52038 bytes
+[PLOTJS CHECK] petroConstr.js | existe=True | tamanho=15575 bytes
+[PLOTJS CHECK] gantt_petroBp.html | existe=True | tamanho=52018 bytes
+[PLOTJS CHECK] petroBP.js | existe=True | tamanho=15353 bytes
+[PLOTJS CHECK] gantt_petro_exato.html | existe=True | tamanho=52018 bytes
+[PLOTJS CHECK] petroEx.js | existe=True | tamanho=15622 bytes
+================================================================================================
+BATERIA PETROBRAS - B&P + MODELO EXATO + PLOTJS POR INSTANCIA
+Instancias: 1
+Workers paralelos: 3
+Pasta de entrada: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\convertidas_victor
+Pasta de resultados: C:\Users\PolyanaSilva\Documents\BP_VRPTW\resultados_petro_bp_exato_paralelo\rodada_20260731_102836
+Pasta PlotJS: C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS
+================================================================================================
+[CONCLUIDO] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | UB=132.0727 | exato=129.5496 | BP=300.0s
+================================================================================================
+Finalizado: 1/1 instancias
+Resumo: C:\Users\PolyanaSilva\Documents\BP_VRPTW\resultados_petro_bp_exato_paralelo\rodada_20260731_102836\resumo_bp_exato_ordenado.csv
+================================================================================================

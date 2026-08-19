@@ -1,0 +1,351 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\Petro_instancias\14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+
+[SILVA C++ MODULE]
+arquivo=C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_SILVA_CPP\PD_SILVA_CPP\x64\Release\vrptw_pd_silva.pyd
+
+[VRPTW_PD_SILVA __file__] C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_SILVA_CPP\PD_SILVA_CPP\x64\Release\vrptw_pd_silva.pyd
+
+==================================================================================================================================
+TABELA DETALHADA (particao, k, alpha, campo, status, python, cpp, diff)
+==================================================================================================================================
+P1_baseline                            k=0 alpha=0.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=R            PASS python=39.865781            cpp=39.865781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=F            PASS python=40.225781            cpp=40.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=F_menos_B    PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=hB           PASS python=0.680000             cpp=0.680000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=hN           PASS python=28.253559            cpp=28.253559            diff=3.553e-15
+P1_baseline                            k=0 alpha=0.0  campo=hDP          PASS python=4.292222             cpp=4.292222             diff=3.553e-15
+P1_baseline                            k=0 alpha=0.0  campo=f1           PASS python=11786.530304         cpp=11786.530304         diff=1.819e-12
+P1_baseline                            k=0 alpha=0.0  campo=f2           PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.0  campo=custo        PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=B            PASS python=1.123786             cpp=1.123786             diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=P            PASS python=25.837586            cpp=25.837586            diff=3.553e-15
+P1_baseline                            k=1 alpha=0.0  campo=R            PASS python=96.283786            cpp=96.283786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=F            PASS python=97.123786            cpp=97.123786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=F_menos_B    PASS python=96.000000            cpp=96.000000            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=hF           PASS python=0.323786             cpp=0.323786             diff=5.551e-17
+P1_baseline                            k=1 alpha=0.0  campo=hB           PASS python=25.553800            cpp=25.553800            diff=3.553e-15
+P1_baseline                            k=1 alpha=0.0  campo=hN           PASS python=32.040444            cpp=32.040444            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=hDP          PASS python=38.405756            cpp=38.405756            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=f1           PASS python=33701.953116         cpp=33701.953116         diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=f2           PASS python=96.323786            cpp=96.323786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.0  campo=custo        PASS python=96.323786            cpp=96.323786            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=R            PASS python=39.865781            cpp=39.865781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=F            PASS python=40.225781            cpp=40.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=F_menos_B    PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=hB           PASS python=0.680000             cpp=0.680000             diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=hN           PASS python=28.253559            cpp=28.253559            diff=3.553e-15
+P1_baseline                            k=0 alpha=0.1  campo=hDP          PASS python=4.292222             cpp=4.292222             diff=3.553e-15
+P1_baseline                            k=0 alpha=0.1  campo=f1           PASS python=11786.530304         cpp=11786.530304         diff=1.819e-12
+P1_baseline                            k=0 alpha=0.1  campo=f2           PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=0.1  campo=custo        PASS python=1208.556233          cpp=1208.556233          diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=B            PASS python=1.207042             cpp=1.207042             diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=P            PASS python=25.920842            cpp=25.920842            diff=3.553e-15
+P1_baseline                            k=1 alpha=0.1  campo=R            PASS python=96.283786            cpp=96.283786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=F            PASS python=97.123786            cpp=97.123786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=F_menos_B    PASS python=95.916744            cpp=95.916744            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=hF           PASS python=0.407042             cpp=0.407042             diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=hB           PASS python=25.553800            cpp=25.553800            diff=3.553e-15
+P1_baseline                            k=1 alpha=0.1  campo=hN           PASS python=32.040444            cpp=32.040444            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=hDP          PASS python=38.322500            cpp=38.322500            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=f1           PASS python=33668.067945         cpp=33668.067945         diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=f2           PASS python=96.323786            cpp=96.323786            diff=0.000e+00
+P1_baseline                            k=1 alpha=0.1  campo=custo        PASS python=3453.498202          cpp=3453.498202          diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=R            PASS python=39.865781            cpp=39.865781            diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=F            PASS python=40.225781            cpp=40.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=F_menos_B    PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=hB           PASS python=0.680000             cpp=0.680000             diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=hN           PASS python=28.253559            cpp=28.253559            diff=3.553e-15
+P1_baseline                            k=0 alpha=1.0  campo=hDP          PASS python=4.292222             cpp=4.292222             diff=3.553e-15
+P1_baseline                            k=0 alpha=1.0  campo=f1           PASS python=11786.530304         cpp=11786.530304         diff=1.819e-12
+P1_baseline                            k=0 alpha=1.0  campo=f2           PASS python=33.225781            cpp=33.225781            diff=0.000e+00
+P1_baseline                            k=0 alpha=1.0  campo=custo        PASS python=11786.530304         cpp=11786.530304         diff=1.819e-12
+P1_baseline                            k=1 alpha=1.0  campo=B            PASS python=1.207042             cpp=1.207042             diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=P            PASS python=25.920842            cpp=25.920842            diff=3.553e-15
+P1_baseline                            k=1 alpha=1.0  campo=R            PASS python=96.283786            cpp=96.283786            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=F            PASS python=97.123786            cpp=97.123786            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=F_menos_B    PASS python=95.916744            cpp=95.916744            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=hF           PASS python=0.407042             cpp=0.407042             diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=hB           PASS python=25.553800            cpp=25.553800            diff=3.553e-15
+P1_baseline                            k=1 alpha=1.0  campo=hN           PASS python=32.040444            cpp=32.040444            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=hDP          PASS python=38.322500            cpp=38.322500            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=f1           PASS python=33668.067945         cpp=33668.067945         diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=f2           PASS python=96.323786            cpp=96.323786            diff=0.000e+00
+P1_baseline                            k=1 alpha=1.0  campo=custo        PASS python=33668.067945         cpp=33668.067945         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=P            PASS python=18.681300            cpp=18.681300            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=F            PASS python=98.493672            cpp=98.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=F_menos_B    PASS python=91.493672            cpp=91.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=hB           PASS python=12.341300            cpp=12.341300            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=hN           PASS python=31.926710            cpp=31.926710            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=hDP          PASS python=47.225662            cpp=47.225662            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=f1           PASS python=24802.597317         cpp=24802.597317         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=f2           PASS python=91.493672            cpp=91.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.0  campo=custo        PASS python=91.493672            cpp=91.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=P            PASS python=14.152500            cpp=14.152500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=R            PASS python=69.479634            cpp=69.479634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=F            PASS python=70.019634            cpp=70.019634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=F_menos_B    PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=hB           PASS python=13.892500            cpp=13.892500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=hN           PASS python=33.061579            cpp=33.061579            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=hDP          PASS python=22.265556            cpp=22.265556            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=f1           PASS python=27708.811618         cpp=27708.811618         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=f2           PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.0  campo=custo        PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=B            PASS python=35.566496            cpp=35.566496            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=P            PASS python=47.247796            cpp=47.247796            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=F            PASS python=98.493672            cpp=98.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=F_menos_B    PASS python=62.927176            cpp=62.927176            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=hF           PASS python=28.566496            cpp=28.566496            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=hB           PASS python=12.341300            cpp=12.341300            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=hN           PASS python=31.926710            cpp=31.926710            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=hDP          PASS python=18.659167            cpp=18.659167            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=f1           PASS python=17061.076947         cpp=17061.076947         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=f2           PASS python=91.493672            cpp=91.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=0.1  campo=custo        PASS python=1788.451999          cpp=1788.451999          diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=P            PASS python=14.152500            cpp=14.152500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=R            PASS python=69.479634            cpp=69.479634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=F            PASS python=70.019634            cpp=70.019634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=F_menos_B    PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=hB           PASS python=13.892500            cpp=13.892500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=hN           PASS python=33.061579            cpp=33.061579            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=hDP          PASS python=22.265556            cpp=22.265556            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=f1           PASS python=27708.811618         cpp=27708.811618         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=f2           PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=0.1  campo=custo        PASS python=2833.178833          cpp=2833.178833          diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=B            PASS python=35.566496            cpp=35.566496            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=P            PASS python=47.247796            cpp=47.247796            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=F            PASS python=98.493672            cpp=98.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=F_menos_B    PASS python=62.927176            cpp=62.927176            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=hF           PASS python=28.566496            cpp=28.566496            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=hB           PASS python=12.341300            cpp=12.341300            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=hN           PASS python=31.926710            cpp=31.926710            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=hDP          PASS python=18.659167            cpp=18.659167            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=f1           PASS python=17061.076947         cpp=17061.076947         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=f2           PASS python=91.493672            cpp=91.493672            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=0 alpha=1.0  campo=custo        PASS python=17061.076947         cpp=17061.076947         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=P            PASS python=14.152500            cpp=14.152500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=R            PASS python=69.479634            cpp=69.479634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=F            PASS python=70.019634            cpp=70.019634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=F_menos_B    PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=hB           PASS python=13.892500            cpp=13.892500            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=hN           PASS python=33.061579            cpp=33.061579            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=hDP          PASS python=22.265556            cpp=22.265556            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=f1           PASS python=27708.811618         cpp=27708.811618         diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=f2           PASS python=69.219634            cpp=69.219634            diff=0.000e+00
+P2_medio_semEspera_e_esperaGrande      k=1 alpha=1.0  campo=custo        PASS python=27708.811618         cpp=27708.811618         diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.0  campo=custo        PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=1 alpha=0.0  campo=viabilidade  PASS python=python=False(tdl_violado_98.3810h_maior_96.0000h) cpp=cpp=False(tdl_violado) diff=-
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=0.1  campo=custo        PASS python=1114.841512          cpp=1114.841512          diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=1 alpha=0.1  campo=viabilidade  PASS python=python=False(tdl_violado_98.3810h_maior_96.0000h) cpp=cpp=False(tdl_violado) diff=-
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=0 alpha=1.0  campo=custo        PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P3_trivial_e_TDLinviavel               k=1 alpha=1.0  campo=viabilidade  PASS python=python=False(tdl_violado_98.3810h_maior_96.0000h) cpp=cpp=False(tdl_violado) diff=-
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=P            PASS python=7.292500             cpp=7.292500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=R            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=F            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=F_menos_B    PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=hB           PASS python=6.492500             cpp=6.492500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=hN           PASS python=29.249683            cpp=29.249683            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=hDP          PASS python=9.658333             cpp=9.658333             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=f1           PASS python=20427.762818         cpp=20427.762818         diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=f2           PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.0  campo=custo        PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=P            PASS python=25.541300            cpp=25.541300            diff=3.553e-15
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=F            PASS python=99.033672            cpp=99.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=F_menos_B    PASS python=92.033672            cpp=92.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=hB           PASS python=19.741300            cpp=19.741300            diff=3.553e-15
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=hN           PASS python=36.029807            cpp=36.029807            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=hDP          PASS python=36.262565            cpp=36.262565            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=f1           PASS python=23374.362544         cpp=23374.362544         diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=f2           PASS python=92.033672            cpp=92.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.0  campo=custo        PASS python=92.033672            cpp=92.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=P            PASS python=7.292500             cpp=7.292500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=R            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=F            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=F_menos_B    PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=hB           PASS python=6.492500             cpp=6.492500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=hN           PASS python=29.249683            cpp=29.249683            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=hDP          PASS python=9.658333             cpp=9.658333             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=f1           PASS python=20427.762818         cpp=20427.762818         diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=f2           PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=0.1  campo=custo        PASS python=2083.636746          cpp=2083.636746          diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=B            PASS python=12.326176            cpp=12.326176            diff=1.599e-14
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=P            PASS python=30.867476            cpp=30.867476            diff=1.066e-14
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=F            PASS python=99.033672            cpp=99.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=F_menos_B    PASS python=86.707496            cpp=86.707496            diff=1.421e-14
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=hF           PASS python=5.326176             cpp=5.326176             diff=1.599e-14
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=hB           PASS python=19.741300            cpp=19.741300            diff=3.553e-15
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=hN           PASS python=36.029807            cpp=36.029807            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=hDP          PASS python=30.936389            cpp=30.936389            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=f1           PASS python=21930.968789         cpp=21930.968789         diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=f2           PASS python=92.033672            cpp=92.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=0.1  campo=custo        PASS python=2275.927184          cpp=2275.927184          diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=B            PASS python=0.800000             cpp=0.800000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=P            PASS python=7.292500             cpp=7.292500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=R            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=F            PASS python=46.200516            cpp=46.200516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=F_menos_B    PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=hB           PASS python=6.492500             cpp=6.492500             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=hN           PASS python=29.249683            cpp=29.249683            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=hDP          PASS python=9.658333             cpp=9.658333             diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=f1           PASS python=20427.762818         cpp=20427.762818         diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=f2           PASS python=45.400516            cpp=45.400516            diff=0.000e+00
+P4_grande_com_espera_moderada          k=1 alpha=1.0  campo=custo        PASS python=20427.762818         cpp=20427.762818         diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=B            PASS python=12.326176            cpp=12.326176            diff=1.599e-14
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=P            PASS python=30.867476            cpp=30.867476            diff=1.066e-14
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=R            PASS python=97.833672            cpp=97.833672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=F            PASS python=99.033672            cpp=99.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=F_menos_B    PASS python=86.707496            cpp=86.707496            diff=1.421e-14
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=hF           PASS python=5.326176             cpp=5.326176             diff=1.599e-14
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=hB           PASS python=19.741300            cpp=19.741300            diff=3.553e-15
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=hN           PASS python=36.029807            cpp=36.029807            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=hDP          PASS python=30.936389            cpp=30.936389            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=f1           PASS python=21930.968789         cpp=21930.968789         diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=f2           PASS python=92.033672            cpp=92.033672            diff=0.000e+00
+P4_grande_com_espera_moderada          k=0 alpha=1.0  campo=custo        PASS python=21930.968789         cpp=21930.968789         diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.0  campo=custo        PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=1 alpha=0.0  campo=viabilidade  PASS python=python=False(dueTime_delivery_no_9) cpp=cpp=False(dueTime_delivery) diff=-
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=0.1  campo=custo        PASS python=1114.841512          cpp=1114.841512          diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=1 alpha=0.1  campo=viabilidade  PASS python=python=False(dueTime_delivery_no_9) cpp=cpp=False(dueTime_delivery) diff=-
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=B            PASS python=7.000000             cpp=7.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=P            PASS python=7.320000             cpp=7.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=R            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=F            PASS python=36.845654            cpp=36.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=F_menos_B    PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=hF           PASS python=0.000000             cpp=0.000000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=hB           PASS python=0.320000             cpp=0.320000             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=hN           PASS python=27.412876            cpp=27.412876            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=hDP          PASS python=2.112778             cpp=2.112778             diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=f1           PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=f2           PASS python=29.845654            cpp=29.845654            diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=0 alpha=1.0  campo=custo        PASS python=10879.804237         cpp=10879.804237         diff=0.000e+00
+P6_trivial_e_janelaInviavel            k=1 alpha=1.0  campo=viabilidade  PASS python=python=False(dueTime_delivery_no_9) cpp=cpp=False(dueTime_delivery) diff=-
+
+Contagem: PASS=294 FAIL=0 (total linhas=294)
+
+==================================================================================================================================
+[NENHUMA DIVERGENCIA] C++ e Python bateram em todos os campos, tolerancia 1.0e-06
+==================================================================================================================================
+
+[RESULTADO FINAL PARIDADE C++ x PYTHON] TODAS AS COMBINACOES OK

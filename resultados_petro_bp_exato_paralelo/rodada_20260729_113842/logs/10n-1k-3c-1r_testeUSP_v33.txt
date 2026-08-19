@@ -1,0 +1,173 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\Petro_instancias\10n-1k-3c-1r_testeUSP_v33.json
+Clientes: 10 | Navios: 3 | deckSpace=900 dieselTanks=1000 waterTanks=2500
+initialStock: diesel=500 agua=400 | janela base=[10800, 604800] s | max_partida=172800 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_PACU         0.0      0.0      0.0      0.0      0.0     0.00     1
+P-09_order_1     30.0     30.0      0.0      0.0      0.0  3600.00     6
+P-09_order_2     15.0      0.0     15.0      0.0      0.0  1800.00     6
+P-09_order_3      0.0      0.0      0.0      0.0    300.0 19182.95     6
+P-38_order_4     10.0     10.0      0.0      0.0      0.0  1200.00     3
+P-38_order_5     55.0     55.0      0.0      0.0      0.0  6600.00     3
+P-38_order_6     74.0      0.0     74.0      0.0      0.0  8880.00     3
+P-38_order_7      0.0      0.0      0.0    299.3      0.0 16153.89     3
+P-43_order_8    200.0    200.0      0.0      0.0      0.0 24000.00     6
+P-43_order_9     80.0      0.0     80.0      0.0      0.0  9600.00     6
+P-09_order_10     10.0      0.0     10.0      0.0      0.0  1200.00     6
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 474.0  (capacidade 900)
+Diesel total: 299.3 (stock 500) | Agua total: 300.0 (stock 400)
+base -> P-09_order_1:   94.2 km     24013 s
+base -> P-09_order_2:   94.2 km     24013 s
+base -> P-09_order_3:   94.2 km     24013 s
+base -> P-38_order_4:  120.1 km     29606 s
+base -> P-38_order_5:  120.1 km     29606 s
+base -> P-38_order_6:  120.1 km     29606 s
+base -> P-38_order_7:  120.1 km     29606 s
+base -> P-43_order_8:  109.1 km     27235 s
+base -> P-43_order_9:  109.1 km     27235 s
+base -> P-09_order_10:   94.2 km     24013 s
+======================================================================
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 10, 2, 3, 1, 11]
+  custo = 46190.0000 | artificial = False
+Veículo 1: [0, 9, 8, 11]
+  custo = 52634.0000 | artificial = False
+Veículo 2: [0, 6, 7, 4, 5, 11]
+  custo = 57376.0000 | artificial = False
+Custo inicial inteiro = 156200.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 3 navios (navio pode ficar na base)
+[CONSTRUT] 10n-1k-3c-1r_testeUSP_v33_10nos_3veiculos | custo=156200.0 | art=0 | V0:[10, 2, 3, 1] | V1:[9, 8] | V2:[6, 7, 4, 5]
+[EXATO] resolvendo modelo compacto...
+==================== Iniciando o MODELO EXATO PETRO
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+Set parameter TimeLimit to value 1200
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  1200
+Seed  42
+Threads  4
+
+Optimize a model with 2272 rows, 720 columns and 6978 nonzeros (Min)
+Model fingerprint: 0xbea8ecdb
+Model has 351 linear objective coefficients and an objective constant of -12.311717715
+Variable types: 105 continuous, 615 integer (615 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-05, 4e+00]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 2e+06]
+
+Presolve removed 729 rows and 138 columns
+Presolve time: 0.04s
+Presolved: 1543 rows, 582 columns, 10941 nonzeros
+Variable types: 99 continuous, 483 integer (480 binary)
+Found heuristic solution: objective 176.1100904
+
+Root relaxation: objective -3.368311e+01, 300 iterations, 0.00 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  -33.68311    0   43  176.11009  -33.68311   119%     -    0s
+     0     0  -31.00284    0  100  176.11009  -31.00284   118%     -    0s
+     0     0  -19.95461    0   73  176.11009  -19.95461   111%     -    0s
+     0     0   -6.30864    0   85  176.11009   -6.30864   104%     -    0s
+     0     0   -5.99946    0   84  176.11009   -5.99946   103%     -    0s
+     0     0   -5.70169    0   84  176.11009   -5.70169   103%     -    0s
+     0     0   -2.75557    0   73  176.11009   -2.75557   102%     -    0s
+     0     0   -2.75557    0   73  176.11009   -2.75557   102%     -    0s
+     0     0   23.06870    0   98  176.11009   23.06870  86.9%     -    0s
+     0     0   23.06870    0   98  176.11009   23.06870  86.9%     -    0s
+     0     0   23.06870    0   58  176.11009   23.06870  86.9%     -    0s
+     0     2   23.06870    0   52  176.11009   23.06870  86.9%     -    0s
+H   55    44                     172.0046836   23.06870  86.6%  41.1    0s
+ 10684   561   58.18279   45   41  172.00468   58.18279  66.2%  24.5    5s
+ 23066  1233  130.21703   33   58  172.00468  124.63756  27.5%  25.6   11s
+ 26532  1161  155.66107   40   20  172.00468  124.63756  27.5%  26.4   15s
+ 43037  3269 infeasible   53       172.00468  124.63756  27.5%  25.8   20s
+ 60091  2981     cutoff   49       172.00468  124.63756  27.5%  25.4   25s
+ 80897   229  165.29162   51   13  172.00468  160.70213  6.57%  24.8   30s
+
+Cutting planes:
+  Learned: 3
+  Gomory: 4
+  Implied bound: 8
+  Projected implied bound: 4
+  Clique: 1
+  MIR: 11
+  Flow cover: 24
+  Zero half: 4
+  Relax-and-lift: 13
+
+Explored 81828 nodes (2022930 simplex iterations) in 30.22 seconds (48.94 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 2: 172.005 176.11 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.720046835869e+02, best bound 1.720046835869e+02, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=172.00 | bound=172.00 | gap=0.00% | t=30.2s
+[EXATO_PETRO] Navio 0 | rota=[0, 2, 10, 3, 1, 9, 8, 6, 5, 7, 4, 11] | custo=172.00 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=34.6922h hB=12.7598h hN=15.5697h hDP=35.5356h | T=98.5573h
+[FO_PETRO] Navio 0 | AT_k=3.0000h B_k=37.6922h P_k=48.0000h R_k=99.1053h F_k=101.5573h
+[FO_PETRO] Navio 0 | hDP decomposto: setup_offshore=4.5900h servico=25.6158h espera(residual)=5.3297h
+[FO_PETRO] Navio 0 | tripDurationLimit=168.0000h | F_k-AT_k=98.5573h | folga=69.4427h
+[FO_PETRO] Navio 0 | theta=0.3525 varphi=0.9832 gamma=3.9419 delta=1.9694 (m3/h)
+[FO_PETRO] Navio 0 | consumo_fundeio=12.2290 consumo_berco=12.5455 consumo_navegacao=61.3743 consumo_DP=69.9837 | D_k=156.1325 m3 | E_k=478.2244 tCO2eq
+[FO_PETRO] Navio 0 | ambiental=alpha*E_k=47.8224 | temporal=(1-alpha)*eta*T_k=124.1822 | custo_total=172.0047
+[EXATO_PETRO] Navio 1 | rota=[0, 11] | custo=0.00 | valida=True | motivo=ok
+[EXATO_PETRO] Navio 2 | rota=[0, 11] | custo=0.00 | valida=True | motivo=ok
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | consumo_total=156.1325 m3 | emissoes_totais=478.2244 tCO2eq | tempo_total=98.5573 h | componente_ambiental=47.8224 | componente_temporal=124.1822 | FO_total=172.0047
+[EXATO_PETRO] Solucao operacionalmente valida.
+[EXATO_PETRO] 10n-1k-3c-1r_testeUSP_v33_10nos_3veiculos | status=OPTIMAL | FO=172.0 | bound=172.0 | gap=0.00% | t=30.3s
+[FO_EXATO] diesel=156.13 m3 | E=478.22 tCO2eq | T=98.56 h | alpha=0.10 | eta=1.40 | CO2=47.82 | tempo=124.18 | soma=172.0047
+==============================================================================
+CRONOGRAMA DA SOLUCAO (tempos em horas)
+------------------------------------------------------------------------------
+Navio 0 (STARNAV TAURUS2) | rota: [0, 2, 10, 3, 1, 9, 8, 6, 5, 7, 4, 11]
+no                 chegada  ini_serv  fim_serv    espera  janela usada
+P-09_order_2          9.67     60.00     60.50     50.33  [60.0, 87.0] (janela 1)
+P-09_order_10        60.50     60.50     60.83      0.00  [60.0, 87.0] (janela 1)
+P-09_order_3         60.83     60.83     66.16      0.00  [60.0, 87.0] (janela 1)
+P-09_order_1         66.16     66.16     67.16      0.00  [60.0, 87.0] (janela 1)
+P-43_order_9         70.36     70.36     73.02      0.00  [60.0, 87.0] (janela 1)
+P-43_order_8         73.02     73.02     79.69      0.00  [60.0, 87.0] (janela 1)
+P-38_order_6         82.27     82.27     84.74      0.00  [60.0, 126.0] (janela 1)
+P-38_order_5         84.74     84.74     86.57      0.00  [60.0, 126.0] (janela 1)
+P-38_order_7         86.57     86.57     91.06      0.00  [60.0, 126.0] (janela 1)
+P-38_order_4         91.06     91.06     91.39      0.00  [60.0, 126.0] (janela 1)
+BASE(retorno)        99.11         -         -         -  retorno a base
+Navio 0: navegacao+manobras=20.16 h (FO) | servico=25.62 h | espera=50.33 h | retorno em t=99.11 h (limite 168.0 h)
+------------------------------------------------------------------------------
+Navio 1 (STARNAV TAURUS3): OCIOSO (fica na base)
+------------------------------------------------------------------------------
+Navio 2 (STARNAV TAURUS): OCIOSO (fica na base)
+------------------------------------------------------------------------------
+FO TOTAL (soma da navegacao+manobras) = 72575 s = 20.16 h
+==============================================================================
+[PLOTJS] Solução construtiva (construtiva): ok -> petroConstr.js
+[GANTT] solucao 'bp' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Branch-and-Price (bp): sem solucao (DADOS=null) -> petroBP.js
+[PLOTJS] Modelo exato (exato): ok -> petroEx.js
+[PLOTJS] pacote exportado em C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\10n-1k-3c-1r_testeUSP_v33_10nos_3veiculos

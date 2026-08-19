@@ -1,0 +1,264 @@
+
+[C++ MODULE]
+arquivo=C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_SILVA_CPP\PD_SILVA_CPP\x64\Release\vrptw_pd_silva.pyd
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: instancias/Petro_instancias/14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+
+####################################################################################################
+# CASO: raiz_sem_branching_navio0 -- k=0 sigma_k=2.0 mu_arc={}
+####################################################################################################
+[PD_SILVA] k=0 niveis_alcancados=6 total_labels=139476 candidatas_negativas=83755 completa=False motivo_parada=timeout tempo=20.06s
+
+[SILVA PD PY x CPP]
+caso=raiz_sem_branching_navio0
+k=0
+
+PYTHON:
+melhor_rc=-141.58107983105597
+rota=[0, 1, 9, 5, 6, 2, 4, 15]
+completa=False
+timeout=True
+tempo=20.148s
+
+CPP:
+melhor_rc_cpp=-141.58107983105597
+rota_cpp=[0, 1, 9, 5, 6, 4, 2, 15]
+melhor_rc_recalculado_python=-141.58107983105597
+completa=False
+timeout=False
+labels=300000
+nivel=6
+tempo=0.255s
+
+speedup=79.04839475649645
+labels_por_s_cpp=1177042.954220876
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# CASO: raiz_sem_branching_navio1 -- k=1 sigma_k=2.0 mu_arc={}
+####################################################################################################
+[PD_SILVA] k=1 niveis_alcancados=6 total_labels=146359 candidatas_negativas=71171 completa=False motivo_parada=timeout tempo=20.07s
+
+[SILVA PD PY x CPP]
+caso=raiz_sem_branching_navio1
+k=1
+
+PYTHON:
+melhor_rc=-144.44611146640946
+rota=[0, 1, 9, 5, 6, 2, 4, 15]
+completa=False
+timeout=True
+tempo=20.180s
+
+CPP:
+melhor_rc_cpp=-144.44611146640946
+rota_cpp=[0, 1, 9, 5, 6, 4, 2, 15]
+melhor_rc_recalculado_python=-144.44611146640946
+completa=False
+timeout=False
+labels=300000
+nivel=6
+tempo=0.259s
+
+speedup=77.86816369943871
+labels_por_s_cpp=1157575.773945516
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# CASO: com_mu_arc -- k=0 sigma_k=1.5 mu_arc={(0, 1): 0.5, (1, 8, 0): 1.2}
+####################################################################################################
+[PD_SILVA] k=0 niveis_alcancados=6 total_labels=128349 candidatas_negativas=75335 completa=False motivo_parada=timeout tempo=20.04s
+
+[SILVA PD PY x CPP]
+caso=com_mu_arc
+k=0
+
+PYTHON:
+melhor_rc=-140.99558882222186
+rota=[0, 1, 2, 4, 6, 5, 9, 15]
+completa=False
+timeout=True
+tempo=20.144s
+
+CPP:
+melhor_rc_cpp=-141.58107983105597
+rota_cpp=[0, 1, 9, 5, 6, 4, 2, 15]
+melhor_rc_recalculado_python=-141.58107983105597
+completa=False
+timeout=False
+labels=300000
+nivel=6
+tempo=0.255s
+
+speedup=78.95988059698465
+labels_por_s_cpp=1175957.3174532058
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# CASO: com_branching_fixa_0_1_proibe_1_8 -- k=0 sigma_k=2.0 mu_arc={}
+####################################################################################################
+[PD_SILVA] k=0 niveis_alcancados=7 total_labels=123401 candidatas_negativas=65442 completa=False motivo_parada=timeout tempo=20.05s
+
+[SILVA PD PY x CPP]
+caso=com_branching_fixa_0_1_proibe_1_8
+k=0
+
+PYTHON:
+melhor_rc=-163.4243835349239
+rota=[0, 1, 2, 4, 6, 9, 11, 12, 15]
+completa=False
+timeout=True
+tempo=20.147s
+
+CPP:
+melhor_rc_cpp=-189.4243835349239
+rota_cpp=[0, 1, 2, 4, 9, 5, 6, 11, 12, 15]
+melhor_rc_recalculado_python=-189.4243835349239
+completa=False
+timeout=False
+labels=300000
+nivel=8
+tempo=0.364s
+
+speedup=55.41270591079526
+labels_por_s_cpp=825121.0865194468
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# CASO: com_branching_cadeia_0_6_1 -- k=0 sigma_k=2.0 mu_arc={}
+####################################################################################################
+[PD_SILVA] k=0 niveis_alcancados=10 total_labels=106108 candidatas_negativas=46674 completa=False motivo_parada=timeout tempo=20.03s
+
+[SILVA PD PY x CPP]
+caso=com_branching_cadeia_0_6_1
+k=0
+
+PYTHON:
+melhor_rc=-231.06438353492388
+rota=[0, 6, 1, 2, 3, 4, 5, 8, 9, 11, 12, 15]
+completa=False
+timeout=True
+tempo=20.094s
+
+CPP:
+melhor_rc_cpp=-261.6119558903165
+rota_cpp=[0, 6, 1, 8, 9, 10, 5, 2, 3, 4, 11, 12, 13, 15]
+melhor_rc_recalculado_python=-261.6119558903165
+completa=True
+timeout=False
+labels=172443
+nivel=14
+tempo=0.185s
+
+speedup=108.5026805077687
+labels_por_s_cpp=931150.8941463357
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# CASO: com_arco_retorno_proibido_6 -- k=0 sigma_k=2.0 mu_arc={}
+####################################################################################################
+[PD_SILVA] k=0 niveis_alcancados=6 total_labels=126175 candidatas_negativas=68983 completa=False motivo_parada=timeout tempo=20.07s
+
+[SILVA PD PY x CPP]
+caso=com_arco_retorno_proibido_6
+k=0
+
+PYTHON:
+melhor_rc=-140.99558882222186
+rota=[0, 1, 2, 4, 6, 5, 9, 15]
+completa=False
+timeout=True
+tempo=20.152s
+
+CPP:
+melhor_rc_cpp=-141.58107983105597
+rota_cpp=[0, 4, 2, 6, 5, 9, 1, 15]
+melhor_rc_recalculado_python=-141.58107983105597
+completa=False
+timeout=False
+labels=300000
+nivel=6
+tempo=0.302s
+
+speedup=66.8035634768949
+labels_por_s_cpp=994494.478566655
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# PD CPP BRANCH TEST (arco fixado): cadeia_0_6_1_forca_6_1
+####################################################################################################
+
+[PD CPP BRANCH TEST]
+arco_fixo=(6,1,0)
+label_chegou_6=True
+label_expandiu_6_1=True
+candidata_contem_arco=True
+coluna_respeita_no=True
+rota_encontrada=[0, 6, 1, 8, 9, 10, 5, 2, 3, 4, 11, 12, 13, 15]
+completa=True labels=172443 nivel=14 tempo=0.319s
+
+[VALIDACAO][OK] todas as checagens passaram
+
+####################################################################################################
+# PD CPP BRANCH TEST (arco proibido p/ deposito): proibe_6_para_deposito
+####################################################################################################
+
+[PD CPP BRANCH TEST]
+arco_proibido=(6,15,0)
+label_chegou_6=True
+label_expandiu_6_j=True
+candidata_contem_arco=True
+coluna_respeita_no=True
+rota_encontrada=[0, 4, 2, 6, 5, 9, 1, 15]
+completa=False labels=300000 nivel=6 tempo=0.287s
+
+[VALIDACAO][OK] todas as checagens passaram
+
+
+====================================================================================================
+[RESULTADO FINAL] TODOS OS CASOS OK
+====================================================================================================

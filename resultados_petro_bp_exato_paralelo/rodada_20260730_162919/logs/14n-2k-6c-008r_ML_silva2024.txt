@@ -1,0 +1,66 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\Petro_instancias\14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 1 art, custo_art=1109882.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 4, 2, 3, 11, 12, 14, 1, 15]
+  custo = 113035.0000 | artificial = False
+Veículo 1: [0, 8, 10, 9, 7, 6, 13, 5, 15]
+  custo = 117003.0000 | artificial = False
+Custo inicial inteiro = 230038.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 2 navios (navio pode ficar na base)
+[SILVA_POOL] navio=0 p=0 seq=[0, 4, 2, 3, 11, 12, 14, 1, 15] viavel=True custo_antigo=113035.0000 custo_silva=91.0364
+[SILVA_POOL] navio=1 p=0 seq=[0, 8, 10, 9, 7, 6, 13, 5, 15] viavel=True custo_antigo=117003.0000 custo_silva=90.8808
+[SILVA_POOL] resumo: avaliadas=2 viaveis=2 inviaveis=0 custos_atualizados=2
+[CONSTRUT] 14n-2k-6c-008r_ML_silva2024_14nos_2veiculos | custo=181.9 | art=0 | V0:[4, 2, 3, 11, 12, 14, 1] | V1:[8, 10, 9, 7, 6, 13, 5]
+[PLOTJS] Solução construtiva (construtiva): ok -> petroConstr.js
+[GANTT] solucao 'bp' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Branch-and-Price (bp): sem solucao (DADOS=null) -> petroBP.js
+[GANTT] solucao 'exato' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Modelo exato (exato): sem solucao (DADOS=null) -> petroEx.js
+[PLOTJS] pacote exportado em C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\14n-2k-6c-008r_ML_silva2024_14nos_2veiculos

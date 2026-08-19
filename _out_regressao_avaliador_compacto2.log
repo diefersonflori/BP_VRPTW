@@ -1,0 +1,1245 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\Petro_instancias\14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+
+####################################################################################################
+# PARTICAO=P1_baseline alpha_fo=0.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 1, 15]
+  viavel=True custo=33.225781 B=7.0000 P=7.3200 R=39.8658 F=40.2258 F-B=33.2258 hF=0.0000 f1=11786.5303 f2=33.2258
+[AVALIADOR] k=1 seq=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15]
+  viavel=True custo=96.323786 B=1.1238 P=25.8376 R=96.2838 F=97.1238 F-B=96.0000 hF=0.3238 f1=33701.9531 f2=96.3238
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x94ebae54
+Model has 8 linear objective coefficients and an objective constant of -7.8
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-04, 5e-01]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3052 rows and 696 columns
+Presolve time: 0.00s
+Presolved: 32 rows, 10 columns, 94 nonzeros
+Variable types: 9 continuous, 1 integer (1 binary)
+Found heuristic solution: objective 150.5255193
+
+Root relaxation: objective 1.295496e+02, 3 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  129.54957    0    1  150.52552  129.54957  13.9%     -    0s
+H    0     0                     129.5495673  129.54957  0.00%     -    0s
+     0     0  129.54957    0    1  129.54957  129.54957  0.00%     -    0s
+
+Explored 1 nodes (3 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 2: 129.55 150.526 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.295495672945e+02, best bound 1.295495672945e+02, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=129.55 | bound=129.55 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 1, 15] | custo=33.23 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=0.0000h hB=0.6800h hN=28.2536h hDP=4.2922h | T=33.2258h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=7.0000h P_k=7.3200h R_k=39.8658h F_k=40.2258h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=1.1322h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=33.2258h | folga=62.7742h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=10623.3381 | termo_servico=(FCS-FCA)*hDP=1163.1922 | f1_k=11786.5303 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=33.2258 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=33.2258
+[EXATO_PETRO] Navio 1 | rota=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15] | custo=96.32 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.3238h hB=25.5538h hN=32.0404h hDP=38.4058h | T=96.3238h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=1.1238h P_k=25.8376h R_k=96.2838h F_k=97.1238h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=4.1000h SP=5.1000h servico=29.1225h espera(residual)=0.0833h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=96.0000h | folga=0.0000h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18070.8104 | termo_servico=(FCS-FCA)*hDP=15631.1427 | f1_k=33701.9531 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=96.3238 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=96.3238
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=45488.4834 USD | tempo_total(xi)=129.5496 h | alpha*f1=0.0000 USD | (1-alpha)*eta*soma(xi)=129.5496 | FO_total=129.5496
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P1_baseline alpha_fo=0.1
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 1, 15]
+  viavel=True custo=1208.556233 B=7.0000 P=7.3200 R=39.8658 F=40.2258 F-B=33.2258 hF=0.0000 f1=11786.5303 f2=33.2258
+[AVALIADOR] k=1 seq=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15]
+  viavel=True custo=3453.498202 B=1.2070 P=25.9208 R=96.2838 F=97.1238 F-B=95.9167 hF=0.4070 f1=33668.0679 f2=96.3238
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xe6d8304a
+Model has 434 linear objective coefficients and an objective constant of -7.02
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-03, 2e+02]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3052 rows and 696 columns
+Presolve time: 0.00s
+Presolved: 32 rows, 10 columns, 94 nonzeros
+Variable types: 9 continuous, 1 integer (1 binary)
+Found heuristic solution: objective 4681.0077227
+
+Root relaxation: objective 4.662054e+03, 4 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 4662.05444    0    1 4681.00772 4662.05444  0.40%     -    0s
+H    0     0                    4662.0544355 4662.05444  0.00%     -    0s
+     0     0 4662.05444    0    1 4662.05444 4662.05444  0.00%     -    0s
+
+Explored 1 nodes (4 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 2: 4662.05 4681.01 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.662054435491e+03, best bound 4.662054435491e+03, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=4662.05 | bound=4662.05 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 1, 15] | custo=1208.56 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=0.0000h hB=0.6800h hN=28.2536h hDP=4.2922h | T=33.2258h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=7.0000h P_k=7.3200h R_k=39.8658h F_k=40.2258h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=1.1322h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=33.2258h | folga=62.7742h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=10623.3381 | termo_servico=(FCS-FCA)*hDP=1163.1922 | f1_k=11786.5303 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=1178.6530 USD | (1-alpha)*eta*xi_k*T_k=29.9032 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=1208.5562
+[EXATO_PETRO] Navio 1 | rota=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15] | custo=3453.50 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.4070h hB=25.5538h hN=32.0404h hDP=38.3225h | T=96.3238h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=1.2070h P_k=25.9208h R_k=96.2838h F_k=97.1238h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=4.1000h SP=5.1000h servico=29.1225h espera(residual)=0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=95.9167h | folga=0.0833h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18070.8104 | termo_servico=(FCS-FCA)*hDP=15597.2575 | f1_k=33668.0679 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=3366.8068 USD | (1-alpha)*eta*xi_k*T_k=86.6914 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=3453.4982
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=45454.5982 USD | tempo_total(xi)=129.5496 h | alpha*f1=4545.4598 USD | (1-alpha)*eta*soma(xi)=116.5946 | FO_total=4662.0544
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P1_baseline alpha_fo=1.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 1, 15]
+  viavel=True custo=11786.530304 B=7.0000 P=7.3200 R=39.8658 F=40.2258 F-B=33.2258 hF=0.0000 f1=11786.5303 f2=33.2258
+[AVALIADOR] k=1 seq=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15]
+  viavel=True custo=33668.067945 B=1.2070 P=25.9208 R=96.2838 F=97.1238 F-B=95.9167 hF=0.4070 f1=33668.0679 f2=96.3238
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xc1e6c65e
+Model has 428 linear objective coefficients
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-02, 2e+03]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3052 rows and 696 columns
+Presolve time: 0.00s
+Presolved: 32 rows, 10 columns, 94 nonzeros
+Variable types: 9 continuous, 1 integer (1 binary)
+Found heuristic solution: objective 45454.598249
+
+Root relaxation: cutoff, 3 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0     cutoff    0      45454.5982 45454.5982  0.00%     -    0s
+
+Explored 1 nodes (3 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 1: 45454.6 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.545459824926e+04, best bound 4.545459824926e+04, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=45454.60 | bound=45454.60 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 1, 15] | custo=11786.53 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=53.4635h hB=0.6800h hN=28.2536h hDP=4.2922h | T=86.6893h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=60.4635h P_k=60.7835h R_k=93.3293h F_k=93.6893h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=1.1322h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=33.2258h | folga=62.7742h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=10623.3381 | termo_servico=(FCS-FCA)*hDP=1163.1922 | f1_k=11786.5303 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=11786.5303 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=11786.5303
+[EXATO_PETRO] Navio 1 | rota=[0, 9, 10, 5, 7, 6, 2, 3, 4, 11, 13, 14, 12, 15] | custo=33668.07 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=32.8113h hB=25.5538h hN=32.0404h hDP=38.3225h | T=128.7281h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=33.6113h P_k=58.3251h R_k=128.6881h F_k=129.5281h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=4.1000h SP=5.1000h servico=29.1225h espera(residual)=0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=95.9167h | folga=0.0833h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18070.8104 | termo_servico=(FCS-FCA)*hDP=15597.2575 | f1_k=33668.0679 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=33668.0679 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=33668.0679
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=45454.5982 USD | tempo_total(xi)=215.4173 h | alpha*f1=45454.5982 USD | (1-alpha)*eta*soma(xi)=0.0000 | FO_total=45454.5982
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P2_medio_semEspera_e_esperaGrande alpha_fo=0.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 9, 10, 11, 12, 13, 14, 15]
+  viavel=True custo=91.493672 B=7.0000 P=18.6813 R=97.8337 F=98.4937 F-B=91.4937 hF=0.0000 f1=24802.5973 f2=91.4937
+[AVALIADOR] k=1 seq=[0, 1, 2, 3, 4, 5, 6, 7, 15]
+  viavel=True custo=69.219634 B=0.8000 P=14.1525 R=69.4796 F=70.0196 F-B=69.2196 hF=0.0000 f1=27708.8116 f2=69.2196
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x0acf347a
+Model has 8 linear objective coefficients and an objective constant of -7.8
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-04, 5e-01]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 160.713 160.713 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.607133064887e+02, best bound 1.607133064887e+02, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=160.71 | bound=160.71 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 9, 10, 11, 12, 13, 14, 15] | custo=91.49 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=28.5665h hB=12.3413h hN=31.9267h hDP=18.6592h | T=91.4937h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=35.5665h P_k=47.2478h R_k=97.8337h F_k=98.4937h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=15.4992h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=62.9272h | folga=33.0728h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=12004.4428 | termo_servico=(FCS-FCA)*hDP=5056.6342 | f1_k=17061.0769 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=91.4937 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=91.4937
+[EXATO_PETRO] Navio 1 | rota=[0, 1, 2, 3, 4, 5, 6, 7, 15] | custo=69.22 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=13.8925h hN=33.0616h hDP=22.2656h | T=69.2196h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=14.1525h R_k=69.4796h F_k=70.0196h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=3.4300h SP=4.0800h servico=14.7556h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=69.2196h | folga=26.7804h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18646.7305 | termo_servico=(FCS-FCA)*hDP=9062.0811 | f1_k=27708.8116 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=69.2196 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=69.2196
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=44769.8886 USD | tempo_total(xi)=160.7133 h | alpha*f1=0.0000 USD | (1-alpha)*eta*soma(xi)=160.7133 | FO_total=160.7133
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P2_medio_semEspera_e_esperaGrande alpha_fo=0.1
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 9, 10, 11, 12, 13, 14, 15]
+  viavel=True custo=1788.451999 B=35.5665 P=47.2478 R=97.8337 F=98.4937 F-B=62.9272 hF=28.5665 f1=17061.0769 f2=91.4937
+[AVALIADOR] k=1 seq=[0, 1, 2, 3, 4, 5, 6, 7, 15]
+  viavel=True custo=2833.178833 B=0.8000 P=14.1525 R=69.4796 F=70.0196 F-B=69.2196 hF=0.0000 f1=27708.8116 f2=69.2196
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x83e8827e
+Model has 434 linear objective coefficients and an objective constant of -7.02
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-03, 2e+02]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 4621.63 4621.63 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.621630832272e+03, best bound 4.621630832272e+03, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=4621.63 | bound=4621.63 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 9, 10, 11, 12, 13, 14, 15] | custo=1788.45 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=28.5665h hB=12.3413h hN=31.9267h hDP=18.6592h | T=91.4937h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=35.5665h P_k=47.2478h R_k=97.8337h F_k=98.4937h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=15.4992h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=62.9272h | folga=33.0728h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=12004.4428 | termo_servico=(FCS-FCA)*hDP=5056.6342 | f1_k=17061.0769 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=1706.1077 USD | (1-alpha)*eta*xi_k*T_k=82.3443 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=1788.4520
+[EXATO_PETRO] Navio 1 | rota=[0, 1, 2, 3, 4, 5, 6, 7, 15] | custo=2833.18 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=13.8925h hN=33.0616h hDP=22.2656h | T=69.2196h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=14.1525h R_k=69.4796h F_k=70.0196h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=3.4300h SP=4.0800h servico=14.7556h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=69.2196h | folga=26.7804h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18646.7305 | termo_servico=(FCS-FCA)*hDP=9062.0811 | f1_k=27708.8116 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=2770.8812 USD | (1-alpha)*eta*xi_k*T_k=62.2977 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=2833.1788
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=44769.8886 USD | tempo_total(xi)=160.7133 h | alpha*f1=4476.9889 USD | (1-alpha)*eta*soma(xi)=144.6420 | FO_total=4621.6308
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P2_medio_semEspera_e_esperaGrande alpha_fo=1.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 8, 9, 10, 11, 12, 13, 14, 15]
+  viavel=True custo=17061.076947 B=35.5665 P=47.2478 R=97.8337 F=98.4937 F-B=62.9272 hF=28.5665 f1=17061.0769 f2=91.4937
+[AVALIADOR] k=1 seq=[0, 1, 2, 3, 4, 5, 6, 7, 15]
+  viavel=True custo=27708.811618 B=0.8000 P=14.1525 R=69.4796 F=70.0196 F-B=69.2196 hF=0.0000 f1=27708.8116 f2=69.2196
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xc101c16f
+Model has 428 linear objective coefficients
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-02, 2e+03]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 44769.9 44769.9 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.476988856432e+04, best bound 4.476988856432e+04, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=44769.89 | bound=44769.89 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 8, 9, 10, 11, 12, 13, 14, 15] | custo=17061.08 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=28.5665h hB=12.3413h hN=31.9267h hDP=18.6592h | T=91.4937h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=35.5665h P_k=47.2478h R_k=97.8337h F_k=98.4937h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=1.3400h SP=1.8200h servico=15.4992h espera(residual)=0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=62.9272h | folga=33.0728h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=12004.4428 | termo_servico=(FCS-FCA)*hDP=5056.6342 | f1_k=17061.0769 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=17061.0769 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=17061.0769
+[EXATO_PETRO] Navio 1 | rota=[0, 1, 2, 3, 4, 5, 6, 7, 15] | custo=27708.81 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=13.8925h hN=33.0616h hDP=22.2656h | T=69.2196h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=14.1525h R_k=69.4796h F_k=70.0196h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=3.4300h SP=4.0800h servico=14.7556h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=69.2196h | folga=26.7804h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=18646.7305 | termo_servico=(FCS-FCA)*hDP=9062.0811 | f1_k=27708.8116 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=27708.8116 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=27708.8116
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=44769.8886 USD | tempo_total(xi)=160.7133 h | alpha*f1=44769.8886 USD | (1-alpha)*eta*soma(xi)=0.0000 | FO_total=44769.8886
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P3_trivial_e_TDLinviavel alpha_fo=0.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=29.845654 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 8, 9, 10, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15]
+  viavel=False motivo=tdl_violado_98.3810h_maior_96.0000h
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x293b05d1
+Model has 8 linear objective coefficients and an objective constant of -7.8
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-04, 5e-01]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 2899 rows and 704 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INFEASIBLE | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INFEASIBLE consistente=False
+
+####################################################################################################
+# PARTICAO=P3_trivial_e_TDLinviavel alpha_fo=0.1
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=1114.841512 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 8, 9, 10, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15]
+  viavel=False motivo=tdl_violado_98.3810h_maior_96.0000h
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x367125c1
+Model has 434 linear objective coefficients and an objective constant of -7.02
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-03, 2e+02]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3081 rows and 703 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INF_OR_UNBD | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INF_OR_UNBD consistente=False
+
+####################################################################################################
+# PARTICAO=P3_trivial_e_TDLinviavel alpha_fo=1.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=10879.804237 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 8, 9, 10, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15]
+  viavel=False motivo=tdl_violado_98.3810h_maior_96.0000h
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x360c69cf
+Model has 428 linear objective coefficients
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-02, 2e+03]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3081 rows and 703 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INF_OR_UNBD | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INF_OR_UNBD consistente=False
+
+####################################################################################################
+# PARTICAO=P4_grande_com_espera_moderada alpha_fo=0.0
+####################################################################################################
+[AVALIADOR] k=1 seq=[0, 7, 6, 15]
+  viavel=True custo=45.400516 B=0.8000 P=7.2925 R=46.2005 F=46.2005 F-B=45.4005 hF=0.0000 f1=20427.7628 f2=45.4005
+[AVALIADOR] k=0 seq=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15]
+  viavel=True custo=92.033672 B=7.0000 P=25.5413 R=97.8337 F=99.0337 F-B=92.0337 hF=0.0000 f1=23374.3625 f2=92.0337
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x1ac40214
+Model has 8 linear objective coefficients and an objective constant of -7.8
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-04, 5e-01]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 137.434 137.434 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.374341882465e+02, best bound 1.374341882465e+02, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=137.43 | bound=137.43 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15] | custo=92.03 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=5.3262h hB=19.7413h hN=36.0298h hDP=30.9364h | T=92.0337h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=12.3262h P_k=30.8675h R_k=97.8337h F_k=99.0337h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=3.3500h SP=4.5500h servico=23.0364h espera(residual)=-0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=86.7075h | folga=9.2925h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=13547.2074 | termo_servico=(FCS-FCA)*hDP=8383.7614 | f1_k=21930.9688 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=92.0337 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=92.0337
+[EXATO_PETRO] Navio 1 | rota=[0, 7, 6, 15] | custo=45.40 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=6.4925h hN=29.2497h hDP=9.6583h | T=45.4005h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=7.2925h R_k=46.2005h F_k=46.2005h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=1.4200h SP=1.0200h servico=7.2183h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=45.4005h | folga=50.5995h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=16496.8212 | termo_servico=(FCS-FCA)*hDP=3930.9417 | f1_k=20427.7628 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=0.0000 USD | (1-alpha)*eta*xi_k*T_k=45.4005 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=45.4005
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=42358.7316 USD | tempo_total(xi)=137.4342 h | alpha*f1=0.0000 USD | (1-alpha)*eta*soma(xi)=137.4342 | FO_total=137.4342
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P4_grande_com_espera_moderada alpha_fo=0.1
+####################################################################################################
+[AVALIADOR] k=1 seq=[0, 7, 6, 15]
+  viavel=True custo=2083.636746 B=0.8000 P=7.2925 R=46.2005 F=46.2005 F-B=45.4005 hF=0.0000 f1=20427.7628 f2=45.4005
+[AVALIADOR] k=0 seq=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15]
+  viavel=True custo=2275.927184 B=12.3262 P=30.8675 R=97.8337 F=99.0337 F-B=86.7075 hF=5.3262 f1=21930.9688 f2=92.0337
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x0b9e4919
+Model has 434 linear objective coefficients and an objective constant of -7.02
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-03, 2e+02]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 4359.56 4359.56 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.359563930083e+03, best bound 4.359563930083e+03, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=4359.56 | bound=4359.56 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15] | custo=2275.93 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=5.3262h hB=19.7413h hN=36.0298h hDP=30.9364h | T=92.0337h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=12.3262h P_k=30.8675h R_k=97.8337h F_k=99.0337h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=3.3500h SP=4.5500h servico=23.0364h espera(residual)=-0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=86.7075h | folga=9.2925h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=13547.2074 | termo_servico=(FCS-FCA)*hDP=8383.7614 | f1_k=21930.9688 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=2193.0969 USD | (1-alpha)*eta*xi_k*T_k=82.8303 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=2275.9272
+[EXATO_PETRO] Navio 1 | rota=[0, 7, 6, 15] | custo=2083.64 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=6.4925h hN=29.2497h hDP=9.6583h | T=45.4005h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=7.2925h R_k=46.2005h F_k=46.2005h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=1.4200h SP=1.0200h servico=7.2183h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=45.4005h | folga=50.5995h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=16496.8212 | termo_servico=(FCS-FCA)*hDP=3930.9417 | f1_k=20427.7628 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=2042.7763 USD | (1-alpha)*eta*xi_k*T_k=40.8605 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=2083.6367
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=42358.7316 USD | tempo_total(xi)=137.4342 h | alpha*f1=4235.8732 USD | (1-alpha)*eta*soma(xi)=123.6908 | FO_total=4359.5639
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P4_grande_com_espera_moderada alpha_fo=1.0
+####################################################################################################
+[AVALIADOR] k=1 seq=[0, 7, 6, 15]
+  viavel=True custo=20427.762818 B=0.8000 P=7.2925 R=46.2005 F=46.2005 F-B=45.4005 hF=0.0000 f1=20427.7628 f2=45.4005
+[AVALIADOR] k=0 seq=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15]
+  viavel=True custo=21930.968789 B=12.3262 P=30.8675 R=97.8337 F=99.0337 F-B=86.7075 hF=5.3262 f1=21930.9688 f2=92.0337
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xadf17af3
+Model has 428 linear objective coefficients
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-02, 2e+03]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 3084 rows and 706 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 2: 42358.7 42358.7 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.235873160661e+04, best bound 4.235873160661e+04, gap 0.0000%
+[EXATO_PETRO] status=OPTIMAL | FO=42358.73 | bound=42358.73 | gap=0.00% | t=0.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 1, 8, 9, 10, 2, 3, 4, 5, 11, 12, 13, 14, 15] | custo=21930.97 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=5.3262h hB=19.7413h hN=36.0298h hDP=30.9364h | T=92.0337h
+[FO_PETRO] Navio 0 | AT_k=7.0000h B_k=12.3262h P_k=30.8675h R_k=97.8337h F_k=99.0337h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=3.3500h SP=4.5500h servico=23.0364h espera(residual)=-0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=86.7075h | folga=9.2925h
+[FO_PETRO] Navio 0 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=13547.2074 | termo_servico=(FCS-FCA)*hDP=8383.7614 | f1_k=21930.9688 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=21930.9688 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=21930.9688
+[EXATO_PETRO] Navio 1 | rota=[0, 7, 6, 15] | custo=20427.76 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=0.0000h hB=6.4925h hN=29.2497h hDP=9.6583h | T=45.4005h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=7.2925h R_k=46.2005h F_k=46.2005h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=1.4200h SP=1.0200h servico=7.2183h espera(residual)=-0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=45.4005h | folga=50.5995h
+[FO_PETRO] Navio 1 | FCA(theta)=84.0000 FCB(varphi)=84.0000 FCN(gamma)=648.0000 FCS(delta)=491.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=16496.8212 | termo_servico=(FCS-FCA)*hDP=3930.9417 | f1_k=20427.7628 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=20427.7628 USD | (1-alpha)*eta*xi_k*T_k=0.0000 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=20427.7628
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=42358.7316 USD | tempo_total(xi)=137.4342 h | alpha*f1=42358.7316 USD | (1-alpha)*eta*soma(xi)=0.0000 | FO_total=42358.7316
+[EXATO_PETRO] Solucao operacionalmente valida.
+[GUROBI fixar_rotas] ok=True status=OPTIMAL consistente=True
+
+####################################################################################################
+# PARTICAO=P6_trivial_e_janelaInviavel alpha_fo=0.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=29.845654 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 8, 9, 10, 15]
+  viavel=False motivo=dueTime_delivery_no_9
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xb5c95244
+Model has 8 linear objective coefficients and an objective constant of -7.8
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [3e-04, 5e-01]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 2771 rows and 624 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INFEASIBLE | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INFEASIBLE consistente=False
+
+####################################################################################################
+# PARTICAO=P6_trivial_e_janelaInviavel alpha_fo=0.1
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=1114.841512 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 8, 9, 10, 15]
+  viavel=False motivo=dueTime_delivery_no_9
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0xe884a808
+Model has 434 linear objective coefficients and an objective constant of -7.02
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-03, 2e+02]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 2771 rows and 624 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INF_OR_UNBD | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INF_OR_UNBD consistente=False
+
+####################################################################################################
+# PARTICAO=P6_trivial_e_janelaInviavel alpha_fo=1.0
+####################################################################################################
+[AVALIADOR] k=0 seq=[0, 1, 15]
+  viavel=True custo=10879.804237 B=7.0000 P=7.3200 R=36.8457 F=36.8457 F-B=29.8457 hF=0.0000 f1=10879.8042 f2=29.8457
+[AVALIADOR] k=1 seq=[0, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 8, 9, 10, 15]
+  viavel=False motivo=dueTime_delivery_no_9
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoLoad          144.00  [(0.0, 144.0)]
+  2             1 deckCargoBackload      144.00  [(0.0, 121.0), (181.0, 240.0)]
+  3             2 deckCargoLoad          192.00  [(0.0, 121.0), (181.0, 240.0)]
+  4             3 dieselLoad             240.00  [(0.0, 121.0), (181.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 112.0), (160.0, 168.0)]
+  6             5 deckCargoLoad          216.00  [(22.0, 148.0), (208.0, 216.0)]
+  7             6 dieselLoad             168.00  [(22.0, 148.0), (208.0, 216.0)]
+  8             7 deckCargoBackload      144.00  [(0.0, 77.0), (137.0, 168.0)]
+  9             8 deckCargoLoad          120.00  [(0.0, 77.0), (137.0, 168.0)]
+ 10             9 dieselLoad             168.00  [(0.0, 77.0), (137.0, 168.0)]
+ 11            10 deckCargoBackload      216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 12            11 deckCargoLoad          192.00  [(71.0, 209.0), (233.0, 240.0)]
+ 13            12 dieselLoad             216.00  [(71.0, 209.0), (233.0, 240.0)]
+ 14            13 waterLoad              240.00  [(71.0, 209.0), (233.0, 240.0)]
+==============================================================================
+Set parameter TimeLimit to value 60
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  60
+Seed  42
+Threads  4
+
+Optimize a model with 3084 rows, 706 columns and 9028 nonzeros (Min)
+Model fingerprint: 0x7b2feb30
+Model has 428 linear objective coefficients
+Variable types: 94 continuous, 612 integer (612 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [8e-02, 2e+03]
+  Bounds range     [1e+00, 1e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 2771 rows and 624 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 20 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+[EXATO_PETRO] status=INF_OR_UNBD | FO=NA | bound=NA | gap=NA | t=0.0s
+[EXATO_PETRO] Nenhuma solucao incumbente disponivel.
+[GUROBI fixar_rotas] ok=False status=INF_OR_UNBD consistente=False
+
+
+================================================================================================================================================================
+TABELA RESUMO (particao, k, alpha, viabilidade, custo av/gu, diff, f1 av/gu, f2 av/gu, B av/gu, status)
+================================================================================================================================================================
+particao                                k alpha   viav(av/gu)     custo_av     custo_gu  diff_custo        f1_av        f1_gu      f2_av      f2_gu     B_av     B_gu  status
+P1_baseline                             0   0.0     True/True      33.2258      33.2258       0.000   11786.5303   11786.5303     33.226     33.226    7.000    7.000  PASS
+P1_baseline                             1   0.0     True/True      96.3238      96.3238       0.000   33701.9531   33701.9531     96.324     96.324    1.124    1.124  PASS
+P1_baseline                             0   0.1     True/True    1208.5562    1208.5562       0.000   11786.5303   11786.5303     33.226     33.226    7.000    7.000  PASS
+P1_baseline                             1   0.1     True/True    3453.4982    3453.4982       0.000   33668.0679   33668.0679     96.324     96.324    1.207    1.207  PASS
+P1_baseline                             0   1.0     True/True   11786.5303   11786.5303       0.000   11786.5303   11786.5303     33.226     86.689    7.000   60.463  DEGENERADO_OK
+P1_baseline                             1   1.0     True/True   33668.0679   33668.0679       0.000   33668.0679   33668.0679     96.324    128.728    1.207   33.611  DEGENERADO_OK
+P2_medio_semEspera_e_esperaGrande       0   0.0     True/True      91.4937      91.4937       0.000   24802.5973   17061.0769     91.494     91.494    7.000   35.566  DEGENERADO_OK
+P2_medio_semEspera_e_esperaGrande       1   0.0     True/True      69.2196      69.2196       0.000   27708.8116   27708.8116     69.220     69.220    0.800    0.800  PASS
+P2_medio_semEspera_e_esperaGrande       0   0.1     True/True    1788.4520    1788.4520       0.000   17061.0769   17061.0769     91.494     91.494   35.566   35.566  PASS
+P2_medio_semEspera_e_esperaGrande       1   0.1     True/True    2833.1788    2833.1788       0.000   27708.8116   27708.8116     69.220     69.220    0.800    0.800  PASS
+P2_medio_semEspera_e_esperaGrande       0   1.0     True/True   17061.0769   17061.0769       0.000   17061.0769   17061.0769     91.494     91.494   35.566   35.566  PASS
+P2_medio_semEspera_e_esperaGrande       1   1.0     True/True   27708.8116   27708.8116       0.000   27708.8116   27708.8116     69.220     69.220    0.800    0.800  PASS
+P3_trivial_e_TDLinviavel                0   0.0     True/None      29.8457            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P3_trivial_e_TDLinviavel                1   0.0   False/False            -            -           -            -            -          -          -        -        -  PASS
+P3_trivial_e_TDLinviavel                0   0.1     True/None    1114.8415            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P3_trivial_e_TDLinviavel                1   0.1   False/False            -            -           -            -            -          -          -        -        -  PASS
+P3_trivial_e_TDLinviavel                0   1.0     True/None   10879.8042            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P3_trivial_e_TDLinviavel                1   1.0   False/False            -            -           -            -            -          -          -        -        -  PASS
+P4_grande_com_espera_moderada           1   0.0     True/True      45.4005      45.4005       0.000   20427.7628   20427.7628     45.401     45.401    0.800    0.800  PASS
+P4_grande_com_espera_moderada           0   0.0     True/True      92.0337      92.0337       0.000   23374.3625   21930.9688     92.034     92.034    7.000   12.326  DEGENERADO_OK
+P4_grande_com_espera_moderada           1   0.1     True/True    2083.6367    2083.6367       0.000   20427.7628   20427.7628     45.401     45.401    0.800    0.800  PASS
+P4_grande_com_espera_moderada           0   0.1     True/True    2275.9272    2275.9272       0.000   21930.9688   21930.9688     92.034     92.034   12.326   12.326  PASS
+P4_grande_com_espera_moderada           1   1.0     True/True   20427.7628   20427.7628       0.000   20427.7628   20427.7628     45.401     45.401    0.800    0.800  PASS
+P4_grande_com_espera_moderada           0   1.0     True/True   21930.9688   21930.9688       0.000   21930.9688   21930.9688     92.034     92.034   12.326   12.326  PASS
+P6_trivial_e_janelaInviavel             0   0.0     True/None      29.8457            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P6_trivial_e_janelaInviavel             1   0.0   False/False            -            -           -            -            -          -          -        -        -  PASS
+P6_trivial_e_janelaInviavel             0   0.1     True/None    1114.8415            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P6_trivial_e_janelaInviavel             1   0.1   False/False            -            -           -            -            -          -          -        -        -  PASS
+P6_trivial_e_janelaInviavel             0   1.0     True/None   10879.8042            -           -   10879.8042            -     29.846          -    7.000        -  SKIP
+P6_trivial_e_janelaInviavel             1   1.0   False/False            -            -           -            -            -          -          -        -        -  PASS
+
+
+========================================================================================================================
+RESUMO PASS/FAIL POR PARTICAO x ALPHA (FAIL = viabilidade/custo/f1/f2 divergentes; DEGENERADO_OK nao conta como FAIL)
+========================================================================================================================
+particao                                  alpha=0.0    alpha=0.1    alpha=1.0
+P1_baseline                                    PASS         PASS         PASS
+P2_medio_semEspera_e_esperaGrande              PASS         PASS         PASS
+P3_trivial_e_TDLinviavel                       PASS         PASS         PASS
+P4_grande_com_espera_moderada                  PASS         PASS         PASS
+P6_trivial_e_janelaInviavel                    PASS         PASS         PASS
+
+========================================================================================================================
+[NENHUMA DIVERGENCIA REAL] viabilidade, custo, f1 (quando participa) e f2 (quando participa) bateram em todas as particoes/alphas, tolerancia 1.0e-06. Diferencas remanescentes em B/P/R/F/hF/hB/hN/hDP (se houver) sao degenerescencia de solucoes otimas equivalentes.
+========================================================================================================================
+
+Contagem: PASS=20 DEGENERADO_OK=4 SKIP=6 FAIL=0 (total linhas=30)
+
+[RESULTADO FINAL REGRESSAO] TODAS AS PARTICOES/ALPHAS OK (sem FAIL real)

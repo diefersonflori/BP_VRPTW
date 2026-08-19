@@ -1,0 +1,108 @@
+
+[C++ MODULE]
+arquivo=C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_SILVA_CPP\PD_SILVA_CPP\x64\Release\vrptw_pd_silva.pyd
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: instancias/Petro_instancias/14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+
+####################################################################################################
+# TESTE DE ESCALA: raiz_sem_branching_navio0 (PD_SILVA_CPP)
+####################################################################################################
+
+[SILVA PD CPP ESCALA]
+max_labels=300000
+labels_gerados=300000
+nivel=6
+melhor_rc=-141.58107983105597
+completa=False
+timeout=False
+tempo=0.099s
+labels_por_segundo=3037319.5452525173
+memoria_mb=117.2
+auditoria: viavel=True rc_cpp=-141.58107983105597 rc_python=-141.58107983105597 | RC_CPP==RC_PYTHON: True
+
+[SILVA PD CPP ESCALA]
+max_labels=1000000
+labels_gerados=1000000
+nivel=7
+melhor_rc=-163.4243835349239
+completa=False
+timeout=False
+tempo=0.329s
+labels_por_segundo=3043959.3387911525
+memoria_mb=168.1
+auditoria: viavel=True rc_cpp=-163.4243835349239 rc_python=-163.4243835349239 | RC_CPP==RC_PYTHON: True
+
+[SILVA PD CPP ESCALA]
+max_labels=3000000
+labels_gerados=3000000
+nivel=8
+melhor_rc=-189.4243835349239
+completa=False
+timeout=False
+tempo=1.013s
+labels_por_segundo=2961317.786414955
+memoria_mb=311.6
+auditoria: viavel=True rc_cpp=-189.4243835349239 rc_python=-189.4243835349239 | RC_CPP==RC_PYTHON: True
+
+[SILVA PD CPP ESCALA]
+max_labels=10000000
+labels_gerados=10000000
+nivel=10
+melhor_rc=-235.4243835349239
+completa=False
+timeout=False
+tempo=3.998s
+labels_por_segundo=2501279.1541594374
+memoria_mb=1350.4
+auditoria: viavel=True rc_cpp=-235.4243835349239 rc_python=-235.4243835349239 | RC_CPP==RC_PYTHON: True
+
+====================================================================================================
+[TABELA RESUMO] max_labels x labels x nivel x RC x tempo
+====================================================================================================
+  max_labels     labels  nivel             rc  completa  timeout   tempo_s
+      300000     300000      6      -141.5811     False    False     0.099
+     1000000    1000000      7      -163.4244     False    False     0.329
+     3000000    3000000      8      -189.4244     False    False     1.013
+    10000000   10000000     10      -235.4244     False    False     3.998
+
+====================================================================================================
+[RESULTADO] completa=False ate max_labels=10000000 / timeout=20.0s -- parando aqui
+====================================================================================================

@@ -127,6 +127,48 @@ class AvaliadorRota:
 
         return True, ""
 
+    def validar_ordem_plataformas_silva2024(self, inst, seq):
+        """Precedencia da Eq. (21) de Silva et al. (2024): pickup->delivery
+        so e exigido entre produtos do MESMO compartimento. Nesta instancia
+        so deckCargoBackload/deckCargoLoad compartilham deckSpace --
+        dieselLoad (dieselTanks) e waterLoad (waterTanks) tem compartimento
+        proprio e NUNCA bloqueiam um backload de deck (diferente da regra
+        Petrobras em validar_ordem_plataformas_petro, que conta os tres como
+        "entrega"). Mesma checagem de nao-revisita de plataforma da regra
+        Petro. Retorna (bool, motivo). Mesma logica ja usada isoladamente em
+        Metodos.avaliar_rota_silva2024 (metodos.py); esta versao e a fonte
+        unica para o validador pos-hoc de metodo_exato_petro."""
+        dp = inst.dados_petro
+        eps = self.EPS
+
+        plataforma_atual = None
+        plataformas_encerradas = set()
+        entrega_deck_iniciada = False
+
+        for no in seq:
+            if not (1 <= no <= inst.nbcd):
+                continue
+
+            plataforma = self.plataforma_petro(inst, no)
+
+            if plataforma != plataforma_atual:
+                if plataforma_atual is not None:
+                    plataformas_encerradas.add(plataforma_atual)
+                if plataforma in plataformas_encerradas:
+                    return False, f"retorno_plataforma_{plataforma}"
+                plataforma_atual = plataforma
+                entrega_deck_iniciada = False
+
+            tem_coleta_deck = float(dp["dem_deck_backload"][no]) > eps
+            tem_entrega_deck = float(dp["dem_deck_load"][no]) > eps
+
+            if tem_coleta_deck and entrega_deck_iniciada:
+                return False, f"coleta_deck_apos_entrega_deck_no_{no}"
+            if tem_entrega_deck:
+                entrega_deck_iniciada = True
+
+        return True, ""
+
     def validar_cargas_petro(self, inst, k, seq):
         """Regra 8+9+10+11: navio sai da base com todas as entregas da viagem;
         deck atualizado dinamicamente por escala (backload primeiro, entrega
@@ -139,7 +181,11 @@ class AvaliadorRota:
         if dp is None:
             return True, "", None
 
-        ordem_ok, motivo = self.validar_ordem_plataformas_petro(inst, seq)
+        modo_silva = getattr(inst, "objective_mode", "petrobras") == "silva2024"
+        if modo_silva:
+            ordem_ok, motivo = self.validar_ordem_plataformas_silva2024(inst, seq)
+        else:
+            ordem_ok, motivo = self.validar_ordem_plataformas_petro(inst, seq)
         if not ordem_ok:
             return False, motivo, None
 

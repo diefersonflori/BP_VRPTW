@@ -1,0 +1,290 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: C:\Users\PolyanaSilva\Documents\BP_VRPTW\instancias\instancias_petro_geradas\convertidas_victor\20n-4k-7c-244r_SSML_silva2024.json
+Clientes: 20 | Navios: 4 | deckSpace=450 dieselTanks=600 waterTanks=500
+initialStock: diesel=0 agua=0 | janela base=[2880, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_1_order_1     18.0     18.0      0.0      0.0      0.0  2157.84     2
+PLAT_1_order_2      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_2_order_3     20.0      0.0     20.0      0.0      0.0  2397.60     2
+PLAT_2_order_4     11.0     11.0      0.0      0.0      0.0  1318.68     2
+PLAT_2_order_5      0.0      0.0      0.0    221.0      0.0 11854.44     2
+PLAT_2_order_6      0.0      0.0      0.0      0.0    228.0 14692.32     2
+PLAT_3_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_3_order_8     29.0     29.0      0.0      0.0      0.0  3476.52     2
+PLAT_3_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_4_order_10     13.0      0.0     13.0      0.0      0.0  1558.44     2
+PLAT_4_order_11     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_4_order_12      0.0      0.0      0.0    168.0      0.0  9011.52     2
+PLAT_5_order_13    146.0    146.0      0.0      0.0      0.0 24545.52     2
+PLAT_6_order_14     20.0      0.0     20.0      0.0      0.0  2397.60     2
+PLAT_6_order_15     41.0     41.0      0.0      0.0      0.0  4915.08     2
+PLAT_7_order_16     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_7_order_17     13.0     13.0      0.0      0.0      0.0  1558.44     2
+PLAT_7_order_18      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_7_order_19      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 385.0  (capacidade 450)
+Diesel total: 1122.0 (stock 0) | Agua total: 609.0 (stock 0)
+base -> PLAT_1_order_0:  192.6 km     63616 s
+base -> PLAT_1_order_1:  192.6 km     63616 s
+base -> PLAT_1_order_2:  192.6 km     63616 s
+base -> PLAT_2_order_3:  187.7 km     62005 s
+base -> PLAT_2_order_4:  187.7 km     62005 s
+base -> PLAT_2_order_5:  187.7 km     62005 s
+base -> PLAT_2_order_6:  187.7 km     62005 s
+base -> PLAT_3_order_7:  172.0 km     56791 s
+base -> PLAT_3_order_8:  172.0 km     56791 s
+base -> PLAT_3_order_9:  172.0 km     56791 s
+base -> PLAT_4_order_10:  188.0 km     62105 s
+base -> PLAT_4_order_11:  188.0 km     62105 s
+base -> PLAT_4_order_12:  188.0 km     62105 s
+base -> PLAT_5_order_13:  199.8 km     65991 s
+base -> PLAT_6_order_14:  191.4 km     63200 s
+base -> PLAT_6_order_15:  191.4 km     63200 s
+base -> PLAT_7_order_16:  192.7 km     63641 s
+base -> PLAT_7_order_17:  192.7 km     63641 s
+base -> PLAT_7_order_18:  192.7 km     63641 s
+base -> PLAT_7_order_19:  192.7 km     63641 s
+======================================================================
+[INTEIRA] EDF: 0 art, custo_art=0.00
+[INTEIRA] Balanced: 0 art, custo_art=0.00
+[INTEIRA] Sector: 0 art, custo_art=0.00
+[INTEIRA] LateIsolated: 0 art, custo_art=0.00
+[INTEIRA] BalancedGlobal: 0 art, custo_art=0.00
+[INTEIRA] Regret2: 0 art, custo_art=0.00
+[INTEIRA] VENCEDOR: EDF (due asc) — 0 art
+
+=== ROTAS INICIAIS INTEIRAS ===
+Veículo 0: [0, 3, 1, 2, 13, 11, 12, 21]
+  custo = 128215.0000 | artificial = False
+Veículo 1: [0, 8, 9, 10, 14, 19, 17, 20, 18, 21]
+  custo = 133311.0000 | artificial = False
+Veículo 2: [0, 4, 5, 7, 6, 21]
+  custo = 124010.0000 | artificial = False
+Veículo 3: [0, 15, 16, 21]
+  custo = 126400.0000 | artificial = False
+Custo inicial inteiro = 511936.0000
+[CONSTRUTIVA] VENCEDOR: Inteligente — nenhuma rota artificial
+[POOL] Coluna ociosa adicionada para 4 navios (navio pode ficar na base)
+[SILVA_POOL] navio=0 p=0 seq=[0, 3, 1, 2, 13, 11, 12, 21] viavel=True custo_antigo=128215.0000 custo_silva=923.8120
+[SILVA_POOL] navio=1 p=0 seq=[0, 8, 9, 10, 14, 19, 17, 20, 18, 21] viavel=True custo_antigo=133311.0000 custo_silva=1241.1264
+[SILVA_POOL] navio=2 p=0 seq=[0, 4, 5, 7, 6, 21] viavel=True custo_antigo=124010.0000 custo_silva=1479.2430
+[SILVA_POOL] navio=3 p=0 seq=[0, 15, 16, 21] viavel=True custo_antigo=126400.0000 custo_silva=1775.1070
+[SILVA_POOL] resumo: avaliadas=4 viaveis=4 inviaveis=0 custos_atualizados=4
+[CONSTRUT] 20n-4k-7c-244r_SSML_silva2024_20nos_4veiculos | custo=5419.3 | art=0 | V0:[3, 1, 2, 13, 11, 12] | V1:[8, 9, 10, 14, 19, 17, 20, 18] | V2:[4, 5, 7, 6] | V3:[15, 16]
+[EXATO] resolvendo modelo compacto...
+==================== Iniciando o MODELO EXATO PETRO
+==============================================================================
+[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) -> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime (descarga agregada da viagem, sem FIFO/LIFO individual).
+ no sourceOrderId commodity          dueTime(h)  timeWindows(h)
+  1             0 deckCargoBackload      120.00  [(0.0, 111.0), (135.0, 168.0)]
+  2             1 deckCargoLoad          120.00  [(0.0, 111.0), (135.0, 168.0)]
+  3             2 dieselLoad             168.00  [(0.0, 111.0), (135.0, 168.0)]
+  4             3 deckCargoBackload      168.00  [(4.0, 140.0), (188.0, 240.0)]
+  5             4 deckCargoLoad          168.00  [(4.0, 140.0), (188.0, 240.0)]
+  6             5 dieselLoad             192.00  [(4.0, 140.0), (188.0, 240.0)]
+  7             6 waterLoad              240.00  [(4.0, 140.0), (188.0, 240.0)]
+  8             7 deckCargoBackload      144.00  [(37.0, 151.0), (211.0, 216.0)]
+  9             8 deckCargoLoad          216.00  [(37.0, 151.0), (211.0, 216.0)]
+ 10             9 dieselLoad             168.00  [(37.0, 151.0), (211.0, 216.0)]
+ 11            10 deckCargoBackload      144.00  [(0.0, 84.0), (132.0, 168.0)]
+ 12            11 deckCargoLoad          168.00  [(0.0, 84.0), (132.0, 168.0)]
+ 13            12 dieselLoad             168.00  [(0.0, 84.0), (132.0, 168.0)]
+ 14            13 deckCargoLoad          192.00  [(31.0, 114.0), (150.0, 192.0)]
+ 15            14 deckCargoBackload      144.00  [(0.0, 90.0), (138.0, 144.0)]
+ 16            15 deckCargoLoad          144.00  [(0.0, 90.0), (138.0, 144.0)]
+ 17            16 deckCargoBackload      144.00  [(0.0, 93.0), (141.0, 192.0)]
+ 18            17 deckCargoLoad          168.00  [(0.0, 93.0), (141.0, 192.0)]
+ 19            18 dieselLoad             192.00  [(0.0, 93.0), (141.0, 192.0)]
+ 20            19 waterLoad              192.00  [(0.0, 93.0), (141.0, 192.0)]
+==============================================================================
+Set parameter Username
+Set parameter LicenseID to value 2792355
+Academic license - for non-commercial use only - expires 2027-03-13
+Set parameter TimeLimit to value 20
+Set parameter Threads to value 4
+Set parameter Seed to value 42
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12800H, instruction set [SSE2|AVX|AVX2]
+Thread count: 14 physical cores, 20 logical processors, using up to 4 threads
+
+Non-default parameters:
+TimeLimit  20
+Seed  42
+Threads  4
+
+Optimize a model with 10328 rows, 2506 columns and 35780 nonzeros (Min)
+Model fingerprint: 0x270ed5be
+Model has 1696 linear objective coefficients and an objective constant of -4.032
+Variable types: 260 continuous, 2246 integer (2246 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+06]
+  Objective range  [4e-03, 2e+02]
+  Bounds range     [1e+00, 2e+01]
+  RHS range        [1e+00, 4e+06]
+
+Presolve removed 2075 rows and 292 columns
+Presolve time: 0.16s
+Presolved: 8253 rows, 2214 columns, 59423 nonzeros
+Variable types: 256 continuous, 1958 integer (1954 binary)
+
+Root relaxation: objective -3.401444e+04, 693 iterations, 0.02 seconds (0.04 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 -34014.442    0  158          - -34014.442      -     -    0s
+     0     0 -34014.442    0  167          - -34014.442      -     -    0s
+     0     0 -34014.442    0  167          - -34014.442      -     -    0s
+H    0     0                    9650.4895272 -34014.442   452%     -    0s
+     0     0 -33945.605    0  120 9650.48953 -33945.605   452%     -    0s
+H    0     0                    4061.9660304 -33945.605   936%     -    0s
+     0     0 -33937.531    0  167 4061.96603 -33937.531   935%     -    0s
+H    0     0                    4037.6876786 -33937.531   941%     -    0s
+H    0     0                    4030.1985131 -33937.531   942%     -    0s
+H    0     0                    4015.7025677 -33937.531   945%     -    0s
+     0     0 -33937.531    0  167 4015.70257 -33937.531   945%     -    0s
+     0     0 -33937.141    0  166 4015.70257 -33937.141   945%     -    0s
+     0     0 -33937.141    0  168 4015.70257 -33937.141   945%     -    0s
+     0     0 -33924.331    0  158 4015.70257 -33924.331   945%     -    0s
+     0     0 -33924.331    0  160 4015.70257 -33924.331   945%     -    0s
+     0     0 -33921.634    0  153 4015.70257 -33921.634   945%     -    1s
+     0     0 -33921.560    0  153 4015.70257 -33921.560   945%     -    1s
+     0     0 -33921.560    0  153 4015.70257 -33921.560   945%     -    1s
+     0     0 -33914.229    0  181 4015.70257 -33914.229   945%     -    1s
+     0     0 -33914.197    0  184 4015.70257 -33914.197   945%     -    1s
+     0     0 -33891.920    0  166 4015.70257 -33891.920   944%     -    1s
+     0     0 -33885.838    0  164 4015.70257 -33885.838   944%     -    1s
+     0     0 -33864.853    0  182 4015.70257 -33864.853   943%     -    1s
+     0     0 -33864.816    0  184 4015.70257 -33864.816   943%     -    1s
+     0     0 -33864.474    0  147 4015.70257 -33864.474   943%     -    1s
+     0     0 -33863.433    0  144 4015.70257 -33863.433   943%     -    1s
+     0     0 -33863.433    0  185 4015.70257 -33863.433   943%     -    1s
+     0     0 -33863.433    0  186 4015.70257 -33863.433   943%     -    1s
+     0     0 -33863.433    0  148 4015.70257 -33863.433   943%     -    1s
+     0     0 -33863.433    0  148 4015.70257 -33863.433   943%     -    1s
+     0     0 -33863.247    0  168 4015.70257 -33863.247   943%     -    1s
+     0     0 -33861.587    0  166 4015.70257 -33861.587   943%     -    1s
+     0     0 -33861.587    0  166 4015.70257 -33861.587   943%     -    1s
+     0     0 -33861.587    0  166 4015.70257 -33861.587   943%     -    1s
+     0     0 -33861.587    0  166 4015.70257 -33861.587   943%     -    1s
+     0     0 -33861.587    0  160 4015.70257 -33861.587   943%     -    1s
+     0     0 -33861.587    0  160 4015.70257 -33861.587   943%     -    2s
+     0     0 -33861.587    0  150 4015.70257 -33861.587   943%     -    2s
+     0     2 -33861.543    0  150 4015.70257 -33861.543   943%     -    2s
+H    7    12                    3999.5425619 -33859.874   947%   213    2s
+H   57    62                    3993.0929643 -33857.986   948%  95.2    2s
+H   82    88                    3870.9134158 -33857.986   975%   127    2s
+H   92    98                    3858.0491126 -33857.986   978%   131    3s
+H   95    98                    3720.8144772 -33857.986  1010%   134    3s
+H  147   156                    3630.4990240 -33857.986  1033%   124    3s
+H  743   707                    3597.6381597 -33857.182  1041%  86.0    4s
+   752   729 -26171.115   12  177 3597.63816 -33857.182  1041%  86.1    5s
+H 1159   986                    3596.7439763 -33845.684  1041%  75.4    8s
+  1171   994 -18551.640   94  262 3596.74398 -33826.373  1040%  74.6   10s
+  1201  1016 -31187.883    6  271 3596.74398 -31187.883   967%  79.7   15s
+  1412  1153 -18535.902   52  138 3596.74398 -31187.883   967%   124   20s
+
+Cutting planes:
+  Learned: 2
+  Gomory: 14
+  Cover: 1
+  Implied bound: 35
+  Projected implied bound: 3
+  Clique: 18
+  MIR: 10
+  Flow cover: 88
+  Zero half: 4
+  RLT: 4
+  Relax-and-lift: 31
+
+Explored 1422 nodes (182879 simplex iterations) in 20.01 seconds (37.13 work units)
+Thread count was 4 (of 20 available processors)
+
+Solution count 10: 3596.74 3597.64 3597.64 ... 3993.09
+
+Time limit reached
+Best objective 3.596743976334e+03, best bound -3.118788333667e+04, gap 967.1144%
+[EXATO_PETRO] status=TIME_LIMIT | FO=3596.74 | bound=-31187.88 | gap=967.11% | t=20.0s
+[EXATO_PETRO] Navio 0 | rota=[0, 15, 16, 14, 17, 19, 20, 18, 4, 5, 6, 21] | custo=1222.52 | valida=True | motivo=ok
+[FO_PETRO] Navio 0 | hF=-0.0000h hB=16.7713h hN=38.2625h hDP=29.1953h | T=84.2291h
+[FO_PETRO] Navio 0 | AT_k=0.8000h B_k=0.8000h P_k=16.4713h R_k=83.9291h F_k=85.0291h
+[FO_PETRO] Navio 0 | hDP decomposto: SET=3.4300h SP=1.5600h servico=24.2053h espera(residual)=-0.0000h
+[FO_PETRO] Navio 0 | tripDurationLimit=96.0000h | F_k-s_k=84.2291h | folga=11.7709h
+[FO_PETRO] Navio 0 | FCA(theta)=28.0000 FCB(varphi)=28.0000 FCN(gamma)=216.0000 FCS(delta)=164.0000 (USD/h)
+[FO_PETRO] Navio 0 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=7193.3502 | termo_servico=(FCS-FCA)*hDP=3970.5578 | f1_k=11163.9080 USD
+[FO_PETRO] Navio 0 | alpha*f1_k=1116.3908 USD | (1-alpha)*eta*xi_k*T_k=106.1286 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=1222.5194
+[EXATO_PETRO] Navio 1 | rota=[0, 1, 2, 3, 7, 10, 8, 9, 21] | custo=1039.12 | valida=True | motivo=ok
+[FO_PETRO] Navio 1 | hF=-0.0000h hB=13.0519h hN=37.6702h hDP=17.9686h | T=68.6907h
+[FO_PETRO] Navio 1 | AT_k=0.8000h B_k=0.8000h P_k=12.9519h R_k=68.5907h F_k=69.4907h
+[FO_PETRO] Navio 1 | hDP decomposto: SET=2.0100h SP=1.1700h servico=14.7886h espera(residual)=0.0000h
+[FO_PETRO] Navio 1 | tripDurationLimit=96.0000h | F_k-s_k=68.6907h | folga=27.3093h
+[FO_PETRO] Navio 1 | FCA(theta)=28.0000 FCB(varphi)=28.0000 FCN(gamma)=216.0000 FCS(delta)=164.0000 (USD/h)
+[FO_PETRO] Navio 1 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=7081.9959 | termo_servico=(FCS-FCA)*hDP=2443.7311 | f1_k=9525.7271 USD
+[FO_PETRO] Navio 1 | alpha*f1_k=952.5727 USD | (1-alpha)*eta*xi_k*T_k=86.5503 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=1039.1230
+[EXATO_PETRO] Navio 2 | rota=[0, 11, 12, 13, 21] | custo=1335.10 | valida=True | motivo=ok
+[FO_PETRO] Navio 2 | hF=0.0000h hB=3.4800h hN=30.6078h hDP=4.9822h | T=39.0701h
+[FO_PETRO] Navio 2 | AT_k=0.8000h B_k=0.8000h P_k=4.0200h R_k=39.6101h F_k=39.8701h
+[FO_PETRO] Navio 2 | hDP decomposto: SET=0.6700h SP=0.9100h servico=3.4022h espera(residual)=-0.0000h
+[FO_PETRO] Navio 2 | tripDurationLimit=96.0000h | F_k-s_k=39.0701h | folga=56.9299h
+[FO_PETRO] Navio 2 | FCA(theta)=56.0000 FCB(varphi)=56.0000 FCN(gamma)=432.0000 FCS(delta)=327.0000 (USD/h)
+[FO_PETRO] Navio 2 | f1 marginal (custo relativo ao fundeio, theta=FCA): termo_base=(FCB-FCA)*hB=0.0000 | termo_navegacao=(FCN-FCA)*hN=11508.5504 | termo_servico=(FCS-FCA)*hDP=1350.1822 | f1_k=12858.7326 USD
+[FO_PETRO] Navio 2 | alpha*f1_k=1285.8733 USD | (1-alpha)*eta*xi_k*T_k=49.2283 (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | custo_total=1335.1016
+[EXATO_PETRO] Navio 3 | rota=[0, 21] | custo=0.00 | valida=True | motivo=ok
+------------------------------------------------------------------------------
+[FO_PETRO] FROTA | custo_direto_total(f1)=33548.3677 USD | tempo_total(xi)=191.9899 h | alpha*f1=3354.8368 USD | (1-alpha)*eta*soma(xi)=241.9072 | FO_total=3596.7440
+[EXATO_PETRO] Solucao operacionalmente valida.
+[EXATO_PETRO] 20n-4k-7c-244r_SSML_silva2024_20nos_4veiculos | status=TIME_LIMIT | FO=3596.7 | bound=-31187.9 | gap=967.11% | t=20.3s
+[FO_EXATO] diesel=33548.37 m3 | E=33548.37 tCO2eq | T=191.99 h | alpha=0.10 | eta=1.40 | CO2=3354.84 | tempo=241.91 | soma=3596.7440
+==============================================================================
+CRONOGRAMA DA SOLUCAO (tempos em horas)
+------------------------------------------------------------------------------
+Navio 0 (SILVA_S_0) | rota: [0, 15, 16, 14, 17, 19, 20, 18, 4, 5, 6, 21]
+no                 chegada  ini_serv  fim_serv    espera  janela usada
+PLAT_6_order_14      18.36     18.36     19.02      0.00  [0.0, 90.0] (janela 1)
+PLAT_6_order_15      19.02     19.02     20.39      0.00  [0.0, 90.0] (janela 1)
+PLAT_5_order_13      21.37     31.00     37.82      9.63  [31.0, 114.0] (janela 1)
+PLAT_7_order_16      38.83     38.83     39.33      0.00  [0.0, 93.0] (janela 1)
+PLAT_7_order_18      39.33     39.33     42.61      0.00  [0.0, 93.0] (janela 1)
+PLAT_7_order_19      42.61     42.61     49.43      0.00  [0.0, 93.0] (janela 1)
+PLAT_7_order_17      49.43     49.43     49.86      0.00  [0.0, 93.0] (janela 1)
+PLAT_2_order_3       50.46     50.46     51.13      0.00  [4.0, 140.0] (janela 1)
+PLAT_2_order_4       51.13     51.13     51.49      0.00  [4.0, 140.0] (janela 1)
+PLAT_2_order_5       51.49     51.49     54.79      0.00  [4.0, 140.0] (janela 1)
+BASE(retorno)        72.01         -         -         -  retorno a base
+Navio 0: navegacao+manobras=37.38 h (FO) | servico=24.21 h | espera=9.63 h | retorno em t=72.01 h (limite 96.0 h)
+------------------------------------------------------------------------------
+Navio 1 (SILVA_S_1) | rota: [0, 1, 2, 3, 7, 10, 8, 9, 21]
+no                 chegada  ini_serv  fim_serv    espera  janela usada
+PLAT_1_order_0       18.47     18.47     19.37      0.00  [0.0, 111.0] (janela 1)
+PLAT_1_order_1       19.37     19.37     19.97      0.00  [0.0, 111.0] (janela 1)
+PLAT_1_order_2       19.97     19.97     24.98      0.00  [0.0, 111.0] (janela 1)
+PLAT_2_order_6       26.37     26.37     30.45      0.00  [4.0, 140.0] (janela 1)
+PLAT_3_order_9       32.40     37.00     39.64      4.60  [37.0, 151.0] (janela 1)
+PLAT_3_order_7       39.64     39.64     40.24      0.00  [37.0, 151.0] (janela 1)
+PLAT_3_order_8       40.24     40.24     41.20      0.00  [37.0, 151.0] (janela 1)
+BASE(retorno)        56.98         -         -         -  retorno a base
+Navio 1: navegacao+manobras=36.79 h (FO) | servico=14.79 h | espera=4.60 h | retorno em t=56.98 h (limite 96.0 h)
+------------------------------------------------------------------------------
+Navio 2 (SILVA_M_2) | rota: [0, 11, 12, 13, 21]
+no                 chegada  ini_serv  fim_serv    espera  janela usada
+PLAT_4_order_10      18.05     18.05     18.48      0.00  [0.0, 84.0] (janela 1)
+PLAT_4_order_11      18.48     18.48     18.95      0.00  [0.0, 84.0] (janela 1)
+PLAT_4_order_12      18.95     18.95     21.45      0.00  [0.0, 84.0] (janela 1)
+BASE(retorno)        38.70         -         -         -  retorno a base
+Navio 2: navegacao+manobras=34.50 h (FO) | servico=3.40 h | espera=0.00 h | retorno em t=38.70 h (limite 96.0 h)
+------------------------------------------------------------------------------
+Navio 3 (SILVA_L_3): OCIOSO (fica na base)
+------------------------------------------------------------------------------
+FO TOTAL (soma da navegacao+manobras) = 391209 s = 108.67 h
+==============================================================================
+[PLOTJS] Solução construtiva (construtiva): ok -> petroConstr.js
+[GANTT] solucao 'bp' nao registrada (chame registrar_solucao antes de exportar_visualizacao)
+[PLOTJS] Branch-and-Price (bp): sem solucao (DADOS=null) -> petroBP.js
+[PLOTJS] Modelo exato (exato): ok -> petroEx.js
+[PLOTJS] pacote exportado em C:\Users\PolyanaSilva\Documents\BP_VRPTW\PlotJS\20n-4k-7c-244r_SSML_silva2024_20nos_4veiculos

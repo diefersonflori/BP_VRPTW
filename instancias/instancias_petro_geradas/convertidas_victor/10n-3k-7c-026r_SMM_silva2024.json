@@ -1,0 +1,498 @@
+{
+  "instanceInformation": {
+    "userComments": [
+      "Conversao automatica do benchmark PSVRP de Silva et al. (2024).",
+      "Fonte: 10n-3k-7c-026r_SMM.txt"
+    ]
+  },
+  "input": {
+    "basicData": {
+      "objectiveMode": "silva2024",
+      "alphaWeight": 0.1,
+      "etaConversion": 1.4,
+      "dieselDensity": 0.852,
+      "conversionTonDieselTonCO2Eq": 3.595,
+      "numberOfOrders": 10,
+      "numberOfVessels": 3,
+      "numberOfClients": 7,
+      "numberOfBackloadCommodities": 1,
+      "numberOfCompartments": 3,
+      "numberOfLoadCommodities": 3,
+      "tripClass": "silva2024",
+      "pickupDeckBeforeDeliveryDeck": true,
+      "distanceThreshold": 18.0,
+      "conversionNote": "etaConversion/dieselDensity/conversionTonDieselTonCO2Eq foram mantidos apenas por compatibilidade com o schema Petrobras; nao vieram do benchmark Silva. No modo silva2024 os dados relevantes sao fuelCost (FCA/FCB/FCN/FCS), safePositioningTime (SPO), platformSetup (SET), dueTime, janelas, capacidades e velocidades."
+    },
+    "capacityCommodityAssignmentData": [
+      {
+        "compartment": "deckSpace",
+        "deckCargoBackload": 1,
+        "deckCargoLoad": 1,
+        "dieselLoad": 0,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "dieselTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 1,
+        "waterLoad": 0
+      },
+      {
+        "compartment": "waterTanks",
+        "deckCargoBackload": 0,
+        "deckCargoLoad": 0,
+        "dieselLoad": 0,
+        "waterLoad": 1
+      }
+    ],
+    "fleetData": [
+      {
+        "vesselId": 0,
+        "vesselName": "SILVA_S_0",
+        "vesselClass": "S",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 96.0,
+        "setupArrival": 0.0,
+        "setupDeparture": 0.0,
+        "estimatedTimeOfReadiness": 6.9,
+        "maximumDepartureTime": 0.0,
+        "latitude": -21.83,
+        "longitude": -41.77,
+        "capacity": {
+          "deckSpace": 450.0,
+          "dieselTanks": 600.0,
+          "waterTanks": 500.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.0,
+          "base": 0.0,
+          "navigation": 0.0,
+          "dynamic": 0.0
+        },
+        "fuelCost": {
+          "anchored": 28.0,
+          "base": 28.0,
+          "navigation": 216.0,
+          "dynamic": 164.0
+        },
+        "safePositioningTime": 0.39,
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 10.9
+          },
+          {
+            "above": 0.0,
+            "speed": 8.6
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 0.0,
+          "waterLoad": 0.0
+        }
+      },
+      {
+        "vesselId": 1,
+        "vesselName": "SILVA_M_1",
+        "vesselClass": "M",
+        "maximumNumberOfTrips": 2,
+        "tripDurationLimit": 96.0,
+        "setupArrival": 0.0,
+        "setupDeparture": 0.0,
+        "estimatedTimeOfReadiness": 3.3,
+        "maximumDepartureTime": 0.0,
+        "latitude": -21.83,
+        "longitude": -41.77,
+        "capacity": {
+          "deckSpace": 570.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 800.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.0,
+          "base": 0.0,
+          "navigation": 0.0,
+          "dynamic": 0.0
+        },
+        "fuelCost": {
+          "anchored": 56.0,
+          "base": 56.0,
+          "navigation": 432.0,
+          "dynamic": 327.0
+        },
+        "safePositioningTime": 0.91,
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 12.7
+          },
+          {
+            "above": 0.0,
+            "speed": 9.4
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 0.0,
+          "waterLoad": 0.0
+        }
+      },
+      {
+        "vesselId": 2,
+        "vesselName": "SILVA_M_2",
+        "vesselClass": "M",
+        "maximumNumberOfTrips": 1,
+        "tripDurationLimit": 96.0,
+        "setupArrival": 0.0,
+        "setupDeparture": 0.0,
+        "estimatedTimeOfReadiness": 6.9,
+        "maximumDepartureTime": 0.0,
+        "latitude": -21.83,
+        "longitude": -41.77,
+        "capacity": {
+          "deckSpace": 570.0,
+          "dieselTanks": 1000.0,
+          "waterTanks": 800.0
+        },
+        "fuelConsumption": {
+          "anchored": 0.0,
+          "base": 0.0,
+          "navigation": 0.0,
+          "dynamic": 0.0
+        },
+        "fuelCost": {
+          "anchored": 56.0,
+          "base": 56.0,
+          "navigation": 432.0,
+          "dynamic": 327.0
+        },
+        "safePositioningTime": 0.91,
+        "velocities": [
+          {
+            "above": 18.0,
+            "speed": 12.7
+          },
+          {
+            "above": 0.0,
+            "speed": 9.4
+          }
+        ],
+        "initialStock": {
+          "dieselLoad": 0.0,
+          "waterLoad": 0.0
+        }
+      }
+    ],
+    "supplyBasesData": [
+      {
+        "baseName": "BASE_SILVA",
+        "baseId": 0,
+        "region": "SILVA2024",
+        "efficiency": {
+          "deckCargoBackload": 50.0,
+          "deckCargoLoad": 50.0,
+          "dieselLoad": 57.14285714285714,
+          "waterLoad": 102.04081632653062
+        },
+        "successor": null,
+        "navigationTimeToMoor": 0.0,
+        "latitude": -21.83,
+        "longitude": -41.77
+      }
+    ],
+    "ordersData": [
+      {
+        "orderId": 0,
+        "clientId": 1,
+        "clientName": "PLAT_1",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.425,
+        "longitude": -39.959,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 32.0,
+        "dueTime": 216.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            0.0,
+            76.0
+          ],
+          [
+            136.0,
+            216.0
+          ]
+        ]
+      },
+      {
+        "orderId": 1,
+        "clientId": 2,
+        "clientName": "PLAT_2",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.487,
+        "longitude": -40.097,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 16.0,
+        "dueTime": 144.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            5.0,
+            68.0
+          ],
+          [
+            92.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 2,
+        "clientId": 2,
+        "clientName": "PLAT_2",
+        "clusterName": "SILVA2024",
+        "commodity": "waterLoad",
+        "efficiency": 55.865921787709496,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.487,
+        "longitude": -40.097,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 255.0,
+        "dueTime": 168.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            5.0,
+            68.0
+          ],
+          [
+            92.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 3,
+        "clientId": 3,
+        "clientName": "PLAT_3",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 21.413276231263385,
+        "serviceSetup": 0.0,
+        "platformSetup": 1.42,
+        "latitude": -22.447,
+        "longitude": -39.948,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 97.0,
+        "dueTime": 144.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            0.0,
+            144.0
+          ]
+        ]
+      },
+      {
+        "orderId": 4,
+        "clientId": 4,
+        "clientName": "PLAT_4",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.561,
+        "longitude": -40.123,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 1.0,
+        "dueTime": 120.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            0.0,
+            120.0
+          ]
+        ]
+      },
+      {
+        "orderId": 5,
+        "clientId": 5,
+        "clientName": "PLAT_5",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoBackload",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.467,
+        "longitude": -40.03,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 15.0,
+        "dueTime": 144.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            20.0,
+            98.0
+          ],
+          [
+            122.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 6,
+        "clientId": 5,
+        "clientName": "PLAT_5",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.467,
+        "longitude": -40.03,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 17.0,
+        "dueTime": 168.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            20.0,
+            98.0
+          ],
+          [
+            122.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 7,
+        "clientId": 6,
+        "clientName": "PLAT_6",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.359,
+        "longitude": -40.089,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 21.0,
+        "dueTime": 168.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            0.0,
+            90.0
+          ],
+          [
+            138.0,
+            168.0
+          ]
+        ]
+      },
+      {
+        "orderId": 8,
+        "clientId": 7,
+        "clientName": "PLAT_7",
+        "clusterName": "SILVA2024",
+        "commodity": "deckCargoLoad",
+        "efficiency": 30.030030030030026,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.428,
+        "longitude": -40.028,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 21.0,
+        "dueTime": 216.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            45.0,
+            113.0
+          ],
+          [
+            149.0,
+            216.0
+          ]
+        ]
+      },
+      {
+        "orderId": 9,
+        "clientId": 7,
+        "clientName": "PLAT_7",
+        "clusterName": "SILVA2024",
+        "commodity": "dieselLoad",
+        "efficiency": 67.11409395973155,
+        "serviceSetup": 0.0,
+        "platformSetup": 0.67,
+        "latitude": -22.428,
+        "longitude": -40.028,
+        "orderPriorityClient": 0,
+        "penaltyDueDate": 0.0,
+        "penaltyReadyTime": 0.0,
+        "quantity": 319.0,
+        "dueTime": 192.0,
+        "successor": null,
+        "fix_successor_seq": false,
+        "transshipment": null,
+        "timeWindows": [
+          [
+            45.0,
+            113.0
+          ],
+          [
+            149.0,
+            216.0
+          ]
+        ]
+      }
+    ]
+  }
+}

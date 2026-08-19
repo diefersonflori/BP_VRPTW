@@ -16,6 +16,7 @@ import csv
 from datetime import datetime
 import math
 import statistics
+import itertools
 from collections import defaultdict
 
 # ápara o c++
@@ -234,6 +235,16 @@ class Metodos:
         self.MAX_CANDIDATAS_PRICING = 20   # candidatas negativas ineditas que um pricing tenta reunir
         self.MAX_COLUNAS_NOVAS_ITER = 50    # colunas novas aceitas no pool por iteracao de CG
         self.MAX_COLUNAS_NOVAS_VEICULO = 2  # colunas novas aceitas no pool por veiculo na mesma iteracao
+
+        # PD_SILVA_CPP/BID_SILVA_CPP (pipeline silva2024 -- secao 10/11 da
+        # integracao no B&P): defaults SEPARADOS de PRICING_EXATO_MAX_LABELS
+        # (Petro/Solomon, definido em main.py, tipicamente ~1e9) -- o teste
+        # de escala do PD_SILVA_CPP mostrou ~1.35 GB em 10 milhoes de labels,
+        # entao NAO reaproveitar aquele valor aqui. Podem ser sobrescritos
+        # por instancia via inst.silva_pd_cpp_max_labels/silva_pd_cpp_timeout_s.
+        self.SILVA_PD_CPP_MAX_LABELS = 3_000_000
+        self.SILVA_PD_CPP_TIMEOUT_S = 5.0
+        self.SILVA_BID_CPP_MAX_LABELS_POR_NO = 60  # mesmo default conceitual de SUB_PROG_BID_SILVA
 
     def run_exe(self, exe_name: str, args=None, stdin_text: str | None = None) -> subprocess.CompletedProcess:
         args = args or []
@@ -2676,6 +2687,31 @@ class Metodos:
                 sol_pool.lb_raiz_confiavel = float(z_lp)
                 print(f"[LB RAIZ] lb_raiz_confiavel = {sol_pool.lb_raiz_confiavel:.4f}")
 
+            # secao 15 (silva2024): a raiz integrada tem que reproduzir o LB
+            # ja validado isoladamente (CG manual em _teste_etapa15_raiz_silva.py)
+            # antes de abrir qualquer filho. O valor esperado e opcional
+            # (sol_pool.SILVA_LB_RAIZ_ESPERADO), setado pelo script de teste.
+            if (
+                prof == 0
+                and getattr(inst, "objective_mode", "petrobras") == "silva2024"
+                and sol_pool.lb_raiz_confiavel is not None
+                and getattr(sol_pool, "SILVA_LB_RAIZ_ESPERADO", None) is not None
+            ):
+                lb_esperado = float(sol_pool.SILVA_LB_RAIZ_ESPERADO)
+                dif_raiz = sol_pool.lb_raiz_confiavel - lb_esperado
+                if abs(dif_raiz) > 1e-4:
+                    print(
+                        f"[SILVA RAIZ] PARADA: LB da raiz integrada ({sol_pool.lb_raiz_confiavel:.6f}) "
+                        f"nao reproduz o teste isolado ({lb_esperado:.6f}); dif={dif_raiz:.6f}. "
+                        f"Nao abrindo filhos."
+                    )
+                    sol_pool.motivoConv = "silva_raiz_divergente"
+                    break
+                print(
+                    f"[SILVA RAIZ] OK: LB da raiz reproduzida "
+                    f"({sol_pool.lb_raiz_confiavel:.6f} vs esperado {lb_esperado:.6f})."
+                )
+
             # teste integralidade-podar os filhos
             tol = 1e-6
             if abs(z_lp - z_mip) <= tol:
@@ -2687,6 +2723,16 @@ class Metodos:
                 f"lb_confiavel={lb_ok} slack_final={getattr(no_atual, 'slack_sum_final', 0.0):.6f} "
                 f"cg_convergiu={getattr(no_atual, 'cg_convergiu', False)} max_iter={getattr(no_atual, 'parou_por_max_iter', False)}"
             )
+
+            if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+                ncol_atual = sum(len(v["sequencia_rota"]) for v in sol_pool.rotas.values())
+                print(
+                    f"[SILVA BP] no={no_atual.id_no} prof={prof} RMP={z_lp:.6f} "
+                    f"MIP_RMP={(z_mip if not math.isinf(z_mip) else None)} lb_confiavel={lb_ok} "
+                    f"ncol={ncol_atual} iterCG={getattr(no_atual, 'iter_cg_final', None)} "
+                    f"melhorRC_por_k={getattr(no_atual, 'melhor_rc_por_k', {})} "
+                    f"motivoCG={getattr(sol_pool, 'motivoConv', None)}"
+                )
 
             # -------------------------------------------------
             # poda por bound (SÓ com LB confiável)
@@ -2842,6 +2888,15 @@ class Metodos:
 
             abriu_filhos = (filho_esq is not None) and (filho_dir is not None)
             if abriu_filhos:
+                if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+                    bfrom = filho_dir.branching_from or {}
+                    arco_sel = tuple(bfrom.get("arco", ()))
+                    score_sel = getattr(no_atual, "arc_score", {}).get(arco_sel)
+                    print(
+                        f"[SILVA BRANCH] no_pai={no_atual.id_no} arco={arco_sel} score={score_sel} "
+                        f"filho_proibe={filho_esq.id_no} filho_fixa={filho_dir.id_no}"
+                    )
+
                 # >>> IMPORTANTE: filhos NÃO herdam custo_lp do pai
                 filho_esq.custo_lp = None
                 filho_dir.custo_lp = None
@@ -6768,6 +6823,1028 @@ class Metodos:
         candidatas.sort(key=lambda c: c["rc"])
         return candidatas, False, False
 
+    def SUB_HEUR_ALLBESTINSERTION_MULTI_SILVA(self, inst, sol_pool, pi, sigma_k, k, NO_BP, mu_arc=None,
+                                               n_starts=30, eps=1e-6, max_candidatas=None):
+        """Heuristica ALLBEST (GRASP + insercao), EXCLUSIVA de objective_mode=="silva2024",
+        primeira etapa da nova arquitetura de pricing Silva (reaproveita a arquitetura do
+        B&P atual; ainda NAO implementa BID_SILVA/PD_SILVA). Reaproveita de
+        SUB_HEUR_ALLBESTINSERTION_MULTI: multi-start GRASP, insercao incremental de
+        pedidos, eliminacao de duplicatas (vistas_no_lote/coluna_ja_existe), respeito ao
+        branching (NO_BP.arcos_proibidos/arcos_fixados_em_1 via arco_permitido/
+        contem_todos_fixados), pi/sigma/mu com o MESMO papel/formato (mu_arc[(i,j,k)] com
+        fallback (i,j)), e o mesmo formato de retorno (candidatas, busca_completa=False,
+        timeout=False).
+
+        SUBSTITUIDO por avaliacao Silva: toda viabilidade e todo custo de rota (base,
+        insercoes, rota final) vem de self.avaliar_rota_silva2024(inst, k, seq) -- a
+        MESMA fisica/oraculo ja usado por pricing_silva2024/metodo_exato_petro (VL/VH,
+        SP, SET, janelas, dueTime, carregamento na base, servico offshore, espera,
+        backload, capacidades, TDL, precedencia por compartimento). Nada da formula
+        fisica Silva e reimplementado aqui -- so a formula de custo reduzido (rc_silva,
+        identica a _calcular_rc_coluna/pricing_silva2024) e local.
+
+        NAO reaproveitado (desabilitado SOMENTE aqui, sem alterar
+        SUB_HEUR_ALLBESTINSERTION_MULTI nem busca_local_rota): a busca local de
+        SUB_HEUR_ALLBESTINSERTION_MULTI pressupoe a viabilidade generica Solomon/Petro
+        (travel_time simples, uma unica demanda/capacidade por no) e nao e valida para a
+        fisica Silva (navegacao piecewise, precedencia por compartimento, TDL relativo a
+        B, etc.) -- nesta primeira versao a rota de cada start e aceita como esta ao fim
+        da construcao por insercao, sem refinamento local adicional.
+
+        Retorna (candidatas, busca_completa, timeout):
+            candidatas: lista de dicts {k, seq, binx, custo, rc, origem="ALLBEST_SILVA"},
+                        ordenada pelo rc mais negativo primeiro.
+            busca_completa: sempre False (heuristica GRASP, nao certifica ausencia de
+                        outras colunas negativas -- pricing_silva2024 continua sendo o
+                        oraculo exato/fallback para certificacao).
+            timeout: sempre False (ALLBEST_SILVA nao usa timeout).
+        """
+        import random
+
+        if mu_arc is None:
+            mu_arc = {}
+        if max_candidatas is None:
+            max_candidatas = self.MAX_CANDIDATAS_PRICING
+
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = inst.nbn - 1
+
+        # =========================================================
+        # ARCOS FIXOS / PROIBIDOS DO NO BP (identico a SUB_HEUR_ALLBESTINSERTION_MULTI)
+        # =========================================================
+        proibidos_k = {(i, j) for (i, j, kk) in NO_BP.arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in NO_BP.arcos_fixados_em_1 if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                # conflito de arcos fixados (2 sucessores/predecessores fixos para o
+                # mesmo no) -- CORRIGIDO nesta etapa: contrato de retorno e sempre
+                # (candidatas, busca_completa, timeout), NUNCA (None, None) -- o
+                # chamador em gerar_novas_colunas_com_duais11 desempacota 3 valores.
+                return [], False, False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return [], False, False
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+
+            obrigatorio = (i, j) in fixados_k
+            if not obrigatorio:
+                tabu_tenure = getattr(NO_BP, "tabu_tenure", 0)
+                tabu_until = getattr(NO_BP, "tabu_until", None)
+                if tabu_tenure and tabu_tenure > 0 and tabu_until is not None:
+                    if tabu_until[k][i][j] > 0:
+                        return False
+
+            return True
+
+        def arcos_da_rota(rota):
+            return [(rota[t], rota[t + 1]) for t in range(len(rota) - 1)]
+
+        def contem_todos_fixados(rota):
+            aset = set(arcos_da_rota(rota))
+            for arc in fixados_k:
+                if arc not in aset:
+                    return False
+            return True
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        def rota_para_binaria(rota):
+            bin_xij = [0] * nbcd
+            for v in rota:
+                if 1 <= v <= nbcd:
+                    bin_xij[v - 1] = 1
+            return bin_xij
+
+        # =========================================================
+        # DUAIS: MESMO PAPEL do B&P atual, MESMA formula de _calcular_rc_coluna /
+        # pricing_silva2024 (pi 0-based por order, sigma_k uma unica vez, mu por arco
+        # com fallback (i,j,k)->(i,j)). Nao cria dual nova, nao altera o mestre.
+        # =========================================================
+        def rc_silva(seq, custo_real):
+            rc = float(custo_real)
+            for cliente in seq:
+                if 1 <= cliente <= nbcd:
+                    rc -= float(pi[cliente - 1])
+            rc -= float(sigma_k)
+            for t in range(len(seq) - 1):
+                rc -= mu(seq[t], seq[t + 1])
+            return rc
+
+        # =========================================================
+        # FONTE UNICA da fisica/FO Silva: avaliar_rota_silva2024. Retorna None se
+        # inviavel (rejeita a candidata); senao (resultado, custo_real, rc).
+        # =========================================================
+        def avaliar_candidata_silva(seq):
+            resultado = self.avaliar_rota_silva2024(inst, k, seq)
+            if not resultado["viavel"]:
+                return None
+            custo_real = float(resultado["custo"])
+            return resultado, custo_real, rc_silva(seq, custo_real)
+
+        def constroi_rota_base_silva():
+            rota = [dep0]
+            usados = {dep0}
+            atual = dep0
+
+            while atual in succ_fixo:
+                prox = succ_fixo[atual]
+                if prox in usados:
+                    return None
+                rota.append(prox)
+                usados.add(prox)
+                atual = prox
+                if atual == depf:
+                    break
+
+            if rota[-1] != depf:
+                if depf in pred_fixo and pred_fixo[depf] != rota[-1]:
+                    return None
+                rota.append(depf)
+
+            av = avaliar_candidata_silva(rota)
+            if av is None:
+                return None
+            _resultado, custo_real, rc = av
+            return rota, set(rota), custo_real, rc
+
+        def melhores_insercoes_silva(rota_atual, visitados, rc_atual):
+            """Gera todas as insercoes viaveis (avaliadas com avaliar_rota_silva2024,
+            nao com a formula generica antiga) em todas as posicoes, ordenadas pelo
+            delta de custo reduzido Silva -- exige RC_SILVA(candidata) para CADA
+            candidata testada, nunca custo generico recalculado so no final."""
+            insercoes = []
+
+            for cliente in range(1, nbcd + 1):
+                if cliente in visitados:
+                    continue
+                if cliente in pred_fixo and pred_fixo[cliente] not in rota_atual:
+                    continue
+
+                for pos in range(1, len(rota_atual)):
+                    i = rota_atual[pos - 1]
+                    j = rota_atual[pos]
+
+                    if (i, j) in fixados_k:
+                        continue
+                    if not arco_permitido(i, cliente):
+                        continue
+                    if not arco_permitido(cliente, j):
+                        continue
+
+                    nova_rota = rota_atual[:pos] + [cliente] + rota_atual[pos:]
+
+                    av = avaliar_candidata_silva(nova_rota)
+                    if av is None:
+                        continue
+                    resultado_novo, custo_real_novo, rc_nova = av
+
+                    delta_rc = rc_nova - rc_atual
+                    score = delta_rc + 0.01 * float(resultado_novo.get("F", 0.0))
+
+                    insercoes.append((
+                        cliente,  # 0
+                        pos,  # 1
+                        nova_rota,  # 2
+                        delta_rc,  # 3
+                        rc_nova,  # 4
+                        custo_real_novo,  # 5
+                        score,  # 6
+                    ))
+
+            insercoes.sort(key=lambda x: (x[3], x[6], x[4]))
+            return insercoes
+
+        candidatas = []
+        vistas_no_lote = set()
+
+        base = constroi_rota_base_silva()
+
+        if base is None:
+            if len(fixados_k) > 0:
+                return [], False, False
+
+            rota0 = [dep0, depf]
+            av0 = avaliar_candidata_silva(rota0)
+            if av0 is None:
+                return [], False, False
+            _resultado0, custo0, rc0 = av0
+            base = (rota0, {dep0, depf}, custo0, rc0)
+
+        for _ii in range(n_starts):
+            if len(candidatas) >= max_candidatas:
+                break
+
+            rota = base[0][:]
+            visitados = set(base[1])
+            custo_red_total = base[3]
+            custo_real_total = base[2]
+
+            while True:
+                insercoes = melhores_insercoes_silva(rota, visitados, custo_red_total)
+
+                if not insercoes:
+                    break
+
+                melhor_delta = insercoes[0][3]
+                pior_delta = insercoes[-1][3]
+
+                alpha_rcl = random.uniform(0.15, 0.40)
+                limite = melhor_delta + alpha_rcl * (pior_delta - melhor_delta)
+
+                rcl = [ins for ins in insercoes if ins[3] <= limite]
+                if not rcl:
+                    rcl = insercoes[:1]
+
+                cliente, pos, rota_nova, delta_rc, rc_nova, custo_real_novo, score = random.choice(rcl)
+
+                if delta_rc > 1e-6 and custo_red_total > 1e-6:
+                    break
+
+                rota = rota_nova
+                visitados.add(cliente)
+                custo_red_total = rc_nova
+                custo_real_total = custo_real_novo
+
+                if len(visitados) >= nbcd + 2:
+                    break
+
+            if len(rota) >= 3:
+                if len(fixados_k) > 0 and not contem_todos_fixados(rota):
+                    continue
+
+                rc_start = custo_red_total
+                custo_start = custo_real_total
+
+                if rc_start < -eps:
+                    chave = tuple(rota)
+                    if chave in vistas_no_lote:
+                        continue
+                    if sol_pool is None or not sol_pool.coluna_ja_existe(rota, k=k, globalmente=False):
+                        vistas_no_lote.add(chave)
+                        candidatas.append({
+                            "k": k,
+                            "seq": list(rota),
+                            "binx": rota_para_binaria(rota),
+                            "custo": float(custo_start),
+                            "rc": float(rc_start),
+                            "origem": "ALLBEST_SILVA",
+                        })
+                        if len(candidatas) >= max_candidatas:
+                            break
+
+        candidatas.sort(key=lambda c: c["rc"])
+        return candidatas, False, False
+
+    def SUB_PROG_BID_SILVA(self, inst, pi, sigma_k, k, NO_BP, arcos_proibidos=None,
+                            arcos_fixados=None, mu_arc=None, max_labels_por_no=60,
+                            max_depth=None, max_candidatas=None, eps=1e-6):
+        """
+        Busca intermediaria (secao "PARTE B" do pedido), EXCLUSIVA de
+        objective_mode=="silva2024": mais forte que SUB_HEUR_ALLBESTINSERTION_
+        MULTI_SILVA (nao e so um GRASP multi-start, expande por ORDER com
+        dominancia/beam por nivel) e mais barata que pricing_silva2024 (nao
+        enumera TODOS os subconjuntos x permutacoes de cada plataforma).
+        Primeira versao Python -- reaproveita a arquitetura conceitual de
+        SUB_PROG_DIN_BIDIRECIONAL (expansao progressiva de labels/rotas,
+        dominancia por nivel/beam, recursos acumulados, poda), adaptada aos
+        recursos Silva (orders, plataforma aberta/fechada, precedencia
+        coleta-antes-de-entrega de DECK, deck/diesel/agua, branching) -- NAO
+        bidirecional ainda (a fisica Silva nao da para compor duas metades
+        sem reavaliar a rota inteira -- ver abaixo) e SEM usar
+        matriz_distancia/velocidade como FO propria.
+
+        FONTE UNICA de viabilidade/custo: exatamente como ALLBEST_SILVA/
+        pricing_silva2024, cada rota FECHADA (terminando no deposito final)
+        e avaliada por self.avaliar_rota_silva2024(inst, k, seq) -- a MESMA
+        fisica/oraculo (VL/VH, SP/SET, janelas, dueTime, deck pre-carregado
+        na base, backload, capacidades, TDL, precedencia por compartimento).
+        Nenhuma formula fisica e reimplementada aqui; so o custo reduzido
+        (mesma convencao de sinais de pricing_silva2024/_calcular_rc_coluna)
+        e local. resultado["custo"] e sempre o custo real armazenado na
+        candidata.
+
+        Por que so forward (nao bidirecional de fato): avaliar_rota_silva2024
+        exige seq[0]==dep0 e seq[-1]==depf (nao avalia trechos abertos) --
+        nao ha como obter viabilidade/custo de uma METADE backward isolada
+        sem fechar no deposito. Em vez disso, este BID expande labels
+        FORWARD por ORDER (nao por bloco de plataforma inteiro, como pede a
+        secao "VISITAS PARCIAIS" -- uma plataforma pode ficar so
+        parcialmente atendida) e, a CADA expansao, fecha a rota parcial no
+        deposito final e chama avaliar_rota_silva2024 -- exatamente o mesmo
+        padrao de avaliar_e_registrar em pricing_silva2024 e de
+        avaliar_candidata_silva em ALLBEST_SILVA, so que aqui guiando uma
+        busca por label em vez de DFS exaustivo ou insercao GRASP.
+
+        FECHAR agora != CONTINUAR existindo (correcao critica desta versao):
+        a cada expansao, o prefixo (seq_aberta) e SEMPRE mantido vivo e
+        anexado ao proximo nivel, independente de conseguir virar uma
+        candidata fechando exatamente ali. "Fechar agora" (seq_aberta +
+        [depf]) e so uma TENTATIVA -- feita a cada expansao -- de (a)
+        registrar uma candidata valida e (b) obter um RC real para ranking
+        do label; ela NUNCA decide se o prefixo pode continuar sendo
+        expandido. Isso e feito em duas fases explicitas, deliberadamente
+        separadas:
+          1. avalia_fechamento_fisico(seq_aberta): SO a fisica
+             (avaliar_rota_silva2024), sem conhecer branching. Retorna None
+             so quando a rota fechada agora e FISICAMENTE inviavel (janela/
+             capacidade/TDL/etc.).
+          2. registra(...): so aqui, alem de contem_todos_fixados, e checado
+             arco_permitido(ultimo_no, depf) -- se o fechamento aqui viola
+             branching (por exemplo o ultimo no tem um succ_fixo apontando
+             para OUTRO no, ou o proprio arco no->depf esta proibido), a
+             candidata simplesmente nao e registrada, mas o label (que ja
+             foi anexado ao proximo nivel de qualquer forma) continua
+             disponivel para ser expandido -- e e exatamente essa expansao
+             que permite cumprir o arco fixado (no->succ_fixo[no]) ou
+             alcancar depf por outro caminho quando no->depf e proibido.
+        Quando avalia_fechamento_fisico falha (fisica OU indisponivel
+        naquele ponto), o label herda como `rc_fechamento` o valor do PAI --
+        um proxy de ranking seguro (nao inventa FO nova, nunca usa
+        matriz_distancia/velocidade), usado so para ordenar o beam, nunca
+        para decidir viabilidade/existencia do label.
+
+        BUG CORRIGIDO (nao presente na primeira versao aceita por engano
+        durante auto-revisao): uma versao anterior condicionava a propria
+        EXPANSAO a `arco_permitido(ultimo_no, depf)`, descartando (via
+        `continue`) qualquer label cujo fechamento imediato fosse proibido
+        pelo branching -- isso podia eliminar POR COMPLETO o unico caminho
+        que cumpre um arco fixado (succ_fixo forcando i->j: o label que
+        chega em i tem arco_permitido(i, depf)==False por definicao, e
+        acabava descartado ANTES de poder expandir i->j) ou impedir
+        contornar um arco proibido para o deposito (i->depf proibido, mas
+        i->j->...->depf continuaria valido). A separacao acima resolve isso.
+
+        Dominancia/beam: ao final de cada nivel, os labels sao ordenados
+        pelo RC de fechamento (real quando disponivel, ou o proxy herdado
+        do pai) e so os `max_labels_por_no` melhores sobrevivem -- um proxy
+        razoavel de dominancia (nao um criterio formal de Pareto sobre
+        tempo/carga, que exigiria reimplementar a fisica Silva fora de
+        avaliar_rota_silva2024) -- EXCETO labels cujo ultimo no tem uma
+        continuacao obrigatoria pendente (esta em succ_fixo, ou seja, ainda
+        precisa cumprir um arco fixado): esses NUNCA sao removidos so por
+        ranking desfavoravel, para o beam nunca descartar justamente o
+        prefixo que o branching exige manter vivo.
+
+        Regras herdadas SEM reimplementacao nova (mesma logica de
+        pricing_silva2024/ALLBEST_SILVA):
+          - precedencia por plataforma: dentro do bloco aberto, nenhuma
+            coleta de DECK apos qualquer entrega de DECK ja ter comecado;
+          - uma plataforma, uma vez fechada (trocou-se para outra), nunca
+            reabre;
+          - capacidades deck/diesel/agua conferidas de forma exata (mesma
+            regra/tolerancia de pricing_silva2024) como poda estrutural
+            (nunca descarta nada que avaliar_rota_silva2024 aceitaria);
+          - branching: arcos_proibidos corta durante a expansao
+            (arco_permitido); arcos_fixados_em_1 e exigido no FECHAMENTO de
+            cada candidata (contem_todos_fixados + arco_permitido no arco
+            de fechamento, ambos dentro de registra), reaplicado de novo
+            pelo chamador via coluna_respeita_no antes de aceitar a coluna
+            (mesmo padrao de pricing_silva2024).
+
+        Retorna (candidatas, busca_completa, timeout):
+            candidatas: lista de dicts {k, seq, binx, custo, rc,
+                        origem="BID_SILVA"}, ordenada pelo rc mais negativo.
+            busca_completa: SEMPRE False -- BID_SILVA e heuristico nesta
+                        primeira versao (beam width finito, max_depth,
+                        ranking por proxy quando o fechamento imediato nao
+                        e possivel), NUNCA certifica ausencia de coluna
+                        negativa.
+            timeout: SEMPRE False (sem orcamento de tempo nesta versao; o
+                        controle de custo computacional e so max_labels_por_no/
+                        max_depth/max_candidatas).
+        """
+        dep0 = 0
+        depf = inst.nbn - 1
+        clientes = list(range(1, inst.nbcd + 1))
+        veic = inst.veiculos[k]
+        mu_arc = mu_arc or {}
+        arcos_proibidos = arcos_proibidos or set()
+        arcos_fixados = arcos_fixados or set()
+
+        if max_candidatas is None:
+            max_candidatas = self.MAX_CANDIDATAS_PRICING
+        if max_depth is None:
+            max_depth = inst.nbcd
+
+        proibidos_k = {(i, j) for (i, j, kk) in arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in arcos_fixados if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return [], False, False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return [], False, False
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def contem_todos_fixados(seq_nos):
+            if not fixados_k:
+                return True
+            aset = {(seq_nos[t], seq_nos[t + 1]) for t in range(len(seq_nos) - 1)}
+            return all(arc in aset for arc in fixados_k)
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        # ---- agrupamento por plataforma (MESMA regra de avaliar_rota_silva2024/
+        # pricing_silva2024) ----
+        dp = inst.dados_petro
+        nomes = list(dp.get("nomes", []))
+        mapa_plataformas = {}
+        plataforma_id = {}
+        for i in clientes:
+            nome = str(nomes[i]) if i < len(nomes) else ""
+            if "_order_" in nome:
+                chave = nome.split("_order_", 1)[0]
+            elif "_order" in nome:
+                chave = nome.split("_order", 1)[0]
+            else:
+                chave = nome
+            if chave not in mapa_plataformas:
+                mapa_plataformas[chave] = len(mapa_plataformas)
+            plataforma_id[i] = mapa_plataformas[chave]
+
+        deck_load = {i: float(getattr(inst.noh[i], "DEMAND_DECK_LOAD", 0.0)) for i in clientes}
+        deck_backload = {i: float(getattr(inst.noh[i], "DEMAND_DECK_BACKLOAD", 0.0)) for i in clientes}
+        diesel = {i: float(getattr(inst.noh[i], "DEMAND_DIESEL", 0.0)) for i in clientes}
+        agua = {i: float(getattr(inst.noh[i], "DEMAND_AGUA", 0.0)) for i in clientes}
+
+        Q = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel_k = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua_k = float(getattr(veic, "cap_agua", float("inf")))
+
+        def rc_de(custo_real, seq_fechada):
+            rc = float(custo_real)
+            for c in seq_fechada:
+                if 1 <= c <= inst.nbcd:
+                    rc -= float(pi[c - 1])
+            rc -= float(sigma_k)
+            for t in range(len(seq_fechada) - 1):
+                rc -= mu(seq_fechada[t], seq_fechada[t + 1])
+            return rc
+
+        def avalia_fechamento_fisico(seq_aberta):
+            # SO a fisica (avaliar_rota_silva2024) -- de proposito NAO checa
+            # arco_permitido(last, depf) aqui. Um prefixo pode ser
+            # fisicamente fechavel agora mas ter esse fechamento especifico
+            # proibido pelo branching (arco fixado obrigando outra
+            # continuacao, ou arco last->depf proibido); isso NAO significa
+            # que o prefixo em si e invalido/inexpansivel -- so que ele nao
+            # pode virar candidata FECHANDO AQUI. Retorna None so quando a
+            # rota fechada agora e fisicamente inviavel (janela/capacidade/
+            # TDL/etc., decidido inteiramente por avaliar_rota_silva2024).
+            seq_fechada = seq_aberta + [depf]
+            resultado = self.avaliar_rota_silva2024(inst, k, seq_fechada)
+            if not resultado["viavel"]:
+                return None
+            custo_real = float(resultado["custo"])
+            return seq_fechada, custo_real, rc_de(custo_real, seq_fechada)
+
+        candidatas = []
+        vistas = set()
+
+        def registra(seq_fechada, custo_real, rc):
+            if rc >= -eps:
+                return
+            # arco de FECHAMENTO (ultimo no -> depf): nunca checado dentro de
+            # avalia_fechamento_fisico (proposital -- ver docstring/comentario
+            # la); e o UNICO lugar onde essa checagem de branching acontece.
+            if not arco_permitido(seq_fechada[-2], depf):
+                return
+            if not contem_todos_fixados(seq_fechada):
+                return
+            chave = tuple(seq_fechada)
+            if chave in vistas:
+                return
+            vistas.add(chave)
+            binx = [0] * inst.nbcd
+            for c in seq_fechada:
+                if 1 <= c <= inst.nbcd:
+                    binx[c - 1] = 1
+            candidatas.append({"k": k, "seq": list(seq_fechada), "binx": binx,
+                                "custo": custo_real, "rc": rc, "origem": "BID_SILVA"})
+
+        label0 = {
+            "seq": [dep0], "visitados": frozenset(), "plataforma_aberta": None,
+            "fechadas": frozenset(), "entrega_iniciada": False,
+            "deck": 0.0, "diesel": 0.0, "agua": 0.0, "rc_fechamento": float("inf"),
+        }
+
+        fecha0 = avalia_fechamento_fisico(label0["seq"])
+        if fecha0 is not None:
+            registra(*fecha0)
+            label0["rc_fechamento"] = fecha0[2]
+
+        nivel_atual = [label0]
+        nivel = 0
+
+        while nivel < max_depth and nivel_atual and len(candidatas) < max_candidatas:
+            proximo_nivel = []
+
+            for lab in nivel_atual:
+                if len(candidatas) >= max_candidatas:
+                    break
+                last = lab["seq"][-1]
+
+                for j in clientes:
+                    if j in lab["visitados"]:
+                        continue
+                    pj = plataforma_id[j]
+                    if pj in lab["fechadas"]:
+                        continue
+                    if not arco_permitido(last, j):
+                        continue
+
+                    nova_entrega_iniciada = lab["entrega_iniciada"]
+                    nova_plataforma_aberta = lab["plataforma_aberta"]
+                    nova_fechadas = lab["fechadas"]
+                    if pj != lab["plataforma_aberta"]:
+                        if lab["plataforma_aberta"] is not None:
+                            nova_fechadas = lab["fechadas"] | {lab["plataforma_aberta"]}
+                        nova_plataforma_aberta = pj
+                        nova_entrega_iniciada = False
+
+                    tem_coleta = deck_backload[j] > 1e-9
+                    tem_entrega = deck_load[j] > 1e-9
+                    if tem_coleta and nova_entrega_iniciada:
+                        continue
+                    if tem_entrega:
+                        nova_entrega_iniciada = True
+
+                    novo_deck = lab["deck"] + deck_load[j]
+                    if novo_deck > Q + 1e-6:
+                        continue
+                    novo_diesel = lab["diesel"] + diesel[j]
+                    if math.isfinite(cap_diesel_k) and novo_diesel > cap_diesel_k + 1e-6:
+                        continue
+                    novo_agua = lab["agua"] + agua[j]
+                    if math.isfinite(cap_agua_k) and novo_agua > cap_agua_k + 1e-6:
+                        continue
+
+                    novo_seq = lab["seq"] + [j]
+                    # Fechar AGORA (novo_seq + [depf]) e so uma TENTATIVA de
+                    # registrar candidata / refinar o ranking -- NUNCA um
+                    # criterio para descartar o label. Um prefixo pode ser
+                    # fisicamente infechavel agora (ainda precisa de mais
+                    # nos) ou ter esse fechamento especifico proibido pelo
+                    # branching (succ_fixo forcando outra continuacao, ou
+                    # arco last->depf proibido) e AINDA ASSIM continuar
+                    # sendo um prefixo perfeitamente valido/expansivel (ver
+                    # docstring). Por isso o label e SEMPRE anexado a
+                    # proximo_nivel, independente do resultado de
+                    # avalia_fechamento_fisico.
+                    fech = avalia_fechamento_fisico(novo_seq)
+                    if fech is not None:
+                        seq_fechada, custo_real, rc = fech
+                        registra(seq_fechada, custo_real, rc)
+                        rc_fechamento_label = rc
+                    else:
+                        # Nao fechavel agora (fisica OU branching) -- nao
+                        # inventa FO nova (nunca matriz_distancia/
+                        # velocidade): so herda o proxy de ranking do PAI,
+                        # um score seguro que so serve para ordenar o beam,
+                        # nunca para decidir viabilidade.
+                        rc_fechamento_label = lab["rc_fechamento"]
+
+                    proximo_nivel.append({
+                        "seq": novo_seq, "visitados": lab["visitados"] | {j},
+                        "plataforma_aberta": nova_plataforma_aberta, "fechadas": nova_fechadas,
+                        "entrega_iniciada": nova_entrega_iniciada,
+                        "deck": novo_deck, "diesel": novo_diesel, "agua": novo_agua,
+                        "rc_fechamento": rc_fechamento_label,
+                    })
+
+                    if len(candidatas) >= max_candidatas:
+                        break
+
+            # dominancia/beam (ver docstring): so os melhores max_labels_por_no
+            # labels (menor RC de fechamento/proxy) sobrevivem para o proximo
+            # nivel -- EXCETO labels com uma continuacao obrigatoria pendente
+            # (ultimo no em succ_fixo, ou seja, com um arco fixado ainda por
+            # cumprir): esses NUNCA sao removidos so por ranking desfavoravel,
+            # senao o beam poderia descartar justamente o prefixo que o
+            # branching exige manter vivo. Os slots restantes de
+            # max_labels_por_no sao preenchidos pelos melhores-ranqueados
+            # entre os demais.
+            protegidos = [lb for lb in proximo_nivel if lb["seq"][-1] in succ_fixo]
+            demais = [lb for lb in proximo_nivel if lb["seq"][-1] not in succ_fixo]
+            demais.sort(key=lambda lb: lb["rc_fechamento"])
+            slots_restantes = max(0, max_labels_por_no - len(protegidos))
+            proximo_nivel = protegidos + demais[:slots_restantes]
+
+            nivel_atual = proximo_nivel
+            nivel += 1
+
+        candidatas.sort(key=lambda c: c["rc"])
+        return candidatas[:max_candidatas], False, False
+
+    def SUB_PROG_PD_SILVA(self, inst, pi, sigma_k, k, NO_BP, arcos_proibidos=None,
+                           arcos_fixados=None, mu_arc=None, max_labels=500_000,
+                           timeout_s=90.0, max_candidatas=None, eps=1e-6, diagnostico=False):
+        """
+        Pricing EXATO Silva por label-setting/DP, EXCLUSIVO de
+        objective_mode=="silva2024". Primeira versao Python, com o objetivo
+        explicito de servir de base para portar a MESMA logica para C++
+        depois (nao ainda). NAO substitui pricing_silva2024 (enumeracao por
+        combinacoes/permutacoes) em lugar nenhum -- ele continua disponivel,
+        intacto, como diagnostico/fallback de comparacao (ver
+        _teste_3niveis_silva.py). NAO integrado ao pipeline de producao
+        (gerar_novas_colunas_com_duais11) nesta tarefa -- validacao isolada.
+
+        ESTADO DO LABEL (minimo suficiente, ver prova abaixo):
+            seq: sequencia de nos visitados ate agora (dep0 + orders), ABERTA
+                 (sem depf ainda).
+            mask: bitmask (1<<(order-1)) das orders ja visitadas.
+            plataforma_aberta: id da plataforma do ULTIMO no (None em dep0).
+            fechadas: frozenset de plataformas que ja foram abandonadas
+                 (nunca mais alcancaveis -- regra de nao-revisita, secao 5).
+            entrega_iniciada: True se alguma entrega de DECK ja ocorreu
+                 dentro do bloco da plataforma_aberta (trava futura coleta
+                 nesse MESMO bloco).
+            deck/diesel/agua: soma acumulada das demandas das orders no mask
+                 (poda de capacidade estrutural, EXATA -- ver secao abaixo).
+
+        NAO faz parte do estado (PROVADO redundante dado (ultimo_no, mask)):
+            plataforma_aberta = plataforma_id[ultimo_no] (funcao direta de
+                ultimo_no, exceto ultimo_no==dep0);
+            fechadas = {plataforma_id[i] for i in mask} \\ {plataforma_aberta}
+                (toda plataforma que aparece no mask e nao e a aberta JA foi
+                necessariamente fechada, porque arco_permitido nunca deixa
+                uma plataforma ser revisitada -- ver secao 5/8 abaixo -- logo
+                so pode estar no mask por ter sido visitada e abandonada
+                antes);
+            entrega_iniciada = existe alguma order de deck_load>0 da
+                plataforma_aberta dentro do mask (independe de QUANDO foi
+                visitada dentro do bloco, so de TER sido);
+            deck/diesel/agua = somas diretas sobre o mask.
+        Mantidos explicitamente no label mesmo assim (nao como bitmask
+        derivado a cada passo) so por performance/legibilidade -- SAO,
+        matematicamente, funcoes puras de (ultimo_no, mask), o que e
+        exatamente o argumento usado abaixo para justificar a ausencia de
+        dominancia por recursos (ver "DOMINANCIA").
+
+        POR QUE NAO HA (ainda) DOMINANCIA POR TEMPO/CUSTO -- decisao
+        deliberada, nao uma lacuna esquecida (secao 10 do pedido: "criar
+        dominancia SOMENTE quando for matematicamente segura"):
+        Na fisica Silva (avaliar_rota_silva2024), o instante de partida da
+        base P = AT + hB_saida, onde hB_saida = soma dos tempos de
+        carregamento de TODAS as orders da rota FINAL (todo o deck/diesel/
+        agua e pre-carregado na base antes de zarpar) -- NAO so das orders
+        visitadas ate agora no prefixo. Duas extensoes (prefixo + sufixos
+        diferentes) do MESMO prefixo podem terminar em masks finais
+        diferentes, logo com P finais diferentes, logo com toda a
+        cronologia (chegadas, esperas, janela escolhida) diferente. Isso
+        quebra a premissa classica de dominancia VRPTW (tempo de chegada
+        comparavel entre dois labels no MESMO (no,mask) prefixo): nao existe
+        um "tempo relativo" consistente e barato de calcular durante a
+        expansao que preserve a comparacao correta sem assumir um P (ainda
+        desconhecido). O mesmo vale para o pico de carga de deck (deck_atual
+        comeca em deck_total da rota FINAL, nao do prefixo) e para o
+        proprio sinal dos coeficientes de custo (gamma_k-delta_k,
+        delta_k-theta_k podem ser positivos OU negativos dependendo da
+        instancia -- ver f1 em avaliar_rota_silva2024), entao nem
+        "hN acumulado menor e sempre melhor" e universalmente verdade sem
+        checar o sinal desses coeficientes por veiculo. Uma dominancia
+        condicional (2D Pareto em tempo relativo + hN acumulado, valida SE
+        E SOMENTE SE gamma_k>=delta_k>=theta_k e xi_usado>=0 puderem ser
+        confirmados em tempo de execucao) tem uma prova algebrica que
+        aponta para ser segura, mas exigiria tambem replicar com exatidao a
+        selecao de janela (ready/due) com um relogio auxiliar cuja
+        equivalencia ao relogio real (deslocado por P, desconhecido durante
+        a expansao) nao foi possivel provar sem risco dentro do escopo desta
+        tarefa -- decisao: NAO implementar, documentar como trabalho futuro,
+        em vez de arriscar uma dominancia incorreta. A UNICA "dominancia"
+        aqui e a poda ESTRUTURAL (sempre segura, ver abaixo), que nunca
+        elimina uma rota que avaliar_rota_silva2024 aceitaria.
+
+        PODA ESTRUTURAL (segura, mesma logica de pricing_silva2024/
+        SUB_PROG_BID_SILVA -- nao reimplementada, so reaplicada):
+          - capacidade: soma de deck_load/diesel/agua sobre o mask (LIMITE
+            INFERIOR do total final, ja que so cresce) <= capacidade do
+            navio -- nunca descarta uma rota que a fisica aceitaria;
+          - precedencia: dentro do bloco da plataforma_aberta, nenhuma
+            coleta apos qualquer entrega ja ter comecado (diesel/agua
+            ficam de fora desta regra, como sempre);
+          - nao-revisita (secao 5): uma plataforma em `fechadas` nunca pode
+            ser reaberta -- QUALQUER subconjunto das orders de uma
+            plataforma continua permitido, so nao em dois blocos separados;
+          - branching (secao 8): arcos_proibidos corta durante a expansao
+            (arco_permitido); succ_fixo/pred_fixo (arcos_fixados_em_1)
+            restringem arco_permitido tambem durante a expansao -- se
+            succ_fixo[i]=j, arco_permitido(i,m) e False para todo m!=j (a
+            unica continuacao permitida ao sair de i e j); arcos ainda nao
+            cumpridos sao GARANTIDOS pelo proprio mecanismo de
+            arco_permitido (nunca ha como o label "esquecer" de ir para j) e
+            reconferidos no FECHAMENTO via contem_todos_fixados + o arco de
+            fechamento (ultimo_no->depf) via arco_permitido, dentro de
+            registra().
+
+        FECHAR != CONTINUAR (secao 7 do pedido, MESMA correcao critica ja
+        validada em SUB_PROG_BID_SILVA, preservada aqui sem alteracao de
+        principio): a cada expansao, o prefixo e SEMPRE mantido vivo e
+        anexado ao proximo nivel, independente de conseguir fechar
+        (seq_aberta + [depf]) exatamente ali. Fechar agora e so uma
+        TENTATIVA -- feita a cada expansao -- de registrar uma candidata;
+        NUNCA decide se o label pode continuar. avalia_fechamento_fisico
+        (so a fisica) e registra (fisica + branching do arco de fechamento +
+        arcos fixados) sao funcoes separadas, exatamente como no BID_SILVA.
+        Um label cujo fechamento imediato falha (por fisica -- janela/
+        capacidade/TDL -- OU por branching -- succ_fixo apontando para
+        outro no, ou arco no->depf proibido) continua vivo e expansivel.
+
+        FONTE UNICA de viabilidade/custo: exatamente como ALLBEST_SILVA/
+        BID_SILVA/pricing_silva2024, toda candidata fechada e avaliada por
+        self.avaliar_rota_silva2024(inst, k, seq) antes de virar candidata;
+        nenhuma formula fisica e reimplementada aqui (so o custo reduzido,
+        mesma convencao de sinais de pricing_silva2024). resultado["custo"]
+        e sempre o custo real armazenado.
+
+        EXAUSTAO/CERTIFICACAO (secao 12/16 do pedido): SEM beam search, SEM
+        limite silencioso de labels por nivel -- TODOS os labels
+        estruturalmente validos de cada nivel sao expandidos. So dois
+        orcamentos finitos podem interromper a busca ANTES de esgotar as
+        <=14 orders: max_labels (total de labels criados) e timeout_s.
+        Atingir MAX_CANDIDATAS_PRICING (limite do que e RETORNADO) nao
+        interrompe a busca nem afeta completa -- so limita o tamanho da
+        lista devolvida (a busca continua ate esgotar a arvore ou o
+        orcamento, exatamente como pedido na secao 12). completa=True SE E
+        SOMENTE SE a arvore foi esgotada (nenhum limite de labels/timeout
+        atingido); caso contrario completa=False e o chamador NUNCA deve
+        certificar convergencia/LB com este resultado.
+
+        Retorna (candidatas, completa, timeout):
+            candidatas: lista de dicts {k, seq, binx, custo, rc,
+                        origem="PD_SILVA"}, ordenada pelo rc mais negativo,
+                        limitada a max_candidatas.
+            completa: True somente se a arvore de estados foi TOTALMENTE
+                        esgotada (nenhum orcamento atingido).
+            timeout: True se o motivo especifico da interrupcao foi
+                        timeout_s (max_labels tambem pode ter sido atingido
+                        primeiro -- completa=False em ambos os casos).
+        """
+        import time as _time
+
+        t0 = _time.time()
+        dep0 = 0
+        depf = inst.nbn - 1
+        clientes = list(range(1, inst.nbcd + 1))
+        veic = inst.veiculos[k]
+        mu_arc = mu_arc or {}
+        arcos_proibidos = arcos_proibidos or set()
+        arcos_fixados = arcos_fixados or set()
+        if max_candidatas is None:
+            max_candidatas = self.MAX_CANDIDATAS_PRICING
+
+        proibidos_k = {(i, j) for (i, j, kk) in arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in arcos_fixados if kk == k}
+
+        succ_fixo = {}
+        pred_fixo = {}
+        for (i, j) in fixados_k:
+            if i in succ_fixo and succ_fixo[i] != j:
+                return [], False, False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return [], False, False
+            succ_fixo[i] = j
+            pred_fixo[j] = i
+
+        def arco_permitido(i, j):
+            if (i, j) in proibidos_k:
+                return False
+            if i in succ_fixo and succ_fixo[i] != j:
+                return False
+            if j in pred_fixo and pred_fixo[j] != i:
+                return False
+            return True
+
+        def contem_todos_fixados(seq_nos):
+            if not fixados_k:
+                return True
+            aset = {(seq_nos[t], seq_nos[t + 1]) for t in range(len(seq_nos) - 1)}
+            return all(arc in aset for arc in fixados_k)
+
+        def mu(i, j):
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        # ---- agrupamento por plataforma (MESMA regra de avaliar_rota_silva2024/
+        # pricing_silva2024/SUB_PROG_BID_SILVA) ----
+        dp = inst.dados_petro
+        nomes = list(dp.get("nomes", []))
+        mapa_plataformas = {}
+        plataforma_id = {}
+        for i in clientes:
+            nome = str(nomes[i]) if i < len(nomes) else ""
+            if "_order_" in nome:
+                chave = nome.split("_order_", 1)[0]
+            elif "_order" in nome:
+                chave = nome.split("_order", 1)[0]
+            else:
+                chave = nome
+            if chave not in mapa_plataformas:
+                mapa_plataformas[chave] = len(mapa_plataformas)
+            plataforma_id[i] = mapa_plataformas[chave]
+
+        deck_load = {i: float(getattr(inst.noh[i], "DEMAND_DECK_LOAD", 0.0)) for i in clientes}
+        deck_backload = {i: float(getattr(inst.noh[i], "DEMAND_DECK_BACKLOAD", 0.0)) for i in clientes}
+        diesel = {i: float(getattr(inst.noh[i], "DEMAND_DIESEL", 0.0)) for i in clientes}
+        agua = {i: float(getattr(inst.noh[i], "DEMAND_AGUA", 0.0)) for i in clientes}
+
+        Q = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel_k = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua_k = float(getattr(veic, "cap_agua", float("inf")))
+
+        def rc_de(custo_real, seq_fechada):
+            rc = float(custo_real)
+            for c in seq_fechada:
+                if 1 <= c <= inst.nbcd:
+                    rc -= float(pi[c - 1])
+            rc -= float(sigma_k)
+            for t in range(len(seq_fechada) - 1):
+                rc -= mu(seq_fechada[t], seq_fechada[t + 1])
+            return rc
+
+        def avalia_fechamento_fisico(seq_aberta):
+            # SO a fisica (avaliar_rota_silva2024) -- ver docstring "FECHAR
+            # != CONTINUAR": nao checa arco_permitido(last, depf) aqui de
+            # proposito, para nunca confundir "nao pode fechar aqui" com
+            # "prefixo invalido".
+            seq_fechada = seq_aberta + [depf]
+            resultado = self.avaliar_rota_silva2024(inst, k, seq_fechada)
+            if not resultado["viavel"]:
+                return None
+            custo_real = float(resultado["custo"])
+            return seq_fechada, custo_real, rc_de(custo_real, seq_fechada)
+
+        candidatas = []
+        vistas = set()
+
+        def registra(seq_fechada, custo_real, rc):
+            if rc >= -eps:
+                return
+            if not arco_permitido(seq_fechada[-2], depf):
+                return
+            if not contem_todos_fixados(seq_fechada):
+                return
+            chave = tuple(seq_fechada)
+            if chave in vistas:
+                return
+            vistas.add(chave)
+            # secao 12 (CORRIGIDO): NAO limitar aqui -- um cap aqui manteria
+            # so as PRIMEIRAS max_candidatas descobertas na ordem de busca
+            # (nao necessariamente as MELHORES), quebrando silenciosamente a
+            # garantia de que o corte final e por RC. A busca continua livre
+            # (nao interrompida por isto -- completa e decidido so pelo
+            # orcamento de labels/timeout); o corte para as `max_candidatas`
+            # MELHORES acontece uma unica vez, no final, apos ordenar por rc.
+            binx = [0] * inst.nbcd
+            for c in seq_fechada:
+                if 1 <= c <= inst.nbcd:
+                    binx[c - 1] = 1
+            candidatas.append({"k": k, "seq": list(seq_fechada), "binx": binx,
+                                "custo": custo_real, "rc": rc, "origem": "PD_SILVA"})
+
+        def bit(c):
+            return 1 << (c - 1)
+
+        label0 = {
+            "seq": [dep0], "mask": 0, "plataforma_aberta": None,
+            "fechadas": frozenset(), "entrega_iniciada": False,
+            "deck": 0.0, "diesel": 0.0, "agua": 0.0,
+        }
+
+        total_labels = [1]
+        limite_atingido = [False]
+        timeout_atingido = [False]
+
+        def orcamento_esgotado():
+            if total_labels[0] >= max_labels:
+                return True
+            if (_time.time() - t0) > timeout_s:
+                timeout_atingido[0] = True
+                return True
+            return False
+
+        fecha0 = avalia_fechamento_fisico(label0["seq"])
+        if fecha0 is not None:
+            registra(*fecha0)
+
+        nivel_atual = [label0]
+        nivel = 0
+
+        while nivel < inst.nbcd and nivel_atual and not limite_atingido[0]:
+            proximo_nivel = []
+
+            for lab in nivel_atual:
+                if orcamento_esgotado():
+                    limite_atingido[0] = True
+                    break
+                last = lab["seq"][-1]
+
+                for j in clientes:
+                    if lab["mask"] & bit(j):
+                        continue
+                    pj = plataforma_id[j]
+                    if pj in lab["fechadas"]:
+                        continue
+                    if not arco_permitido(last, j):
+                        continue
+
+                    nova_entrega_iniciada = lab["entrega_iniciada"]
+                    nova_plataforma_aberta = lab["plataforma_aberta"]
+                    nova_fechadas = lab["fechadas"]
+                    if pj != lab["plataforma_aberta"]:
+                        if lab["plataforma_aberta"] is not None:
+                            nova_fechadas = lab["fechadas"] | {lab["plataforma_aberta"]}
+                        nova_plataforma_aberta = pj
+                        nova_entrega_iniciada = False
+
+                    tem_coleta = deck_backload[j] > 1e-9
+                    tem_entrega = deck_load[j] > 1e-9
+                    if tem_coleta and nova_entrega_iniciada:
+                        continue
+                    if tem_entrega:
+                        nova_entrega_iniciada = True
+
+                    novo_deck = lab["deck"] + deck_load[j]
+                    if novo_deck > Q + 1e-6:
+                        continue
+                    novo_diesel = lab["diesel"] + diesel[j]
+                    if math.isfinite(cap_diesel_k) and novo_diesel > cap_diesel_k + 1e-6:
+                        continue
+                    novo_agua = lab["agua"] + agua[j]
+                    if math.isfinite(cap_agua_k) and novo_agua > cap_agua_k + 1e-6:
+                        continue
+
+                    if orcamento_esgotado():
+                        limite_atingido[0] = True
+                        break
+
+                    novo_seq = lab["seq"] + [j]
+                    total_labels[0] += 1
+
+                    # FECHAR != CONTINUAR (ver docstring): tentativa de
+                    # registrar candidata, NUNCA um criterio para descartar
+                    # o label -- o label e SEMPRE anexado ao proximo nivel
+                    # logo abaixo, independente do resultado.
+                    fech = avalia_fechamento_fisico(novo_seq)
+                    if fech is not None:
+                        seq_fechada, custo_real, rc = fech
+                        registra(seq_fechada, custo_real, rc)
+
+                    proximo_nivel.append({
+                        "seq": novo_seq, "mask": lab["mask"] | bit(j),
+                        "plataforma_aberta": nova_plataforma_aberta, "fechadas": nova_fechadas,
+                        "entrega_iniciada": nova_entrega_iniciada,
+                        "deck": novo_deck, "diesel": novo_diesel, "agua": novo_agua,
+                    })
+
+                if limite_atingido[0]:
+                    break
+
+            nivel_atual = proximo_nivel
+            nivel += 1
+
+        candidatas.sort(key=lambda c: c["rc"])
+        completa = not limite_atingido[0]
+        timeout_final = bool(timeout_atingido[0] and limite_atingido[0])
+        if diagnostico:
+            motivo = ("timeout" if timeout_final else "max_labels") if limite_atingido[0] else "arvore_esgotada"
+            print(f"[PD_SILVA] k={k} niveis_alcancados={nivel} total_labels={total_labels[0]} "
+                  f"candidatas_negativas={len(candidatas)} completa={completa} motivo_parada={motivo} "
+                  f"tempo={_time.time() - t0:.2f}s")
+        return candidatas[:max_candidatas], completa, timeout_final
+
     def SUB_HEUR_ALLBESTINSERTION(self, inst, sol_pool, pi, sigma_k, k, NO_BP, mu_arc=None,
                                    n_starts=30, eps=1e-6):
         """Wrapper de compatibilidade: mesma interface/retorno de antes
@@ -9168,6 +10245,40 @@ class Metodos:
                 print(f"[LIMITE MULTI] k={kk} | motivo={motivo_limite}")
                 return False
 
+            # secao 7 (silva2024): auditoria obrigatoria de TODA coluna antes de
+            # entrar no pool -- reavalia com o mesmo oraculo do pricing, confere
+            # RC contra os duais atuais do mestre e reconfirma compatibilidade
+            # com o branching do no. Qualquer inconsistencia para o teste.
+            if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+                if not hasattr(sol_pool, "silva_audit"):
+                    sol_pool.silva_audit = {
+                        "criadas": 0, "rejeitadas_viabilidade": 0,
+                        "rejeitadas_rc": 0, "rejeitadas_branching": 0,
+                    }
+
+                res_audit = self.avaliar_rota_silva2024(inst, kk, seq)
+                if not res_audit["viavel"]:
+                    sol_pool.silva_audit["rejeitadas_viabilidade"] += 1
+                    print(f"[SILVA ERRO COLUNA] k={kk} seq={seq} origem={origem} "
+                          f"motivo=inviavel_no_oraculo detalhe={res_audit.get('motivo')}")
+                    raise RuntimeError(f"[SILVA ERRO COLUNA] coluna inviavel no oraculo: k={kk} seq={seq}")
+
+                mu_arc_kk = mu_arc_por_k.get(kk, {}) if mu_arc_por_k else {}
+                rc_check = Metodos._calcular_rc_coluna(seq, res_audit["custo"], pi, sigma[kk], mu_arc_kk, inst.nbcd)
+                if abs(rc_check - rc) > 1e-6:
+                    sol_pool.silva_audit["rejeitadas_rc"] += 1
+                    print(f"[SILVA ERRO COLUNA] k={kk} seq={seq} origem={origem} motivo=rc_inconsistente "
+                          f"rc_pricing={rc:.6f} rc_check={rc_check:.6f} custo_oraculo={res_audit['custo']:.6f}")
+                    raise RuntimeError(f"[SILVA ERRO COLUNA] RC inconsistente: k={kk} seq={seq}")
+
+                if not self.coluna_respeita_no(no_bp, seq, kk):
+                    sol_pool.silva_audit["rejeitadas_branching"] += 1
+                    print(f"[SILVA ERRO COLUNA] k={kk} seq={seq} origem={origem} motivo=viola_branching "
+                          f"proibidos={no_bp.arcos_proibidos} fixados={no_bp.arcos_fixados_em_1}")
+                    raise RuntimeError(f"[SILVA ERRO COLUNA] viola branching do no: k={kk} seq={seq}")
+
+                sol_pool.silva_audit["criadas"] += 1
+
             idx_pool = len(sol_pool.rotas[kk]["sequencia_rota"])
             add_rota_no_pool(kk, seq, binx, custo)
             add_lambda_var_model(kk, idx_pool, seq, binx, custo)
@@ -9814,6 +10925,17 @@ class Metodos:
                     if kk == k_base:
                         custo_kk = custo
                         rc_kk = rc_base
+                    elif getattr(inst, "objective_mode", "petrobras") == "silva2024":
+                        # secao 8/9 (silva2024): copia entre navios usa o MESMO
+                        # oraculo do pricing (avaliar_rota_silva2024), nunca o
+                        # avaliador antigo do Petrobras.
+                        resultado_kk = self.avaliar_rota_silva2024(inst, kk, seq)
+                        if not resultado_kk["viavel"]:
+                            print(f"[COPIA REJEITADA] origem_k={k_base} | destino_k={kk} | motivo=viabilidade | seq={seq}")
+                            continue
+
+                        custo_kk = resultado_kk["custo"]
+                        rc_kk = calcular_rc_coluna(kk, seq, custo_kk)
                     else:
                         resultado_kk = self.avaliador_rota.avaliar_rota(inst, kk, seq)
                         if not resultado_kk.viavel:
@@ -9961,6 +11083,8 @@ class Metodos:
                 colunas_desde_ultimo_mip = 0
 
             iter_cg += 1
+
+        no_bp.iter_cg_final = iter_cg
 
         # =========================
         # Final do nó - LP com slack
@@ -10218,6 +11342,27 @@ class Metodos:
                 print(f"[Nó {no_bp.id_no}] MIP usou coluna inicial. Inteira inválida.")
             else:
                 no_bp.solucao_inteira = True
+
+                # secao 14 (silva2024): revalida TODAS as rotas escolhidas pelo
+                # oraculo avaliar_rota_silva2024 antes de aceitar o incumbente.
+                if getattr(inst, "objective_mode", "petrobras") == "silva2024" and selecao:
+                    ub_check = 0.0
+                    for item in selecao:
+                        kk_ub = item["k"]
+                        seq_ub = sol_pool.rotas[kk_ub]["sequencia_rota"][item["p"]]
+                        res_ub = self.avaliar_rota_silva2024(inst, kk_ub, seq_ub)
+                        if not res_ub["viavel"]:
+                            print(f"[SILVA UB CHECK] rota inviavel no oraculo: k={kk_ub} seq={seq_ub} "
+                                  f"motivo={res_ub.get('motivo')}")
+                            ub_check = float("inf")
+                            break
+                        ub_check += res_ub["custo"]
+
+                    dif_ub = (ub_check - no_bp.custo_mip) if math.isfinite(ub_check) else float("inf")
+                    print(f"[SILVA UB CHECK] MIP={no_bp.custo_mip:.6f} recalculado={ub_check:.6f} dif={dif_ub:.6f}")
+                    if not math.isfinite(ub_check) or abs(dif_ub) > 1e-6:
+                        print(f"[Nó {no_bp.id_no}] [SILVA UB CHECK] incumbente REJEITADO (divergencia do oraculo).")
+                        no_bp.solucao_inteira = False
 
                 if selecao:
                     mu_arc_total = {}
@@ -11191,6 +12336,28 @@ class Metodos:
             candidatas_k = []
             origem_usada = None
 
+            # Pipeline Silva2024 (integracao no B&P): ALLBEST_SILVA (Python,
+            # heuristico) -> BID_SILVA_CPP (C++, heuristico, producao) ->
+            # PD_SILVA_CPP (C++, exato, UNICO que certifica). Toda a logica
+            # de decisao/certificacao mora em _pricing_silva2024_um_veiculo
+            # (nao duplicada aqui) -- fluxo Petrobras/Solomon permanece
+            # EXATAMENTE como esta abaixo (fora deste if), inalterado.
+            # pricing_silva2024 (enumerativo Python) e SUB_PROG_BID_SILVA
+            # Python NAO sao mais chamados neste caminho de producao; ambos
+            # continuam intactos e disponiveis para diagnostico/regressao.
+            if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+                candidatas_k_silva, status_k = self._pricing_silva2024_um_veiculo(
+                    inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, k
+                )
+                candidatas_por_k[k] = candidatas_k_silva[:self.MAX_COLUNAS_NOVAS_VEICULO]
+                if status_k["pd_chamado"]:
+                    exato_tentado_algum = True
+                    if not status_k["pd_completa"]:
+                        exato_busca_completa_todos = False
+                    if status_k["pd_timeout"]:
+                        exato_timeout_algum = True
+                continue
+
             # 1) ALL BEST INSERTION (multi)
             if inst.nbconstrutiva != 1 and inst.nbconstrutiva != 22:
                 print("TESTA ALLBEST MULTI")
@@ -11317,6 +12484,28 @@ class Metodos:
         no_bp.cg_convergiu_exato_completo = Metodos._certifica_pricing_exato_completo(
             exato_tentado_algum, exato_busca_completa_todos, exato_timeout_algum
         )
+
+        # PARTE A (certificacao explicita, so para o modo silva2024): a regra
+        # formal exigida e "sem_coluna_negativa E pricing_completo_para_TODOS_k
+        # => pode certificar" -- nunca "pricing foi chamado" como sinonimo de
+        # "pricing exato concluido". lista_k_tentativa cobre sempre TODOS os
+        # veiculos desta iteracao (fase inicial: ks[:]; senao: round-robin de
+        # todos os ks a partir de prox_k_idx -- nunca um subconjunto), entao o
+        # AND abaixo e de fato "para todos os veiculos". Reescreve (mais estrito/
+        # auditavel) o resultado generico acima quando os dois divergirem --
+        # nunca o contrario, para nunca certificar mais do que o explicito
+        # permite.
+        if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+            todos_k_certificados = all(
+                bool(no_bp.silva_certifica_k.get(kk, False)) for kk in lista_k_tentativa
+            )
+            if todos_k_certificados != no_bp.cg_convergiu_exato_completo:
+                print(f"[SILVA CERT][AVISO] divergencia entre certificacao explicita "
+                      f"por veiculo (todos_k_certificados={todos_k_certificados}) e o "
+                      f"AND generico legado (cg_convergiu_exato_completo="
+                      f"{no_bp.cg_convergiu_exato_completo}) -- usando a explicita.")
+            no_bp.cg_convergiu_exato_completo = todos_k_certificados
+            print(f"[SILVA CERT] todos_k_certificados={todos_k_certificados}")
 
         # secao 9: selecao circular respeitando lista_k_tentativa e os limites globais
         selecionadas = Metodos._selecionar_colunas_multi(
@@ -12379,7 +13568,42 @@ class Metodos:
         proib.add((inst.nbn - 1, 0))  # só um exemplo; ajuste se quiser
         return proib
 
-    def metodo_exato_petro(self, inst, sol, time_limit=1200, threads=1, salvar_modelo=False, diagnostico=True):
+    def metodo_exato_petro(self, inst, sol, time_limit=1200, threads=1, salvar_modelo=False, diagnostico=True,
+                           fixar_rotas=None, considerar_conflito_plataforma=True, silva_sp_arcos_base=True):
+        """
+        silva_sp_arcos_base (default True -- comportamento IDENTICO ao de
+        sempre; SO tem efeito quando inst.objective_mode=="silva2024", SEM
+        efeito em modo petrobras): controla se o SP (safe positioning) e
+        cobrado tambem na perna de SAIDA da base (base->1a plataforma).
+        True (default, formulacao literal): T_ij^k=N_ij^k+SP_k+SET_j quando
+        c_i!=c_j -- inclusive saindo da base. SET continua sendo cobrado
+        nesse arco em AMBOS os casos (nunca removido). False (experimental,
+        convencao observada na Tabela 3 do benchmark Silva): a perna
+        base->1a plataforma usa so N+SET, sem SP; as demais pernas entre
+        plataformas diferentes continuam N+SP+SET, e a perna de retorno
+        plataforma->base continua sem SP/SET em ambos os casos (esse arco
+        nunca teve SP/SET, com ou sem esta chave -- ver tempo_arco abaixo).
+        Chave so para diagnostico/comparacao com o artigo; nao usada pelo
+        B&P (pricing_silva2024/branch_and_price_global) nesta etapa.
+
+        fixar_rotas (opcional, diagnostico -- NAO faz parte da formulacao):
+        dict {k: [sequencia de nos incluindo dep0 e depf]}. Quando informado,
+        fixa x[i,j,k] em 1 para os arcos da rota dada (e em 0 para os demais
+        arcos do navio k), deixando o Gurobi resolver so os horarios (inicio,
+        berco, escolha de janela, sequenciamento de plataforma) -- usado para
+        comparar o cronograma calculado com uma rota publicada (Tabela 3 do
+        benchmark Silva), sem depender do solver escolher a rota.
+
+        considerar_conflito_plataforma (default True -- comportamento IDENTICO
+        ao de sempre): quando True, mantem o bloco de nao-sobreposicao ENTRE
+        NAVIOS na mesma plataforma (seq_plat), exatamente como ja existia.
+        Quando False -- so tem efeito em modo_silva2024, ignorado em modo
+        petrobras -- REMOVE apenas esse acoplamento entre navios diferentes,
+        usado como referencia de compacto "por navio independente" para
+        validar a aditividade das colunas do B&P (nenhuma outra regra --
+        janelas, SET, SP, dueTime, TDL, capacidade, precedencia deck,
+        carregamento, descarga, velocidades, FO -- e desligada).
+        """
         """
         Modelo compacto exclusivo das instancias Petrobras.
 
@@ -12406,6 +13630,11 @@ class Metodos:
         dep0 = 0
         depf = inst.nbn - 1
         eps = 1e-9
+
+        # "petrobras" (default, inalterado) ou "silva2024" (benchmark Silva et al. 2024:
+        # custo em USD/h por regime, sem conversao para CO2, disponibilidade e limite de
+        # viagem por navio, SET+SP cobrados uma vez por plataforma visitada).
+        modo_silva = getattr(inst, "objective_mode", "petrobras") == "silva2024"
 
         # ------------------------------------------------------------------
         # Plataformas: mesma regra usada em _montar_dados_petro_cpp.
@@ -12439,6 +13668,34 @@ class Metodos:
 
         P = sorted(nos_por_plataforma.keys())
 
+        if modo_silva:
+            order_due_time_seg = dp.get("order_due_time_seg", [None] * inst.nbn)
+            print("=" * 78)
+            print("[SILVA] orders | dueTime: DELIVERY (deckCargoLoad/dieselLoad/waterLoad) "
+                  "-> inicio+servico<=dueTime | PICKUP (deckCargoBackload) -> F_k<=dueTime "
+                  "(descarga agregada da viagem, sem FIFO/LIFO individual).")
+            print(f"{'no':>3} {'sourceOrderId':>13} {'commodity':<18} {'dueTime(h)':>10}  timeWindows(h)")
+            for i in clientes:
+                due_h = order_due_time_seg[i] / 3600.0 if order_due_time_seg[i] is not None else None
+                janelas_h = [(r / 3600.0, d / 3600.0)
+                             for r, d in zip(inst.noh[i].READY_TIME, inst.noh[i].DUE_DATE)]
+                due_txt = f"{due_h:.2f}" if due_h is not None else "NA"
+                print(f"{i:>3} {dp['order_ids'][i]:>13} {dp['commodities'][i]:<18} {due_txt:>10}  {janelas_h}")
+            print("=" * 78)
+
+        # SET_p (modo silva2024): platformSetup e por PLATAFORMA/VISITA, nao por order
+        # (varias orders podem pertencer a mesma plataforma). Usa o valor lido por no
+        # (dp["platform_setup_seg"], em segundos) e confere uniformidade entre as
+        # orders de uma mesma plataforma antes de reduzir a um unico valor.
+        set_por_plataforma = {}
+        if modo_silva:
+            platform_setup_seg_tmp = dp.get("platform_setup_seg", [0.0] * inst.nbn)
+            for p, nos_p in nos_por_plataforma.items():
+                valores = {float(platform_setup_seg_tmp[i]) for i in nos_p}
+                if len(valores) > 1:
+                    print(f"[AVISO SILVA] platformSetup nao uniforme na plataforma {plataforma_chave[p]}: {valores} -- usando o maior")
+                set_por_plataforma[p] = max(valores) if valores else 0.0
+
         # Dados por order. Usa primeiro os atributos dos nos, com fallback no dicionario Petro.
         def dado_no(i, atributo, chave):
             valor_no = getattr(inst.noh[i], atributo, None)
@@ -12455,6 +13712,57 @@ class Metodos:
 
         def tempo_viagem(i, j, k):
             return float(inst.matriz_distancia[i][j]) / float(inst.veiculos[k].velocidade)
+
+        def tempo_navegacao_pura(i, j, k):
+            """Tempo de navegacao pura (sem setupArrival/setupDeparture), em segundos.
+            Usado apenas na FO ambiental do modo PETROBRAS (t_k); matriz_distancia/
+            tempo_viagem continuam sendo a base da viabilidade temporal (inalterada).
+            NAO usar para modo silva2024 -- ver tempo_navegacao_silva abaixo."""
+            return float(inst.matriz_tempo_navegacao[i][j]) / float(inst.veiculos[k].velocidade)
+
+        def tempo_navegacao_silva(i, j, k):
+            """Tempo de navegacao do modo silva2024, POR NAVIO (VL_k/VH_k proprios,
+            nao a matriz unica construida com o navio de referencia da frota).
+            Formula (piecewise CONTINUA, conforme artigo): d<=threshold: d/VL;
+            d>threshold: threshold/VL + (d-threshold)/VH. Distancia fisica (km) vem
+            de dp["dist"], remapeada 0<->depf como as demais matrizes; nos da mesma
+            plataforma tem dist=0 (ja zerado na leitura)."""
+            ii = 0 if i == depf else i
+            jj = 0 if j == depf else j
+            if ii == jj:
+                return 0.0
+            dist_km = float(dp["dist"][ii][jj])
+            velocities_k = inst.veiculos[k].velocities
+            vl = min(velocities_k, key=lambda v: v["above"])["speed"]
+            vh = max(velocities_k, key=lambda v: v["above"])["speed"]
+            threshold = max(velocities_k, key=lambda v: v["above"])["above"]
+            if dist_km <= threshold:
+                n_horas = dist_km / vl
+            else:
+                n_horas = threshold / vl + (dist_km - threshold) / vh
+            return n_horas * 3600.0
+
+        def tempo_arco(i, j, k):
+            """Tempo de arco usado na propagacao temporal (viabilidade). Em modo
+            petrobras e identico a tempo_viagem (no-op). Em modo silva2024, usa
+            tempo_navegacao_silva (piecewise continuo, por navio) como base e soma
+            SET (setup da plataforma de destino) na primeira vez que o arco entra
+            numa plataforma nova -- inclusive saindo da base, ja que
+            plataforma_id[dep0]==-1 nunca bate com nenhuma plataforma real. SP
+            (safe positioning) e somado no mesmo evento, EXCETO na perna de saida
+            da base quando silva_sp_arcos_base=False (chave de diagnostico, default
+            True = formulacao literal, identica ao comportamento historico). A
+            perna de retorno plataforma->base (j==depf, fora de `clientes`) nunca
+            entra neste bloco, com ou sem a chave -- nunca teve SP/SET, em nenhum
+            dos dois casos. setupArrival/setupDeparture nao existem no arco em
+            Silva (sao 0.0 no JSON): SET+SP e quem faz esse papel."""
+            t = tempo_navegacao_silva(i, j, k) if modo_silva else tempo_viagem(i, j, k)
+            if modo_silva and j in clientes and plataforma_id[i] != plataforma_id[j]:
+                p = plataforma_id[j]
+                t += set_por_plataforma.get(p, 0.0)
+                if silva_sp_arcos_base or i != dep0:
+                    t += float(getattr(inst.veiculos[k], "safe_positioning_time", 0.0))
+            return t
 
         def cap_deck(k):
             return float(getattr(inst.veiculos[k], "cap_deck", inst.veiculos[k].capacidade))
@@ -12480,9 +13788,16 @@ class Metodos:
                 janelas[i] = [(0.0, max_due)]
 
         max_servico = max(servico.values()) if servico else 0.0
-        max_viagem = max(tempo_viagem(i, j, k) for k in K for i in V for j in V if i != j)
+        max_viagem = max(tempo_arco(i, j, k) for k in K for i in V for j in V if i != j)
         max_duracao = max((float(getattr(inst.veiculos[k], "trip_duration_limit", 0.0)) for k in K), default=0.0)
-        M_tempo = float(max_due + max_servico + max_viagem + max_duracao + 1.0)
+        # Ajuste defensivo: inicio[dep0,k] deixa de ser uma constante (agora cresce com
+        # o tempo de berco de saida), entao o Big-M precisa cobrir tambem essa duracao.
+        _tcd = dp.get("tempo_carreg_deck", [0.0] * inst.nbn)
+        _tcdi = dp.get("tempo_carreg_diesel", [0.0] * inst.nbn)
+        _tca = dp.get("tempo_carreg_agua", [0.0] * inst.nbn)
+        _tdb = dp.get("tempo_descarreg_backload", [0.0] * inst.nbn)
+        max_carga_seg = max((float(_tcd[i]) + float(_tcdi[i]) + float(_tca[i]) + float(_tdb[i]) for i in range(len(_tcd))), default=0.0)
+        M_tempo = float(max_due + max_servico + max_viagem + max_duracao + max_carga_seg + 1.0)
         M_ordem = float(inst.nbcd + 1)
 
         model = gp.Model("VRPTW_Exato_Petro")
@@ -12499,6 +13814,9 @@ class Metodos:
         ordem = model.addVars(clientes, K, lb=0.0, ub=float(inst.nbcd), vtype=GRB.CONTINUOUS, name="ordem")
         carga = model.addVars(V, K, lb=0.0, vtype=GRB.CONTINUOUS, name="carga_apos")
         usa_plataforma = model.addVars(P, K, vtype=GRB.BINARY, name="usa_plataforma")
+        # B_k: instante em que comeca a operacao de berco de SAIDA (>= AT_k). Antes,
+        # inicio[dep0,k] era fixado por igualdade a AT_k; agora e derivado de berco[k].
+        berco = model.addVars(K, lb=0.0, vtype=GRB.CONTINUOUS, name="berco_inicio")
 
         y = {}
         for i in clientes:
@@ -12506,10 +13824,106 @@ class Metodos:
                 for w in range(len(janelas[i])):
                     y[i, k, w] = model.addVar(vtype=GRB.BINARY, name=f"janela_{i}_{k}_{w}")
 
+        if fixar_rotas is not None:
+            # Diagnostico (ver docstring): fixa a rota de cada navio informado,
+            # deixando so os horarios livres para o Gurobi resolver.
+            for k, rota_fixa in fixar_rotas.items():
+                arcos_fixos = set(zip(rota_fixa[:-1], rota_fixa[1:]))
+                for i in V:
+                    for j in V:
+                        if i == j:
+                            continue
+                        model.addConstr(x[i, j, k] == (1 if (i, j) in arcos_fixos else 0), name=f"fixar_rota_{k}_{i}_{j}")
+
         # ------------------------------------------------------------------
-        # Funcao objetivo: mesma FO do B&P, tempo de navegacao/manobra.
+        # Funcao objetivo Petrobras: consumo ambiental (fundeio/berco/navegacao/DP)
+        # + tempo total de utilizacao, ponderados por alpha_fo/eta_fo (JSON).
+        # O metodo_exato generico (Solomon) mantem a FO de tempo/distancia
+        # inalterada; esta funcao e exclusiva de instancias Petro.
+        #
+        # Instantes: AT_k=readiness | B_k=berco[k] (inicio do berco de SAIDA,
+        # novo, pode ser > AT_k) | P_k=inicio[dep0,k]=B_k+hB_saida_seg_k (partida
+        # efetiva) | R_k=inicio[depf,k] (chegada de volta) | F_k=R_k+hB_retorno_seg_k
+        # (fim da descarga do backload, novo).
+        #
+        # hF_k = (B_k-AT_k)/3600           (fundeio antes do berco)
+        # hB_k = (hB_saida+hB_retorno)/3600  (berco de saida + de retorno)
+        # hN_k = soma da navegacao PURA dos arcos usados, sem setups
+        # hDP_k = (R_k-P_k)/3600 - hN_k    (servico + espera + setups offshore)
+        # T_k  = F_k - AT_k = (R_k-AT_k)/3600 + hB_retorno/3600
         # ------------------------------------------------------------------
-        model.setObjective(gp.quicksum(tempo_viagem(i, j, k) * x[i, j, k] for k in K for i in V for j in V if i != j), GRB.MINIMIZE)
+        SEGUNDOS_POR_HORA = 3600.0
+
+        alpha_fo = float(inst.alpha_fo)
+        eta_fo = float(inst.eta_fo)
+        if modo_silva:
+            # Silva et al. (2024): custo em USD/h (FCA/FCB/FCN/FCS), sem conversao
+            # para CO2 -- densidade_diesel/conversao_diesel_co2 nao existem/nao sao
+            # usados neste modo (None no JSON, e deve continuar assim).
+            chi_fo = None
+        else:
+            chi_fo = float(inst.densidade_diesel) * float(inst.conversao_diesel_co2)
+
+        tempo_carreg_deck = list(dp.get("tempo_carreg_deck", [0.0] * inst.nbn))
+        tempo_carreg_diesel = list(dp.get("tempo_carreg_diesel", [0.0] * inst.nbn))
+        tempo_carreg_agua = list(dp.get("tempo_carreg_agua", [0.0] * inst.nbn))
+        tempo_descarreg_backload = list(dp.get("tempo_descarreg_backload", [0.0] * inst.nbn))
+
+        expr_hF, expr_hB, expr_hN, expr_hDP = {}, {}, {}, {}
+        expr_T, expr_D, expr_E = {}, {}, {}
+        expr_hB_saida_seg, expr_hB_retorno_seg = {}, {}
+        # Termos marginais do f1 de Silva (custo relativo ao navio fundeado/theta=FCA).
+        expr_termo_base, expr_termo_nav, expr_termo_serv = {}, {}, {}
+
+        for k in K:
+            veic = inst.veiculos[k]
+            AT_k = float(veic.readiness)
+
+            # Sequencial: soma dos tempos de carregamento (saida) e de descarga (retorno).
+            hB_saida_seg_k = gp.quicksum(
+                (tempo_carreg_deck[i] + tempo_carreg_diesel[i] + tempo_carreg_agua[i]) * visita[i, k]
+                for i in clientes
+            )
+            hB_retorno_seg_k = gp.quicksum(tempo_descarreg_backload[i] * visita[i, k] for i in clientes)
+
+            hB_k = (hB_saida_seg_k + hB_retorno_seg_k) / SEGUNDOS_POR_HORA
+            _nav_pura = tempo_navegacao_silva if modo_silva else tempo_navegacao_pura
+            hN_k = gp.quicksum((_nav_pura(i, j, k) / SEGUNDOS_POR_HORA) * x[i, j, k]
+                                for i in V for j in V if i != j)
+            hDP_k = (inicio[depf, k] - inicio[dep0, k]) / SEGUNDOS_POR_HORA - hN_k
+            hF_k = (berco[k] - AT_k) / SEGUNDOS_POR_HORA
+            T_k = (inicio[depf, k] - AT_k) / SEGUNDOS_POR_HORA + hB_retorno_seg_k / SEGUNDOS_POR_HORA
+
+            if modo_silva:
+                theta_k, varphi_k, gamma_k, delta_k = veic.cost_anchored, veic.cost_base, veic.cost_navigation, veic.cost_dynamic
+            else:
+                theta_k, varphi_k, gamma_k, delta_k = veic.fuel_anchored, veic.fuel_base, veic.fuel_navigation, veic.fuel_dynamic
+
+            if modo_silva:
+                # Custo MARGINAL relativo ao navio fundeado (theta=FCA): Silva et
+                # al. (2024) nao cobra theta*hF -- fundeio e a referencia (custo 0
+                # de oportunidade), so os desvios de regime custam algo a mais/menos.
+                termo_base_k = (varphi_k - theta_k) * hB_k
+                termo_nav_k = (gamma_k - theta_k) * hN_k
+                termo_serv_k = (delta_k - theta_k) * hDP_k
+                D_k = termo_base_k + termo_nav_k + termo_serv_k
+                # Silva: D_k (=f1_k) ja esta em USD, sem conversao para CO2 (E_k so
+                # existe aqui para reaproveitar a mesma formula de objetivo abaixo).
+                E_k = D_k
+            else:
+                termo_base_k = termo_nav_k = termo_serv_k = None
+                D_k = theta_k * hF_k + varphi_k * hB_k + gamma_k * hN_k + delta_k * hDP_k
+                E_k = chi_fo * D_k
+
+            expr_hF[k], expr_hB[k], expr_hN[k], expr_hDP[k] = hF_k, hB_k, hN_k, hDP_k
+            expr_T[k], expr_D[k], expr_E[k] = T_k, D_k, E_k
+            expr_hB_saida_seg[k], expr_hB_retorno_seg[k] = hB_saida_seg_k, hB_retorno_seg_k
+            expr_termo_base[k], expr_termo_nav[k], expr_termo_serv[k] = termo_base_k, termo_nav_k, termo_serv_k
+
+        model.setObjective(
+            gp.quicksum(alpha_fo * expr_E[k] + (1.0 - alpha_fo) * eta_fo * expr_T[k] for k in K),
+            GRB.MINIMIZE
+        )
 
         # Arcos estruturalmente proibidos.
         for k in K:
@@ -12562,13 +13976,58 @@ class Metodos:
                 for i in nos_p:
                     model.addConstr(visita[i, k] <= usa_plataforma[p, k], name=f"visita_implica_plat_{i}_{k}")
 
+        # ------------------------------------------------------------------
+        # Etapa 3 (modo silva2024): dois navios DIFERENTES nao podem operar na
+        # mesma plataforma ao mesmo tempo. Disjuncao Big-M por par de navios e
+        # por plataforma: um binario seq_plat[p,k,l] decide se o bloco de k
+        # termina antes do bloco de l comecar (ou o inverso), aplicado a TODO
+        # par de nos (i em p visitado por k, j em p visitado por l) -- ativa
+        # apenas quando AMBOS usa_plataforma[p,k] e usa_plataforma[p,l] sao 1.
+        # Nao compara nos do MESMO navio (a ordem dentro do proprio bloco ja e
+        # garantida pelo MTZ acima).
+        # Guardado tambem por considerar_conflito_plataforma (default True =
+        # comportamento identico ao de sempre); False desliga so este bloco.
+        # ------------------------------------------------------------------
+        if modo_silva and considerar_conflito_plataforma:
+            seq_plat = {}
+            for p in P:
+                nos_p = nos_por_plataforma[p]
+                for idx_k in range(len(K)):
+                    for idx_l in range(idx_k + 1, len(K)):
+                        k, l = K[idx_k], K[idx_l]
+                        seq_plat[p, k, l] = model.addVar(vtype=GRB.BINARY, name=f"seq_plat_{p}_{k}_{l}")
+                        for i in nos_p:
+                            for j in nos_p:
+                                model.addConstr(
+                                    inicio[i, k] + servico[i] <= inicio[j, l]
+                                    + M_tempo * (1 - seq_plat[p, k, l])
+                                    + M_tempo * (1 - usa_plataforma[p, k])
+                                    + M_tempo * (1 - usa_plataforma[p, l]),
+                                    name=f"nao_sobrepos_kl_{p}_{k}_{l}_{i}_{j}"
+                                )
+                                model.addConstr(
+                                    inicio[j, l] + servico[j] <= inicio[i, k]
+                                    + M_tempo * seq_plat[p, k, l]
+                                    + M_tempo * (1 - usa_plataforma[p, k])
+                                    + M_tempo * (1 - usa_plataforma[p, l]),
+                                    name=f"nao_sobrepos_lk_{p}_{k}_{l}_{i}_{j}"
+                                )
+
         # Dentro da plataforma, qualquer order com coleta deve vir antes de
         # qualquer order com entrega. Se uma order possui ambos, a coleta e
         # executada antes da entrega dentro da propria order, como no C++.
         for p in P:
             nos_p = nos_por_plataforma[p]
             coletas = [i for i in nos_p if deck_backload[i] > eps]
-            entregas = [i for i in nos_p if deck_load[i] > eps or diesel[i] > eps or agua[i] > eps]
+            if modo_silva:
+                # JSON: basicData.pickupDeckBeforeDeliveryDeck=true -- a regra e
+                # especificamente "backload de DECK antes de ENTREGA de DECK", nao
+                # antes de diesel/agua (confirmado pela rota publicada da Tabela 3,
+                # PLAT_6: diesel,agua,backload,deck -- diesel/agua sao entregues
+                # ANTES do backload). Regra ampla (Petro) causava INFEASIBLE aqui.
+                entregas = [i for i in nos_p if deck_load[i] > eps]
+            else:
+                entregas = [i for i in nos_p if deck_load[i] > eps or diesel[i] > eps or agua[i] > eps]
 
             for k in K:
                 for c in coletas:
@@ -12622,10 +14081,24 @@ class Metodos:
         # ------------------------------------------------------------------
         for k in K:
             veic = inst.veiculos[k]
-            inicio_base = float(janelas[dep0][0][0])
-            if hasattr(veic, "readiness"):
-                inicio_base = max(inicio_base, float(veic.readiness))
-            model.addConstr(inicio[dep0, k] == inicio_base, name=f"inicio_base_{k}")
+            if modo_silva:
+                # Disponibilidade estritamente individual (ETR_k): NAO usar a janela
+                # compartilhada do no base, que vem de um unico navio de referencia da
+                # frota e sobrepoe (max) o ETR de navios com ETR menor -- esse era o
+                # bug relatado (janela base=[25200,...] igual para M e L).
+                inicio_base = float(veic.readiness)
+            else:
+                inicio_base = float(janelas[dep0][0][0])
+                if hasattr(veic, "readiness"):
+                    inicio_base = max(inicio_base, float(veic.readiness))
+            # B_k (berco[k]) pode ser >= disponibilidade (fundeio permitido); a partida
+            # efetiva P_k=inicio[dep0,k] só ocorre apos o berco de saida (sequencial).
+            model.addConstr(berco[k] >= inicio_base, name=f"berco_min_{k}")
+            model.addConstr(inicio[dep0, k] == berco[k] + expr_hB_saida_seg[k], name=f"partida_apos_berco_{k}")
+
+            max_partida_k = float(getattr(veic, "max_departure", 0.0))
+            if max_partida_k > 0.0 and math.isfinite(max_partida_k):
+                model.addConstr(inicio[dep0, k] <= max_partida_k, name=f"max_partida_{k}")
 
             for i in clientes:
                 model.addConstr(gp.quicksum(y[i, k, w] for w in range(len(janelas[i]))) == visita[i, k], name=f"escolhe_janela_{i}_{k}")
@@ -12634,18 +14107,68 @@ class Metodos:
                     model.addConstr(inicio[i, k] >= ready_w - M_tempo * (1 - y[i, k, w]), name=f"janela_ini_{i}_{k}_{w}")
                     model.addConstr(inicio[i, k] + servico[i] <= due_w + M_tempo * (1 - y[i, k, w]), name=f"janela_fim_{i}_{k}_{w}")
 
+                if modo_silva:
+                    due_i = order_due_time_seg[i]
+                    if due_i is not None:
+                        if dp.get("commodities", [None] * inst.nbn)[i] != "deckCargoBackload":
+                            # dueTime DELIVERY: servico offshore deve terminar ate
+                            # dueTime_i. Restricao ADICIONAL as timeWindows, nao uma
+                            # substituicao.
+                            model.addConstr(inicio[i, k] + servico[i] <= due_i + M_tempo * (1 - visita[i, k]), name=f"due_time_delivery_{i}_{k}")
+                        else:
+                            # dueTime PICKUP (restricoes (26)-(32) do artigo, adaptadas
+                            # ao modelo de 1 viagem/navio desta instancia): a DESCARGA
+                            # na base do backload i deve terminar ate dueTime_i, i.e.
+                            # F_k <= dueTime_i (nao FIFO/LIFO individual -- com 1 viagem
+                            # por navio, TODOS os pickups do navio k terminam de ser
+                            # descarregados no mesmo instante F_k, o fim do bloco
+                            # agregado de descarga).
+                            model.addConstr(
+                                inicio[depf, k] + servico[depf] + expr_hB_retorno_seg[k] <= due_i + M_tempo * (1 - visita[i, k]),
+                                name=f"due_time_pickup_{i}_{k}"
+                            )
+
             ready_depf, due_depf = janelas[depf][0]
             model.addConstr(inicio[depf, k] >= ready_depf, name=f"ready_depf_{k}")
-            model.addConstr(inicio[depf, k] + servico[depf] <= due_depf, name=f"due_depf_{k}")
+            if not modo_silva:
+                # due_depf vale sobre F_k = R_k + hB_retorno_seg_k (fim da descarga do
+                # backload), nao apenas sobre a chegada R_k=inicio[depf,k]. Em modo
+                # silva2024 este limite ABSOLUTO nao se aplica (ver bloco de
+                # tripDurationLimit abaixo, que usa F_k-s_k, nao um due absoluto).
+                model.addConstr(inicio[depf, k] + servico[depf] + expr_hB_retorno_seg[k] <= due_depf, name=f"due_depf_{k}")
 
             for i in [dep0] + clientes:
                 for j in clientes + [depf]:
                     if i != j:
-                        model.addConstr(inicio[j, k] >= inicio[i, k] + servico[i] + tempo_viagem(i, j, k) - M_tempo * (1 - x[i, j, k]), name=f"tempo_{i}_{j}_{k}")
+                        model.addConstr(inicio[j, k] >= inicio[i, k] + servico[i] + tempo_arco(i, j, k) - M_tempo * (1 - x[i, j, k]), name=f"tempo_{i}_{j}_{k}")
 
             limite_viagem = float(getattr(veic, "trip_duration_limit", 0.0))
             if limite_viagem > 0.0 and math.isfinite(limite_viagem):
-                model.addConstr(inicio[depf, k] - inicio[dep0, k] <= limite_viagem, name=f"duracao_viagem_{k}")
+                if modo_silva:
+                    # Silva et al. (2024): TDL significa F_k - s_k <= TDL_k, com
+                    # s_k = berco[k] (instante em que comeca a operacao de berco, NAO
+                    # AT_k -- comprovado pela Tabela 3, ex. PSV M com alpha=1:
+                    # f-s=88.5<=96 mas f-AT=101.6>96). Substitui devido_depf (absoluto)
+                    # e duracao_viagem (R_k-P_k) para este modo -- ambos nao
+                    # implementam esta condicao relativa a s_k.
+                    model.addConstr(
+                        inicio[depf, k] + servico[depf] + expr_hB_retorno_seg[k] - berco[k] <= limite_viagem,
+                        name=f"tdl_silva_Fk_menos_sk_{k}"
+                    )
+                else:
+                    model.addConstr(inicio[depf, k] - inicio[dep0, k] <= limite_viagem, name=f"duracao_viagem_{k}")
+                    # F_k - AT_k <= tripDurationLimit_k, explicito por navio. due_depf
+                    # (acima) usa uma janela ABSOLUTA compartilhada (T_max do navio de
+                    # referencia da frota, copiada para o no base/depf), que NAO e
+                    # necessariamente igual a AT_k + tripDurationLimit_k de cada navio
+                    # individual -- confirmado que due_depf nao implementa esta condicao
+                    # relativa em geral, por isso ela e garantida aqui de forma
+                    # explicita, sem tocar due_depf nem a FO.
+                    AT_k_seg = float(veic.readiness)
+                    model.addConstr(
+                        inicio[depf, k] + servico[depf] + expr_hB_retorno_seg[k] - AT_k_seg <= limite_viagem,
+                        name=f"trip_duration_Fk_{k}"
+                    )
 
         if salvar_modelo:
             model.write(f"modelo_exato_petro_{os.getpid()}.lp")
@@ -12695,6 +14218,7 @@ class Metodos:
         sol.exato_petro_runtime = float(model.Runtime)
         sol.exato_petro_consistente = False
         sol.exato_petro_plataforma_id = list(plataforma_id)
+        sol.exato_petro_silva_sp_arcos_base = silva_sp_arcos_base
 
         gap_txt = "NA" if mip_gap is None or not math.isfinite(mip_gap) else f"{100.0 * mip_gap:.2f}%"
         obj_txt = "NA" if obj is None else f"{obj:.2f}"
@@ -12738,7 +14262,13 @@ class Metodos:
                     entrega_iniciada = False
 
                 tem_coleta = deck_backload[no] > eps
-                tem_entrega = deck_load[no] > eps or diesel[no] > eps or agua[no] > eps
+                # Mesma regra da Etapa 3/JSON (pickupDeckBeforeDeliveryDeck): em modo
+                # silva2024, "entrega" para fins de ordenacao coleta-antes-entrega e
+                # so deck_load (nao diesel/agua) -- ver bloco de restricoes acima.
+                if modo_silva:
+                    tem_entrega = deck_load[no] > eps
+                else:
+                    tem_entrega = deck_load[no] > eps or diesel[no] > eps or agua[no] > eps
                 if tem_coleta and entrega_iniciada:
                     return False, f"coleta_depois_entrega_no_{no}", []
                 if tem_entrega:
@@ -12756,23 +14286,36 @@ class Metodos:
             if math.isfinite(cap_agua(k)) and agua_total > cap_agua(k) + 1e-6:
                 return False, "capacidade_agua", []
 
-            tempo = float(janelas[dep0][0][0])
-            if hasattr(inst.veiculos[k], "readiness"):
-                tempo = max(tempo, float(inst.veiculos[k].readiness))
+            if modo_silva:
+                # Mesma correcao do item 5: ETR individual, sem max() com a janela
+                # compartilhada do no base.
+                tempo = float(inst.veiculos[k].readiness)
+            else:
+                tempo = float(janelas[dep0][0][0])
+                if hasattr(inst.veiculos[k], "readiness"):
+                    tempo = max(tempo, float(inst.veiculos[k].readiness))
             partida = tempo
             diagnostico_carga = []
 
             for pos in range(len(rota) - 1):
                 i = rota[pos]
                 j = rota[pos + 1]
-                chegada = tempo + servico[i] + tempo_viagem(i, j, k)
+                chegada = tempo + servico[i] + tempo_arco(i, j, k)
 
                 inicio_j = None
-                for ready_w, due_w in janelas[j]:
-                    candidato = max(chegada, ready_w)
-                    if candidato + servico[j] <= due_w + 1e-6:
-                        inicio_j = candidato
-                        break
+                if modo_silva and j == depf:
+                    # Espelha a Gurobi: due_depf (janela ABSOLUTA de 96h, copiada do
+                    # navio de referencia) foi propositalmente desativado no modelo
+                    # para este modo (ver bloco tdl_silva_Fk_menos_sk_{k}), entao a
+                    # checagem generica de janela nao deve reimpor esse limite aqui --
+                    # so o piso ready_depf continua valendo.
+                    inicio_j = max(chegada, janelas[j][0][0])
+                else:
+                    for ready_w, due_w in janelas[j]:
+                        candidato = max(chegada, ready_w)
+                        if candidato + servico[j] <= due_w + 1e-6:
+                            inicio_j = candidato
+                            break
 
                 if inicio_j is None:
                     return False, f"janela_no_{j}", diagnostico_carga
@@ -12803,7 +14346,13 @@ class Metodos:
                     deck = depois
 
             limite = float(getattr(inst.veiculos[k], "trip_duration_limit", 0.0))
-            if limite > 0.0 and tempo - partida > limite + 1e-6:
+            if modo_silva:
+                # Espelha a restricao tdl_silva_Fk_menos_sk_{k}: F_k - s_k <= TDL,
+                # com s_k = berco[k] ja resolvido pelo Gurobi (nao AT_k/partida).
+                s_k = berco[k].X
+                if limite > 0.0 and tempo - s_k > limite + 1e-6:
+                    return False, "duracao_viagem", diagnostico_carga
+            elif limite > 0.0 and tempo - partida > limite + 1e-6:
                 return False, "duracao_viagem", diagnostico_carga
 
             return True, "ok", diagnostico_carga
@@ -12812,6 +14361,15 @@ class Metodos:
         todos_atendidos = []
         consistente = True
         custo_reconstruido = 0.0
+
+        # Acumuladores da frota para o relatorio da FO ambiental Petro.
+        D_total = E_total = T_total = amb_total = temp_total = 0.0
+        TOL_FECHAMENTO_H = 1e-3  # tolerancia (horas) da checagem T_k ~= hF+hB+hN+hDP
+
+        # Diagnostico programatico (modo silva2024): espelha os valores ja
+        # impressos em [FO_PETRO], por navio, para consumo por testes de
+        # reproducao (ex.: Tabela 3), sem alterar formulacao/comportamento.
+        sol.exato_petro_silva_diag = {}
 
         for k in K:
             rota = [dep0]
@@ -12862,7 +14420,9 @@ class Metodos:
                     valida = False
                     motivo = f"erro_ordem_plataformas:{exc}"
 
-            custo_rota = sum(tempo_viagem(rota[pos], rota[pos + 1], k) for pos in range(len(rota) - 1)) if len(rota) >= 2 else 0.0
+            # custo_rota = FO ambiental+temporal do navio k (mesmas expressoes da
+            # funcao objetivo), avaliada nos valores da solucao do Gurobi.
+            custo_rota = alpha_fo * expr_E[k].getValue() + (1.0 - alpha_fo) * eta_fo * expr_T[k].getValue()
             custo_reconstruido += custo_rota
             clientes_k = [i for i in rota if i in clientes]
             todos_atendidos.extend(clientes_k)
@@ -12887,8 +14447,177 @@ class Metodos:
                 for item in diag:
                     print(f"  {item['no']:>2} | {item['plataforma']:<12} | {item['carga_antes']:>7.2f} | {item['coleta']:>7.2f} | {item['pico']:>7.2f} | {item['entrega']:>7.2f} | {item['carga_depois']:>7.2f}")
 
+            # ---- Relatorio da FO ambiental Petro, apenas para navios utilizados ----
+            if clientes_k:
+                veic = inst.veiculos[k]
+                hF_v = expr_hF[k].getValue()
+                hB_v = expr_hB[k].getValue()
+                hN_v = expr_hN[k].getValue()
+                hDP_v = expr_hDP[k].getValue()
+                T_v = expr_T[k].getValue()
+                D_v = expr_D[k].getValue()
+                E_v = expr_E[k].getValue()
+                amb_v = alpha_fo * E_v
+                temp_v = (1.0 - alpha_fo) * eta_fo * T_v
+                custo_v = amb_v + temp_v
+
+                fecha = hF_v + hB_v + hN_v + hDP_v
+                alerta = "" if abs(T_v - fecha) <= TOL_FECHAMENTO_H else \
+                    f"  *** ALERTA: T_k={T_v:.4f} difere de hF+hB+hN+hDP={fecha:.4f} ***"
+
+                print(f"[FO_PETRO] Navio {k} | hF={hF_v:.4f}h hB={hB_v:.4f}h hN={hN_v:.4f}h hDP={hDP_v:.4f}h | T={T_v:.4f}h{alerta}")
+
+                # AT_k local (nao reusar a variavel de mesmo nome do laco da FO acima:
+                # aquela "vaza" com o valor do ULTIMO navio do laco, por escopo de
+                # funcao do Python -- bug pre-existente, corrigido aqui).
+                AT_k_h = float(veic.readiness) / SEGUNDOS_POR_HORA
+                B_v = berco[k].X / SEGUNDOS_POR_HORA
+                P_v = inicio[dep0, k].X / SEGUNDOS_POR_HORA
+                R_v = inicio[depf, k].X / SEGUNDOS_POR_HORA
+                F_v = R_v + expr_hB_retorno_seg[k].getValue() / SEGUNDOS_POR_HORA
+                print(f"[FO_PETRO] Navio {k} | AT_k={AT_k_h:.4f}h B_k={B_v:.4f}h "
+                      f"P_k={P_v:.4f}h R_k={R_v:.4f}h F_k={F_v:.4f}h")
+
+                servico_seg = sum(servico[rota[pos]] for pos in range(len(rota) - 1) if rota[pos] in clientes)
+                servico_h = servico_seg / SEGUNDOS_POR_HORA
+
+                if modo_silva:
+                    # Decomposicao de hDP_k (modo silva2024): SET (setup por
+                    # plataforma) + SP (safe positioning do navio), cobrados uma vez
+                    # por visita a plataforma nova (mesmo criterio de tempo_arco) +
+                    # servico + espera (residual). setupArrival/setupDeparture nao
+                    # existem nos arcos deste modo (0.0 no JSON): SET+SP fazem esse
+                    # papel, por isso nao hah "setup_offshore" via tempo_viagem aqui.
+                    set_total_seg = 0.0
+                    sp_total_seg = 0.0
+                    for pos in range(len(rota) - 1):
+                        a, b = rota[pos], rota[pos + 1]
+                        if b in clientes and plataforma_id[a] != plataforma_id[b]:
+                            set_total_seg += set_por_plataforma.get(plataforma_id[b], 0.0)
+                            if silva_sp_arcos_base or a != dep0:
+                                sp_total_seg += float(veic.safe_positioning_time)
+                    set_total_h = set_total_seg / SEGUNDOS_POR_HORA
+                    sp_total_h = sp_total_seg / SEGUNDOS_POR_HORA
+                    espera_h = hDP_v - set_total_h - sp_total_h - servico_h
+                    print(f"[FO_PETRO] Navio {k} | hDP decomposto: SET={set_total_h:.4f}h "
+                          f"SP={sp_total_h:.4f}h servico={servico_h:.4f}h espera(residual)={espera_h:.4f}h")
+
+                    # Confirmacao explicita de F_k - s_k <= tripDurationLimit_k (s_k=B_k).
+                    limite_viagem_h = float(getattr(veic, "trip_duration_limit", 0.0)) / SEGUNDOS_POR_HORA
+                    folga_trip = limite_viagem_h - (F_v - B_v)
+                    print(f"[FO_PETRO] Navio {k} | tripDurationLimit={limite_viagem_h:.4f}h | "
+                          f"F_k-s_k={F_v - B_v:.4f}h | folga={folga_trip:.4f}h")
+
+                    print(f"[FO_PETRO] Navio {k} | FCA(theta)={veic.cost_anchored:.4f} FCB(varphi)={veic.cost_base:.4f} "
+                          f"FCN(gamma)={veic.cost_navigation:.4f} FCS(delta)={veic.cost_dynamic:.4f} (USD/h)")
+                    termo_base_v = expr_termo_base[k].getValue()
+                    termo_nav_v = expr_termo_nav[k].getValue()
+                    termo_serv_v = expr_termo_serv[k].getValue()
+                    print(f"[FO_PETRO] Navio {k} | f1 marginal (custo relativo ao fundeio, theta=FCA): "
+                          f"termo_base=(FCB-FCA)*hB={termo_base_v:.4f} | "
+                          f"termo_navegacao=(FCN-FCA)*hN={termo_nav_v:.4f} | "
+                          f"termo_servico=(FCS-FCA)*hDP={termo_serv_v:.4f} | f1_k={D_v:.4f} USD")
+                    print(f"[FO_PETRO] Navio {k} | alpha*f1_k={amb_v:.4f} USD | "
+                          f"(1-alpha)*eta*xi_k*T_k={temp_v:.4f} (xi_k=1, NAO CONFIRMADO -- ver ETAPA 5) | "
+                          f"custo_total={custo_v:.4f}")
+
+                    # Cronologia por order (read-only, so leitura dos valores JA
+                    # resolvidos pelo Gurobi -- inicio[j,k].X -- NUNCA recalcula B=AT;
+                    # usada pelo PlotJS Silva para desenhar o Gantt sem duplicar a
+                    # formula fisica em solucao.py. Mesmo shape (chaves) do retorno de
+                    # avaliar_rota_silva2024()["cronologia"], para o consumidor tratar
+                    # as duas fontes de forma uniforme. Nenhuma restricao/variavel nova.
+                    cronologia_gurobi = []
+                    for pos in range(len(rota) - 1):
+                        a, b = rota[pos], rota[pos + 1]
+                        if b == depf:
+                            cronologia_gurobi.append({
+                                "evento": "retorno_base", "de": a, "para": b,
+                                "chegada_h": R_v,
+                            })
+                            continue
+                        inicio_b_h = inicio[b, k].X / SEGUNDOS_POR_HORA
+                        chegada_b_h = (inicio[a, k].X + servico[a]) / SEGUNDOS_POR_HORA + tempo_arco(a, b, k) / SEGUNDOS_POR_HORA
+                        fim_b_h = inicio_b_h + servico[b] / SEGUNDOS_POR_HORA
+                        espera_b_h = inicio_b_h - chegada_b_h
+
+                        janela_idx = None
+                        for widx, (rd_seg, du_seg) in enumerate(janelas.get(b, [])):
+                            if inicio_b_h >= rd_seg / SEGUNDOS_POR_HORA - 1e-6 and fim_b_h <= du_seg / SEGUNDOS_POR_HORA + 1e-6:
+                                janela_idx = widx
+                                break
+
+                        cronologia_gurobi.append({
+                            "no": b, "chegada_h": chegada_b_h, "espera_h": espera_b_h,
+                            "inicio_h": inicio_b_h, "fim_h": fim_b_h, "janela_idx": janela_idx,
+                        })
+
+                    # Diagnostico programatico (so modo silva2024): espelha os
+                    # valores acima ja impressos, para consumo por testes de
+                    # reproducao (ex.: Tabela 3), sem alterar formulacao/comportamento.
+                    sol.exato_petro_silva_diag[k] = {
+                        "AT": AT_k_h, "B": B_v, "P": P_v, "R": R_v, "F": F_v,
+                        "dur": F_v - B_v,
+                        "hF": hF_v, "hB": hB_v, "hN": hN_v, "hDP": hDP_v,
+                        "hB_saida": expr_hB_saida_seg[k].getValue() / SEGUNDOS_POR_HORA,
+                        "hB_retorno": expr_hB_retorno_seg[k].getValue() / SEGUNDOS_POR_HORA,
+                        "SET": set_total_h, "SP": sp_total_h,
+                        "servico": servico_h, "espera": espera_h,
+                        "f1": D_v, "f2": T_v,
+                        "termo_base": termo_base_v, "termo_nav": termo_nav_v, "termo_serv": termo_serv_v,
+                        "silva_sp_arcos_base": silva_sp_arcos_base,
+                        "cronologia": cronologia_gurobi,
+                    }
+                else:
+                    # Decomposicao de hDP_k (modo petrobras) em setup offshore + servico
+                    # + espera (residual). setupArrival do arco base->1a plataforma e
+                    # setupDeparture do arco ultima plataforma->base ocorrem
+                    # FISICAMENTE na plataforma (manobra de atracacao/desatracacao la,
+                    # nao na base -- confirmado em leitura_petro_dados: "if i==0:
+                    # t+=setup_arr" e "elif j==0: t+=setup_dep" sao sempre eventos do
+                    # lado da plataforma). Por isso TODOS os arcos da rota entram no
+                    # setup_offshore, inclusive os que tocam dep0/depf.
+                    setup_offshore_seg = sum(
+                        tempo_viagem(rota[pos], rota[pos + 1], k) - tempo_navegacao_pura(rota[pos], rota[pos + 1], k)
+                        for pos in range(len(rota) - 1)
+                    )
+                    setup_offshore_h = setup_offshore_seg / SEGUNDOS_POR_HORA
+                    espera_h = hDP_v - setup_offshore_h - servico_h
+                    print(f"[FO_PETRO] Navio {k} | hDP decomposto: setup_offshore={setup_offshore_h:.4f}h "
+                          f"servico={servico_h:.4f}h espera(residual)={espera_h:.4f}h")
+
+                    # Confirmacao explicita de F_k - AT_k <= tripDurationLimit_k.
+                    limite_viagem_h = float(getattr(veic, "trip_duration_limit", 0.0)) / SEGUNDOS_POR_HORA
+                    folga_trip = limite_viagem_h - (F_v - AT_k_h)
+                    print(f"[FO_PETRO] Navio {k} | tripDurationLimit={limite_viagem_h:.4f}h | "
+                          f"F_k-AT_k={F_v - AT_k_h:.4f}h | folga={folga_trip:.4f}h")
+
+                    print(f"[FO_PETRO] Navio {k} | theta={veic.fuel_anchored:.4f} varphi={veic.fuel_base:.4f} "
+                          f"gamma={veic.fuel_navigation:.4f} delta={veic.fuel_dynamic:.4f} (m3/h)")
+                    print(f"[FO_PETRO] Navio {k} | consumo_fundeio={veic.fuel_anchored * hF_v:.4f} "
+                          f"consumo_berco={veic.fuel_base * hB_v:.4f} consumo_navegacao={veic.fuel_navigation * hN_v:.4f} "
+                          f"consumo_DP={veic.fuel_dynamic * hDP_v:.4f} | D_k={D_v:.4f} m3 | E_k={E_v:.4f} tCO2eq")
+                    print(f"[FO_PETRO] Navio {k} | ambiental=alpha*E_k={amb_v:.4f} | "
+                          f"temporal=(1-alpha)*eta*T_k={temp_v:.4f} | custo_total={custo_v:.4f}")
+
+                D_total += D_v
+                E_total += E_v
+                T_total += T_v
+                amb_total += amb_v
+                temp_total += temp_v
+
             if not valida:
                 consistente = False
+
+        print("-" * 78)
+        if modo_silva:
+            print(f"[FO_PETRO] FROTA | custo_direto_total(f1)={D_total:.4f} USD | "
+                  f"tempo_total(xi)={T_total:.4f} h | alpha*f1={amb_total:.4f} USD | "
+                  f"(1-alpha)*eta*soma(xi)={temp_total:.4f} | FO_total={amb_total + temp_total:.4f}")
+        else:
+            print(f"[FO_PETRO] FROTA | consumo_total={D_total:.4f} m3 | emissoes_totais={E_total:.4f} tCO2eq | "
+                  f"tempo_total={T_total:.4f} h | componente_ambiental={amb_total:.4f} | "
+                  f"componente_temporal={temp_total:.4f} | FO_total={amb_total + temp_total:.4f}")
 
         if sorted(todos_atendidos) != clientes:
             consistente = False
@@ -12910,9 +14639,1291 @@ class Metodos:
         sol.rotas = rotas_tmp
         sol.numero_de_rotas = [1] * inst.nbv
         sol.custo = float(obj)
+
+        # Componentes da FO ambiental+temporal (mesmos totais ja usados acima na
+        # checagem/impressao [FO_PETRO] FROTA), para consumo pela main sem recalculo.
+        sol.exato_petro_consumo_total = D_total
+        sol.exato_petro_emissoes_total = E_total
+        sol.exato_petro_tempo_total = T_total
+        sol.exato_petro_componente_ambiental = amb_total
+        sol.exato_petro_componente_temporal = temp_total
+        sol.exato_petro_alpha = alpha_fo
+        sol.exato_petro_eta = eta_fo
+        sol.exato_petro_chi = chi_fo
+
         print("[EXATO_PETRO] Solucao operacionalmente valida.")
         return True
 
+    # ======================================================================
+    # SILVA 2024 -- avaliacao de rota fixa (funcoes NOVAS e ISOLADAS).
+    #
+    # Nao chamam nem alteram metodo_exato_petro, metodo_exato (Solomon), B&P
+    # (branch_and_price_global, resolver_no_com_pool, mestre), pricing Python
+    # ou C++, construtivas, estabilizacao, branching ou avaliador_rota.py.
+    #
+    # Reproduzem, para UMA rota fixa de UM navio, exatamente a mesma
+    # interpretacao fisica que metodo_exato_petro usa hoje no modo
+    # objectiveMode="silva2024" (mesma formula de navegacao piecewise por
+    # navio, mesmo SP/SET por entrada de plataforma nova, mesmo carregamento/
+    # descarga na base, mesmas regras de dueTime, TDL=F-s e capacidade).
+    # Nao usar para pricing/B&P ainda -- so avaliacao isolada de rota fixa.
+    # ======================================================================
+    def avaliar_rota_silva2024(self, inst, k, seq, diagnostico=False, silva_sp_arcos_base=True):
+        """
+        Avalia viabilidade e custo de uma rota FIXA de um navio k, no modo
+        silva2024. seq = rota completa, incluindo dep0 (0) e depf (nbn-1),
+        ex.: [0, 10, 15].
+
+        silva_sp_arcos_base (default True -- IDENTICO ao comportamento
+        historico desta funcao): mesma chave/semantica de
+        Metodos.metodo_exato_petro -- controla so a perna de SAIDA da base
+        (base->1a plataforma), que carrega SP+SET quando True (literal) ou
+        so SET quando False (convencao observada na Tabela 3 do benchmark
+        Silva). A perna de retorno plataforma->base nunca teve SP/SET, com
+        ou sem esta chave. O B&P (pricing_silva2024) continua chamando esta
+        funcao com o default True nesta etapa.
+
+        Retorna um dict:
+        {
+            "viavel": bool, "motivo": str,
+            "custo": float, "f1": float, "f2": float, "xi_usado": float,
+            "AT": h, "B": h, "P": h, "R": h, "F": h,
+            "hB_saida": h, "hB_retorno": h, "hB": h, "hN": h, "hDP": h,
+            "espera": h, "janelas_usadas": {no: {...}}, "cronologia": [...],
+        }
+        Tempos agregados no retorno em HORAS; internamente tudo em segundos.
+        """
+        if not hasattr(inst, "dados_petro"):
+            raise ValueError("avaliar_rota_silva2024 exige uma instancia carregada por leitura_petro")
+        if getattr(inst, "objective_mode", "petrobras") != "silva2024":
+            raise ValueError("avaliar_rota_silva2024 e exclusiva do modo objectiveMode=silva2024")
+
+        dp = inst.dados_petro
+        dep0 = 0
+        depf = inst.nbn - 1
+        clientes = list(range(1, inst.nbcd + 1))
+        eps = 1e-6
+        SEG_H = 3600.0
+        veic = inst.veiculos[k]
+
+        if seq[0] != dep0 or seq[-1] != depf:
+            return {"viavel": False, "motivo": "rota_sem_depositos", "cronologia": []}
+
+        clientes_rota = [i for i in seq if i not in (dep0, depf)]
+        if len(set(clientes_rota)) != len(clientes_rota):
+            return {"viavel": False, "motivo": "order_repetida", "cronologia": []}
+        if any(i not in clientes for i in clientes_rota):
+            return {"viavel": False, "motivo": "no_invalido_na_rota", "cronologia": []}
+
+        # ---- plataformas: MESMA regra usada em metodo_exato_petro ----
+        nomes = list(dp.get("nomes", []))
+        plataforma_id = [-1] * inst.nbn
+        mapa_plataformas = {}
+        plataforma_chave = {}
+        nos_por_plataforma = {}
+        for i in clientes:
+            nome = str(nomes[i]) if i < len(nomes) else ""
+            if "_order_" in nome:
+                chave = nome.split("_order_", 1)[0]
+            elif "_order" in nome:
+                chave = nome.split("_order", 1)[0]
+            elif nome:
+                chave = nome
+            else:
+                lat = round(float(dp.get("lat", [0.0] * inst.nbn)[i]), 6)
+                lon = round(float(dp.get("lon", [0.0] * inst.nbn)[i]), 6)
+                chave = f"{lat:.6f},{lon:.6f}"
+            if chave not in mapa_plataformas:
+                mapa_plataformas[chave] = len(mapa_plataformas)
+            p = mapa_plataformas[chave]
+            plataforma_id[i] = p
+            plataforma_chave[p] = chave
+            nos_por_plataforma.setdefault(p, []).append(i)
+
+        # ---- dados por order (mesmo fallback dado_no de metodo_exato_petro) ----
+        def dado_no(i, atributo, chave):
+            valor_no = getattr(inst.noh[i], atributo, None)
+            if valor_no is not None:
+                return float(valor_no)
+            vetor = dp.get(chave, [])
+            return float(vetor[i]) if i < len(vetor) else 0.0
+
+        deck_load = {i: dado_no(i, "DEMAND_DECK_LOAD", "dem_deck_load") for i in clientes_rota}
+        deck_backload = {i: dado_no(i, "DEMAND_DECK_BACKLOAD", "dem_deck_backload") for i in clientes_rota}
+        diesel = {i: dado_no(i, "DEMAND_DIESEL", "dem_diesel") for i in clientes_rota}
+        agua = {i: dado_no(i, "DEMAND_AGUA", "dem_agua") for i in clientes_rota}
+        servico = {i: float(inst.noh[i].SERVICE_TIME[0]) if getattr(inst.noh[i], "SERVICE_TIME", None) else 0.0 for i in range(inst.nbn)}
+
+        tempo_carreg_deck = dp.get("tempo_carreg_deck", [0.0] * inst.nbn)
+        tempo_carreg_diesel = dp.get("tempo_carreg_diesel", [0.0] * inst.nbn)
+        tempo_carreg_agua = dp.get("tempo_carreg_agua", [0.0] * inst.nbn)
+        tempo_descarreg_backload = dp.get("tempo_descarreg_backload", [0.0] * inst.nbn)
+        platform_setup_seg = dp.get("platform_setup_seg", [0.0] * inst.nbn)
+        order_due_time_seg = dp.get("order_due_time_seg", [None] * inst.nbn)
+        commodities = dp.get("commodities", [None] * inst.nbn)
+
+        # ---- SET por plataforma (mesma checagem de uniformidade de metodo_exato_petro) ----
+        set_por_plataforma = {}
+        for p, nos_p in nos_por_plataforma.items():
+            valores = {float(platform_setup_seg[i]) for i in nos_p}
+            set_por_plataforma[p] = max(valores) if valores else 0.0
+
+        # ---- navegacao pura por navio (MESMA formula de tempo_navegacao_silva) ----
+        def dist_km(i, j):
+            ii = 0 if i == depf else i
+            jj = 0 if j == depf else j
+            return float(dp["dist"][ii][jj])
+
+        def nav_pura_seg(i, j):
+            d = dist_km(i, j)
+            if d == 0.0:
+                return 0.0
+            vs = veic.velocities
+            vl = min(vs, key=lambda v: v["above"])["speed"]
+            vh = max(vs, key=lambda v: v["above"])["speed"]
+            th = max(vs, key=lambda v: v["above"])["above"]
+            n = d / vl if d <= th else th / vl + (d - th) / vh
+            return n * SEG_H
+
+        def tempo_arco(i, j):
+            # MESMA regra de tempo_arco: SET so na entrada de uma plataforma NOVA
+            # (inclusive vindo da base); nunca voltando para a base. SP idem,
+            # EXCETO na perna de saida da base quando silva_sp_arcos_base=False.
+            t = nav_pura_seg(i, j)
+            if j not in (dep0, depf):
+                pi = plataforma_id[i] if i not in (dep0, depf) else -1
+                pj = plataforma_id[j]
+                if pi != pj:
+                    t += set_por_plataforma.get(pj, 0.0)
+                    if silva_sp_arcos_base or i != dep0:
+                        t += float(veic.safe_positioning_time)
+            return t
+
+        # ---- capacidades individuais do navio ----
+        Q = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel_k = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua_k = float(getattr(veic, "cap_agua", float("inf")))
+
+        deck_total = sum(deck_load.values())
+        diesel_total = sum(diesel.values())
+        agua_total = sum(agua.values())
+
+        if deck_total > Q + eps:
+            return {"viavel": False, "motivo": f"capacidade_deck_{deck_total:.4f}_maior_{Q:.4f}", "cronologia": []}
+        if math.isfinite(cap_diesel_k) and diesel_total > cap_diesel_k + eps:
+            return {"viavel": False, "motivo": "capacidade_diesel", "cronologia": []}
+        if math.isfinite(cap_agua_k) and agua_total > cap_agua_k + eps:
+            return {"viavel": False, "motivo": "capacidade_agua", "cronologia": []}
+
+        # ---- bloco unico por plataforma + coleta de DECK antes de entrega de DECK ----
+        # (regra estreita Silva: diesel/agua NAO entram nesta precedencia --
+        # ver pickupDeckBeforeDeliveryDeck no JSON e correcao ja feita em
+        # metodo_exato_petro; diesel/agua sao tratados so por dueTime/janela.)
+        plataforma_atual = None
+        plataformas_encerradas = set()
+        entrega_deck_iniciada = False
+        for no in clientes_rota:
+            p = plataforma_id[no]
+            if p != plataforma_atual:
+                if plataforma_atual is not None:
+                    plataformas_encerradas.add(plataforma_atual)
+                if p in plataformas_encerradas:
+                    return {"viavel": False, "motivo": f"retorno_plataforma_{plataforma_chave[p]}", "cronologia": []}
+                plataforma_atual = p
+                entrega_deck_iniciada = False
+            tem_coleta = deck_backload[no] > eps
+            tem_entrega_deck = deck_load[no] > eps
+            if tem_coleta and entrega_deck_iniciada:
+                return {"viavel": False, "motivo": f"coleta_depois_entrega_deck_no_{no}", "cronologia": []}
+            if tem_entrega_deck:
+                entrega_deck_iniciada = True
+
+        # ---- cronologia ----
+        AT = float(veic.readiness)
+        hB_saida_seg = sum(tempo_carreg_deck[i] + tempo_carreg_diesel[i] + tempo_carreg_agua[i] for i in clientes_rota)
+        hB_retorno_seg = sum(tempo_descarreg_backload[i] for i in clientes_rota if commodities[i] == "deckCargoBackload")
+
+        # B_k (berco/inicio da operacao de saida) comeca em AT_k para simular
+        # a cronologia -- e o minimo possivel, nunca atrasa nada a jusante.
+        # So DEPOIS de calcular F_k (abaixo) e que decidimos se e preciso
+        # atrasar B_k (dentro da folga de espera/janela ja existente na rota)
+        # para caber no tripDurationLimit, exatamente como o compacto faz com
+        # berco[k] livre (>= AT_k) -- ver Silva et al. (2024) Tabela 3 e a
+        # restricao tdl_silva_Fk_menos_sk em metodo_exato_petro (TDL usa
+        # F_k-B_k, nao F_k-AT_k; o bloco de TDL mais abaixo reproduz isso).
+        B = AT
+        P = B + hB_saida_seg
+
+        max_partida_k = float(getattr(veic, "max_departure", 0.0))
+        if max_partida_k > 0.0 and math.isfinite(max_partida_k) and P > max_partida_k + eps:
+            return {"viavel": False, "motivo": "max_partida_excedida", "cronologia": []}
+
+        cronologia = []
+        janelas_usadas = {}
+        espera_total = 0.0
+        # forward time slack (Savelsbergh): min_j (espera acumulada ate j +
+        # margem ate o due da janela ativa em j) -- quanto B_k pode atrasar
+        # sem violar NENHUMA janela/dueTime offshore da rota (nao tem nada a
+        # ver com TDL por si so; e usado abaixo so como um dos limites de
+        # delta_max, junto com espera_total e max_departure).
+        margem_janela_min = float("inf")
+        deck_atual = deck_total  # carga inicial = toda a entrega da rota (pre-carregada)
+        if deck_atual > Q + eps:
+            return {"viavel": False, "motivo": f"pico_deck_inicial_{deck_atual:.4f}_maior_{Q:.4f}", "cronologia": []}
+
+        tempo = P
+        for pos in range(len(seq) - 1):
+            i, j = seq[pos], seq[pos + 1]
+
+            if j == depf:
+                t_arco = nav_pura_seg(i, j)  # sem SP/SET voltando para a base
+                chegada = tempo + servico.get(i, 0.0) + t_arco
+                if chegada < tempo - 1e-9:
+                    return {"viavel": False, "motivo": "tempo_retrocedeu_retorno", "cronologia": cronologia}
+                cronologia.append({"evento": "retorno_base", "de": i, "para": j, "chegada_h": chegada / SEG_H})
+                tempo = chegada
+                continue
+
+            t_arco = tempo_arco(i, j)
+            chegada = tempo + servico.get(i, 0.0) + t_arco
+            if chegada < tempo - 1e-9:
+                return {"viavel": False, "motivo": f"tempo_retrocedeu_{i}_{j}", "cronologia": cronologia}
+
+            ready_list = list(getattr(inst.noh[j], "READY_TIME", []) or [])
+            due_list = list(getattr(inst.noh[j], "DUE_DATE", []) or [])
+            inicio_j = None
+            widx_sel = None
+            for widx, (ready_w, due_w) in enumerate(zip(ready_list, due_list)):
+                candidato = max(chegada, ready_w)
+                if candidato + servico.get(j, 0.0) <= due_w + eps:
+                    inicio_j = candidato
+                    widx_sel = widx
+                    break
+            if inicio_j is None:
+                return {"viavel": False, "motivo": f"janela_no_{j}", "cronologia": cronologia}
+
+            espera = inicio_j - chegada
+            espera_total += espera
+            fim_j = inicio_j + servico.get(j, 0.0)
+
+            # margem ate o due da janela ativa neste no, contando com o que
+            # ja foi absorvido de espera ate aqui (inclusive) -- ver
+            # margem_janela_min acima.
+            margem_j = due_list[widx_sel] - servico.get(j, 0.0) - inicio_j
+            margem_janela_min = min(margem_janela_min, espera_total + margem_j)
+
+            due_j = order_due_time_seg[j] if j < len(order_due_time_seg) else None
+            if due_j is not None and commodities[j] != "deckCargoBackload":
+                if fim_j > due_j + eps:
+                    return {"viavel": False, "motivo": f"dueTime_delivery_no_{j}", "cronologia": cronologia}
+
+            if deck_backload[j] > eps or deck_load[j] > eps:
+                antes = deck_atual
+                coleta = deck_backload[j]
+                pico = antes + coleta
+                entrega = deck_load[j]
+                depois = pico - entrega
+                if pico > Q + eps:
+                    return {"viavel": False, "motivo": f"pico_deck_no_{j}_{pico:.4f}_maior_{Q:.4f}", "cronologia": cronologia}
+                if depois < -eps:
+                    return {"viavel": False, "motivo": f"carga_negativa_no_{j}", "cronologia": cronologia}
+                deck_atual = depois
+
+            janelas_usadas[j] = {
+                "indice": widx_sel,
+                "ready_h": ready_list[widx_sel] / SEG_H if widx_sel is not None else None,
+                "due_h": due_list[widx_sel] / SEG_H if widx_sel is not None else None,
+                "espera_h": espera / SEG_H,
+            }
+            cronologia.append({
+                "no": j, "chegada_h": chegada / SEG_H, "espera_h": espera / SEG_H,
+                "inicio_h": inicio_j / SEG_H, "fim_h": fim_j / SEG_H, "janela_idx": widx_sel,
+            })
+
+            # tempo carrega o INICIO do servico (nao o fim); servico[i] e somado
+            # uma unica vez no "chegada=" da proxima iteracao (i vira o no atual).
+            tempo = inicio_j
+
+        R = tempo
+        F = R + hB_retorno_seg
+
+        # dueTime PICKUP: F_k <= dueTime_i para cada pickup da rota (Etapa 2/item4)
+        for i in clientes_rota:
+            if commodities[i] == "deckCargoBackload":
+                due_i = order_due_time_seg[i] if i < len(order_due_time_seg) else None
+                if due_i is not None and F > due_i + eps:
+                    return {"viavel": False, "motivo": f"dueTime_pickup_no_{i}", "cronologia": cronologia}
+
+        # TDL: F_k - B_k <= tripDurationLimit_k, com B_k=berco[k] LIVRE (>=
+        # AT_k), igual ao compacto (Silva et al. 2024, Tabela 3: F-s<=TDL mas
+        # F-AT>TDL e viavel).
+        #
+        # ---- 1) intervalo factivel de atraso de B_k: [delta_min, delta_max] ----
+        # delta_min: atraso MINIMO de B_k para satisfazer o TDL (F_k-B_k<=TDL).
+        # F_k, R_k, hB_k, hN_k, T_k=F_k-AT_k NAO mudam com o atraso de B_k
+        # enquanto ele for absorvido pela espera de janela ja existente a
+        # jusante -- so P_k=B_k+hB_saida_seg cresce.
+        tdl = float(getattr(veic, "trip_duration_limit", 0.0))
+        T_baseline_seg = F - AT  # = T_k do compacto; nao muda com B_k
+        delta_min = 0.0
+        if tdl > 0.0 and math.isfinite(tdl):
+            delta_min = max(0.0, T_baseline_seg - tdl)
+
+        # delta_max: atraso MAXIMO de B_k que pode ser absorvido sem alterar
+        # F_k/R_k e sem violar nenhuma janela/dueTime offshore ou
+        # max_departure -- min de tres limites independentes:
+        #   (a) espera_total: alem disso F_k comecaria a crescer tambem (a
+        #       espera de janela ja existente na rota acaba);
+        #   (b) margem_janela_min: forward time slack (Savelsbergh) ate o due
+        #       mais apertado de qualquer no da rota (nada a ver com TDL,
+        #       so viabilidade de janela);
+        #   (c) folga_partida: max_departure_k - P_k, se houver limite.
+        folga_partida = float("inf")
+        if max_partida_k > 0.0 and math.isfinite(max_partida_k):
+            folga_partida = max_partida_k - P
+        delta_max = min(espera_total, margem_janela_min, folga_partida)
+
+        if delta_min > delta_max + eps:
+            return {
+                "viavel": False,
+                "motivo": f"tdl_violado_{T_baseline_seg / SEG_H:.4f}h_maior_{tdl / SEG_H:.4f}h",
+                "cronologia": cronologia,
+            }
+
+        # ---- 2) escolher delta_B em [delta_min, delta_max] pelo coeficiente
+        # da FO (MESMA FO do compacto), nao por uma convencao arbitraria.
+        # Enquanto o atraso e absorvido pela espera (F_k, hB_k, hN_k, T_k
+        # fixos), hDP_k = (R_k-P_k)/SEG_H-hN_k DIMINUI exatamente delta/SEG_H
+        # por unidade de atraso (P_k cresce, R_k fixo) -- logo f1 varia com
+        # -(delta_cost-theta_cost)*delta/SEG_H (delta_cost=FCS=cost_dynamic,
+        # theta_cost=FCA=cost_anchored) e f2=T_k_h fica constante. Como
+        # custo=alpha_fo*f1+(1-alpha_fo)*eta_fo*f2, o sinal de d(custo)/d(delta)
+        # e -alpha_fo*(delta_cost-theta_cost)/SEG_H:
+        #   alpha_fo>0 e delta_cost>theta_cost -> custo decresce com delta -> delta_max
+        #   alpha_fo>0 e delta_cost<theta_cost -> custo cresce com delta -> delta_min
+        #   alpha_fo==0 ou delta_cost==theta_cost -> degenerado (mesma FO no
+        #     intervalo todo) -> convencao deterministica: delta_min.
+        alpha_fo_local = float(inst.alpha_fo)
+        theta_cost = float(veic.cost_anchored)
+        delta_cost = float(veic.cost_dynamic)
+        eps_custo = 1e-9
+        if alpha_fo_local > 0.0 and (delta_cost - theta_cost) > eps_custo:
+            delta_B = delta_max
+        elif alpha_fo_local > 0.0 and (theta_cost - delta_cost) > eps_custo:
+            delta_B = delta_min
+        else:
+            delta_B = delta_min
+
+        B = AT + delta_B
+        P = B + hB_saida_seg
+
+        # ---- componentes da FO (mesmas formulas do compacto) ----
+        hB_saida_h = hB_saida_seg / SEG_H
+        hB_retorno_h = hB_retorno_seg / SEG_H
+        hB = hB_saida_h + hB_retorno_h
+        hN_seg = sum(nav_pura_seg(seq[pos], seq[pos + 1]) for pos in range(len(seq) - 1))
+        hN = hN_seg / SEG_H
+        hDP = (R - P) / SEG_H - hN
+
+        theta_k = veic.cost_anchored
+        varphi_k = veic.cost_base
+        gamma_k = veic.cost_navigation
+        delta_k = veic.cost_dynamic
+
+        f1 = (varphi_k - theta_k) * hB + (gamma_k - theta_k) * hN + (delta_k - theta_k) * hDP
+
+        xi_definido = veic.xi is not None
+        xi_usado = veic.xi if xi_definido else 1.0
+        T_k_h = (F - AT) / SEG_H
+        f2 = xi_usado * T_k_h
+
+        alpha_fo = float(inst.alpha_fo)
+        eta_fo = float(inst.eta_fo)
+        custo = alpha_fo * f1 + (1.0 - alpha_fo) * eta_fo * f2
+
+        resultado = {
+            "viavel": True, "motivo": "ok",
+            "custo": custo, "f1": f1, "f2": f2, "xi_usado": xi_usado,
+            "xi_provisorio": not xi_definido,
+            "AT": AT / SEG_H, "B": B / SEG_H, "P": P / SEG_H, "R": R / SEG_H, "F": F / SEG_H,
+            "hB_saida": hB_saida_h, "hB_retorno": hB_retorno_h, "hB": hB,
+            "hN": hN, "hDP": hDP, "espera": espera_total / SEG_H,
+            "janelas_usadas": janelas_usadas, "cronologia": cronologia,
+            "silva_sp_arcos_base": silva_sp_arcos_base,
+        }
+        if diagnostico:
+            aviso_xi = "  (xi=1 PROVISORIO -- veic.xi nao definido)" if not xi_definido else ""
+            print(f"[SILVA_ROTA] navio={k} rota={seq} viavel=True custo={custo:.4f} f1={f1:.4f} f2={f2:.4f}{aviso_xi}")
+            print(f"[SILVA_ROTA] navio={k} AT={resultado['AT']:.4f}h B={resultado['B']:.4f}h P={resultado['P']:.4f}h "
+                  f"R={resultado['R']:.4f}h F={resultado['F']:.4f}h hB={hB:.4f}h hN={hN:.4f}h hDP={hDP:.4f}h "
+                  f"espera={resultado['espera']:.4f}h")
+        return resultado
+
+    def custo_rota_silva2024(self, inst, k, seq, silva_sp_arcos_base=True):
+        """
+        Wrapper simples de avaliar_rota_silva2024: retorna o custo da rota se
+        viavel, ou float('inf') se inviavel. Funcao NOVA e ISOLADA -- nao
+        substitui nenhuma chamada existente do B&P/pricing.
+
+        silva_sp_arcos_base (default True -- IDENTICO ao comportamento
+        historico): repassado sem alteracao a avaliar_rota_silva2024. O B&P
+        (preparar_pool_silva2024 e demais chamadores atuais) nao passa este
+        argumento, logo continua usando o default True nesta etapa.
+        """
+        resultado = self.avaliar_rota_silva2024(inst, k, seq, silva_sp_arcos_base=silva_sp_arcos_base)
+        if not resultado["viavel"]:
+            return float("inf")
+        return resultado["custo"]
+
+    def preparar_pool_silva2024(self, inst, sol_pool, diagnostico=False):
+        """
+        Funcao NOVA e ISOLADA (Etapa 3): re-precifica o pool de colunas ja
+        gerado pelas construtivas ATUAIS (nao as altera) usando exatamente a
+        interpretacao fisica de avaliar_rota_silva2024/metodo_exato_petro
+        (modo silva2024). So deve ser chamada quando
+        inst.objective_mode == "silva2024".
+
+        Para cada navio k e cada rota p em sol_pool.rotas[k]["sequencia_rota"]:
+          - coluna artificial (["artificial"][p] is True): NAO tocada (fica
+            com o custo artificial de Fase I, necessario para viabilidade).
+          - coluna ociosa ([0, depf]): custo Silva = 0.0.
+          - demais colunas REAIS: avaliadas por avaliar_rota_silva2024; se
+            viavel, sol_pool.rotas[k]["custo"][p] e substituido pelo custo
+            Silva; se inviavel, a coluna e removida de forma consistente de
+            TODAS as listas paralelas (sequencia_rota, rotas_binaria, custo,
+            vezes_usada_geral, vezes_usada_otimo, lbd_iteracao, artificial).
+
+        Retorna um dict de diagnostico:
+        {"avaliadas": int, "viaveis": int, "inviaveis": int, "custos_atualizados": int}
+        """
+        depf = inst.nbn - 1
+        avaliadas = viaveis = inviaveis = custos_atualizados = 0
+
+        for k in sol_pool.rotas.keys():
+            rotas_k = sol_pool.rotas[k]
+            manter = []  # indices das colunas que permanecem no pool
+
+            for p, seq in enumerate(rotas_k["sequencia_rota"]):
+                if rotas_k["artificial"][p]:
+                    # Fase I -- nao mexe, mantem custo artificial existente.
+                    manter.append(p)
+                    continue
+
+                if seq == [0, depf]:
+                    # coluna ociosa: custo Silva = 0.0 (navio nao utilizado).
+                    rotas_k["custo"][p] = 0.0
+                    manter.append(p)
+                    continue
+
+                avaliadas += 1
+                resultado = self.avaliar_rota_silva2024(inst, k, seq)
+                if resultado["viavel"]:
+                    viaveis += 1
+                    custo_antigo = rotas_k["custo"][p]
+                    rotas_k["custo"][p] = resultado["custo"]
+                    custos_atualizados += 1
+                    manter.append(p)
+                    if diagnostico:
+                        print(f"[SILVA_POOL] navio={k} p={p} seq={seq} viavel=True "
+                              f"custo_antigo={custo_antigo:.4f} custo_silva={resultado['custo']:.4f}")
+                else:
+                    inviaveis += 1
+                    if diagnostico:
+                        print(f"[SILVA_POOL] navio={k} p={p} seq={seq} viavel=False "
+                              f"motivo={resultado.get('motivo')} -- REMOVIDA do pool")
+
+            if len(manter) != len(rotas_k["sequencia_rota"]):
+                for chave in ("sequencia_rota", "rotas_binaria", "custo", "vezes_usada_geral",
+                              "vezes_usada_otimo", "lbd_iteracao", "artificial"):
+                    rotas_k[chave] = [rotas_k[chave][p] for p in manter]
+
+        sol_pool.numero_de_rotas = [len(sol_pool.rotas[k]["sequencia_rota"]) for k in sol_pool.rotas.keys()]
+
+        diag = {
+            "avaliadas": avaliadas, "viaveis": viaveis,
+            "inviaveis": inviaveis, "custos_atualizados": custos_atualizados,
+        }
+        if diagnostico:
+            print(f"[SILVA_POOL] resumo: avaliadas={avaliadas} viaveis={viaveis} "
+                  f"inviaveis={inviaveis} custos_atualizados={custos_atualizados}")
+        return diag
+
+    # ========================================================================
+    # WRAPPERS C++ SILVA (secao 4 do pedido de integracao BID_SILVA_CPP/
+    # PD_SILVA_CPP no B&P): centralizam import do modulo, marshaling
+    # instancia/veiculo -> args pybind, chamada do C++ e auditoria
+    # Python obrigatoria (secao 5) -- NENHUMA coluna C++ entra no pool sem
+    # passar por avaliar_rota_silva2024 + recomputo de RC + coluna_respeita_no
+    # + checagem de nao-revisita aqui dentro. Fisica/branching/nucleo C++
+    # (silva_pricing_core.h, PD_SILVA_CPP.cpp, BID_SILVA_CPP.cpp) NAO sao
+    # alterados por esta tarefa -- so consumidos via pybind.
+    # ========================================================================
+
+    def _silva_cpp_module(self):
+        """Importa (uma unica vez, cacheado na classe) o modulo pybind
+        vrptw_pd_silva a partir do caminho ABSOLUTO relativo a este arquivo
+        (secao 13): PD_SILVA_CPP/PD_SILVA_CPP/x64/Release/vrptw_pd_silva.pyd.
+        Nunca depende de um .pyd antigo que por acaso esteja em sys.path --
+        insere o diretorio correto na FRENTE de sys.path e confere que o
+        modulo efetivamente carregado veio de la. Imprime [SILVA C++ MODULE]
+        uma unica vez, no primeiro uso."""
+        cache = getattr(Metodos, "_silva_cpp_mod_cache", None)
+        if cache is not None:
+            return cache
+
+        import sys
+        cpp_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "PD_SILVA_CPP", "PD_SILVA_CPP", "x64", "Release",
+        )
+        if cpp_dir not in sys.path:
+            sys.path.insert(0, cpp_dir)
+        import vrptw_pd_silva
+
+        mod_path = os.path.abspath(vrptw_pd_silva.__file__)
+        if not mod_path.startswith(os.path.abspath(cpp_dir)):
+            raise RuntimeError(
+                f"vrptw_pd_silva carregado de caminho inesperado ({mod_path}); "
+                f"esperado sob {cpp_dir} -- possivel .pyd antigo no sys.path"
+            )
+        print("\n[SILVA C++ MODULE]")
+        print(f"arquivo={mod_path}")
+        Metodos._silva_cpp_mod_cache = vrptw_pd_silva
+        return vrptw_pd_silva
+
+    def _plataforma_de_no_silva(self, inst, no):
+        """Mesma regra de agrupamento de plataforma usada em
+        avaliar_rota_silva2024/pricing_silva2024/SUB_PROG_PD_SILVA/
+        SUB_PROG_BID_SILVA (nome ate '_order_'/'_order'); None para
+        dep0/depf."""
+        if no == 0 or no == inst.nbn - 1:
+            return None
+        dp = inst.dados_petro
+        nomes = list(dp.get("nomes", []))
+        nome = str(nomes[no]) if no < len(nomes) else ""
+        if "_order_" in nome:
+            return nome.split("_order_", 1)[0]
+        elif "_order" in nome:
+            return nome.split("_order", 1)[0]
+        return nome
+
+    def _silva_seq_respeita_nao_revisita(self, inst, seq):
+        """Checagem de seguranca (a mesma ja usada nos testes isolados
+        _teste_pd_silva_cpp.py/_teste_bid_silva_cpp.py): a sequencia
+        comprimida de plataformas (removendo repeticoes CONSECUTIVAS) nao
+        pode ter uma plataforma repetida -- isso significaria que a coluna
+        saiu de uma plataforma e voltou depois, o que os labels C++ (bitset
+        `fechadas`) ja deveriam impedir por construcao; esta checagem so
+        confirma isso na auditoria, nunca reimplementa a regra."""
+        seq_plat = [self._plataforma_de_no_silva(inst, no) for no in seq]
+        seq_plat = [p for p in seq_plat if p is not None]
+        comprimida = []
+        for p in seq_plat:
+            if not comprimida or comprimida[-1] != p:
+                comprimida.append(p)
+        return len(comprimida) == len(set(comprimida))
+
+    def _montar_kwargs_silva_cpp(self, inst, k, pi, sigma_k, mu_arc, no_bp):
+        """Marshaling instancia/veiculo k -> kwargs COMUNS de
+        pricing_pd_silva/pricing_bid_silva (tudo exceto os parametros de
+        orcamento/estrategia especificos de cada um, adicionados pelo
+        chamador). Mesma logica ja validada em montar_kwargs_cpp/
+        montar_kwargs_cpp_bid dos testes isolados _teste_pd_silva_cpp.py/
+        _teste_bid_silva_cpp.py -- traduzida aqui para nao duplicar esse
+        marshaling dentro de gerar_novas_colunas_com_duais11."""
+        import numpy as np
+
+        dp = inst.dados_petro
+        nbn = inst.nbn
+        nbcd = inst.nbcd
+        dep0 = 0
+        depf = nbn - 1
+        veic = inst.veiculos[k]
+
+        mapa_plataformas = {}
+        plataforma_id = [-1] * nbn
+        for i in range(1, nbcd + 1):
+            chave = self._plataforma_de_no_silva(inst, i)
+            if chave not in mapa_plataformas:
+                mapa_plataformas[chave] = len(mapa_plataformas)
+            plataforma_id[i] = mapa_plataformas[chave]
+
+        platform_setup_seg = list(dp.get("platform_setup_seg", [0.0] * nbn))
+        n_plataformas = len(mapa_plataformas)
+        set_por_plataforma = [0.0] * max(n_plataformas, 1)
+        for i in range(1, nbcd + 1):
+            p = plataforma_id[i]
+            set_por_plataforma[p] = max(set_por_plataforma[p], float(platform_setup_seg[i]))
+
+        dist_raw = dp["dist"]
+        n_raw = len(dist_raw)
+        dist_km_arr = np.zeros((nbn, nbn), dtype=np.float64)
+        for i in range(n_raw):
+            for j in range(n_raw):
+                dist_km_arr[i, j] = float(dist_raw[i][j])
+
+        vs = veic.velocities
+        v_low = float(min(vs, key=lambda v: v["above"])["speed"])
+        v_high = float(max(vs, key=lambda v: v["above"])["speed"])
+        th_km = float(max(vs, key=lambda v: v["above"])["above"])
+
+        servico = [float(inst.noh[i].SERVICE_TIME[0]) if getattr(inst.noh[i], "SERVICE_TIME", None) else 0.0
+                   for i in range(nbn)]
+        ready = [list(getattr(inst.noh[i], "READY_TIME", []) or []) for i in range(nbn)]
+        due = [list(getattr(inst.noh[i], "DUE_DATE", []) or []) for i in range(nbn)]
+
+        def dado_no(i, atributo, chave):
+            valor_no = getattr(inst.noh[i], atributo, None)
+            if valor_no is not None:
+                return float(valor_no)
+            vetor = dp.get(chave, [])
+            return float(vetor[i]) if i < len(vetor) else 0.0
+
+        deck_load = [dado_no(i, "DEMAND_DECK_LOAD", "dem_deck_load") for i in range(nbn)]
+        deck_backload = [dado_no(i, "DEMAND_DECK_BACKLOAD", "dem_deck_backload") for i in range(nbn)]
+        diesel_dem = [dado_no(i, "DEMAND_DIESEL", "dem_diesel") for i in range(nbn)]
+        agua_dem = [dado_no(i, "DEMAND_AGUA", "dem_agua") for i in range(nbn)]
+
+        tempo_carreg_deck = list(dp.get("tempo_carreg_deck", [0.0] * nbn))
+        tempo_carreg_diesel = list(dp.get("tempo_carreg_diesel", [0.0] * nbn))
+        tempo_carreg_agua = list(dp.get("tempo_carreg_agua", [0.0] * nbn))
+        tempo_descarreg_backload = list(dp.get("tempo_descarreg_backload", [0.0] * nbn))
+        commodities = list(dp.get("commodities", [None] * nbn))
+        is_backload = [1 if (i < len(commodities) and commodities[i] == "deckCargoBackload") else 0
+                       for i in range(nbn)]
+        order_due_time_seg = list(dp.get("order_due_time_seg", [None] * nbn))
+        has_due_time = [1 if (i < len(order_due_time_seg) and order_due_time_seg[i] is not None) else 0
+                        for i in range(nbn)]
+        order_due_time = [float(order_due_time_seg[i]) if (i < len(order_due_time_seg) and order_due_time_seg[i] is not None) else 0.0
+                          for i in range(nbn)]
+
+        cap_deck = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua = float(getattr(veic, "cap_agua", float("inf")))
+
+        AT = float(veic.readiness)
+        max_partida = float(getattr(veic, "max_departure", 0.0))
+        tdl = float(getattr(veic, "trip_duration_limit", 0.0))
+        theta_k = float(veic.cost_anchored)
+        varphi_k = float(veic.cost_base)
+        gamma_k = float(veic.cost_navigation)
+        delta_k = float(veic.cost_dynamic)
+        xi_usado = float(veic.xi) if veic.xi is not None else 1.0
+        alpha_fo = float(inst.alpha_fo)
+        eta_fo = float(inst.eta_fo)
+
+        mu_flat = [0.0] * (nbn * nbn)
+        for i in range(nbn):
+            for j in range(nbn):
+                mu_flat[i * nbn + j] = float(mu_arc.get((i, j, k), mu_arc.get((i, j), 0.0)))
+
+        proibidos_k = {(i, j) for (i, j, kk) in (no_bp.arcos_proibidos if no_bp else set()) if kk == k}
+        forbid_flat = [0] * (nbn * nbn)
+        for (i, j) in proibidos_k:
+            forbid_flat[i * nbn + j] = 1
+
+        fixados_k = [(i, j) for (i, j, kk) in (no_bp.arcos_fixados_em_1 if no_bp else set()) if kk == k]
+        req_i = [i for (i, j) in fixados_k]
+        req_j = [j for (i, j) in fixados_k]
+
+        return dict(
+            nbn=nbn, nbcd=nbcd, dep0=dep0, depf=depf, k=k,
+            dist_km_arr=dist_km_arr,
+            v_low=v_low, v_high=v_high, th_km=th_km, safe_positioning_time=float(veic.safe_positioning_time),
+            plataforma_id=plataforma_id,
+            set_por_plataforma=set_por_plataforma,
+            servico=servico, ready=ready, due=due,
+            deck_load=deck_load, deck_backload=deck_backload, diesel_dem=diesel_dem, agua_dem=agua_dem,
+            tempo_carreg_deck=tempo_carreg_deck, tempo_carreg_diesel=tempo_carreg_diesel,
+            tempo_carreg_agua=tempo_carreg_agua, tempo_descarreg_backload=tempo_descarreg_backload,
+            is_backload=is_backload, order_due_time=order_due_time, has_due_time=has_due_time,
+            cap_deck=cap_deck, cap_diesel=cap_diesel, cap_agua=cap_agua,
+            AT=AT, max_partida=max_partida, tdl=tdl,
+            theta_k=theta_k, varphi_k=varphi_k, gamma_k=gamma_k, delta_k=delta_k,
+            xi_usado=xi_usado, alpha_fo=alpha_fo, eta_fo=eta_fo,
+            pi=list(pi), sigma_k=float(sigma_k), mu_flat=mu_flat,
+            forbid_flat=forbid_flat, req_i=req_i, req_j=req_j,
+        )
+
+    def _auditar_candidatas_silva_cpp(self, origem, candidatas_cpp, inst, k, pi, sigma_k, mu_arc, no_bp,
+                                       tol_rc=1e-6):
+        """Auditoria OBRIGATORIA (secao 5) de TODA candidata retornada por
+        PD_SILVA_CPP/BID_SILVA_CPP -- avaliar_rota_silva2024 e a UNICA
+        autoridade de viabilidade/custo; o valor armazenado na candidata
+        final e SEMPRE o custo/RC recalculados aqui em Python (nunca o valor
+        cru do C++, so usado para comparacao/diagnostico). Candidata que
+        falhar qualquer checagem (inviavel, RC divergente, branching violado,
+        revisita de plataforma) e descartada com um log de erro explicito --
+        nunca sobe silenciosamente ao pool (secao 6/7)."""
+        mu_arc = mu_arc or {}
+        aceitas = []
+        for c in candidatas_cpp:
+            seq = list(c["seq"])
+
+            resultado = self.avaliar_rota_silva2024(inst, k, seq)
+            if not resultado.get("viavel"):
+                print(f"[SILVA {origem}][ERRO] candidata k={k} seq={seq} REJEITADA: "
+                      f"avaliar_rota_silva2024 nao-viavel (motivo={resultado.get('motivo')})")
+                continue
+
+            custo_python = float(resultado["custo"])
+            rc_python = custo_python
+            for cliente in seq:
+                if 1 <= cliente <= inst.nbcd:
+                    rc_python -= float(pi[cliente - 1])
+            rc_python -= float(sigma_k)
+            for t in range(len(seq) - 1):
+                i, j = seq[t], seq[t + 1]
+                rc_python -= float(mu_arc.get((i, j, k), mu_arc.get((i, j), 0.0)))
+
+            rc_cpp = float(c.get("rc", rc_python))
+            if abs(rc_cpp - rc_python) > tol_rc:
+                print(f"[SILVA {origem}][ERRO] candidata k={k} seq={seq} REJEITADA: "
+                      f"rc_cpp ({rc_cpp}) difere de rc_python ({rc_python}) por "
+                      f"{abs(rc_cpp - rc_python):.2e} > tolerancia {tol_rc:.1e}")
+                continue
+
+            if no_bp is not None and not self.coluna_respeita_no(no_bp, seq, k):
+                print(f"[SILVA {origem}][ERRO] candidata k={k} seq={seq} REJEITADA: "
+                      f"viola branching do NO_BP")
+                continue
+
+            if not self._silva_seq_respeita_nao_revisita(inst, seq):
+                print(f"[SILVA {origem}][ERRO] candidata k={k} seq={seq} REJEITADA: "
+                      f"revisita uma plataforma")
+                continue
+
+            binx = [0] * inst.nbcd
+            for c_no in seq:
+                if 1 <= c_no <= inst.nbcd:
+                    binx[c_no - 1] = 1
+            aceitas.append({"k": k, "seq": seq, "binx": binx, "custo": custo_python,
+                             "rc": rc_python, "origem": origem})
+        return aceitas
+
+    def chamar_pd_silva_cpp(self, inst, pi, sigma_k, k, no_bp, mu_arc=None,
+                             max_labels=None, timeout_s=None, max_candidatas=None, eps=1e-6):
+        """Wrapper isolado (secao 4) para pricing_pd_silva (PD_SILVA_CPP.cpp,
+        NAO alterado por esta tarefa): monta os kwargs, chama o C++, audita
+        TODA candidata (secao 5) e devolve no contrato ja usado pelo pool
+        (secao 6). Nunca certifica sozinho -- devolve completa/timeout do
+        C++ para o chamador decidir (secao 8).
+
+        Retorna (candidatas, completa, timeout, labels_gerados, niveis_alcancados, tempo).
+        Em caso de falha de import/chamada (secao 14): NAO propaga a
+        excecao -- registra o erro e devolve completa=False (nunca
+        certifica), lista vazia."""
+        mu_arc = mu_arc or {}
+        if max_candidatas is None:
+            max_candidatas = self.MAX_CANDIDATAS_PRICING
+        if max_labels is None:
+            max_labels = getattr(inst, "silva_pd_cpp_max_labels", self.SILVA_PD_CPP_MAX_LABELS)
+        if timeout_s is None:
+            timeout_s = getattr(inst, "silva_pd_cpp_timeout_s", self.SILVA_PD_CPP_TIMEOUT_S)
+
+        try:
+            mod = self._silva_cpp_module()
+            kwargs = self._montar_kwargs_silva_cpp(inst, k, pi, sigma_k, mu_arc, no_bp)
+            kwargs.update(max_labels=int(max_labels), timeout_s=float(timeout_s),
+                          max_candidatas=int(max_candidatas), eps=float(eps))
+            saida_cpp, completa, timeout_flag, labels_gerados, nivel, tempo = mod.pricing_pd_silva(**kwargs)
+        except Exception as e:
+            print(f"[SILVA PD_SILVA_CPP][ERRO] falha ao chamar pricing_pd_silva k={k}: {e!r} "
+                  f"-- completa=False (nao certifica), nenhuma candidata devolvida")
+            return [], False, False, 0, 0, 0.0
+
+        candidatas = self._auditar_candidatas_silva_cpp(
+            "PD_SILVA_CPP", list(saida_cpp), inst, k, pi, sigma_k, mu_arc, no_bp
+        )
+        return candidatas, bool(completa), bool(timeout_flag), int(labels_gerados), int(nivel), float(tempo)
+
+    def chamar_bid_silva_cpp(self, inst, pi, sigma_k, k, no_bp, mu_arc=None,
+                              max_labels_por_no=None, max_depth=None, max_candidatas=None, eps=1e-6):
+        """Wrapper isolado (secao 4) para pricing_bid_silva (BID_SILVA_CPP.cpp,
+        NAO alterado por esta tarefa): mesmo papel de chamar_pd_silva_cpp,
+        para o pricing HEURISTICO. completa e SEMPRE False no retorno do
+        proprio C++ (BID nunca certifica -- secao 2/11).
+
+        Retorna (candidatas, completa, timeout, labels_gerados, niveis_alcancados, tempo).
+        Em caso de falha (secao 14): NAO propaga a excecao -- registra o
+        erro e devolve lista vazia, para o chamador seguir com seguranca
+        para PD_SILVA_CPP."""
+        mu_arc = mu_arc or {}
+        if max_candidatas is None:
+            max_candidatas = self.MAX_CANDIDATAS_PRICING
+        if max_labels_por_no is None:
+            max_labels_por_no = self.SILVA_BID_CPP_MAX_LABELS_POR_NO
+        if max_depth is None:
+            max_depth = -1  # C++ interpreta <=0 como nbcd (mesmo default de max_depth do BID Python)
+
+        try:
+            mod = self._silva_cpp_module()
+            kwargs = self._montar_kwargs_silva_cpp(inst, k, pi, sigma_k, mu_arc, no_bp)
+            kwargs.update(max_labels_por_no=int(max_labels_por_no), max_depth=int(max_depth),
+                          max_candidatas=int(max_candidatas), eps=float(eps))
+            saida_cpp, completa, timeout_flag, labels_gerados, nivel, tempo = mod.pricing_bid_silva(**kwargs)
+        except Exception as e:
+            print(f"[SILVA BID_SILVA_CPP][ERRO] falha ao chamar pricing_bid_silva k={k}: {e!r} "
+                  f"-- seguindo para PD_SILVA_CPP, nenhuma candidata devolvida")
+            return [], False, False, 0, 0, 0.0
+
+        candidatas = self._auditar_candidatas_silva_cpp(
+            "BID_SILVA_CPP", list(saida_cpp), inst, k, pi, sigma_k, mu_arc, no_bp
+        )
+        return candidatas, bool(completa), bool(timeout_flag), int(labels_gerados), int(nivel), float(tempo)
+
+    def _pricing_silva2024_um_veiculo(self, inst, sol_pool, no_bp, pi, sigma, mu_arc_por_k, k):
+        """Pipeline Silva2024 (secao 1 do pedido de integracao) para UM
+        veiculo k: ALLBEST_SILVA (heuristico Python, sempre tentado
+        primeiro) -> BID_SILVA_CPP (heuristico C++, producao -- substitui
+        SUB_PROG_BID_SILVA Python no pipeline normal, secao 2) -> PD_SILVA_CPP
+        (exato C++, UNICO que certifica, substitui pricing_silva2024 no
+        pipeline normal, secao 3). Cada estagio so roda se o anterior nao
+        encontrou nenhuma candidata negativa INEDITA no pool deste k.
+
+        Usado tanto por gerar_novas_colunas_com_duais11 (producao) quanto
+        pelo teste de integracao isolado (secao 15) -- mesma funcao, sem
+        duplicar a logica de decisao ALLBEST->BID_CPP->PD_CPP.
+
+        Retorna (candidatas_para_pool, status_k). status_k documenta cada
+        estagio para o log [SILVA PRICING] (secao 9) e para a certificacao
+        (secao 8): so True quando PD_SILVA_CPP foi chamado, completa=True,
+        timeout=False e nao sobrou candidata inedita."""
+        mu_arc = mu_arc_por_k.get(k, {})
+        sigma_k = sigma[k]
+
+        if not hasattr(no_bp, "melhor_rc_por_k"):
+            no_bp.melhor_rc_por_k = {}
+        if not hasattr(no_bp, "silva_certifica_k"):
+            no_bp.silva_certifica_k = {}
+
+        status_k = {
+            "allbest_chamado": True, "allbest_encontrou": False, "n_allbest": 0,
+            "bid_chamado": False, "bid_encontrou": False, "n_bid": 0,
+            "pd_chamado": False, "pd_encontrou": False, "n_pd": 0,
+            "pd_completa": None, "pd_timeout": None,
+            "labels_pd": None, "nivel_pd": None,
+            "melhor_rc": None, "origem": None, "certifica_k": False,
+            "tem_negativa_pd": False,
+        }
+
+        def _log_bloco():
+            # secao 9 do pedido -- formato obrigatorio, impresso uma vez por
+            # veiculo ao final desta funcao (ALLBEST/BID_CPP/PD_CPP = numero
+            # de candidatas ineditas encontradas em cada estagio, 0 se o
+            # estagio nao foi alcancado).
+            print("[SILVA PRICING]")
+            print(f"k={k}")
+            print(f"ALLBEST={status_k['n_allbest']}")
+            print(f"BID_CPP={status_k['n_bid']}")
+            print(f"PD_CPP={status_k['n_pd']}")
+            print(f"pd_completa={status_k['pd_completa']}")
+            print(f"pd_timeout={status_k['pd_timeout']}")
+            print(f"labels_pd={status_k['labels_pd']}")
+            print(f"nivel_pd={status_k['nivel_pd']}")
+            print(f"melhor_rc={status_k['melhor_rc']}")
+            print(f"origem={status_k['origem']}")
+            print(f"certifica_k={status_k['certifica_k']}")
+
+        # ---- 1) ALLBEST_SILVA (heuristico Python, inalterado) ----
+        print("TESTA ALLBEST_SILVA")
+        geradas_allbest, _completa_ab, _to_ab = self.SUB_HEUR_ALLBESTINSERTION_MULTI_SILVA(
+            inst, sol_pool, pi, sigma_k=sigma_k, k=k, NO_BP=no_bp, mu_arc=mu_arc,
+            max_candidatas=self.MAX_CANDIDATAS_PRICING,
+        )
+        geradas_allbest = geradas_allbest or []
+        status_k["n_allbest"] = len(geradas_allbest)
+        validas_ab = [c for c in geradas_allbest if self.coluna_respeita_no(no_bp, c["seq"], k)]
+        sem_pool_ab = [c for c in validas_ab if not sol_pool.coluna_ja_existe(c["seq"], k=k, globalmente=False)]
+        print(f"[PRICING MULTI] origem=ALLBEST_SILVA | k={k} | geradas={len(geradas_allbest)} | "
+              f"novas_pool={len(sem_pool_ab)} | duplicadas_pool={len(validas_ab) - len(sem_pool_ab)} | "
+              f"completa=False")
+
+        if sem_pool_ab:
+            sem_pool_ab.sort(key=lambda c: c["rc"])
+            no_bp.melhor_rc_por_k[k] = sem_pool_ab[0]["rc"]
+            status_k["allbest_encontrou"] = True
+            status_k["melhor_rc"] = sem_pool_ab[0]["rc"]
+            status_k["origem"] = "ALLBEST_SILVA"
+            status_k["certifica_k"] = False
+            no_bp.silva_certifica_k[k] = False
+            _log_bloco()
+            return sem_pool_ab[:self.MAX_COLUNAS_NOVAS_VEICULO], status_k
+
+        # ---- 2) BID_SILVA_CPP (heuristico C++, PRODUCAO -- secao 2: nao usa
+        # mais SUB_PROG_BID_SILVA Python aqui, que fica so para teste/regressao) ----
+        print("TESTA BID_SILVA_CPP")
+        status_k["bid_chamado"] = True
+        geradas_bid, _completa_bid, _to_bid, labels_bid, nivel_bid, _tempo_bid = self.chamar_bid_silva_cpp(
+            inst, pi, sigma_k, k, no_bp, mu_arc=mu_arc,
+            max_labels_por_no=self.SILVA_BID_CPP_MAX_LABELS_POR_NO, max_depth=-1,
+            max_candidatas=self.MAX_CANDIDATAS_PRICING,
+        )
+        geradas_bid = geradas_bid or []
+        status_k["n_bid"] = len(geradas_bid)
+        # chamar_bid_silva_cpp ja auditou (viavel/RC/branching/nao-revisita,
+        # secao 5) -- so falta excluir o que ja esta no pool deste k.
+        sem_pool_bid = [c for c in geradas_bid if not sol_pool.coluna_ja_existe(c["seq"], k=k, globalmente=False)]
+        print(f"[PRICING MULTI] origem=BID_SILVA_CPP | k={k} | geradas={len(geradas_bid)} | "
+              f"novas_pool={len(sem_pool_bid)} | duplicadas_pool={len(geradas_bid) - len(sem_pool_bid)} | "
+              f"completa=False")
+
+        if sem_pool_bid:
+            sem_pool_bid.sort(key=lambda c: c["rc"])
+            no_bp.melhor_rc_por_k[k] = sem_pool_bid[0]["rc"]
+            status_k["bid_encontrou"] = True
+            status_k["melhor_rc"] = sem_pool_bid[0]["rc"]
+            status_k["origem"] = "BID_SILVA_CPP"
+            status_k["certifica_k"] = False
+            no_bp.silva_certifica_k[k] = False
+            _log_bloco()
+            return sem_pool_bid[:self.MAX_COLUNAS_NOVAS_VEICULO], status_k
+
+        # ---- 3) PD_SILVA_CPP (exato C++, PRODUCAO -- secao 3: unico que
+        # certifica; pricing_silva2024 nao e mais chamado aqui, continua
+        # disponivel so para diagnostico/teste) ----
+        print("TESTA PD_SILVA_CPP")
+        status_k["pd_chamado"] = True
+        geradas_pd, completa_pd, timeout_pd_flag, labels_pd, nivel_pd, _tempo_pd = self.chamar_pd_silva_cpp(
+            inst, pi, sigma_k, k, no_bp, mu_arc=mu_arc,
+            max_labels=getattr(inst, "silva_pd_cpp_max_labels", self.SILVA_PD_CPP_MAX_LABELS),
+            timeout_s=getattr(inst, "silva_pd_cpp_timeout_s", self.SILVA_PD_CPP_TIMEOUT_S),
+            max_candidatas=self.MAX_CANDIDATAS_PRICING,
+        )
+        geradas_pd = geradas_pd or []
+        status_k["n_pd"] = len(geradas_pd)
+        status_k["pd_completa"] = completa_pd
+        status_k["pd_timeout"] = timeout_pd_flag
+        status_k["labels_pd"] = labels_pd
+        status_k["nivel_pd"] = nivel_pd
+        sem_pool_pd = [c for c in geradas_pd if not sol_pool.coluna_ja_existe(c["seq"], k=k, globalmente=False)]
+        print(f"[PRICING MULTI] origem=PD_SILVA_CPP | k={k} | geradas={len(geradas_pd)} | "
+              f"novas_pool={len(sem_pool_pd)} | duplicadas_pool={len(geradas_pd) - len(sem_pool_pd)} | "
+              f"completa={completa_pd} | timeout={timeout_pd_flag}")
+
+        if timeout_pd_flag:
+            no_bp.pricing_timeout = True
+            print(f"[SILVA] PD_SILVA_CPP excedeu o orcamento (timeout/max_labels) "
+                  f"no veiculo {k}; convergencia nao certificada.")
+
+        if sem_pool_pd:
+            sem_pool_pd.sort(key=lambda c: c["rc"])
+            status_k["pd_encontrou"] = True
+            status_k["melhor_rc"] = sem_pool_pd[0]["rc"]
+            status_k["tem_negativa_pd"] = True
+            status_k["origem"] = "PD_SILVA_CPP"
+            # secao 8: PD encontrou coluna negativa => certifica_k=False (a CG continua)
+            status_k["certifica_k"] = False
+            no_bp.silva_certifica_k[k] = False
+            no_bp.melhor_rc_por_k[k] = sem_pool_pd[0]["rc"]
+            _log_bloco()
+            return sem_pool_pd[:self.MAX_COLUNAS_NOVAS_VEICULO], status_k
+
+        # PD_SILVA_CPP nao encontrou nenhuma candidata INEDITA -- mas isso NAO
+        # basta para certificar: sem_pool_pd so diz "nao ha nada NOVO para o
+        # pool" (neste ponto sem_pool_pd e SEMPRE vazio, ja que o caminho
+        # acima retornou se houvesse algo -- "not sem_pool_pd" sozinho seria
+        # sempre True aqui, um bug silencioso). O que importa para
+        # certificacao e se o PD encontrou QUALQUER rota com RC<0, mesmo que
+        # ja existente no pool (duplicata negativa == "ainda ha coluna de
+        # custo reduzido negativo para este k", a CG NAO convergiu para k).
+        # So certifica (secao 8) se a arvore foi REALMENTE esgotada, sem
+        # timeout, E nenhuma candidata negativa (inedita ou nao) foi vista.
+        eps_certifica = 1e-6
+        tem_negativa_pd = any(c["rc"] < -eps_certifica for c in geradas_pd)
+        certifica_k = bool(completa_pd) and (not timeout_pd_flag) and (not tem_negativa_pd)
+        status_k["certifica_k"] = certifica_k
+        status_k["tem_negativa_pd"] = tem_negativa_pd
+        # melhor_rc do log/diagnostico deve refletir a melhor RC vista pelo PD
+        # mesmo quando ela e' uma duplicata (nao ha nada NOVO para o pool, mas
+        # ha RC<0 -- diagnostico nao pode "esconder" isso so porque nao sera
+        # adicionada de novo).
+        melhor_rc_pd = min((c["rc"] for c in geradas_pd), default=None)
+        status_k["melhor_rc"] = melhor_rc_pd
+        no_bp.silva_certifica_k[k] = certifica_k
+        no_bp.melhor_rc_por_k[k] = melhor_rc_pd
+        _log_bloco()
+        return [], status_k
+
+    def pricing_silva2024(self, inst, pi, sigma_k, k, NO_BP, arcos_proibidos=None,
+                          arcos_fixados=None, mu_arc=None, diagnostico=False,
+                          timeout_s=90.0, max_avaliacoes=300_000):
+        """
+        Pricing ISOLADO, exclusivo do modo silva2024. Nao chama C++, nao usa
+        VNS/GRASP nem as heuristicas antigas (ALLBEST/BID). Python puro,
+        exato/auditavel para as 14 orders desta instancia -- correcao antes
+        de velocidade, conforme pedido.
+
+        CORRECAO desta etapa: a unidade de decisao da enumeracao passa a ser a
+        ORDER, nao a plataforma inteira. O artigo (Silva et al., 2024) e
+        explicito: "There is no obligation ... to fulfill all orders placed
+        by a platform from a single visit and/or vessel" -- portanto uma
+        coluna pode conter QUALQUER subconjunto nao vazio das orders de uma
+        plataforma (a versao anterior so gerava o bloco COMPLETO de cada
+        plataforma, restringindo incorretamente o espaco de colunas -- ver
+        DIAGNOSTICO/teste ALLBEST_SILVA x pricing_silva2024, onde ALLBEST
+        encontrou RC mais negativo que este "oraculo" exatamente por causa
+        dessa lacuna).
+
+        Continua respeitando a mesma regra de precedencia JA VALIDADA (nao
+        duplicada aqui como logica nova, so aplicada na geracao de
+        candidatas -- avaliar_rota_silva2024 continua sendo a AUTORIDADE
+        FINAL, nunca esta enumeracao sozinha): dentro de uma mesma
+        plataforma/visita, toda coleta de DECK deve preceder toda entrega de
+        DECK; diesel/agua sao livres (nao contam nessa precedencia). Uma
+        plataforma, uma vez encerrada (nenhuma order sua na visita atual),
+        nao pode ser reaberta depois -- mesma regra de bloco-por-plataforma
+        de sempre (SO o CONTEUDO do bloco deixou de ser obrigatoriamente
+        completo).
+
+        Enumera, com poda de capacidade EXATA (nao aproximada -- ver abaixo),
+        todas as sequencias validas de blocos de plataforma (cada bloco =
+        QUALQUER subconjunto nao vazio das orders daquela plataforma, em
+        QUALQUER ordenacao valida) para o navio k, incluindo toda rota
+        PARCIAL (fechando direto no deposito apos qualquer prefixo). Para
+        cada candidata fechada, usa avaliar_rota_silva2024 como ORACULO de
+        viabilidade/custo real.
+
+        Poda de capacidade (deck/diesel/agua, acumulada por SUBCONJUNTO
+        escolhido, nao mais pelo total da plataforma): EXATA, nao
+        aproximada -- a soma de deck_load (entregas) das orders efetivamente
+        selecionadas ate agora e EXATAMENTE o que avaliar_rota_silva2024
+        tambem exige <=capacidade no fechamento (todas as entregas sao
+        pre-carregadas na base, "o navio sai da base com todas as entregas
+        da rota"); o mesmo vale para diesel/agua (compartimentos proprios,
+        totais simples). Portanto esta poda NUNCA elimina uma rota que
+        avaliar_rota_silva2024 aceitaria -- so corta ramos que ja seriam
+        estruturalmente inviaveis (nao e uma poda "grosseira"/otimista).
+
+        Branching (arcos_proibidos/arcos_fixados): arcos_proibidos corta
+        durante a construcao (arco_permitido); arcos_fixados_em_1 e exigido
+        no FECHAMENTO de cada candidata (contem_todos_fixados, mesmo
+        criterio de SUB_HEUR_ALLBESTINSERTION_MULTI_SILVA/coluna_respeita_no)
+        -- agora IMPOSTO, nao so aceito por compatibilidade de assinatura.
+
+        Custo reduzido, EXATAMENTE a mesma convencao de sinais do mestre
+        atual (pi indexado 0-based por cliente, sigma_k uma unica vez, mu_arc
+        por arco com fallback (i,j,k) -> (i,j)):
+
+            RC = custo_real
+                 - sum(pi[i-1] para cada order i visitada)
+                 - sigma_k
+                 - sum(mu_arc(i,j) para os arcos efetivamente usados)
+
+        Certificacao (Etapa desta correcao): para 14 orders o espaco de
+        subconjuntos por plataforma pode crescer bastante (ate 2^|plataforma|
+        variantes), entao a enumeracao e protegida por timeout_s/
+        max_avaliacoes -- MESMO padrao ja usado pelos demais pricers "exatos"
+        deste codebase (_petro_pricing_exato_multi/SUB_PROG_DIN_BIDIRECIONAL_
+        PETRO_CPP_MULTI: timeout_s/max_labels + flag completa/timeout).
+        Retorna (candidatas, completa, timeout): completa=False sempre que o
+        limite foi atingido ANTES de esgotar a arvore -- o chamador NUNCA deve
+        marcar convergencia/certificacao de otimalidade quando completa=False.
+        Ordem de exploracao (gulosa, por soma de pi) so afeta QUAL candidata e
+        encontrada primeiro se houver corte por timeout -- nunca o conjunto
+        de rotas consideradas quando a busca termina completa.
+
+        candidatas: lista de dicts {"k","seq","binx","custo","rc","origem"}
+        com RC < -eps, ordenada da mais negativa.
+        """
+        import time as _time
+
+        dep0 = 0
+        depf = inst.nbn - 1
+        clientes = list(range(1, inst.nbcd + 1))
+        veic = inst.veiculos[k]
+        mu_arc = mu_arc or {}
+        arcos_proibidos = arcos_proibidos or set()
+        arcos_fixados = arcos_fixados or set()
+        eps = 1e-6
+
+        if veic.xi is None:
+            print("[SILVA] xi=1 PROVISORIO")
+
+        proibidos_k = {(i, j) for (i, j, kk) in arcos_proibidos if kk == k}
+        fixados_k = {(i, j) for (i, j, kk) in arcos_fixados if kk == k}
+
+        def arco_permitido(i, j):
+            return (i, j) not in proibidos_k
+
+        def contem_todos_fixados(seq_nos):
+            if not fixados_k:
+                return True
+            aset = {(seq_nos[t], seq_nos[t + 1]) for t in range(len(seq_nos) - 1)}
+            return all(arc in aset for arc in fixados_k)
+
+        def mu(i, j):
+            # mesmo fallback usado em SUB_PROG_DIN_PW/etc: (i,j,k) especifico,
+            # senao (i,j) generico.
+            if (i, j, k) in mu_arc:
+                return float(mu_arc[(i, j, k)])
+            return float(mu_arc.get((i, j), 0.0))
+
+        # ---- agrupamento por plataforma (MESMA regra de avaliar_rota_silva2024) ----
+        dp = inst.dados_petro
+        nomes = list(dp.get("nomes", []))
+        mapa_plataformas = {}
+        nos_por_plataforma = {}
+        for i in clientes:
+            nome = str(nomes[i]) if i < len(nomes) else ""
+            if "_order_" in nome:
+                chave = nome.split("_order_", 1)[0]
+            elif "_order" in nome:
+                chave = nome.split("_order", 1)[0]
+            else:
+                chave = nome
+            if chave not in mapa_plataformas:
+                mapa_plataformas[chave] = len(mapa_plataformas)
+            nos_por_plataforma.setdefault(mapa_plataformas[chave], []).append(i)
+
+        deck_load = {i: float(getattr(inst.noh[i], "DEMAND_DECK_LOAD", 0.0)) for i in clientes}
+        deck_backload = {i: float(getattr(inst.noh[i], "DEMAND_DECK_BACKLOAD", 0.0)) for i in clientes}
+        diesel = {i: float(getattr(inst.noh[i], "DEMAND_DIESEL", 0.0)) for i in clientes}
+        agua = {i: float(getattr(inst.noh[i], "DEMAND_AGUA", 0.0)) for i in clientes}
+
+        # ordenacoes validas de CADA SUBCONJUNTO nao vazio das orders de uma
+        # plataforma (nao so do conjunto completo -- esta e a correcao desta
+        # etapa): mesma regra de precedencia de sempre, toda coleta de DECK
+        # antes de toda entrega de DECK (diesel/agua livres).
+        def variantes_validas(nos_p):
+            variantes = []
+            vistas = set()
+            n = len(nos_p)
+            for tam in range(1, n + 1):
+                for subset in itertools.combinations(nos_p, tam):
+                    for perm in itertools.permutations(subset):
+                        coletas_pos = [perm.index(c) for c in subset if deck_backload[c] > 1e-9]
+                        entregas_pos = [perm.index(e) for e in subset if deck_load[e] > 1e-9]
+                        if coletas_pos and entregas_pos and max(coletas_pos) > min(entregas_pos):
+                            continue
+                        if perm in vistas:
+                            continue
+                        vistas.add(perm)
+                        variantes.append(list(perm))
+            # ordenacao gulosa (subconjunto MAIOR primeiro, desempate por soma de
+            # pi): SO decide a ORDEM de exploracao, nunca o conjunto de variantes
+            # geradas. Tentar o bloco quase-completo/completo primeiro reproduz o
+            # comportamento (ja validado) da versao anterior (bloco unico) logo
+            # nos primeiros fechamentos, e so entao passa a explorar os
+            # subconjuntos estritos -- aumenta MUITO a chance de achar uma
+            # candidata boa cedo caso timeout_s/max_avaliacoes interrompa a busca
+            # antes de esgotar a arvore (medido empiricamente: ordenar por soma de
+            # pi bruta prioriza subconjuntos PEQUENOS primeiro -- ver
+            # itertools.combinations acima, tam=1..n -- e a arvore nunca chega aos
+            # blocos completos dentro do orcamento).
+            variantes.sort(key=lambda v: (-len(v), -sum(float(pi[i - 1]) for i in v)))
+            return variantes
+
+        # ordem natural das plataformas (mesma de sempre, sem heuristica extra --
+        # a heuristica que importa e a de TAMANHO do subconjunto, acima).
+        plataformas = sorted(nos_por_plataforma.keys())
+        variantes_por_plataforma = {p: variantes_validas(nos_por_plataforma[p]) for p in plataformas}
+
+        Q = float(getattr(veic, "cap_deck", veic.capacidade))
+        cap_diesel_k = float(getattr(veic, "cap_diesel", float("inf")))
+        cap_agua_k = float(getattr(veic, "cap_agua", float("inf")))
+
+        candidatas = []
+        avaliadas_fechamentos = 0
+        melhor_rc_visto = [float("inf")]
+        t0 = _time.time()
+        limite_atingido = [False]
+
+        def orcamento_esgotado():
+            if avaliadas_fechamentos >= max_avaliacoes:
+                return True
+            if (_time.time() - t0) > timeout_s:
+                return True
+            return False
+
+        def avaliar_e_registrar(seq_nos):
+            nonlocal avaliadas_fechamentos
+            for t in range(len(seq_nos) - 1):
+                if not arco_permitido(seq_nos[t], seq_nos[t + 1]):
+                    return
+            resultado = self.avaliar_rota_silva2024(inst, k, seq_nos)
+            avaliadas_fechamentos += 1
+            if not resultado["viavel"]:
+                return
+            custo_real = resultado["custo"]
+            dual_clientes = sum(float(pi[i - 1]) for i in seq_nos if 1 <= i <= inst.nbcd)
+            dual_arcos = sum(mu(seq_nos[t], seq_nos[t + 1]) for t in range(len(seq_nos) - 1))
+            dual_veiculo = float(sigma_k)
+            rc = custo_real - dual_clientes - dual_veiculo - dual_arcos
+
+            if diagnostico:
+                print(f"[SILVA_RC] k={k} seq={seq_nos} custo_real={custo_real:.4f} "
+                      f"dual_clientes={dual_clientes:.4f} dual_veiculo={dual_veiculo:.4f} "
+                      f"dual_arcos={dual_arcos:.4f} RC={rc:.6f}")
+
+            if rc < melhor_rc_visto[0]:
+                melhor_rc_visto[0] = rc
+
+            if rc < -eps:
+                # branching (secao 8): so vira candidata valida se contiver TODOS
+                # os arcos fixados em 1 para este navio -- mesmo criterio de
+                # SUB_HEUR_ALLBESTINSERTION_MULTI_SILVA/coluna_respeita_no.
+                if not contem_todos_fixados(seq_nos):
+                    return
+                binx = [0] * inst.nbcd
+                for i in seq_nos:
+                    if 1 <= i <= inst.nbcd:
+                        binx[i - 1] = 1
+                candidatas.append({"k": k, "seq": list(seq_nos), "binx": binx,
+                                    "custo": float(custo_real), "rc": float(rc), "origem": "SILVA_PD"})
+
+        def dfs(plataformas_restantes, blocos_visitados, deck_acum, diesel_acum, agua_acum):
+            if limite_atingido[0]:
+                return
+            if orcamento_esgotado():
+                limite_atingido[0] = True
+                return
+
+            if blocos_visitados:
+                seq_nos = [dep0]
+                for _, ordem in blocos_visitados:
+                    seq_nos.extend(ordem)
+                seq_nos.append(depf)
+                avaliar_e_registrar(seq_nos)
+
+            for p in plataformas_restantes:
+                if limite_atingido[0]:
+                    return
+                for ordem in variantes_por_plataforma[p]:
+                    if limite_atingido[0]:
+                        return
+                    novo_diesel = diesel_acum + sum(diesel[i] for i in ordem)
+                    novo_agua = agua_acum + sum(agua[i] for i in ordem)
+                    if math.isfinite(cap_diesel_k) and novo_diesel > cap_diesel_k + 1e-6:
+                        continue
+                    if math.isfinite(cap_agua_k) and novo_agua > cap_agua_k + 1e-6:
+                        continue
+                    novo_deck = deck_acum + sum(deck_load[i] for i in ordem)
+                    if novo_deck > Q + 1e-6:
+                        # poda EXATA (ver docstring) -- nunca elimina rota viavel.
+                        continue
+                    dfs(
+                        [pp for pp in plataformas_restantes if pp != p],
+                        blocos_visitados + [(p, ordem)],
+                        novo_deck, novo_diesel, novo_agua,
+                    )
+
+        dfs(plataformas, [], 0.0, 0.0, 0.0)
+
+        candidatas.sort(key=lambda c: c["rc"])
+        completa = not limite_atingido[0]
+        timeout_atingido = bool(limite_atingido[0] and (_time.time() - t0) > timeout_s)
+
+        if diagnostico:
+            print(f"[SILVA_PRICING] k={k} fechamentos_avaliados={avaliadas_fechamentos} "
+                  f"candidatas_negativas={len(candidatas)} melhor_rc_visto={melhor_rc_visto[0]:.6f} "
+                  f"completa={completa} timeout={timeout_atingido} tempo={_time.time() - t0:.2f}s")
+            if not completa:
+                print(f"[SILVA_PRICING][AVISO] enumeracao INTERROMPIDA "
+                      f"(max_avaliacoes={max_avaliacoes} ou timeout_s={timeout_s}) -- "
+                      f"NAO certifica ausencia de coluna negativa nem otimalidade para k={k}.")
+
+        return candidatas, completa, timeout_atingido
 
     def metodo_exato(self, inst, sol):
 

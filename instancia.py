@@ -22,6 +22,24 @@ class Veiculo:
         self.stock_diesel = 0.0
         self.stock_agua = 0.0
         self.velocities = []
+        # ---- consumo de combustivel por regime (m3/h), Petro FO ambiental
+        self.fuel_anchored = 0.0     # theta_k: fundeio
+        self.fuel_base = 0.0         # varphi_k: berco/base
+        self.fuel_navigation = 0.0   # gamma_k: navegacao
+        self.fuel_dynamic = 0.0      # delta_k: posicionamento dinamico
+        # ---- custo por regime (USD/h), modo silva2024 (FCA/FCB/FCN/FCS); nao
+        # confundir com fuel_* acima (m3/h, exclusivo do modo petrobras)
+        self.cost_anchored = 0.0     # FCA_k: fundeado
+        self.cost_base = 0.0         # FCB_k: base
+        self.cost_navigation = 0.0   # FCN_k: navegando
+        self.cost_dynamic = 0.0      # FCS_k: servico (SET+SP+servico+espera)
+        self.safe_positioning_time = 0.0  # SP_k, em segundos (modo silva2024)
+        # xi_k: peso de utilizacao por navio (f2 = sum_k xi_k*(F_k-AT_k)), modo
+        # silva2024. NAO ATRIBUIDO -- nenhuma fonte local (JSON/README/artigo)
+        # informa o valor ou a formula de xi_k; deixado como None de proposito
+        # para nao inventar. f2 hoje e calculado como sum_k(F_k-AT_k), ou seja
+        # xi_k=1 implicito, o que NAO foi confirmado contra o artigo publicado.
+        self.xi = None
 
 
 class Node:
@@ -60,6 +78,14 @@ class Instancia:
         self.iteraSemMelhora=30
 
         self.usar_estabilizacao=True
+
+        # ---- parametros da FO ambiental Petro (lidos do JSON; Solomon nao usa)
+        self.alpha_fo = None
+        self.eta_fo = None
+        self.densidade_diesel = None
+        self.conversao_diesel_co2 = None
+        # "petrobras" (default) ou "silva2024" -- ver basicData.objectiveMode
+        self.objective_mode = "petrobras"
     nomeInst=""
 
     ###leitura petro
@@ -75,6 +101,14 @@ class Instancia:
         decl_clientes = basicdata.get("numberOfClients")
         decl_veiculos = basicdata.get("numberOfVessels")
         decl_orders = basicdata.get("numberOfOrders")
+
+        # ---- parametros da FO ambiental (etapa nova FO Petro) ----
+        alpha_fo = basicdata.get("alphaWeight")
+        eta_fo = basicdata.get("etaConversion")
+        densidade_diesel = basicdata.get("dieselDensity")
+        conversao_diesel_co2 = basicdata.get("conversionTonDieselTonCO2Eq")
+        # "petrobras" (default, instancias atuais) ou "silva2024" (benchmark Silva et al.)
+        objective_mode = basicdata.get("objectiveMode", "petrobras")
 
         base = entrada["supplyBasesData"][0]
         frota = entrada["fleetData"]
@@ -96,6 +130,8 @@ class Instancia:
             navio0 = min(frota, key=lambda v: v["capacity"]["deckSpace"])
         frota_info = []
         for v in frota:
+            fuel = v.get("fuelConsumption", {})
+            custo = v.get("fuelCost", {})
             frota_info.append({
                 "vessel_id": v.get("vesselId"),
                 "nome": v.get("vesselName", ""),
@@ -111,6 +147,18 @@ class Instancia:
                 "max_departure": v["maximumDepartureTime"] * SEGUNDOS_POR_HORA,
                 "readiness": v["estimatedTimeOfReadiness"] * SEGUNDOS_POR_HORA,
                 "velocities": v["velocities"],
+                # consumo por regime (m3/h), usado na FO ambiental do modo petrobras
+                "fuel_anchored": fuel.get("anchored", 0.0),
+                "fuel_base": fuel.get("base", 0.0),
+                "fuel_navigation": fuel.get("navigation", 0.0),
+                "fuel_dynamic": fuel.get("dynamic", 0.0),
+                # custo por regime (USD/h), usado na FO do modo silva2024 (FCA/FCB/FCN/FCS)
+                "cost_anchored": custo.get("anchored", 0.0),
+                "cost_base": custo.get("base", 0.0),
+                "cost_navigation": custo.get("navigation", 0.0),
+                "cost_dynamic": custo.get("dynamic", 0.0),
+                # SP_k, modo silva2024 (safe positioning time, uma vez por plataforma visitada)
+                "safe_positioning_time": v.get("safePositioningTime", 0.0) * SEGUNDOS_POR_HORA,
             })
 
         cap_deck = navio0["capacity"]["deckSpace"]
@@ -158,10 +206,22 @@ class Instancia:
         servico = [0.0]
         janelas_mtw = [[[readiness, T_max]]]
         tempo_carreg_deck = [0.0]
+        # duracoes de berco ainda nao computadas antes desta etapa (dado morto):
+        # diesel/agua carregados na SAIDA da base; backload descarregado no RETORNO.
+        tempo_carreg_diesel = [0.0]
+        tempo_carreg_agua = [0.0]
+        tempo_descarreg_backload = [0.0]
+        # SET (platformSetup), modo silva2024: setup por PLATAFORMA/VISITA, nao por
+        # order; o valor eh lido por order (repetido entre orders da mesma
+        # plataforma) e a deduplicacao (uma cobranca por visita) ocorre em metodos.py.
+        platform_setup_seg = [0.0]
 
         order_ids = [None]
         client_ids = [None]
         commodities = [None]
+        # dueTime por order (modo silva2024; restricao de prazo AINDA NAO
+        # implementada -- so leitura/armazenamento, ver metodo_exato_petro).
+        order_due_time_seg = [None]
 
         descartes = []
 
@@ -178,8 +238,13 @@ class Instancia:
             order_ids.append(od["orderId"])
             client_ids.append(od["clientId"])
             commodities.append(comm)
+            due_time = od.get("dueTime")
+            order_due_time_seg.append(due_time * SEGUNDOS_POR_HORA if due_time is not None else None)
 
             dl = db = di = ag = 0.0
+            carreg_diesel = 0.0
+            carreg_agua = 0.0
+            descarreg_backload = 0.0
 
             if comm == "deckCargoLoad":
                 dl = q
@@ -192,16 +257,28 @@ class Instancia:
                 db = q
                 demanda_vrp = q
                 carreg_deck = 0.0
+                # descarga do backload ocorre no RETORNO a base (apos R_k)
+                descarreg_backload = (
+                                      q / eff_base["deckCargoBackload"]
+                              ) * SEGUNDOS_POR_HORA
 
             elif comm == "dieselLoad":
                 di = q
                 demanda_vrp = 0.0
                 carreg_deck = 0.0
+                # diesel e carregado na SAIDA da base (antes de P_k)
+                carreg_diesel = (
+                                      q / eff_base["dieselLoad"]
+                              ) * SEGUNDOS_POR_HORA
 
             elif comm == "waterLoad":
                 ag = q
                 demanda_vrp = 0.0
                 carreg_deck = 0.0
+                # agua e carregada na SAIDA da base (antes de P_k)
+                carreg_agua = (
+                                      q / eff_base["waterLoad"]
+                              ) * SEGUNDOS_POR_HORA
 
             dem_dl.append(dl)
             dem_db.append(db)
@@ -223,6 +300,10 @@ class Instancia:
                 for ini, fim in od["timeWindows"]
             ])
             tempo_carreg_deck.append(carreg_deck)
+            tempo_carreg_diesel.append(carreg_diesel)
+            tempo_carreg_agua.append(carreg_agua)
+            tempo_descarreg_backload.append(descarreg_backload)
+            platform_setup_seg.append(od.get("platformSetup", 0.0) * SEGUNDOS_POR_HORA)
 
             avisar_relacoes = False
 
@@ -242,6 +323,9 @@ class Instancia:
         N = n + 1
         dist = [[0.0] * N for _ in range(N)]
         tempo = [[0.0] * N for _ in range(N)]
+        # tempo de navegacao pura (sem setupArrival/setupDeparture), usado na FO
+        # ambiental (t_k); NAO usar "tempo" acima para isso, pois inclui setups.
+        tempo_navegacao = [[0.0] * N for _ in range(N)]
 
         setup_arr = navio0["setupArrival"] * SEGUNDOS_POR_HORA
         setup_dep = navio0["setupDeparture"] * SEGUNDOS_POR_HORA
@@ -253,14 +337,17 @@ class Instancia:
                 if client_ids[i] is not None and client_ids[i] == client_ids[j]:
                     dist[i][j] = 0.0
                     tempo[i][j] = 0.0
+                    tempo_navegacao[i][j] = 0.0
                     continue
                 d = self.haversine_km(lats[i], lons[i], lats[j], lons[j])
                 dist[i][j] = d
                 velocidade_arco = self.velocidade_kmh(d, velocities)
 
-                t = (
+                t_puro = (
                             d / velocidade_arco
                     ) * SEGUNDOS_POR_HORA
+                tempo_navegacao[i][j] = t_puro
+                t = t_puro
                 if i == 0:  # base -> order: atracacao na chegada
                     t += setup_arr
                 elif j == 0:  # order -> base: desatracacao na saida
@@ -302,15 +389,28 @@ class Instancia:
 
             "dist": dist,
             "tempo": tempo,
+            "tempo_navegacao": tempo_navegacao,
 
             "T_max": T_max,
             "readiness": readiness,
             "max_partida": max_partida,
 
             "tempo_carreg_deck": tempo_carreg_deck,
+            "tempo_carreg_diesel": tempo_carreg_diesel,
+            "tempo_carreg_agua": tempo_carreg_agua,
+            "tempo_descarreg_backload": tempo_descarreg_backload,
+            "platform_setup_seg": platform_setup_seg,
+            "order_due_time_seg": order_due_time_seg,
             "eff_base": eff_base,
             "frota_info": frota_info,
             "descartes": descartes,
+
+            # parametros da FO ambiental (etapa nova FO Petro)
+            "alpha_fo": alpha_fo,
+            "eta_fo": eta_fo,
+            "densidade_diesel": densidade_diesel,
+            "conversao_diesel_co2": conversao_diesel_co2,
+            "objective_mode": objective_mode,
         }
 
         if verboso:
@@ -394,8 +494,10 @@ class Instancia:
         self.noh[self.nbn - 1].DEMAND_DIESEL = self.noh[0].DEMAND_DIESEL
         self.noh[self.nbn - 1].DEMAND_AGUA = self.noh[0].DEMAND_AGUA
 
-        # ---------- matriz: tempo de viagem ----------
+        # ---------- matriz: tempo de viagem (inclui setupArrival/setupDeparture) ----------
         self.matriz_distancia = [[-1] * self.nbn for _ in range(self.nbn)]
+        # ---------- matriz: tempo de navegacao pura (sem setups), usada na FO ambiental ----------
+        self.matriz_tempo_navegacao = [[-1] * self.nbn for _ in range(self.nbn)]
         for i in range(self.nbn):
             for j in range(self.nbn):
                 if i == j:
@@ -404,9 +506,12 @@ class Instancia:
                 jj = 0 if j == self.nbn - 1 else j
                 if ii == jj:
                     self.matriz_distancia[i][j] = 0
+                    self.matriz_tempo_navegacao[i][j] = 0
                 else:
                     self.matriz_distancia[i][j] = int(
                         round(dados["tempo"][ii][jj]))
+                    self.matriz_tempo_navegacao[i][j] = int(
+                        round(dados["tempo_navegacao"][ii][jj]))
 
         # ---------- veiculos (dados individuais; pricing usa o mais restritivo) ----------
         cap_pricing = int(round(min(fi["cap_deck"] for fi in dados["frota_info"])))
@@ -427,11 +532,27 @@ class Instancia:
             veic.stock_diesel = fi["stock_diesel"]
             veic.stock_agua = fi["stock_agua"]
             veic.velocities = list(fi["velocities"])
+            veic.fuel_anchored = fi["fuel_anchored"]
+            veic.fuel_base = fi["fuel_base"]
+            veic.fuel_navigation = fi["fuel_navigation"]
+            veic.fuel_dynamic = fi["fuel_dynamic"]
+            veic.cost_anchored = fi["cost_anchored"]
+            veic.cost_base = fi["cost_base"]
+            veic.cost_navigation = fi["cost_navigation"]
+            veic.cost_dynamic = fi["cost_dynamic"]
+            veic.safe_positioning_time = fi["safe_positioning_time"]
             self.veiculos.append(veic)
 
 
         # dados Petro extras (diesel/agua, carregamento na base, etc.)
         self.dados_petro = dados
+
+        # parametros da FO ambiental Petro (lidos do JSON, nao hardcoded)
+        self.alpha_fo = dados["alpha_fo"]
+        self.eta_fo = dados["eta_fo"]
+        self.densidade_diesel = dados["densidade_diesel"]
+        self.conversao_diesel_co2 = dados["conversao_diesel_co2"]
+        self.objective_mode = dados["objective_mode"]
 
     ###Fimleitura petro
 

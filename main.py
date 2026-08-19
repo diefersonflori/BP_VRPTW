@@ -21,8 +21,7 @@ multiprocessing.set_start_method("spawn", force=True)
 # ============================================================
 MAX_WORKERS = 3
 GUROBI_THREADS_POR_PROCESSO = 4
-TIME_LIMIT_EXATO = 1200
-
+TIME_LIMIT_EXATO = 300
 RODAR_BP = True
 RODAR_EXATO_PETRO = True
 SEED_DEBUG = 123
@@ -31,8 +30,8 @@ GAMMA_INI = 15
 GAMMA_MIN = 10
 GAMMA_MAX = 600
 TABU = 0
-TIME_TARGET = 3600
-TIME_MAX = 3600
+TIME_TARGET = 300
+TIME_MAX = 300
 USAR_GAMMA_RELATIVO = True
 GAMMA_RHO = 0.25
 PRICING_EXATO_TIMEOUT_S = 60
@@ -41,7 +40,8 @@ PRICING_EXATO_MAX_LABELS = 1_000_000_000
 BASE_DIR = Path(__file__).resolve().parent
 PASTA_INSTANCIAS = BASE_DIR / "instancias" / "instancias_petro_geradas"
 #PASTA_INSTANCIAS_nova_petro = BASE_DIR / "instancias" / "instancias_petro_geradas"/ "instancias_mais_nos"/"instancias_petro_28_30_35"
-PASTA_INSTANCIAS_nova_petro = BASE_DIR / "instancias" / "instancias_petro_geradas"/ "instancias_petro_forca_multiveiculo_10"
+#PASTA_INSTANCIAS_nova_petro = BASE_DIR / "instancias" / "instancias_petro_geradas"/ "instancias_petro_forca_multiveiculo_10"
+PASTA_INSTANCIAS_nova_petro = BASE_DIR / "instancias" / "instancias_petro_geradas"/ "convertidas_victor"
 PASTA_RESULTADOS_RAIZ = BASE_DIR / "resultados_petro_bp_exato_paralelo"
 PASTA_PLOTJS = BASE_DIR / "PlotJS"
 
@@ -74,6 +74,75 @@ def csv_val(valor, casas=4):
     if isinstance(valor, float):
         return round(valor, casas)
     return valor
+
+
+def exportar_plotjs_seguro(sol_pool, inst, pasta_plotjs_instancia, tempo_construtiva=None,
+                            tempo_bp=None, tempo_exato=None, etapa="", stdout_original=None):
+    """Chama sol_pool.exportar_plotjs capturando qualquer excecao APENAS da
+    visualizacao -- nunca derruba a otimizacao. Chamada progressivamente (apos
+    construtiva/BP/exato), sobrescrevendo o mesmo pacote a cada etapa, para
+    garantir que pelo menos as etapas ja concluidas fiquem exportadas mesmo se
+    uma etapa posterior falhar."""
+    print(f"[PLOTJS] exportando pacote... (apos {etapa})", flush=True)
+    if stdout_original is not None:
+        print(f"[PLOTJS] exportando pacote... (apos {etapa})", file=stdout_original, flush=True)
+    try:
+        pasta = sol_pool.exportar_plotjs(
+            inst, pasta_plotjs_instancia,
+            tempo_construtiva=tempo_construtiva, tempo_bp=tempo_bp, tempo_exato=tempo_exato,
+        )
+        caminho_abs = str(Path(pasta).resolve())
+        print(f"[PLOTJS] pasta: {caminho_abs}", flush=True)
+        print("[PLOTJS] OK", flush=True)
+        if stdout_original is not None:
+            print(f"[PLOTJS] pasta: {caminho_abs}", file=stdout_original, flush=True)
+            print("[PLOTJS] OK", file=stdout_original, flush=True)
+        return pasta
+    except Exception:
+        erro_txt = traceback.format_exc()
+        print(f"[PLOTJS][ERRO] falha ao exportar PlotJS (apos {etapa}):\n{erro_txt}", flush=True)
+        if stdout_original is not None:
+            print(f"[PLOTJS][ERRO] falha ao exportar PlotJS (apos {etapa}) -- ver log", file=stdout_original, flush=True)
+        return None
+
+
+ARQUIVOS_PLOTJS_ESPERADOS = [
+    "gantt_petro_construtiva.html", "petroConstr.js",
+    "gantt_petroBp.html", "petroBP.js",
+    "gantt_petro_exato.html", "petroEx.js",
+]
+
+
+def verificar_arquivos_plotjs(pasta_plotjs_instancia, stdout_original=None):
+    """Confere (existe/tamanho) os 6 arquivos esperados do pacote PlotJS. Nao trata
+    DADOS=null como erro (abordagem sem solucao) -- so confere que o arquivo FISICO
+    foi criado."""
+    pasta_plotjs_instancia = Path(pasta_plotjs_instancia)
+    for nome in ARQUIVOS_PLOTJS_ESPERADOS:
+        caminho = pasta_plotjs_instancia / nome
+        existe = caminho.is_file()
+        tamanho = caminho.stat().st_size if existe else 0
+        linha = f"[PLOTJS CHECK] {nome} | existe={existe} | tamanho={tamanho} bytes"
+        print(linha, flush=True)
+        if stdout_original is not None:
+            print(linha, file=stdout_original, flush=True)
+
+
+def registrar_cronogramas_silva(inst, metod, sol_pool, nome_solucao, rotas_dict):
+    """SOMENTE modo silva2024: avalia cada rota de `rotas_dict` (formato canonico
+    {k: {"sequencias": [...]}}) com Metodos.avaliar_rota_silva2024 (fonte ja validada
+    da fisica silva2024, sem duplicar formula aqui) e registra o resultado via
+    sol_pool.registrar_cronograma_plotjs, para o PlotJS desenhar o cronograma correto.
+    Rotas ociosas ([0,depf] ou vazias) sao ignoradas (navio fica 'ocioso' no Gantt)."""
+    cronogramas = {}
+    for k, entrada in rotas_dict.items():
+        seqs = entrada.get("sequencias", [])
+        seq = list(seqs[0]) if seqs else []
+        clientes_seq = [no for no in seq if 1 <= no <= inst.nbcd]
+        if not clientes_seq:
+            continue
+        cronogramas[k] = metod.avaliar_rota_silva2024(inst, k, seq, diagnostico=False)
+    sol_pool.registrar_cronograma_plotjs(nome_solucao, cronogramas)
 
 
 # ============================================================
@@ -119,6 +188,7 @@ def rodar_caso(args):
 
         nome_saida = nome_pasta_instancia(arquivo_instancia, inst)
         pasta_plotjs_instancia = PASTA_PLOTJS / nome_saida
+        modo_silva = getattr(inst, "objective_mode", "petrobras") == "silva2024"
 
         metod = Metodos(inst)
         metod.TABU_TENURE = TABU
@@ -148,6 +218,11 @@ def rodar_caso(args):
         metod.gera_solucao_inicial(inst, sol_pool)
         metod.adiciona_colunas_ociosas(inst, sol_pool)
 
+        # Etapa 4 (modo silva2024): re-precifica o pool com o custo Silva
+        # (avaliar_rota_silva2024), logo apos as construtivas e antes do
+        # primeiro mestre. Nao toca nada quando objective_mode="petrobras".
+        if getattr(inst, "objective_mode", "petrobras") == "silva2024":
+            metod.preparar_pool_silva2024(inst, sol_pool, diagnostico=True)
 
         tempo_construtiva = time.time() - t0_construt
 
@@ -177,6 +252,14 @@ def rodar_caso(args):
 
         rotas_construt = {k: {"sequencias": [list(sol_pool.rotas[k]["sequencia_rota"][0])], "custos": [float(sol_pool.rotas[k]["custo"][0])]} for k in sol_pool.rotas if sol_pool.rotas[k]["sequencia_rota"] and not sol_pool.rotas[k]["artificial"][0]}
         sol_pool.registrar_solucao("construtiva", rotas_construt)
+        if modo_silva:
+            registrar_cronogramas_silva(inst, metod, sol_pool, "construtiva", rotas_construt)
+
+        # A) exportacao progressiva apos a construtiva -- garante o pacote PlotJS mesmo
+        # se B&P/exato falharem depois (ver pedido: exportacao robusta em 3 momentos).
+        exportar_plotjs_seguro(sol_pool, inst, pasta_plotjs_instancia,
+                                tempo_construtiva=tempo_construtiva,
+                                etapa="construtiva", stdout_original=stdout_original)
 
         ub = None
         lb = None
@@ -194,6 +277,17 @@ def rodar_caso(args):
         fo_exato = None
         tempo_exato = None
         delta_bp_exato = None
+        alpha_exato = None
+        eta_exato = None
+        consumo_diesel_exato_m3 = None
+        emissoes_exato_tco2eq = None
+        tempo_total_exato_h = None
+        parcela_ambiental_exato = None
+        parcela_temporal_exato = None
+        f1_exato_silva = None
+        f2_exato_silva = None
+        parcela_f1_exato_silva = None
+        parcela_f2_exato_silva = None
 
         if RODAR_BP:
             t0_bp = time.time()
@@ -259,7 +353,14 @@ def rodar_caso(args):
             if sol_pool.rotas_escolhidas:
                 metod.relatorio_cronograma_petro(inst, sol_pool.rotas_escolhidas)
                 sol_pool.registrar_solucao("bp", sol_pool.rotas_escolhidas)
+                if modo_silva:
+                    registrar_cronogramas_silva(inst, metod, sol_pool, "bp", sol_pool.rotas_escolhidas)
 
+            # B) exportacao progressiva apos o B&P (com ou sem incumbente) -- garante o
+            # pacote mesmo se o exato falhar depois.
+            exportar_plotjs_seguro(sol_pool, inst, pasta_plotjs_instancia,
+                                    tempo_construtiva=tempo_construtiva, tempo_bp=tempo_bp,
+                                    etapa="bp", stdout_original=stdout_original)
 
 
         if RODAR_EXATO_PETRO:
@@ -267,13 +368,24 @@ def rodar_caso(args):
             sol_exato = Solucao(inst.nbv, inst.nbn)
             t0_exato = time.time()
             #metod.metodo_exato(inst, sol_exato)
+
+            # SOMENTE modo silva2024: o B&P Silva atual trabalha com rotas separaveis
+            # por navio (ainda sem o conflito inter-navio de plataforma). Para comparar
+            # o compacto na MESMA condicao, desliga aqui o bloqueio entre navios
+            # diferentes na mesma plataforma -- so nesta bateria de comparacao, sem
+            # tocar no DEFAULT de metodo_exato_petro nem em Petrobras.
+            considerar_conflito_plataforma = False if modo_silva else True
+            if modo_silva:
+                print(f"[SILVA EXATO] considerar_conflito_plataforma={considerar_conflito_plataforma}", flush=True)
+
             ok_exato = metod.metodo_exato_petro(
                 inst,
                 sol_exato,
                 time_limit=TIME_LIMIT_EXATO,
                 threads=GUROBI_THREADS_POR_PROCESSO,
                 salvar_modelo=False,
-                diagnostico=False
+                diagnostico=False,
+                considerar_conflito_plataforma=considerar_conflito_plataforma,
             )
 
             tempo_exato = time.time() - t0_exato
@@ -301,11 +413,79 @@ def rodar_caso(args):
                     f"t={tempo_exato:.1f}s"
                 )
 
+                # Parcelas da FO, reaproveitando exatamente os totais ja calculados/
+                # checados dentro de metodo_exato_petro (sol.exato_petro_*) -- NUNCA
+                # recalculadas aqui. Nomes gravados em sol.exato_petro_* sao GENERICOS
+                # (consumo_total/emissoes_total/etc.) porque a mesma formula de
+                # objetivo serve os dois modos, mas o SIGNIFICADO fisico e diferente:
+                #   Petrobras: consumo_total=D (m3 diesel), emissoes_total=E (tCO2eq).
+                #   Silva (ver metodo_exato_petro, modo_silva): E_k=D_k=f1_k (USD, sem
+                #     conversao para CO2 -- "Silva: D_k (=f1_k) ja esta em USD, sem
+                #     conversao para CO2, E_k so existe para reaproveitar a mesma
+                #     formula de objetivo"), tempo_total=T=f2 (=xi*(F-AT), horas),
+                #     componente_ambiental=alpha*f1, componente_temporal=(1-alpha)*eta*f2.
+                # O relatorio abaixo e MODE-GATED: Petrobras mantem o texto/campos
+                # originais; Silva usa nomes proprios (f1/f2), nunca "diesel"/"CO2".
+                consumo_diesel_exato_m3 = getattr(sol_exato, "exato_petro_consumo_total", None)
+                emissoes_exato_tco2eq = getattr(sol_exato, "exato_petro_emissoes_total", None)
+                tempo_total_exato_h = getattr(sol_exato, "exato_petro_tempo_total", None)
+                alpha_exato = getattr(sol_exato, "exato_petro_alpha", None)
+                eta_exato = getattr(sol_exato, "exato_petro_eta", None)
+                parcela_ambiental_exato = getattr(sol_exato, "exato_petro_componente_ambiental", None)
+                parcela_temporal_exato = getattr(sol_exato, "exato_petro_componente_temporal", None)
+
+                fo_check = parcela_ambiental_exato + parcela_temporal_exato
+                objval_exato = getattr(sol_exato, "exato_petro_obj", fo_exato)
+
+                if modo_silva:
+                    # Silva: consumo_total/emissoes_total (sol.exato_petro_*) SAO f1
+                    # (USD) -- nao m3/tCO2eq. Nao gravamos isso nos campos CSV
+                    # legados (consumo_diesel_exato_m3/emissoes_exato_tco2eq ficam
+                    # None para Silva); usamos campos novos e mode-gated abaixo.
+                    consumo_diesel_exato_m3 = None
+                    emissoes_exato_tco2eq = None
+                    f1_exato_silva = getattr(sol_exato, "exato_petro_consumo_total", None)
+                    f2_exato_silva = tempo_total_exato_h
+                    parcela_f1_exato_silva = parcela_ambiental_exato
+                    parcela_f2_exato_silva = parcela_temporal_exato
+
+                    msg_fo = (
+                        f"[FO_SILVA_EXATO] f1_total={f1_exato_silva:.4f} USD | "
+                        f"f2_total={f2_exato_silva:.4f} h | alpha={alpha_exato:.2f} | eta={eta_exato:.2f} | "
+                        f"alpha_f1={parcela_f1_exato_silva:.4f} | termo_temporal={parcela_f2_exato_silva:.4f} | "
+                        f"FO_total={fo_check:.4f}"
+                    )
+                    if abs(fo_check - objval_exato) > 1e-4:
+                        msg_fo += "\n[FO_SILVA_EXATO][ALERTA] componentes da FO nao fecham com ObjVal"
+                else:
+                    msg_fo = (
+                        f"[FO_EXATO] diesel={consumo_diesel_exato_m3:.2f} m3 | "
+                        f"E={emissoes_exato_tco2eq:.2f} tCO2eq | T={tempo_total_exato_h:.2f} h | "
+                        f"alpha={alpha_exato:.2f} | eta={eta_exato:.2f} | "
+                        f"CO2={parcela_ambiental_exato:.2f} | tempo={parcela_temporal_exato:.2f} | "
+                        f"soma={fo_check:.4f}"
+                    )
+                    if abs(fo_check - objval_exato) > 1e-4:
+                        msg_fo += "\n[FO_EXATO][ALERTA] componentes da FO nao fecham com ObjVal"
+
                 print(msg_exato, flush=True)
                 print(msg_exato, file=stdout_original, flush=True)
+                print(msg_fo, flush=True)
+                print(msg_fo, file=stdout_original, flush=True)
 
                 metod.relatorio_cronograma_petro(inst, rotas_exato)
                 sol_pool.registrar_solucao("exato", rotas_exato)
+                if modo_silva:
+                    # Fonte: sol.exato_petro_silva_diag[k] -- horarios JA resolvidos pelo
+                    # Gurobi. Usa o cronograma resolvido diretamente (em vez de
+                    # rechamar avaliar_rota_silva2024) para evitar qualquer duvida em
+                    # casos degenerados (alpha_fo=0 ou cost_dynamic==cost_anchored),
+                    # onde B/P/R/F podem nao ser unicos entre solucoes de mesma FO --
+                    # avaliar_rota_silva2024 ja escolhe B pelo mesmo criterio de FO do
+                    # compacto (nao mais B=AT fixo), mas nesses casos degenerados o
+                    # Gurobi pode ter escolhido outro B igualmente otimo.
+                    cronogramas_exato = getattr(sol_exato, "exato_petro_silva_diag", {})
+                    sol_pool.registrar_cronograma_plotjs("exato", cronogramas_exato)
 
             else:
                 fo_exato = None
@@ -317,7 +497,19 @@ def rodar_caso(args):
                 print(msg_exato, flush=True)
                 print(msg_exato, file=stdout_original, flush=True)
 
-        sol_pool.exportar_plotjs(inst, pasta_plotjs_instancia, tempo_construtiva=tempo_construtiva, tempo_bp=(tempo_bp if RODAR_BP else None), tempo_exato=tempo_exato)
+            # C) exportacao progressiva apos o exato (com ou sem incumbente).
+            exportar_plotjs_seguro(sol_pool, inst, pasta_plotjs_instancia,
+                                    tempo_construtiva=tempo_construtiva,
+                                    tempo_bp=(tempo_bp if RODAR_BP else None), tempo_exato=tempo_exato,
+                                    etapa="exato", stdout_original=stdout_original)
+
+        # Chamada final de seguranca (sobrescreve com o estado mais completo
+        # disponivel; idempotente, nao duplica logica -- reusa exportar_plotjs_seguro).
+        exportar_plotjs_seguro(sol_pool, inst, pasta_plotjs_instancia,
+                                tempo_construtiva=tempo_construtiva,
+                                tempo_bp=(tempo_bp if RODAR_BP else None), tempo_exato=tempo_exato,
+                                etapa="final", stdout_original=stdout_original)
+        verificar_arquivos_plotjs(pasta_plotjs_instancia, stdout_original=stdout_original)
 
         resultado = {
             "ordem": ninst,
@@ -339,6 +531,17 @@ def rodar_caso(args):
             "fo_exato": fo_exato,
             "tempo_exato": tempo_exato,
             "delta_bp_exato": delta_bp_exato,
+            "alpha_exato": alpha_exato,
+            "eta_exato": eta_exato,
+            "consumo_diesel_exato_m3": consumo_diesel_exato_m3,
+            "emissoes_exato_tco2eq": emissoes_exato_tco2eq,
+            "tempo_total_exato_h": tempo_total_exato_h,
+            "parcela_ambiental_exato": parcela_ambiental_exato,
+            "parcela_temporal_exato": parcela_temporal_exato,
+            "f1_exato_silva": f1_exato_silva,
+            "f2_exato_silva": f2_exato_silva,
+            "parcela_f1_exato_silva": parcela_f1_exato_silva,
+            "parcela_f2_exato_silva": parcela_f2_exato_silva,
             "motivo": getattr(sol_pool, "motivoConv", ""),
             "iteracoes": getattr(sol_pool, "nb_iteracoes", ""),
             "log": str(log_path),
@@ -366,7 +569,30 @@ def main():
     validar_estrutura()
 
     #instancias = sorted(PASTA_INSTANCIAS.glob("*.json"), key=chave_natural)
-    instancias = sorted(PASTA_INSTANCIAS_nova_petro.glob("*.json"), key=chave_natural)
+    #instancias = sorted(PASTA_INSTANCIAS_nova_petro.glob("*.json"), key=chave_natural)
+    PASTA_INSTANCIAS_nova_petro = BASE_DIR / "instancias" / "instancias_petro_geradas" / "convertidas_victor"
+    instancias = [
+        #BASE_DIR / "instancias" / "Petro_instancias" / "14n-2k-6c-008r_ML_silva2024.json"
+
+        #BASE_DIR / "instancias" / "instancias_petro_geradas"/ "convertidas_victor" / "20n-4k-7c-244r_SSML_silva2024.json"
+        #BASE_DIR / "instancias" / "Petro_instancias" / "10n-1k-3c-1r_testeUSP_v33.json"
+    ]
+    INSTANCIAS_SELECIONADAS = [
+        # 10 nós
+        "10n-2k-6c-019r_SS_silva2024.json",
+        "10n-2k-6c-027r_MM_silva2024.json",
+        "10n-2k-6c-095r_LL_silva2024.json",
+
+        # 14 nós
+        "14n-3k-7c-030r_SSM_silva2024.json",
+        "14n-3k-7c-070r_MML_silva2024.json",
+        "14n-4k-6c-025r_SSML_silva2024.json",
+
+        # 20 nós
+        "20n-4k-7c-244r_SSML_silva2024.json",
+    ]
+
+    instancias = [PASTA_INSTANCIAS_nova_petro / nome for nome in INSTANCIAS_SELECIONADAS]
 
     #instancias = [
     #    PASTA_INSTANCIAS / "petro_campos_C1_nucleo_atual_10ped.json"
@@ -381,7 +607,7 @@ def main():
 
     resumo_path = pasta_rodada / "resumo_bp_exato.csv"
     resumo_ordenado_path = pasta_rodada / "resumo_bp_exato_ordenado.csv"
-    campos = ["ordem", "instancia", "nome_saida", "nbcd", "nbv", "custo_construt", "n_art", "lb", "ub", "gap", "lb_valido", "arvore_certificada_completa", "otimalidade_certificada", "n_nos", "n_cols", "iteracoes", "tempo_bp", "fo_exato", "tempo_exato", "delta_bp_exato", "motivo", "log", "plotjs"]
+    campos = ["ordem", "instancia", "nome_saida", "nbcd", "nbv", "custo_construt", "n_art", "lb", "ub", "gap", "lb_valido", "arvore_certificada_completa", "otimalidade_certificada", "n_nos", "n_cols", "iteracoes", "tempo_bp", "fo_exato", "tempo_exato", "delta_bp_exato", "alpha_exato", "eta_exato", "consumo_diesel_exato_m3", "emissoes_exato_tco2eq", "tempo_total_exato_h", "parcela_ambiental_exato", "parcela_temporal_exato", "f1_exato_silva", "f2_exato_silva", "parcela_f1_exato_silva", "parcela_f2_exato_silva", "motivo", "log", "plotjs"]
 
     with open(resumo_path, "w", newline="", encoding="utf-8") as arquivo_csv:
         csv.DictWriter(arquivo_csv, fieldnames=campos, delimiter=";").writeheader()

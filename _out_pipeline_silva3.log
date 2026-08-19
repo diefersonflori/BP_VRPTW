@@ -1,0 +1,226 @@
+[AVISO PETRO] Frota heterogenea - usando navio de MENOR deckSpace.
+======================================================================
+LEITURA PETRO: instancias/Petro_instancias/14n-2k-6c-008r_ML_silva2024.json
+Clientes: 14 | Navios: 2 | deckSpace=570 dieselTanks=1000 waterTanks=800
+initialStock: diesel=0 agua=0 | janela base=[25200, 345600] s | max_partida=0 s
+----------------------------------------------------------------------
+no             dem_v1   deck_L   deck_B   diesel     agua  serv(s)  #jan
+BASE_BASE_SILVA      0.0      0.0      0.0      0.0      0.0     0.00     1
+PLAT_1_order_0     16.0     16.0      0.0      0.0      0.0  1918.08     1
+PLAT_2_order_1     27.0      0.0     27.0      0.0      0.0  3236.76     2
+PLAT_2_order_2     14.0     14.0      0.0      0.0      0.0  1678.32     2
+PLAT_2_order_3      0.0      0.0      0.0    336.0      0.0 18023.04     2
+PLAT_3_order_4     19.0     19.0      0.0      0.0      0.0  2277.72     2
+PLAT_4_order_5     77.0     77.0      0.0      0.0      0.0 12945.24     2
+PLAT_4_order_6      0.0      0.0      0.0    283.0      0.0 13040.64     2
+PLAT_5_order_7     18.0      0.0     18.0      0.0      0.0  2157.84     2
+PLAT_5_order_8     33.0     33.0      0.0      0.0      0.0  3956.04     2
+PLAT_5_order_9      0.0      0.0      0.0    177.0      0.0  9494.28     2
+PLAT_6_order_10     15.0      0.0     15.0      0.0      0.0  1798.20     2
+PLAT_6_order_11     17.0     17.0      0.0      0.0      0.0  2037.96     2
+PLAT_6_order_12      0.0      0.0      0.0    220.0      0.0 11800.80     2
+PLAT_6_order_13      0.0      0.0      0.0      0.0    381.0 24551.64     2
+----------------------------------------------------------------------
+Demanda v1 total (deck L+B): 236.0  (capacidade 570)
+Diesel total: 1016.0 (stock 0) | Agua total: 381.0 (stock 0)
+base -> PLAT_1_order_0:  167.8 km     47552 s
+base -> PLAT_2_order_1:  192.6 km     54599 s
+base -> PLAT_2_order_2:  192.6 km     54599 s
+base -> PLAT_2_order_3:  192.6 km     54599 s
+base -> PLAT_3_order_4:  182.9 km     51848 s
+base -> PLAT_4_order_5:  199.8 km     56638 s
+base -> PLAT_4_order_6:  199.8 km     56638 s
+base -> PLAT_5_order_7:  172.0 km     48742 s
+base -> PLAT_5_order_8:  172.0 km     48742 s
+base -> PLAT_5_order_9:  172.0 km     48742 s
+base -> PLAT_6_order_10:  192.7 km     54621 s
+base -> PLAT_6_order_11:  192.7 km     54621 s
+base -> PLAT_6_order_12:  192.7 km     54621 s
+base -> PLAT_6_order_13:  192.7 km     54621 s
+======================================================================
+
+####################################################################################################
+# [SILVA PIPE TEST] caso=A k=0
+####################################################################################################
+TESTA ALLBEST_SILVA
+[PRICING MULTI] origem=ALLBEST_SILVA | k=0 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | completa=False
+[SILVA PRICING]
+k=0
+ALLBEST=20
+BID_CPP=0
+PD_CPP=0
+pd_completa=None
+pd_timeout=None
+labels_pd=None
+nivel_pd=None
+melhor_rc=-270.1455662901807
+origem=ALLBEST_SILVA
+certifica_k=False
+
+[SILVA PIPE TEST]
+caso=A
+allbest_chamado=True
+bid_chamado=False
+pd_chamado=False
+origem_escolhida=ALLBEST_SILVA
+n_candidatas=2
+certifica_k=False
+
+[VALIDACAO][OK] todas as checagens passaram
+
+[CASO A] esperado(ALLBEST usado, BID/PD nao chamados)=True
+
+####################################################################################################
+# [SILVA PIPE TEST] caso=B k=0
+####################################################################################################
+TESTA ALLBEST_SILVA
+[PRICING MULTI] origem=ALLBEST_SILVA | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA BID_SILVA_CPP
+
+[SILVA C++ MODULE]
+arquivo=C:\Users\PolyanaSilva\Documents\BP_VRPTW\PD_SILVA_CPP\PD_SILVA_CPP\x64\Release\vrptw_pd_silva.pyd
+[PRICING MULTI] origem=BID_SILVA_CPP | k=0 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | completa=False
+[SILVA PRICING]
+k=0
+ALLBEST=0
+BID_CPP=20
+PD_CPP=0
+pd_completa=None
+pd_timeout=None
+labels_pd=None
+nivel_pd=None
+melhor_rc=-36.22943006700786
+origem=BID_SILVA_CPP
+certifica_k=False
+
+[SILVA PIPE TEST]
+caso=B
+allbest_chamado=True
+bid_chamado=True
+pd_chamado=False
+origem_escolhida=BID_SILVA_CPP
+n_candidatas=2
+certifica_k=False
+
+[VALIDACAO][OK] todas as checagens passaram
+
+[CASO B] esperado(BID_CPP usado, PD nao chamado)=True
+
+####################################################################################################
+# [SILVA PIPE TEST] caso=C k=0
+####################################################################################################
+TESTA ALLBEST_SILVA
+[PRICING MULTI] origem=ALLBEST_SILVA | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA BID_SILVA_CPP
+[PRICING MULTI] origem=BID_SILVA_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA PD_SILVA_CPP
+[PRICING MULTI] origem=PD_SILVA_CPP | k=0 | geradas=20 | novas_pool=20 | duplicadas_pool=0 | completa=False | timeout=False
+[SILVA PRICING]
+k=0
+ALLBEST=0
+BID_CPP=0
+PD_CPP=20
+pd_completa=False
+pd_timeout=False
+labels_pd=3000000
+nivel_pd=8
+melhor_rc=-189.4243835349239
+origem=PD_SILVA_CPP
+certifica_k=False
+
+[SILVA PIPE TEST]
+caso=C
+allbest_chamado=True
+bid_chamado=True
+pd_chamado=True
+origem_escolhida=PD_SILVA_CPP
+n_candidatas=2
+certifica_k=False
+
+[VALIDACAO][OK] todas as checagens passaram
+
+[CASO C] esperado(PD_CPP chamado, certifica conforme completa)=True
+
+####################################################################################################
+# TESTE DE DUPLICATA NEGATIVA
+####################################################################################################
+[DUPLICATA TEST] chamar_pd_silva_cpp encontrou 20 candidata(s) negativa(s), melhor seq=[0, 1, 4, 2, 5, 6, 9, 11, 12, 15] rc=-189.4243835349239
+TESTA ALLBEST_SILVA
+[PRICING MULTI] origem=ALLBEST_SILVA | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA BID_SILVA_CPP
+[PRICING MULTI] origem=BID_SILVA_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA PD_SILVA_CPP
+[PRICING MULTI] origem=PD_SILVA_CPP | k=0 | geradas=20 | novas_pool=0 | duplicadas_pool=20 | completa=False | timeout=False
+[SILVA PRICING]
+k=0
+ALLBEST=0
+BID_CPP=0
+PD_CPP=20
+pd_completa=False
+pd_timeout=False
+labels_pd=3000000
+nivel_pd=8
+melhor_rc=-189.4243835349239
+origem=None
+certifica_k=False
+
+[SILVA CERT DUPLICATA TEST]
+pd_completa=False
+n_geradas_pd=20
+n_novas_pool=0
+melhor_rc=-189.4243835349239
+tem_negativa_pd=True
+certifica_k=False
+
+[VALIDACAO][OK] todas as checagens passaram
+
+[TESTE DUPLICATA] esperado(certifica_k=False mesmo com RC<0 duplicada)=True
+
+####################################################################################################
+# [SILVA PIPE TEST] caso=D_CERTIFICACAO
+####################################################################################################
+TESTA ALLBEST_SILVA
+[PRICING MULTI] origem=ALLBEST_SILVA | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA BID_SILVA_CPP
+[PRICING MULTI] origem=BID_SILVA_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=False
+TESTA PD_SILVA_CPP
+[PRICING MULTI] origem=PD_SILVA_CPP | k=0 | geradas=0 | novas_pool=0 | duplicadas_pool=0 | completa=True | timeout=False
+[SILVA PRICING]
+k=0
+ALLBEST=0
+BID_CPP=0
+PD_CPP=0
+pd_completa=True
+pd_timeout=False
+labels_pd=172443
+nivel_pd=14
+melhor_rc=None
+origem=None
+certifica_k=True
+
+[SILVA PIPE TEST]
+caso=D_CERTIFICACAO
+allbest_chamado=True
+bid_chamado=True
+pd_chamado=True
+pd_completa=True
+pd_timeout=False
+n_negativas_pd=0
+certifica_k=True
+
+[VALIDACAO][OK] todas as checagens passaram
+
+[CASO D] esperado(PD completa=True sem negativas => certifica_k=True)=True
+
+####################################################################################################
+# TESTE DO AND GLOBAL (2 veiculos)
+####################################################################################################
+[AND GLOBAL] k0=True k1=True -> todos_k_certificados=True (esperado True)
+[AND GLOBAL] k0=True k1=False -> todos_k_certificados=False (esperado False)
+
+[VALIDACAO][OK] todas as checagens passaram
+
+
+====================================================================================================
+[RESULTADO FINAL PIPELINE] TODOS OS CASOS OK
+====================================================================================================
